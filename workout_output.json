@@ -1,0 +1,340 @@
+{
+  "id": null,
+  "training_plan_id": 1,
+  "name": "Ganzkörper Workout - Abwechslung & Progression",
+  "date": "2024-06-07T10:00:00Z",
+  "blocks": [
+    {
+      "id": null,
+      "workout_id": 1,
+      "name": "Warm-up",
+      "description": "Mobilisation & Aufwärmen, um den Kreislauf in Schwung zu bringen und die Muskulatur vorzubereiten.",
+      "status": "incomplete",
+      "exercises": [
+        {
+          "id": null,
+          "name": "Jumping Jacks",
+          "description": "Klassische Hampelmänner zur Ganzkörperaktivierung.",
+          "block_id": 1,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 1,
+              "weight": 0.0,
+              "reps": 30,
+              "duration": 60,
+              "distance": null,
+              "speed": null,
+              "rest_time": 20
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Armkreisen & Hüftkreisen",
+          "description": "Optimale Vorbereitung für Schulter und Rumpf.",
+          "block_id": 1,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 2,
+              "weight": 0.0,
+              "reps": 20,
+              "duration": 40,
+              "distance": null,
+              "speed": null,
+              "rest_time": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": null,
+      "workout_id": 1,
+      "name": "Hauptteil: Kraft & Muskelaufbau",
+      "description": "Fortgeschrittenes Ganzkörper-Training mit Fokus auf Grundübungen und abwechslungsreicher Belastung.",
+      "status": "incomplete",
+      "exercises": [
+        {
+          "id": null,
+          "name": "Kniebeuge (Progression)",
+          "description": "Steigere das Gewicht leicht im Vergleich zur letzten Einheit, achte auf saubere Ausführung.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 3,
+              "weight": 42.5,
+              "reps": 10,
+              "duration": 65,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            },
+            {
+              "id": null,
+              "exercise_id": 3,
+              "weight": 42.5,
+              "reps": 10,
+              "duration": 65,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            },
+            {
+              "id": null,
+              "exercise_id": 3,
+              "weight": 42.5,
+              "reps": 8,
+              "duration": 65,
+              "distance": null,
+              "speed": null,
+              "rest_time": 75
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Kurzhantel-Bankdrücken",
+          "description": "Ersetze klassisches Bankdrücken für Abwechslung und mehr Stabilisationstraining.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 2.5,
+              "reps": 12,
+              "duration": 50,
+              "distance": null,
+              "speed": null,
+              "rest_time": 50
+            },
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 2.5,
+              "reps": 10,
+              "duration": 50,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Kreuzheben (leichtes Technik-Set + Arbeitssatz)",
+          "description": "1. Satz Technik mit wenig Gewicht, 2. Satz nahe Arbeitsgewicht, Rücken bleibt stabil.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": 30.0,
+              "reps": 10,
+              "duration": 60,
+              "distance": null,
+              "speed": null,
+              "rest_time": 50
+            },
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": 52.5,
+              "reps": 8,
+              "duration": 75,
+              "distance": null,
+              "speed": null,
+              "rest_time": 70
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Klimmzüge (variabel, negative Wiederholungen wenn nötig)",
+          "description": "Vollzüge so viele echte Klimmzüge sauber wie möglich, Rest als negative Wiederholungen.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 6,
+              "weight": 0.0,
+              "reps": 7,
+              "duration": 45,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            },
+            {
+              "id": null,
+              "exercise_id": 6,
+              "weight": 0.0,
+              "reps": 6,
+              "duration": 45,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Schulterdrücken stehend",
+          "description": "Gerne mit Kurzhanteln für mehr Abwechslung und Stabilisierung.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 7,
+              "weight": 22.5,
+              "reps": 10,
+              "duration": 45,
+              "distance": null,
+              "speed": null,
+              "rest_time": 50
+            },
+            {
+              "id": null,
+              "exercise_id": 7,
+              "weight": 20.0,
+              "reps": 10,
+              "duration": 45,
+              "distance": null,
+              "speed": null,
+              "rest_time": 50
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Kurzhantel-Rudern einarmig",
+          "description": "Abwechslung zum klassischen Rudern, verstärkt die Rumpfspannung.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 8,
+              "weight": 27.5,
+              "reps": 10,
+              "duration": 45,
+              "distance": null,
+              "speed": null,
+              "rest_time": 50
+            },
+            {
+              "id": null,
+              "exercise_id": 8,
+              "weight": 27.5,
+              "reps": 10,
+              "duration": 45,
+              "distance": null,
+              "speed": null,
+              "rest_time": 50
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": null,
+      "workout_id": 1,
+      "name": "Arm-Fokus (Supersatz)",
+      "description": "Direkt nacheinander, um die Arme effektiv zu erschöpfen.",
+      "status": "incomplete",
+      "exercises": [
+        {
+          "id": null,
+          "name": "Bizepscurls supiniert",
+          "description": "Volle Kontraktion, kontrollierte Ausführung.",
+          "block_id": 3,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 9,
+              "weight": 13.0,
+              "reps": 12,
+              "duration": 35,
+              "distance": null,
+              "speed": null,
+              "rest_time": 20
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "French Press (Trizeps)",
+          "description": "Alternative zum Trizepsdrücken, gerne liegend mit SZ-Stange oder Kurzhanteln.",
+          "block_id": 3,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 10,
+              "weight": 12.0,
+              "reps": 12,
+              "duration": 35,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": null,
+      "workout_id": 1,
+      "name": "Core & Finisher",
+      "description": "Rumpfkräftigung und Abschluss für das ganze Workout.",
+      "status": "incomplete",
+      "exercises": [
+        {
+          "id": null,
+          "name": "Plank (seitliche Variante)",
+          "description": "Maximale Haltezeit pro Seite, Fokus auf Körperspannung.",
+          "block_id": 4,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 11,
+              "weight": 0.0,
+              "reps": 1,
+              "duration": 40,
+              "distance": null,
+              "speed": null,
+              "rest_time": 20
+            },
+            {
+              "id": null,
+              "exercise_id": 11,
+              "weight": 0.0,
+              "reps": 1,
+              "duration": 40,
+              "distance": null,
+              "speed": null,
+              "rest_time": 20
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Crunches",
+          "description": "Saubere, kontrollierte Wiederholungen für die gerade Bauchmuskulatur.",
+          "block_id": 4,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 12,
+              "weight": 0.0,
+              "reps": 22,
+              "duration": 30,
+              "distance": null,
+              "speed": null,
+              "rest_time": 40
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

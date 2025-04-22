@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "exercise_name": "Kniebeuge",
+    "timestamp": "2024-06-01T10:00:00Z",
+    "weight": 40.0,
+    "reps": 10,
+    "duration": 60,
+    "notes": "Ging gut, Fokus auf Technik."
+  },
+  {
+    "id": 2,
+    "user_id": 1,
+    "exercise_name": "Bankdrücken",
+    "timestamp": "2024-06-01T10:10:00Z",
+    "weight": 30.0,
+    "reps": 10,
+    "duration": 50,
+    "notes": "Leichtes Gewicht zum Aufwärmen."
+  },
+  {
+    "id": 3,
+    "user_id": 1,
+    "exercise_name": "Kreuzheben",
+    "timestamp": "2024-06-01T10:20:00Z",
+    "weight": 50.0,
+    "reps": 8,
+    "duration": 70,
+    "notes": "Rücken stabil halten."
+  },
+  {
+    "id": 4,
+    "user_id": 1,
+    "exercise_name": "Klimmzüge",
+    "timestamp": "2024-06-01T10:30:00Z",
+    "weight": 0.0,
+    "reps": 6,
+    "duration": 40,
+    "notes": "Saubere Ausführung."
+  },
+  {
+    "id": 5,
+    "user_id": 1,
+    "exercise_name": "Schulterdrücken",
+    "timestamp": "2024-06-01T10:40:00Z",
+    "weight": 20.0,
+    "reps": 12,
+    "duration": 45,
+    "notes": "Schultern brennen."
+  },
+  {
+    "id": 6,
+    "user_id": 1,
+    "exercise_name": "Rudern vorgebeugt",
+    "timestamp": "2024-06-01T10:50:00Z",
+    "weight": 25.0,
+    "reps": 10,
+    "duration": 50,
+    "notes": "Rückenmuskulatur spüren."
+  },
+  {
+    "id": 7,
+    "user_id": 1,
+    "exercise_name": "Bizepscurls",
+    "timestamp": "2024-06-01T11:00:00Z",
+    "weight": 12.5,
+    "reps": 12,
+    "duration": 35,
+    "notes": "Pump im Bizeps."
+  },
+  {
+    "id": 8,
+    "user_id": 1,
+    "exercise_name": "Trizepsdrücken",
+    "timestamp": "2024-06-01T11:10:00Z",
+    "weight": 15.0,
+    "reps": 12,
+    "duration": 35,
+    "notes": "Trizeps gut getroffen."
+  },
+  {
+    "id": 9,
+    "user_id": 1,
+    "exercise_name": "Ausfallschritte",
+    "timestamp": "2024-06-03T10:00:00Z",
+    "weight": 20.0,
+    "reps": 10,
+    "duration": 60,
+    "notes": "Balance halten."
+  },
+  {
+    "id": 10,
+    "user_id": 1,
+    "exercise_name": "Beinpresse",
+    "timestamp": "2024-06-03T10:10:00Z",
+    "weight": 80.0,
+    "reps": 12,
+    "duration": 55,
+    "notes": "Beine brennen."
+  },
+  {
+    "id": 11,
+    "user_id": 1,
+    "exercise_name": "Butterfly",
+    "timestamp": "2024-06-03T10:20:00Z",
+    "weight": 25.0,
+    "reps": 12,
+    "duration": 40,
+    "notes": "Brustmuskulatur spüren."
+  },
+  {
+    "id": 12,
+    "user_id": 1,
+    "exercise_name": "Latziehen",
+    "timestamp": "2024-06-03T10:30:00Z",
+    "weight": 35.0,
+    "reps": 10,
+    "duration": 45,
+    "notes": "Latissimus aktivieren."
+  },
+  {
+    "id": 13,
+    "user_id": 1,
+    "exercise_name": "Seitheben",
+    "timestamp": "2024-06-03T10:40:00Z",
+    "weight": 7.5,
+    "reps": 15,
+    "duration": 30,
+    "notes": "Schultern isolieren."
+  },
+  {
+    "id": 14,
+    "user_id": 1,
+    "exercise_name": "Wadenheben",
+    "timestamp": "2024-06-03T10:50:00Z",
+    "weight": 40.0,
+    "reps": 20,
+    "duration": 30,
+    "notes": "Wadenmuskulatur spüren."
+  },
+  {
+    "id": 15,
+    "user_id": 1,
+    "exercise_name": "Crunches",
+    "timestamp": "2024-06-03T11:00:00Z",
+    "weight": 0.0,
+    "reps": 20,
+    "duration": 25,
+    "notes": "Bauch brennt."
+  },
+  {
+    "id": 16,
+    "user_id": 1,
+    "exercise_name": "Plank",
+    "timestamp": "2024-06-03T11:10:00Z",
+    "weight": 0.0,
+    "reps": 1,
+    "duration": 60,
+    "notes": "Stabil bleiben."
+  },
+  {
+    "id": 17,
+    "user_id": 1,
+    "exercise_name": "Frontheben",
+    "timestamp": "2024-06-05T10:00:00Z",
+    "weight": 7.5,
+    "reps": 12,
+    "duration": 30,
+    "notes": "Schultern isolieren."
+  },
+  {
+    "id": 18,
+    "user_id": 1,
+    "exercise_name": "Dips",
+    "timestamp": "2024-06-05T10:10:00Z",
+    "weight": 0.0,
+    "reps": 8,
+    "duration": 40,
+    "notes": "Trizeps und Brust."
+  },
+  {
+    "id": 19,
+    "user_id": 1,
+    "exercise_name": "Hyperextensions",
+    "timestamp": "2024-06-05T10:20:00Z",
+    "weight": 0.0,
+    "reps": 15,
+    "duration": 35,
+    "notes": "Rücken stärken."
+  },
+  {
+    "id": 20,
+    "user_id": 1,
+    "exercise_name": "Russian Twists",
+    "timestamp": "2024-06-05T10:30:00Z",
+    "weight": 5.0,
+    "reps": 20,
+    "duration": 30,
+    "notes": "Bauch und Rumpf."
+  }
+] 

@@ -1,0 +1,9 @@
+{
+  "id": 1,
+  "goal": "Muskelaufbau",
+  "restrictions": "Keine",
+  "equipment": "Kurzhanteln, Langhantel, Klimmzugstange",
+  "workouts_per_week": 4,
+  "session_duration": 60,
+  "description": "Ganzkörperplan für Einsteiger mit Fokus auf Grundübungen."
+} 
