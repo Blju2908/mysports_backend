@@ -1,7 +1,8 @@
 from sqlmodel import SQLModel, Field, Relationship
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, List
 
 if TYPE_CHECKING:
+    from .set_model import Set
     from .block_model import Block
 
 class Exercise(SQLModel, table=True):
@@ -10,4 +11,7 @@ class Exercise(SQLModel, table=True):
     name: str
     description: Optional[str] = None
     block_id: int = Field(foreign_key="blocks.id")
-    block: Optional["Block"] = Relationship(back_populates="exercises")
+    
+    block: "Block" = Relationship(back_populates="exercises")
+    sets: List["Set"] = Relationship(back_populates="exercise")
+    

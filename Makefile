@@ -4,7 +4,25 @@ run:
 	PYTHONPATH=src uvicorn app.main:app --reload
 
 test:
-	$(VENV_ACTIVATE) && pytest
+	pytest
 
 install:
-	$(VENV_ACTIVATE) && pip install -r requirements.txt 
+	pip install -r requirements.txt 
+
+alembic-init:
+	alembic init alembic
+
+alembic-make-migration:
+	alembic revision --autogenerate -m "New migration"
+
+alembic-upgrade:
+	alembic upgrade head
+
+alembic-downgrade:
+	alembic downgrade -1
+
+alembic-current:
+	alembic current
+
+alembic-history:
+	alembic history

@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from .user_model import User
 
 class ActivityLog(SQLModel, table=True):
-    __tablename__ = "activity_log"
+    __tablename__ = "training_history"
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id")
     exercise_name: str = Field(nullable=False)
@@ -19,5 +19,4 @@ class ActivityLog(SQLModel, table=True):
     speed: Optional[float] = None
     rest_time: Optional[int] = None  # Sekunden
     notes: Optional[str] = None  # Freitext für Bemerkungen
-    
     user: "User" = Relationship(back_populates="activity_log")

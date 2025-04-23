@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.api import create_api_router
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
+
+
 @asynccontextmanager
 async def lifespan(app):
     load_dotenv()
@@ -10,6 +13,16 @@ async def lifespan(app):
     # Hier können Shutdown-Tasks platziert werden
 
 app = FastAPI(lifespan=lifespan)
+
+# CORS-Konfiguration für das lokale Frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(create_api_router())
 
 @app.get("/")

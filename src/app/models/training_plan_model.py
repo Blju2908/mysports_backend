@@ -15,6 +15,6 @@ class TrainingPlan(SQLModel, table=True):
     workouts_per_week: int
     session_duration: int
     description: str
-
-    workouts: List["Workout"] = Relationship(back_populates="plan")
-    followers: List["User"] = Relationship(back_populates="followed_plans", link_model=TrainingPlanFollower) 
+    
+    followers: List["User"] = Relationship(back_populates="followed_plans", link_model=TrainingPlanFollower)
+    workouts: List["Workout"] = Relationship(back_populates="plan") 
