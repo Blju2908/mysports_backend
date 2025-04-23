@@ -14,7 +14,6 @@ class TrainingPlan(SQLModel, table=True):
     goal: str
     restrictions: str
     equipment: str
-    workouts_per_week: int
     session_duration: int
     description: str
 
