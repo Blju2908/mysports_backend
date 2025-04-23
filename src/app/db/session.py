@@ -5,7 +5,6 @@ settings = Settings()
 
 engine = create_engine(
     settings.SUPABASE_DB_URL,
-    echo=True
 )
 
 def get_session() -> Session:

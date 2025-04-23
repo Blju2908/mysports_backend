@@ -7,13 +7,8 @@ from typing import Optional
 from datetime import datetime
 import time
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
-class TokenData(BaseModel):
-    sub: str  # User ID
-    email: Optional[EmailStr] = None
-    exp: datetime
-    role: Optional[str] = None
 
 class User(BaseModel):
     id: str

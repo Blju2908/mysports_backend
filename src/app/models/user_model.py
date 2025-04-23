@@ -2,11 +2,11 @@ from typing import Optional, List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime
 from uuid import UUID
+from .training_plan_follower_model import TrainingPlanFollower
 
 if TYPE_CHECKING:
     from .training_plan_model import TrainingPlan
     from .training_history import ActivityLog
-
 class UserModel(SQLModel, table=True):
     """
     UserModel dient als Platzhalter für zusätzliche User-Informationen.
@@ -19,5 +19,8 @@ class UserModel(SQLModel, table=True):
     updated_at: Optional[datetime] = None
 
     # Beziehungen zu anderen Modellen
-    followed_plans: List["TrainingPlan"] = Relationship(back_populates="followers")
+    followed_plans: List["TrainingPlan"] = Relationship(
+        back_populates="followers",
+        link_model=TrainingPlanFollower
+    )
     activity_log: List["ActivityLog"] = Relationship(back_populates="user")

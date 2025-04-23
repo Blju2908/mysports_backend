@@ -1,158 +1,96 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Cookie, Request, BackgroundTasks, Query
-from sqlmodel import Session, select
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from app.core.supabase import get_supabase_client
 from app.db.session import get_session
-from app.models.user_model import User
-from app.schemas.user_schema import UserCreate, UserRead, LoginSchema
-from app.core.security import get_password_hash, verify_password, create_access_token, decode_access_token
-from app.core.email import send_verification_email, send_password_reset_email
-from pydantic import EmailStr, BaseModel
-from datetime import timedelta
+from app.models.user_model import UserModel
+from pydantic import BaseModel, EmailStr
+from sqlmodel import Session
 
-# TODO: Implement CSRF-Schutz
+router = APIRouter(tags=["auth"])
 
-router = APIRouter()
-
-class PasswordResetRequest(BaseModel):
+class UserRegister(BaseModel):
     email: EmailStr
+    password: str
 
-class PasswordUpdateRequest(BaseModel):
-    token: str
-    new_password: str
+class UserResponse(BaseModel):
+    email: EmailStr
+    id: str
+    
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    user: UserResponse
 
-@router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
-def register_user(
-    user: UserCreate,
-    background_tasks: BackgroundTasks,
-    session: Session = Depends(get_session)
-):
-    result = session.execute(select(User).where(User.email == user.email))
-    existing_user = result.scalars().first()
-    if existing_user:
-        raise HTTPException(status_code=400, detail="E-Mail already registered")
-    hashed_password = get_password_hash(user.password)
-    db_user = User(
-        email=user.email,
-        hashed_password=hashed_password,
-        is_active=True,  # User ist aktiv, aber noch nicht verifiziert
-        is_verified=False
-    )
-    session.add(db_user)
-    session.commit()
-    session.refresh(db_user)
-    # Verifizierungs-Token generieren
-    token = create_access_token({"sub": str(db_user.id)}, expires_delta=timedelta(hours=1))
-    send_verification_email(db_user.email, db_user.email, token, background_tasks)
-    return db_user
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
-@router.post("/login", response_model=UserRead)
-def login_user(
-    response: Response,
-    user: LoginSchema,
-    session: Session = Depends(get_session)
-):
-    result = session.execute(select(User).where(User.email == user.email))
-    db_user = result.scalars().first()
-    if not db_user or not verify_password(user.password, db_user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-    access_token = create_access_token({"sub": str(db_user.id)})
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        httponly=True,
-        secure=False,  # In Produktion: True!
-        samesite="lax",
-        max_age=60*60*24  # 24h
-    )
-    return db_user
+@router.post("/register", response_model=UserResponse)
+async def register(user_data: UserRegister, db: Session = Depends(get_session)):
+    """
+    Register a new user with Supabase Auth. Returns only user info, no token.
+    """
+    try:
+        supabase = get_supabase_client()
+        response = supabase.auth.sign_up({
+            "email": user_data.email,
+            "password": user_data.password
+        })
+        if not response.user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Registration failed"
+            )
+        # Nach erfolgreicher Registrierung: UserModel-Eintrag anlegen
+        user_model = UserModel(id=response.user.id)
+        db.add(user_model)
+        db.commit()
+        db.refresh(user_model)
+        return UserResponse(
+            email=response.user.email,
+            id=response.user.id
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
 
-@router.get("/me", response_model=UserRead)
-def get_me(
-    request: Request,
-    session: Session = Depends(get_session),
-    access_token: str = Cookie(default=None)
-):
-    if not access_token:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-    payload = decode_access_token(access_token)
-    if not payload or "sub" not in payload:
-        raise HTTPException(status_code=401, detail="Invalid token")
-    user_id = int(payload["sub"])
-    db_user = session.get(User, user_id)
-    if not db_user:
-        raise HTTPException(status_code=401, detail="User not found")
-    return db_user
+@router.post("/login", response_model=TokenResponse)
+async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    """Login with email and password"""
+    try:
+        supabase = get_supabase_client()
+        response = supabase.auth.sign_in_with_password({
+            "email": form_data.username,  # OAuth2 form uses 'username' for email
+            "password": form_data.password
+        })
+        
+        if not response.user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid credentials",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        # Return the session data
+        return TokenResponse(
+            access_token=response.session.access_token,
+            user=UserResponse(
+                email=response.user.email,
+                id=response.user.id
+            )
+        )
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 @router.post("/logout")
-def logout_user(response: Response):
-    response.set_cookie(
-        key="access_token",
-        value="",
-        httponly=True,
-        secure=False,  # In Produktion: True!
-        samesite="lax",
-        max_age=0
-    )
-    return {"message": "Logout successful"}
-
-@router.get("/verify-email")
-def verify_email(token: str = Query(...), session: Session = Depends(get_session)):
-    payload = decode_access_token(token)
-    if not payload or "sub" not in payload:
-        raise HTTPException(status_code=400, detail="Invalid or expired token")
-    user_id = int(payload["sub"])
-    db_user = session.get(User, user_id)
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-    if db_user.is_verified:
-        return {"message": "E-Mail already verified"}
-    db_user.is_verified = True
-    session.add(db_user)
-    session.commit()
-    return {"message": "E-Mail successfully verified"}
-
-@router.post("/resend-verification")
-def resend_verification(
-    email: EmailStr,
-    background_tasks: BackgroundTasks,
-    session: Session = Depends(get_session)
-):
-    result = session.execute(select(User).where(User.email == email))
-    db_user = result.scalars().first()
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-    if db_user.is_verified:
-        return {"message": "E-Mail already verified"}
-    token = create_access_token({"sub": str(db_user.id)}, expires_delta=timedelta(hours=1))
-    send_verification_email(db_user.email, db_user.email, token, background_tasks)
-    return {"message": "Verification e-mail sent"}
-
-@router.post("/reset-password")
-def reset_password(
-    data: PasswordResetRequest,
-    background_tasks: BackgroundTasks,
-    session: Session = Depends(get_session)
-):
-    result = session.execute(select(User).where(User.email == data.email))
-    db_user = result.scalars().first()
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-    token = create_access_token({"sub": str(db_user.id)}, expires_delta=timedelta(hours=1))
-    send_password_reset_email(db_user.email, db_user.email, token, background_tasks)
-    return {"message": "Password reset e-mail sent"}
-
-@router.post("/update-password")
-def update_password(
-    data: PasswordUpdateRequest,
-    session: Session = Depends(get_session)
-):
-    payload = decode_access_token(data.token)
-    if not payload or "sub" not in payload:
-        raise HTTPException(status_code=400, detail="Invalid or expired token")
-    user_id = int(payload["sub"])
-    db_user = session.get(User, user_id)
-    if not db_user:
-        raise HTTPException(status_code=404, detail="User not found")
-    db_user.hashed_password = get_password_hash(data.new_password)
-    session.add(db_user)
-    session.commit()
-    return {"message": "Password updated successfully"} 
+async def logout(token: str = Depends(oauth2_scheme)):
+    """
+    Logout the current user by instructing the client to delete the token.
+    """
+    # Optional: Logging oder weitere Aktionen
+    return {"message": "Successfully logged out"} 
