@@ -7,7 +7,7 @@ from app.llm.chains.workout_generation_chain import generate_workout
 router = APIRouter()
 
 @router.post("/llm/run")
-async def run_llm():
+def run_llm():
     try:
         # Beispiel-Daten laden (wie im Test)
         base_path = Path(__file__).parent.parent / "llm" / "examples"
@@ -21,9 +21,7 @@ async def run_llm():
         else:
             training_history = [ActivityLogSchema(**training_history_data)]
         # LLM-Chain ausführen
-        # generate_workout ist synchron, daher in Thread ausführen
-        from fastapi.concurrency import run_in_threadpool
-        await run_in_threadpool(generate_workout, training_plan, training_history)
+        generate_workout(training_plan, training_history)
         return {"success": True, "message": "LLM-Call erfolgreich angestoßen."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Fehler beim LLM-Call: {str(e)}") 

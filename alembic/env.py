@@ -1,7 +1,9 @@
 from logging.config import fileConfig
+import os  # Added import
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
+from dotenv import load_dotenv
 
 from alembic import context
 from sqlmodel import SQLModel
@@ -37,6 +39,13 @@ target_metadata = SQLModel.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+# Added to load .env file
+load_dotenv()
+
+# Get Supabase URL from environment
+supabase_url = os.getenv("SUPABASE_DB_URL")
+if not supabase_url:
+    raise ValueError("SUPABASE_DB_URL environment variable not set.")
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -50,9 +59,8 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url,
+        url=supabase_url,  # Use the loaded URL
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -69,8 +77,13 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    # Create engine configuration dictionary manually
+    engine_config = config.get_section(config.config_ini_section, {})
+    engine_config["sqlalchemy.url"] = supabase_url # Inject the URL
+
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        # config.get_section(config.config_ini_section, {}), <-- Replaced
+        engine_config, # Use the manually created config dict
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

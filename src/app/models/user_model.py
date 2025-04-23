@@ -1,19 +1,23 @@
 from typing import Optional, List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
-from .training_plan_follower_model import TrainingPlanFollower
+from datetime import datetime
+from uuid import UUID
 
 if TYPE_CHECKING:
     from .training_plan_model import TrainingPlan
     from .training_history import ActivityLog
 
-class User(SQLModel, table=True):
+class UserModel(SQLModel, table=True):
+    """
+    UserModel dient als Platzhalter für zusätzliche User-Informationen.
+    Die Authentifizierung läuft über Supabase (auth.users).
+    Die ID entspricht der Supabase-User-ID (UUID).
+    """
     __tablename__ = "users"
+    id: UUID = Field(primary_key=True)
+    created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
+    updated_at: Optional[datetime] = None
 
-    id: Optional[int] = Field(default=None, primary_key=True)
-    email: str
-    hashed_password: str
-    is_active: bool = True
-    is_verified: bool = False
-
-    followed_plans: List["TrainingPlan"] = Relationship(back_populates="followers", link_model=TrainingPlanFollower)
+    # Beziehungen zu anderen Modellen
+    followed_plans: List["TrainingPlan"] = Relationship(back_populates="followers")
     activity_log: List["ActivityLog"] = Relationship(back_populates="user")

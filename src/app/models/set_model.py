@@ -9,7 +9,6 @@ class Set(SQLModel, table=True):
     __tablename__ = "sets"
     id: Optional[int] = Field(default=None, primary_key=True)
     exercise_id: int = Field(foreign_key="exercises.id")
-    block_id: int = Field(foreign_key="blocks.id")
     weight: Optional[float] = None
     reps: Optional[int] = None
     duration: Optional[int] = None

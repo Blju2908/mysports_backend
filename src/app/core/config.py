@@ -9,9 +9,12 @@ class Settings(BaseSettings):
     MAIL_SERVER: str
     MAIL_STARTTLS: bool
     MAIL_SSL_TLS: bool
-    
-    # Database
-    DATABASE_URL: str
+
+    # Supabase
+    SUPABASE_URL: str
+    SUPABASE_API_KEY: str
+    SUPABASE_DB_URL: str
+    SUPABASE_BUCKET: str
 
     class Config:
         env_file = ".env"

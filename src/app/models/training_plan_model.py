@@ -1,9 +1,10 @@
 from typing import Optional, List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 from .training_plan_follower_model import TrainingPlanFollower
+from uuid import UUID
 
 if TYPE_CHECKING:
-    from .user_model import User
+    from .user_model import UserModel
     from .workout_model import Workout
 
 class TrainingPlan(SQLModel, table=True):
@@ -16,5 +17,6 @@ class TrainingPlan(SQLModel, table=True):
     session_duration: int
     description: str
     
-    followers: List["User"] = Relationship(back_populates="followed_plans", link_model=TrainingPlanFollower)
+    # followers verweist auf UserModel mit Supabase-User-ID (UUID)
+    followers: List["UserModel"] = Relationship(back_populates="followed_plans", link_model=TrainingPlanFollower)
     workouts: List["Workout"] = Relationship(back_populates="plan") 

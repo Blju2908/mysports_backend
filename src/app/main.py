@@ -3,14 +3,15 @@ from contextlib import asynccontextmanager
 from app.api import create_api_router
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
-
+from app.db.session import create_db_and_tables
 
 @asynccontextmanager
 async def lifespan(app):
     load_dotenv()
-    # Hier können Startup-Tasks (z.B. DB-Init, LLM-Cache) platziert werden
+    # Startup-Tasks: DB-Init, LLM-Cache etc.
+    create_db_and_tables()  # Tabellen erstellen (nur für lokale Entwicklung/Migrationen)
     yield
-    # Hier können Shutdown-Tasks platziert werden
+    # Shutdown-Tasks
 
 app = FastAPI(lifespan=lifespan)
 
