@@ -1,12 +1,20 @@
 from fastapi import FastAPI
-from app.api import api_router
+from contextlib import asynccontextmanager
+from app.api import create_api_router
+from dotenv import load_dotenv
+@asynccontextmanager
+async def lifespan(app):
+    load_dotenv()
+    # Hier können Startup-Tasks (z.B. DB-Init, LLM-Cache) platziert werden
+    yield
+    # Hier können Shutdown-Tasks platziert werden
 
-app = FastAPI()
-app.include_router(api_router)
+app = FastAPI(lifespan=lifespan)
+app.include_router(create_api_router())
 
 @app.get("/")
 def read_root():
-    return {"status": "ok"} 
+    return {"status": "ok"}
 
 @app.get("/health")
 def health():

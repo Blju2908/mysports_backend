@@ -8,12 +8,8 @@ from ..schemas.workout_generation_schema import (
 from ..utils.langchain_utils import load_prompt
 import json
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 PROMPT_FILE = "workout_generation_prompt.txt"
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # LLM-Chain Funktion
 
@@ -32,6 +28,9 @@ def generate_workout(
         training_history=training_history_json,
         output_schema=json.dumps(output_schema, indent=2, default=str),
     )
+    
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    
     llm = ChatOpenAI(
         model="gpt-4.1",
         api_key=OPENAI_API_KEY,

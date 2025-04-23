@@ -2,7 +2,7 @@
   "id": null,
   "training_plan_id": 1,
   "name": "Ganzkörper-Workout #4",
-  "date": "2024-06-07T10:00:00Z",
+  "date": "2024-06-07T10:00:00+00:00",
   "blocks": [
     {
       "id": null,
