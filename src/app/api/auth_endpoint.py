@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from app.core.supabase import get_supabase_client
 from app.db.session import get_session
 from app.models.user_model import UserModel
+from app.core.auth import get_current_user, User
 from pydantic import BaseModel, EmailStr
 from sqlmodel import Session
 
@@ -21,7 +22,11 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
     user: UserResponse
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login-form")
 
 @router.post("/register", response_model=UserResponse)
 async def register(user_data: UserRegister, db: Session = Depends(get_session)):
@@ -55,23 +60,20 @@ async def register(user_data: UserRegister, db: Session = Depends(get_session)):
         )
 
 @router.post("/login", response_model=TokenResponse)
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    """Login with email and password"""
+async def login(login_data: LoginRequest):
+    """Login with email and password (JSON body)."""
     try:
         supabase = get_supabase_client()
         response = supabase.auth.sign_in_with_password({
-            "email": form_data.username,  # OAuth2 form uses 'username' for email
-            "password": form_data.password
+            "email": login_data.email,
+            "password": login_data.password
         })
-        
         if not response.user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid credentials",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        
-        # Return the session data
         return TokenResponse(
             access_token=response.session.access_token,
             user=UserResponse(
@@ -79,7 +81,6 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
                 id=response.user.id
             )
         )
-        
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -87,10 +88,38 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
             headers={"WWW-Authenticate": "Bearer"},
         )
 
+@router.post("/login-form", response_model=TokenResponse)
+async def login_form(form_data: OAuth2PasswordRequestForm = Depends()):
+    """Login with email and password (form data)."""
+    supabase = get_supabase_client()
+    response = supabase.auth.sign_in_with_password({
+        "email": form_data.username,
+        "password": form_data.password
+    })
+    if not response.user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return TokenResponse(
+        access_token=response.session.access_token,
+        user=UserResponse(
+            email=response.user.email,
+            id=response.user.id
+        )
+    )
+
 @router.post("/logout")
 async def logout(token: str = Depends(oauth2_scheme)):
     """
-    Logout the current user by instructing the client to delete the token.
+    Logout the current user. Der Access-Token muss im Authorization-Header als Bearer-Token mitgesendet werden.
     """
-    # Optional: Logging oder weitere Aktionen
     return {"message": "Successfully logged out"} 
+
+@router.get("/me", response_model=User)
+async def read_users_me(current_user: User = Depends(get_current_user)):
+    """
+    Get current user information
+    """
+    return current_user

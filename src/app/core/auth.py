@@ -7,7 +7,7 @@ from typing import Optional
 from datetime import datetime
 import time
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login-form")
 
 
 class User(BaseModel):
