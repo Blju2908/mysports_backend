@@ -7,7 +7,7 @@ from ..schemas.workout_generation_schema import (
 )
 from ..utils.langchain_utils import load_prompt
 import json
-import os
+from app.core.config import get_config
 
 PROMPT_FILE = "workout_generation_prompt.txt"
 
@@ -29,7 +29,9 @@ def generate_workout(
         output_schema=json.dumps(output_schema, indent=2, default=str),
     )
     
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    # API key aus der config holen
+    config = get_config()
+    OPENAI_API_KEY = config.OPENAI_API_KEY
     
     llm = ChatOpenAI(
         model="gpt-4.1",

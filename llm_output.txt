@@ -1,279 +1,252 @@
 {
   "id": null,
-  "training_plan_id": 1,
-  "name": "Ganzkörper-Workout #4",
-  "date": "2024-06-07T10:00:00+00:00",
+  "training_plan_id": 12,
+  "name": "Kraft & Beweglichkeit für starke Anstiege",
+  "date": "2024-06-11T10:00:00Z",
   "blocks": [
     {
       "id": null,
-      "workout_id": 4,
-      "name": "Aufwärmen",
-      "description": "Mobilisierung und Aktivierung des gesamten Körpers.",
+      "workout_id": 1,
+      "name": "Warm Up",
+      "description": "Mobilisation und Erwärmung der wichtigsten Muskelgruppen für Rennrad und Krafttraining",
       "status": "incomplete",
       "exercises": [
         {
           "id": null,
-          "name": "Jumping Jacks",
-          "description": "Zum Kreislauf aktivieren.",
+          "name": "Rumpfkreisen",
+          "description": "Langsame Kreise mit dem Rumpf im Stand, Fokus auf Mobilisation der Wirbelsäule.",
           "block_id": 1,
           "sets": [
             {
               "id": null,
               "exercise_id": 1,
-              "weight": 0.0,
-              "reps": 30,
+              "weight": null,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 0
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Jumping Jacks",
+          "description": "Leichtes Ganzkörper-Cardio-Warmup.",
+          "block_id": 1,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 2,
+              "weight": null,
+              "reps": null,
               "duration": 60,
               "distance": null,
               "speed": null,
               "rest_time": 30
             }
           ]
-        },
-        {
-          "id": null,
-          "name": "Armkreisen & Hüftkreisen",
-          "description": "Mobilisation Schulter & Hüfte.",
-          "block_id": 1,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 2,
-              "weight": 0.0,
-              "reps": 15,
-              "duration": 30,
-              "distance": null,
-              "speed": null,
-              "rest_time": 10
-            }
-          ]
         }
       ]
     },
     {
       "id": null,
-      "workout_id": 4,
-      "name": "Kniebeuge Block",
-      "description": "Beine & Rumpf - Fokus auf Technik und Progression.",
+      "workout_id": 1,
+      "name": "Kraftblock Beine & Core",
+      "description": "Beinkraft und Rumpf-Stabilität für mehr Power am Berg & bessere Haltung auf dem Rad.",
       "status": "incomplete",
       "exercises": [
         {
           "id": null,
-          "name": "Kniebeuge",
-          "description": "Langhantel-Kniebeuge, Fokus auf sauberer Ausführung.",
+          "name": "Kniebeugen mit Langhantel",
+          "description": "Fokus: Maximale Ganzkörper-Beinkraft. Technik vor Gewicht!",
           "block_id": 2,
           "sets": [
             {
               "id": null,
               "exercise_id": 3,
-              "weight": 42.5,
-              "reps": 10,
-              "duration": 60,
+              "weight": 40,
+              "reps": 12,
+              "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": 90
+              "rest_time": 60
             },
             {
               "id": null,
               "exercise_id": 3,
-              "weight": 42.5,
+              "weight": 40,
               "reps": 10,
-              "duration": 60,
+              "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": 90
+              "rest_time": 60
             },
             {
               "id": null,
               "exercise_id": 3,
-              "weight": 42.5,
+              "weight": 40,
               "reps": 8,
-              "duration": 60,
+              "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": 120
+              "rest_time": 90
             }
           ]
         },
         {
           "id": null,
-          "name": "Wadenheben stehend",
-          "description": "Mit Kurzhanteln oder auf Stufe.",
+          "name": "Rumänisches Kreuzheben",
+          "description": "Aktiviert hintere Kette (Rücken, Beine, Po) für Zugbergpassagen.",
           "block_id": 2,
           "sets": [
             {
               "id": null,
               "exercise_id": 4,
-              "weight": 42.5,
-              "reps": 18,
-              "duration": 40,
+              "weight": 35,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            },
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 37.5,
+              "reps": 10,
+              "duration": null,
               "distance": null,
               "speed": null,
               "rest_time": 60
             }
           ]
+        },
+        {
+          "id": null,
+          "name": "Plank Variationen",
+          "description": "Halteposition, abwechselnd Bein & Arm anheben, für Core-Stabilität.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": null,
+              "reps": null,
+              "duration": 30,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": null,
+              "reps": null,
+              "duration": 30,
+              "distance": null,
+              "speed": null,
+              "rest_time": 40
+            }
+          ]
         }
       ]
     },
     {
       "id": null,
-      "workout_id": 4,
-      "name": "Brust & Rücken Block",
-      "description": "Drück- und Zugbewegungen im Wechsel.",
+      "workout_id": 1,
+      "name": "Beweglichkeits- und Mobilitätszirkel",
+      "description": "Erhalte Geschmeidigkeit für komfortables Sitzen auf dem Rad bei längeren Einheiten.",
       "status": "incomplete",
       "exercises": [
         {
           "id": null,
-          "name": "Kurzhantel Bankdrücken",
-          "description": "Bankdrücken mit Kurzhanteln, Fokus auf Stabilität.",
+          "name": "Deep Lunge mit Rotation",
+          "description": "Dehnt Hüfte und Wirbelsäule; bereitet auf statisches Sitzen vor.",
           "block_id": 3,
           "sets": [
             {
               "id": null,
-              "exercise_id": 5,
-              "weight": 32.5,
-              "reps": 10,
-              "duration": 60,
+              "exercise_id": 6,
+              "weight": null,
+              "reps": 8,
+              "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": 90
+              "rest_time": 20
             },
             {
               "id": null,
-              "exercise_id": 5,
-              "weight": 32.5,
+              "exercise_id": 6,
+              "weight": null,
               "reps": 8,
-              "duration": 60,
+              "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": 90
+              "rest_time": 20
             }
           ]
         },
         {
           "id": null,
-          "name": "Klimmzüge",
-          "description": "Solide, langsam ausgeführte Klimmzüge, ggf. mit Unterstützung.",
+          "name": "Faszienrolle Oberschenkel & Rücken",
+          "description": "Löst Verspannungen & unterstützt Regeneration.",
           "block_id": 3,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 6,
-              "weight": 0.0,
-              "reps": 7,
-              "duration": 50,
-              "distance": null,
-              "speed": null,
-              "rest_time": 90
-            },
-            {
-              "id": null,
-              "exercise_id": 6,
-              "weight": 0.0,
-              "reps": 6,
-              "duration": 45,
-              "distance": null,
-              "speed": null,
-              "rest_time": 90
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": null,
-      "workout_id": 4,
-      "name": "Schultern & Arme",
-      "description": "Isolation für Schultern, Kombination für Arme.",
-      "status": "incomplete",
-      "exercises": [
-        {
-          "id": null,
-          "name": "Schulterdrücken stehend",
-          "description": "Mit Kurzhanteln oder Langhantel.",
-          "block_id": 4,
           "sets": [
             {
               "id": null,
               "exercise_id": 7,
-              "weight": 22.5,
-              "reps": 12,
-              "duration": 45,
+              "weight": null,
+              "reps": null,
+              "duration": 60,
               "distance": null,
               "speed": null,
-              "rest_time": 75
+              "rest_time": 0
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "id": null,
+      "workout_id": 1,
+      "name": "Cool Down",
+      "description": "Beruhigung & Stretching für nachhaltige Beweglichkeit.",
+      "status": "incomplete",
+      "exercises": [
         {
           "id": null,
-          "name": "Bizepscurls Supersatz mit Trizepsdrücken",
-          "description": "Supersatz: direkt nach den Curls ohne Pause in das Trizepsdrücken wechseln.",
+          "name": "Dehnung Gesäßmuskulatur (liegend)",
+          "description": "Lockerung nach schwerer Beinarbeit.",
           "block_id": 4,
           "sets": [
             {
               "id": null,
               "exercise_id": 8,
-              "weight": 12.5,
-              "reps": 12,
-              "duration": 40,
+              "weight": null,
+              "reps": null,
+              "duration": 45,
               "distance": null,
               "speed": null,
               "rest_time": 0
-            },
-            {
-              "id": null,
-              "exercise_id": 9,
-              "weight": 15.0,
-              "reps": 12,
-              "duration": 40,
-              "distance": null,
-              "speed": null,
-              "rest_time": 90
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": null,
-      "workout_id": 4,
-      "name": "Core/Abschluss",
-      "description": "Rumpftraining und kurzer Ausklang.",
-      "status": "incomplete",
-      "exercises": [
-        {
-          "id": null,
-          "name": "Plank",
-          "description": "Unterarmstütz für die tiefe Rumpfmuskulatur.",
-          "block_id": 5,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 10,
-              "weight": 0.0,
-              "reps": 1,
-              "duration": 75,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
             }
           ]
         },
         {
           "id": null,
-          "name": "Russian Twists",
-          "description": "Rumpfstabilität und schräge Bauchmuskeln.",
-          "block_id": 5,
+          "name": "Kindspose & Schulterdehnung",
+          "description": "Stretcht Rücken und Schultern, Abschluss des Trainings.",
+          "block_id": 4,
           "sets": [
             {
               "id": null,
-              "exercise_id": 11,
-              "weight": 6.0,
-              "reps": 22,
-              "duration": 35,
+              "exercise_id": 9,
+              "weight": null,
+              "reps": null,
+              "duration": 45,
               "distance": null,
               "speed": null,
-              "rest_time": 60
+              "rest_time": null
             }
           ]
         }

@@ -1,7 +1,9 @@
 from pydantic_settings import BaseSettings
+from functools import lru_cache
 
 class Settings(BaseSettings):
     OPENAI_API_KEY: str
+    
     MAIL_USERNAME: str
     MAIL_PASSWORD: str
     MAIL_FROM: str
@@ -18,4 +20,12 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = ".env"
-        case_sensitive = True 
+        case_sensitive = True
+
+@lru_cache()
+def get_config() -> Settings:
+    """
+    Gibt eine gecachte Instanz der Settings-Klasse zurück.
+    Die @lru_cache-Dekoration stellt sicher, dass die Einstellungen nur einmal geladen werden.
+    """
+    return Settings() 
