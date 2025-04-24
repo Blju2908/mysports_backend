@@ -1,5 +1,7 @@
 Du bist ein KI-Coach. Erstelle auf Basis des folgenden Trainingsplans und der Trainingshistorie ein neues Workout. Das Workout soll abwechslungsreich, zielgerichtet und an die Historie angepasst sein. Gib das Ergebnis als JSON im folgenden Format zurück:
 
+Bitte gebe alle durations in ganzen Sekunden an.
+
 {output_schema}
 
 Trainingsplan:

@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
 from ...models.enums import BlockStatus
-
+from ...models.workout_model import WorkoutStatus
 class TrainingPlanSchema(BaseModel):
     id: Optional[int]
     goal: str
@@ -18,7 +18,7 @@ class ActivityLogSchema(BaseModel):
     timestamp: datetime
     weight: Optional[float]
     reps: Optional[int]
-    duration: Optional[int]
+    duration: Optional[int] # in seconds
     notes: Optional[str]
 
 class SetSchema(BaseModel):
@@ -26,7 +26,7 @@ class SetSchema(BaseModel):
     exercise_id: int
     weight: Optional[float]
     reps: Optional[int]
-    duration: Optional[int]
+    duration: Optional[int] # in seconds
     distance: Optional[float]
     speed: Optional[float]
     rest_time: Optional[int]
@@ -51,4 +51,5 @@ class WorkoutSchema(BaseModel):
     training_plan_id: Optional[int]
     name: str
     date: datetime
+    status: WorkoutStatus
     blocks: Optional[List[BlockSchema]] = [] 

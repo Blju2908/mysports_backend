@@ -12,7 +12,7 @@ install:
 alembic-init:
 	alembic init alembic
 
-alembic-make-migration:
+alembic-migration:
 	alembic revision --autogenerate -m "New migration"
 
 alembic-upgrade:

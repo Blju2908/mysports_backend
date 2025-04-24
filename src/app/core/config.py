@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    OPENAI_API_KEY: str
+    OPENAI_API_KEY2: str
     MAIL_USERNAME: str
     MAIL_PASSWORD: str
     MAIL_FROM: str

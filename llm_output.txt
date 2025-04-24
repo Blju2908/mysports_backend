@@ -1,46 +1,159 @@
 {
   "id": null,
   "training_plan_id": 12,
-  "name": "Rennrad Off-Bike Kraft & Mobility",
-  "date": "2024-06-21T10:00:00Z",
+  "name": "Kraft & Beweglichkeit – Off-Bike Training",
+  "date": "2024-06-19T08:00:00Z",
   "blocks": [
     {
       "id": null,
       "workout_id": 1,
-      "name": "Warm-Up & Mobility",
-      "description": "Ganzkörper-Mobilisierung, um den Körper optimal auf das Training vorzubereiten und typische Radfahrer-Regionen beweglich zu halten.",
+      "name": "Warm-Up & Mobilität",
+      "description": "Sanftes Aufwärmen und gezielte Beweglichkeitsübungen für Schultern, Hüfte und Wirbelsäule.",
       "status": "incomplete",
       "exercises": [
         {
           "id": null,
-          "name": "Cat-Cow & World's Greatest Stretch",
-          "description": "Im Wechsel zur Mobilisierung der Wirbelsäule, Hüfte und der Schultern.",
+          "name": "Ruderergometer Locker",
+          "description": "Leichtes Rudern zur Erwärmung des ganzen Körpers.",
           "block_id": 1,
           "sets": [
             {
               "id": null,
               "exercise_id": 1,
               "weight": null,
-              "reps": 10,
-              "duration": null,
+              "reps": null,
+              "duration": 5,
               "distance": null,
               "speed": null,
-              "rest_time": 30
+              "rest_time": null
             }
           ]
         },
         {
           "id": null,
-          "name": "Deep Squat Hold mit Schulterkreisen",
-          "description": "Tiefe Hocke, gleichzeitig die Arme ausstrecken und Kreise malen.",
+          "name": "Mobilisationszirkel",
+          "description": "Cat-Cow, World's Greatest Stretch, Kniebeugen mit Überkopfstreckung",
           "block_id": 1,
           "sets": [
             {
               "id": null,
               "exercise_id": 2,
               "weight": null,
+              "reps": 8,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": null,
+      "workout_id": 1,
+      "name": "Kraftblock Unterkörper & Rumpf",
+      "description": "Fokus auf Beine und Core für maximale Kraft am Berg und lange Sitzzeiten.",
+      "status": "incomplete",
+      "exercises": [
+        {
+          "id": null,
+          "name": "Kniebeugen (Langhantel)",
+          "description": "Langsame, kontrollierte Wiederholungen für Kraft und Beweglichkeit.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 3,
+              "weight": 40,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            },
+            {
+              "id": null,
+              "exercise_id": 3,
+              "weight": 45,
+              "reps": 8,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 75
+            },
+            {
+              "id": null,
+              "exercise_id": 3,
+              "weight": 50,
+              "reps": 6,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 90
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Kreuzheben (Kurzhantel oder Langhantel)",
+          "description": "Für Hüft- und Rückenstreckung, Fahrradrelevanter Krafteinsatz.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 40,
+              "reps": 8,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            },
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 45,
+              "reps": 6,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 75
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Plank Variationen",
+          "description": "30 Sekunden Unterarmstütz, 30 Sekunden seitliche Planks pro Seite",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": null,
               "reps": null,
-              "duration": 45,
+              "duration": 0.5,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": null,
+              "reps": null,
+              "duration": 0.5,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": null,
+              "reps": null,
+              "duration": 0.5,
               "distance": null,
               "speed": null,
               "rest_time": 30
@@ -52,201 +165,81 @@
     {
       "id": null,
       "workout_id": 1,
-      "name": "Bein-Kraft & Core-Zirkel",
-      "description": "Für bergtaugliche Beine und einen stabilen Oberkörper speziell für lange Fahrten.",
+      "name": "Beweglichkeits- und Dehnungsblock",
+      "description": "Gezielte Dehnübungen für Hüfte, unteren Rücken und Beinrückseite um langes Sitzen auf dem Rad vorzubereiten.",
       "status": "incomplete",
       "exercises": [
         {
           "id": null,
-          "name": "Bulgarian Split Squat",
-          "description": "Mit Kurzhanteln oder Langhantel, Fokus auf Beinachse und Tiefe.",
-          "block_id": 2,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 3,
-              "weight": 12,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 30
-            },
-            {
-              "id": null,
-              "exercise_id": 3,
-              "weight": 12,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
-            }
-          ]
-        },
-        {
-          "id": null,
-          "name": "Romanian Deadlift",
-          "description": "Fördert Hamstrings und Gesäß, wichtig für Zugphase am Berg.",
-          "block_id": 2,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 4,
-              "weight": 30,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 45
-            },
-            {
-              "id": null,
-              "exercise_id": 4,
-              "weight": 30,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
-            }
-          ]
-        },
-        {
-          "id": null,
-          "name": "Plank mit Beinheben",
-          "description": "Aktiviert Rumpf und stabilisiert das Becken für lange Sitzphasen.",
-          "block_id": 2,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 5,
-              "weight": null,
-              "reps": null,
-              "duration": 40,
-              "distance": null,
-              "speed": null,
-              "rest_time": 45
-            },
-            {
-              "id": null,
-              "exercise_id": 5,
-              "weight": null,
-              "reps": null,
-              "duration": 40,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": null,
-      "workout_id": 1,
-      "name": "Oberkörper & Haltung",
-      "description": "Gerade für Radfahrer: Rücken, Schulterblattstabilität, Nacken – für eine entspannte Fahrposition.",
-      "status": "incomplete",
-      "exercises": [
-        {
-          "id": null,
-          "name": "Latziehen oder Klimmzug",
-          "description": "Stärkt Schulter und oberen Rücken, hält Dich aufrecht im Sattel.",
+          "name": "Hüftbeuger Stretch",
+          "description": "Jede Seite 1 Minute halten.",
           "block_id": 3,
           "sets": [
             {
               "id": null,
               "exercise_id": 6,
-              "weight": 25,
-              "reps": 8,
-              "duration": null,
+              "weight": null,
+              "reps": null,
+              "duration": 1,
               "distance": null,
               "speed": null,
-              "rest_time": 60
+              "rest_time": null
             },
             {
               "id": null,
               "exercise_id": 6,
-              "weight": 25,
-              "reps": 8,
-              "duration": null,
+              "weight": null,
+              "reps": null,
+              "duration": 1,
               "distance": null,
               "speed": null,
-              "rest_time": 60
+              "rest_time": null
             }
           ]
         },
         {
           "id": null,
-          "name": "Face Pull mit Seilzug",
-          "description": "Für Schulterblattkontrolle – Kräftigung typischer Schwachpunkte von Radlern.",
+          "name": "Hamstring Stretch (stehend oder sitzend)",
+          "description": "Jede Seite 1 Minute.",
           "block_id": 3,
           "sets": [
             {
               "id": null,
               "exercise_id": 7,
-              "weight": 10,
-              "reps": 15,
-              "duration": null,
+              "weight": null,
+              "reps": null,
+              "duration": 1,
               "distance": null,
               "speed": null,
-              "rest_time": 45
+              "rest_time": null
             },
             {
               "id": null,
               "exercise_id": 7,
-              "weight": 10,
-              "reps": 15,
-              "duration": null,
+              "weight": null,
+              "reps": null,
+              "duration": 1,
               "distance": null,
               "speed": null,
-              "rest_time": 45
+              "rest_time": null
             }
           ]
-        }
-      ]
-    },
-    {
-      "id": null,
-      "workout_id": 1,
-      "name": "Cooldown & Stretching",
-      "description": "Abschluss zur Förderung der Regeneration und Erhalt der Beweglichkeit.",
-      "status": "incomplete",
-      "exercises": [
+        },
         {
           "id": null,
-          "name": "Pigeon Stretch",
-          "description": "Intensiv für die Hüftöffnung, typisch verkürzt bei Radlern.",
-          "block_id": 4,
+          "name": "Brust- & Schulteröffnung an Wand",
+          "description": "Mobilisiert die Vorderseite für bessere Radfahr-Haltung.",
+          "block_id": 3,
           "sets": [
             {
               "id": null,
               "exercise_id": 8,
               "weight": null,
               "reps": null,
-              "duration": 40,
+              "duration": 1,
               "distance": null,
               "speed": null,
-              "rest_time": 20
-            }
-          ]
-        },
-        {
-          "id": null,
-          "name": "Brust- & Latdehner an der Wand",
-          "description": "Hält Front und Rücken beweglich.",
-          "block_id": 4,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 9,
-              "weight": null,
-              "reps": null,
-              "duration": 40,
-              "distance": null,
-              "speed": null,
-              "rest_time": 0
+              "rest_time": null
             }
           ]
         }

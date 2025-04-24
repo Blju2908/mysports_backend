@@ -8,6 +8,7 @@ from ..schemas.workout_generation_schema import (
 from ..utils.langchain_utils import load_prompt
 import json
 from app.core.config import get_config
+from app.models.workout_model import WorkoutStatus
 
 PROMPT_FILE = "workout_generation_prompt.txt"
 
@@ -31,7 +32,7 @@ def generate_workout(
     
     # API key aus der config holen
     config = get_config()
-    OPENAI_API_KEY = config.OPENAI_API_KEY
+    OPENAI_API_KEY = config.OPENAI_API_KEY2
     
     llm = ChatOpenAI(
         model="gpt-4.1",
@@ -42,17 +43,19 @@ def generate_workout(
     chain = ChatPromptTemplate.from_template("{prompt}") | llm
     
     response = chain.invoke({"prompt": prompt})
-    
-    # Debug: Gib die rohe LLM-Antwort aus und speichere sie in eine Datei
-    output_path = "llm_output.txt"
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(response.content)
-    print("LLM Output wurde in llm_output.txt gespeichert.")
 
-    # LLM-Antwort als WorkoutSchema parsen
-    workout = WorkoutSchema.model_validate_json(response.content)
+    # LLM-Antwort als JSON parsen
+    response_json = json.loads(response.content)
+    
+    # Sicherstellen, dass der Workout-Status auf INCOMPLETE gesetzt ist
+    response_json["status"] = WorkoutStatus.INCOMPLETE
+    
+    # Konvertiertes JSON als WorkoutSchema parsen
+    workout = WorkoutSchema.model_validate(response_json)
+    
     # Speichere das JSON in eine Datei
     with open("workout_output.json", "w", encoding="utf-8") as f:
         f.write(workout.model_dump_json(indent=2))
+    
     print("Workout-JSON wurde in workout_output.json gespeichert.")
     return workout
