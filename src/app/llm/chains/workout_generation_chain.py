@@ -9,6 +9,7 @@ from ..utils.langchain_utils import load_prompt
 import json
 from app.core.config import get_config
 from app.models.workout_model import WorkoutStatus
+from datetime import datetime
 
 PROMPT_FILE = "workout_generation_prompt.txt"
 
@@ -35,7 +36,7 @@ def generate_workout(
     OPENAI_API_KEY = config.OPENAI_API_KEY2
     
     llm = ChatOpenAI(
-        model="gpt-4.1",
+        model="o4-mini",
         api_key=OPENAI_API_KEY,
         model_kwargs={"response_format": {"type": "json_object"}},
     )
@@ -49,6 +50,8 @@ def generate_workout(
     
     # Sicherstellen, dass der Workout-Status auf INCOMPLETE gesetzt ist
     response_json["status"] = WorkoutStatus.INCOMPLETE
+    # Setze das Datum auf jetzt
+    response_json["date"] = datetime.now().isoformat()
     
     # Konvertiertes JSON als WorkoutSchema parsen
     workout = WorkoutSchema.model_validate(response_json)

@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 class Block(SQLModel, table=True):
     __tablename__ = "blocks"
     id: Optional[int] = Field(default=None, primary_key=True)
-    workout_id: int = Field(foreign_key="workouts.id")
+    workout_id: int = Field(foreign_key="workouts.id", ondelete="CASCADE")
     name: str
     description: Optional[str] = None
     status: BlockStatus

@@ -18,6 +18,7 @@ class Workout(SQLModel, table=True):
     training_plan_id: Optional[int] = Field(default=None, foreign_key="training_plans.id")
     name: str
     date: datetime
+    description: Optional[str] = Field(default=None)
     status: WorkoutStatus = Field(default=WorkoutStatus.INCOMPLETE)
 
     plan: Optional["TrainingPlan"] = Relationship(back_populates="workouts")

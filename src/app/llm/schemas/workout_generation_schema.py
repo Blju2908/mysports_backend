@@ -52,4 +52,5 @@ class WorkoutSchema(BaseModel):
     name: str
     date: datetime
     status: WorkoutStatus
+    description: str
     blocks: Optional[List[BlockSchema]] = [] 

@@ -10,7 +10,7 @@ class Exercise(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     description: Optional[str] = None
-    block_id: int = Field(foreign_key="blocks.id")
+    block_id: int = Field(foreign_key="blocks.id", ondelete="CASCADE")
     
     block: "Block" = Relationship(back_populates="exercises")
     sets: List["Set"] = Relationship(back_populates="exercise")

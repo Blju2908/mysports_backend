@@ -1,93 +1,188 @@
 {
-  "id": null,
-  "training_plan_id": 12,
-  "name": "Kraft und Beweglichkeit fürs Rennrad",
-  "date": "2024-06-16T10:00:00Z",
+  "id": 21,
+  "training_plan_id": 13,
+  "name": "Moshpits-Ready – 30 Minuten",
+  "date": "2025-04-24T20:43:25.449791",
   "status": "incomplete",
+  "description": "Schulter- und Core-Fokus mit moderaten Ausdauerintervallen, knieschonend gewählt: Historisch intensives Bankdrücken/Kniebeugen gemindert, Mobility für Festival und Trinkfestigkeit über Farmer’s Walk mit Bier.",
   "blocks": [
     {
-      "id": null,
-      "workout_id": 1,
-      "name": "Mobilisation & Warm-Up",
-      "description": "Starte die Einheit mit Übungen, die speziell deine Beweglichkeit und Rumpfstabilität für lange Fahrten verbessern.",
+      "id": 1,
+      "workout_id": 21,
+      "name": "Warm-up Mobilisation",
+      "description": "Lockern von Schultern, Hüfte und Rumpf.",
       "status": "incomplete",
       "exercises": [
         {
-          "id": null,
-          "name": "Dynamische Hüft-Mobilisation",
-          "description": "Im Stand, große Hüftkreise ausführen und die Hüfte aktiv in alle Richtungen bewegen.",
+          "id": 101,
+          "name": "Armkreisen & Schulteröffnung",
+          "description": "Rotationen vorwärts/rückwärts",
           "block_id": 1,
           "sets": [
             {
-              "id": null,
-              "exercise_id": 1,
+              "id": 201,
+              "exercise_id": 101,
               "weight": null,
-              "reps": 16,
-              "duration": 120,
+              "reps": null,
+              "duration": 30,
               "distance": null,
               "speed": null,
-              "rest_time": 30
+              "rest_time": 0
             }
           ]
         },
         {
-          "id": null,
-          "name": "Cat-Cow Stretch",
-          "description": "Im Vierfüßlerstand Wirbelsäule langsam runden und durchhängen lassen.",
+          "id": 102,
+          "name": "Rumpfkreisen im Stand",
+          "description": "Oberkörper in kreisenden Bewegungen",
           "block_id": 1,
           "sets": [
             {
-              "id": null,
-              "exercise_id": 2,
+              "id": 202,
+              "exercise_id": 102,
               "weight": null,
-              "reps": 12,
-              "duration": 90,
+              "reps": null,
+              "duration": 30,
               "distance": null,
               "speed": null,
-              "rest_time": 20
+              "rest_time": 0
+            }
+          ]
+        },
+        {
+          "id": 103,
+          "name": "Dynamic Hip Stretch",
+          "description": "Hüftöffner in kontrollierter Bewegung",
+          "block_id": 1,
+          "sets": [
+            {
+              "id": 203,
+              "exercise_id": 103,
+              "weight": null,
+              "reps": null,
+              "duration": 30,
+              "distance": null,
+              "speed": null,
+              "rest_time": 0
             }
           ]
         }
       ]
     },
     {
-      "id": null,
-      "workout_id": 1,
-      "name": "Kraftblock Beine & Core",
-      "description": "Kraftsteigerung für effizientes Bergfahren und Stabilität im Sattel.",
+      "id": 2,
+      "workout_id": 21,
+      "name": "Strength Circuit",
+      "description": "3 Runden für Oberkörper- und Core-Stabilität, knieschonend.",
       "status": "incomplete",
       "exercises": [
         {
-          "id": null,
-          "name": "Kniebeuge mit Langhantel",
-          "description": "Tiefe Kniebeugen, Fokus auf Technik und saubere Ausführung.",
+          "id": 104,
+          "name": "Bankdips (Stuhl)",
+          "description": "Dips mit gebeugten Beinen",
           "block_id": 2,
           "sets": [
             {
-              "id": null,
-              "exercise_id": 3,
-              "weight": 40.0,
-              "reps": 10,
+              "id": 204,
+              "exercise_id": 104,
+              "weight": null,
+              "reps": 12,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 45
+            },
+            {
+              "id": 205,
+              "exercise_id": 104,
+              "weight": null,
+              "reps": 12,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 45
+            },
+            {
+              "id": 206,
+              "exercise_id": 104,
+              "weight": null,
+              "reps": 12,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            }
+          ]
+        },
+        {
+          "id": 105,
+          "name": "Liegestütze",
+          "description": "Standard oder Knieliegestütze",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": 207,
+              "exercise_id": 105,
+              "weight": null,
+              "reps": 15,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 45
+            },
+            {
+              "id": 208,
+              "exercise_id": 105,
+              "weight": null,
+              "reps": 15,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 45
+            },
+            {
+              "id": 209,
+              "exercise_id": 105,
+              "weight": null,
+              "reps": 15,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            }
+          ]
+        },
+        {
+          "id": 106,
+          "name": "Rumänisches Kreuzheben mit Bierkiste",
+          "description": "Hebung Hüftdominant, Gewicht ~20 kg",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": 210,
+              "exercise_id": 106,
+              "weight": 20.0,
+              "reps": 12,
               "duration": null,
               "distance": null,
               "speed": null,
               "rest_time": 60
             },
             {
-              "id": null,
-              "exercise_id": 3,
-              "weight": 45.0,
-              "reps": 8,
+              "id": 211,
+              "exercise_id": 106,
+              "weight": 20.0,
+              "reps": 12,
               "duration": null,
               "distance": null,
               "speed": null,
               "rest_time": 60
             },
             {
-              "id": null,
-              "exercise_id": 3,
-              "weight": 50.0,
-              "reps": 6,
+              "id": 212,
+              "exercise_id": 106,
+              "weight": 20.0,
+              "reps": 12,
               "duration": null,
               "distance": null,
               "speed": null,
@@ -96,93 +191,170 @@
           ]
         },
         {
-          "id": null,
-          "name": "Rumänisches Kreuzheben (Kurzhanteln)",
-          "description": "Zur Stärkung der hinteren Kette, wichtig für die Radfahrhaltung.",
+          "id": 107,
+          "name": "Plank mit Schulter-Touch",
+          "description": "Core-Stabilität und Schulterkontrolle",
           "block_id": 2,
           "sets": [
             {
-              "id": null,
-              "exercise_id": 4,
-              "weight": 16.0,
-              "reps": 12,
+              "id": 213,
+              "exercise_id": 107,
+              "weight": null,
+              "reps": 20,
               "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": 45
+              "rest_time": 30
             },
             {
-              "id": null,
-              "exercise_id": 4,
-              "weight": 18.0,
-              "reps": 10,
+              "id": 214,
+              "exercise_id": 107,
+              "weight": null,
+              "reps": 20,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": 215,
+              "exercise_id": 107,
+              "weight": null,
+              "reps": 20,
               "duration": null,
               "distance": null,
               "speed": null,
               "rest_time": 60
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "workout_id": 21,
+      "name": "Ausdauer-Intervalle",
+      "description": "5 Intervalle für Herz-Kreislauf und Trinkfestigkeit.",
+      "status": "incomplete",
+      "exercises": [
         {
-          "id": null,
-          "name": "Plank Twist",
-          "description": "Im Unterarmstütz abwechselnd Hüfte Richtung Boden absenken – aktiviert die Core-Muskulatur für Stabilität im Sattel.",
-          "block_id": 2,
+          "id": 108,
+          "name": "Shadowboxing",
+          "description": "Schnelle Schlagfolgen mit vollem Einsatz",
+          "block_id": 3,
           "sets": [
             {
-              "id": null,
-              "exercise_id": 5,
+              "id": 216,
+              "exercise_id": 108,
               "weight": null,
-              "reps": 20,
-              "duration": 60,
+              "reps": null,
+              "duration": 30,
               "distance": null,
               "speed": null,
               "rest_time": 30
+            },
+            {
+              "id": 217,
+              "exercise_id": 108,
+              "weight": null,
+              "reps": null,
+              "duration": 30,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": 218,
+              "exercise_id": 108,
+              "weight": null,
+              "reps": null,
+              "duration": 30,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": 219,
+              "exercise_id": 108,
+              "weight": null,
+              "reps": null,
+              "duration": 30,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": 220,
+              "exercise_id": 108,
+              "weight": null,
+              "reps": null,
+              "duration": 30,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
             }
           ]
         }
       ]
     },
     {
-      "id": null,
-      "workout_id": 1,
-      "name": "Functional Mobility & Stretching",
-      "description": "Lockere Muskulatur, erhöhe Beweglichkeit für bessere Ausdauer und Komfort.",
+      "id": 4,
+      "workout_id": 21,
+      "name": "Cool-down & Stretch",
+      "description": "Abschluss mit Mobilisation und Dehnung.",
       "status": "incomplete",
       "exercises": [
         {
-          "id": null,
-          "name": "World Greatest Stretch",
-          "description": "Abwechselnd mit jedem Bein, Fokus auf Hüfte, Oberschenkel und Wirbelsäule.",
-          "block_id": 3,
+          "id": 109,
+          "name": "Katzen-Kuh-Flow",
+          "description": "Wirbelsäule mobilisieren",
+          "block_id": 4,
           "sets": [
             {
-              "id": null,
-              "exercise_id": 6,
-              "weight": null,
-              "reps": 6,
-              "duration": 90,
-              "distance": null,
-              "speed": null,
-              "rest_time": 15
-            }
-          ]
-        },
-        {
-          "id": null,
-          "name": "Kindspose",
-          "description": "Intensive Dehnung für Rücken und Schultern zum Abschluss.",
-          "block_id": 3,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 7,
+              "id": 221,
+              "exercise_id": 109,
               "weight": null,
               "reps": null,
               "duration": 60,
               "distance": null,
               "speed": null,
-              "rest_time": null
+              "rest_time": 0
+            }
+          ]
+        },
+        {
+          "id": 110,
+          "name": "Stehender Vorbeuge-Stretch",
+          "description": "Beinrückseite dehnen",
+          "block_id": 4,
+          "sets": [
+            {
+              "id": 222,
+              "exercise_id": 110,
+              "weight": null,
+              "reps": null,
+              "duration": 60,
+              "distance": null,
+              "speed": null,
+              "rest_time": 0
+            }
+          ]
+        },
+        {
+          "id": 111,
+          "name": "Brustdehnung an der Wand",
+          "description": "Brust- und Schulteröffnung",
+          "block_id": 4,
+          "sets": [
+            {
+              "id": 223,
+              "exercise_id": 111,
+              "weight": null,
+              "reps": null,
+              "duration": 60,
+              "distance": null,
+              "speed": null,
+              "rest_time": 0
             }
           ]
         }
