@@ -255,98 +255,137 @@ async def create_training_plan(
     **TEMPORARY:** This endpoint currently returns a hardcoded fake workout
     response for frontend testing purposes, instead of the actual created plan.
     """
-    print(
-        f"Received request to create training plan and link to feedback ID: {plan_data.feedbackId}"
-    )
+    try:
+        print(
+            f"Received request to create training plan and link to feedback ID: {plan_data.feedbackId}"
+        )
 
-    # 1. Find the existing Feedback record (optional)
-    feedback_record = None
-    if plan_data.feedbackId is not None:
-        feedback_statement = select(ShowcaseFeedback).where(
-            ShowcaseFeedback.id == plan_data.feedbackId
+        # 1. Find the existing Feedback record (optional)
+        feedback_record = None
+        if plan_data.feedbackId is not None:
+            feedback_statement = select(ShowcaseFeedback).where(
+                ShowcaseFeedback.id == plan_data.feedbackId
+            )
+            feedback_result: ScalarResult[ShowcaseFeedback] = await session.exec(
+                feedback_statement
+            )
+            feedback_record: ShowcaseFeedback | None = feedback_result.first()
+            if not feedback_record:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"ShowcaseFeedback record with ID {plan_data.feedbackId} not found. Cannot link training plan.",
+                )
+
+        # 3. Create the ShowcaseTrainingPlan instance
+        new_plan = ShowcaseTrainingPlan(
+            goal=plan_data.goal,
+            restrictions=plan_data.restrictions,
+            equipment=plan_data.equipment,
+            session_duration=plan_data.session_duration,
+            history=plan_data.history,
         )
-        feedback_result: ScalarResult[ShowcaseFeedback] = await session.exec(
-            feedback_statement
-        )
-        feedback_record: ShowcaseFeedback | None = feedback_result.first()
-        if not feedback_record:
+
+        # 4. Add the new plan to the session
+        session.add(new_plan)
+
+        # 5. Flush the session to get the ID of the new plan *before* commit
+        await session.flush()
+        await session.refresh(new_plan)  # Refresh to get the ID assigned by flush
+
+        if new_plan.id is None:
+            # This should ideally not happen after a successful flush
+            await session.rollback()  # Rollback changes if ID assignment failed
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"ShowcaseFeedback record with ID {plan_data.feedbackId} not found. Cannot link training plan.",
+                status_code=500, detail="Failed to create training plan ID."
             )
 
-    # 3. Create the ShowcaseTrainingPlan instance
-    new_plan = ShowcaseTrainingPlan(
-        goal=plan_data.goal,
-        restrictions=plan_data.restrictions,
-        equipment=plan_data.equipment,
-        session_duration=plan_data.session_duration,
-        history=plan_data.history,
-    )
+        print(f"Training plan created with temporary ID: {new_plan.id}.")
+        # 6. Link the new plan ID to the feedback record (if feedbackId was provided)
+        feedback_id_for_log = None
+        if feedback_record is not None:
+            feedback_id_for_log = feedback_record.id
+            print(f"Linking training plan to feedback {feedback_id_for_log}")
+            feedback_record.training_plan_id = new_plan.id
+            session.add(feedback_record)  # Add the modified feedback record back
 
-    # 4. Add the new plan to the session
-    session.add(new_plan)
+        # 7. Commit the transaction (saves both the new plan and the updated feedback)
+        try:
+            await session.commit()
+        except Exception as e:
+            await session.rollback()  # Rollback on commit error
+            print(f"Error during commit: {e}")
+            raise HTTPException(
+                status_code=500, detail="Failed to save training plan and link feedback."
+            )
 
-    # 5. Flush the session to get the ID of the new plan *before* commit
-    await session.flush()
-    await session.refresh(new_plan)  # Refresh to get the ID assigned by flush
+        # 8. Refresh the plan again after commit (optional but good practice)
+        await session.refresh(new_plan)
+        if feedback_id_for_log is not None:
+            print(
+                f"Successfully created training plan {new_plan.id} and linked to feedback {feedback_id_for_log}"
+            )
+        else:
+            print(f"Successfully created training plan {new_plan.id} (no feedback linked)")
 
-    if new_plan.id is None:
-        # This should ideally not happen after a successful flush
-        await session.rollback()  # Rollback changes if ID assignment failed
-        raise HTTPException(
-            status_code=500, detail="Failed to create training plan ID."
-        )
+        print("Generating workout...")
+        try:
+            generated_workout = generate_workout(new_plan)
+            print("Workout generated successfully. Saving to database...")
+        except Exception as e:
+            print(f"Error generating workout: {e}")
+            traceback.print_exc(file=sys.stdout)
+            raise HTTPException(
+                status_code=500, detail=f"Failed to generate workout: {str(e)}"
+            )
 
-    print(f"Training plan created with temporary ID: {new_plan.id}.")
-    # 6. Link the new plan ID to the feedback record (if feedbackId was provided)
-    feedback_id_for_log = None
-    if feedback_record is not None:
-        feedback_id_for_log = feedback_record.id
-        print(f"Linking training plan to feedback {feedback_id_for_log}")
-        feedback_record.training_plan_id = new_plan.id
-        session.add(feedback_record)  # Add the modified feedback record back
+        try:
+            workout_db = await save_workout_to_db_async(
+                workout_schema=generated_workout,
+                training_plan_id=None,  # Für Showcase/Demo: kein FK auf training_plans
+                db=session
+            )
+            workout_id = workout_db.id
+            print(f"Workout saved to database with ID: {workout_id}")
+        except Exception as e:
+            print(f"Error saving workout to database: {e}")
+            traceback.print_exc(file=sys.stdout)
+            raise HTTPException(
+                status_code=500, detail=f"Failed to save workout to database: {str(e)}"
+            )
 
-    # 7. Commit the transaction (saves both the new plan and the updated feedback)
-    try:
-        await session.commit()
+        # Feedback aktualisieren
+        if feedback_record is not None:
+            try:
+                feedback_record.workout_id = workout_id
+                session.add(feedback_record)
+                await session.commit()
+                await session.refresh(feedback_record)
+                print(f"Updated feedback record with workout ID: {workout_id}")
+            except Exception as e:
+                print(f"Error updating feedback record: {e}")
+                traceback.print_exc(file=sys.stdout)
+                raise HTTPException(
+                    status_code=500, detail=f"Failed to update feedback record: {str(e)}"
+                )
+
+        # Workout mit Details laden und zurückgeben
+        try:
+            loaded_workout = await get_workout_details(
+                workout_id=workout_id, db=session
+            )
+            return loaded_workout
+        except Exception as e:
+            print(f"Error loading workout details: {e}")
+            traceback.print_exc(file=sys.stdout)
+            raise HTTPException(
+                status_code=500, detail=f"Failed to load workout details: {str(e)}"
+            )
     except Exception as e:
-        await session.rollback()  # Rollback on commit error
-        print(f"Error during commit: {e}")
+        print(f"Unhandled exception in create_training_plan: {e}")
+        traceback.print_exc(file=sys.stdout)
         raise HTTPException(
-            status_code=500, detail="Failed to save training plan and link feedback."
+            status_code=500, detail=f"An unexpected error occurred: {str(e)}"
         )
-
-    # 8. Refresh the plan again after commit (optional but good practice)
-    await session.refresh(new_plan)
-    if feedback_id_for_log is not None:
-        print(
-            f"Successfully created training plan {new_plan.id} and linked to feedback {feedback_id_for_log}"
-        )
-    else:
-        print(f"Successfully created training plan {new_plan.id} (no feedback linked)")
-
-
-    generated_workout = generate_workout(new_plan)
-    workout_db = await save_workout_to_db_async(
-        workout_schema=generated_workout,
-        training_plan_id=None,  # Für Showcase/Demo: kein FK auf training_plans
-        db=session
-    )
-    workout_id = workout_db.id  # ID sofort extrahieren!
-
-    # Feedback aktualisieren
-    if feedback_record is not None:
-        feedback_record.workout_id = workout_id
-        session.add(feedback_record)
-        await session.commit()
-        await session.refresh(feedback_record)
-
-    # Workout mit Details laden und zurückgeben
-    loaded_workout = await get_workout_details(
-        workout_id=workout_id, db=session
-    )
-    return loaded_workout
 
 
 # --- Endpoint to update feedback rating (replaces MSW PUT /feedback/rating/:feedbackId) ---

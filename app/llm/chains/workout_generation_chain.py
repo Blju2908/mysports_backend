@@ -24,48 +24,83 @@ def generate_workout(
     """
     Generiert ein Workout mit LLM. Akzeptiert beliebiges Trainingsplan-Schema, optionale Historie und optionalen User Prompt.
     """
-    if training_history is None:
-        training_history = []
-    # Trainingshistorie als JSON-String (ggf. gekürzt für Prompt)
     try:
-        training_history_json = json.dumps(
-            [entry.model_dump() for entry in training_history], indent=2, default=str
+        if training_history is None:
+            training_history = []
+        # Trainingshistorie als JSON-String (ggf. gekürzt für Prompt)
+        try:
+            training_history_json = json.dumps(
+                [entry.model_dump() for entry in training_history], indent=2, default=str
+            )
+        except Exception as e:
+            print(f"Warning: Could not convert training history to JSON using model_dump: {e}")
+            # Fallback für Demo-Objekte
+            training_history_json = json.dumps(training_history, indent=2, default=str)
+        
+        # Trainingsplan als JSON-String
+        try:
+            training_plan_json = training_plan.model_dump_json(indent=2)
+        except Exception as e:
+            print(f"Warning: Could not convert training plan to JSON using model_dump_json: {e}")
+            # Fallback für Demo-Objekte
+            training_plan_json = json.dumps(training_plan, indent=2, default=str)
+        
+        prompt_template = load_prompt(PROMPT_FILE)
+        output_schema = WorkoutSchema.model_json_schema()
+        prompt = prompt_template.format(
+            training_plan=training_plan_json,
+            training_history=training_history_json,
+            output_schema=json.dumps(output_schema, indent=2, default=str),
+            user_prompt=user_prompt or ""
         )
-    except Exception:
-        # Fallback für Demo-Objekte
-        training_history_json = json.dumps(training_history, indent=2, default=str)
-    # Trainingsplan als JSON-String
-    try:
-        training_plan_json = training_plan.model_dump_json(indent=2)
-    except Exception:
-        # Fallback für Demo-Objekte
-        training_plan_json = json.dumps(training_plan, indent=2, default=str)
-    prompt_template = load_prompt(PROMPT_FILE)
-    output_schema = WorkoutSchema.model_json_schema()
-    prompt = prompt_template.format(
-        training_plan=training_plan_json,
-        training_history=training_history_json,
-        output_schema=json.dumps(output_schema, indent=2, default=str),
-        user_prompt=user_prompt or ""
-    )
-    # API key aus der config holen
-    config = get_config()
-    OPENAI_API_KEY = config.OPENAI_API_KEY2
-    llm = ChatOpenAI(
-        model="gpt-4.1-nano",
-        # model="gpt-4.1",
-        api_key=OPENAI_API_KEY,
-        model_kwargs={"response_format": {"type": "json_object"}},
-    )
-    chain = ChatPromptTemplate.from_template("{prompt}") | llm
-    response = chain.invoke({"prompt": prompt})
-    response_json = json.loads(response.content)
-    # Sicherstellen, dass der Workout-Status auf INCOMPLETE gesetzt ist
-    response_json["status"] = WorkoutStatus.INCOMPLETE
-    # Setze das Datum auf jetzt
-    response_json["date"] = datetime.now().isoformat()
-    workout = WorkoutSchema.model_validate(response_json)
-    with open("workout_output.json", "w", encoding="utf-8") as f:
-        f.write(workout.model_dump_json(indent=2))
-    print("Workout-JSON wurde in workout_output.json gespeichert.")
-    return workout
+        
+        # API key aus der config holen
+        config = get_config()
+        OPENAI_API_KEY = config.OPENAI_API_KEY2
+        print(f"Using OpenAI model: gpt-4.1-nano")
+        
+        llm = ChatOpenAI(
+            model="gpt-4.1-nano",
+            # model="gpt-4.1",
+            api_key=OPENAI_API_KEY,
+            model_kwargs={"response_format": {"type": "json_object"}},
+        )
+        
+        chain = ChatPromptTemplate.from_template("{prompt}") | llm
+        print("Sending request to OpenAI API...")
+        response = chain.invoke({"prompt": prompt})
+        print("Received response from OpenAI API")
+        
+        try:
+            response_json = json.loads(response.content)
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON from LLM response: {e}")
+            print(f"Response content: {response.content}")
+            raise ValueError(f"Invalid JSON response from LLM: {e}")
+        
+        # Sicherstellen, dass der Workout-Status auf INCOMPLETE gesetzt ist
+        response_json["status"] = WorkoutStatus.INCOMPLETE
+        # Setze das Datum auf jetzt
+        response_json["date"] = datetime.now().isoformat()
+        
+        try:
+            workout = WorkoutSchema.model_validate(response_json)
+        except Exception as e:
+            print(f"Error validating workout schema: {e}")
+            print(f"Response JSON: {response_json}")
+            raise ValueError(f"Invalid workout schema: {e}")
+        
+        # Save response to a file for debugging
+        try:
+            with open("workout_output.json", "w", encoding="utf-8") as f:
+                f.write(workout.model_dump_json(indent=2))
+            print("Workout-JSON wurde in workout_output.json gespeichert.")
+        except Exception as e:
+            print(f"Warning: Could not save workout to file: {e}")
+        
+        return workout
+    except Exception as e:
+        print(f"Error in generate_workout: {e}")
+        import traceback
+        traceback.print_exc()
+        raise

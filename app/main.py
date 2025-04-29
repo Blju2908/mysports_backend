@@ -24,7 +24,7 @@ origins = [
 # CORS-Konfiguration für das lokale Frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
