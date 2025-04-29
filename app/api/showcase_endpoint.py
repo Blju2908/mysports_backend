@@ -4,6 +4,9 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.engine.result import ScalarResult  # Import for type hint clarity
 from datetime import datetime  # Import datetime for fake ID generation
 from pydantic import BaseModel
+import traceback
+import sys
+import logging
 
 from app.db.session import get_session
 from app.models.showcase_feedback_model import (
@@ -86,25 +89,39 @@ async def get_showcase_questionnaire_template(
     Retrieve the questions and ID for a specific showcase questionnaire template
     using its unique string identifier (e.g., "q_v1.1").
     """
-    # In a real scenario, you might pass the ID or fetch the latest/default
+    logger = logging.getLogger("showcase_endpoint")
+    logger.setLevel(logging.INFO)
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+    if not logger.hasHandlers():
+        logger.addHandler(handler)
+
     questionnaire_id = "q_v1.1"
 
-    print(f"Fetching questionnaire template with ID: {questionnaire_id}")
+    logger.info(f"[questionnaire] Fetching questionnaire template with ID: {questionnaire_id}")
 
-    statement = select(ShowcaseQuestionnaireTemplate).where(
-        ShowcaseQuestionnaireTemplate.questionnaire_id == questionnaire_id
-    )
-
-    result = await session.exec(statement)
-    questionnaire_template = result.first()
+    try:
+        statement = select(ShowcaseQuestionnaireTemplate).where(
+            ShowcaseQuestionnaireTemplate.questionnaire_id == questionnaire_id
+        )
+        logger.debug(f"[questionnaire] Executing statement: {statement}")
+        result = await session.exec(statement)
+        questionnaire_template = result.first()
+        logger.info(f"[questionnaire] Query executed. Result: {questionnaire_template}")
+    except Exception as e:
+        logger.error(f"[questionnaire] Exception during DB query: {e}\n{traceback.format_exc()}")
+        raise HTTPException(
+            status_code=500,
+            detail="Database error while fetching questionnaire template."
+        )
 
     if not questionnaire_template:
-        print(f"Questionnaire template with ID '{questionnaire_id}' not found in DB.")
+        logger.warning(f"[questionnaire] Questionnaire template with ID '{questionnaire_id}' not found in DB.")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Questionnaire template with ID '{questionnaire_id}' not found",
         )
-    print(f"Found questionnaire template: {questionnaire_template.id}")
+    logger.info(f"[questionnaire] Found questionnaire template: {questionnaire_template.id}")
     return questionnaire_template
 
 
