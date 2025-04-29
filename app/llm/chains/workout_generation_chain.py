@@ -43,12 +43,11 @@ def generate_workout(
             # Fallback für Demo-Objekte
             training_plan_json = json.dumps(training_plan, indent=2, default=str)
         
-        prompt_template = load_prompt(PROMPT_FILE)
-        output_schema = WorkoutSchema.model_json_schema()
+        prompt_template = load_prompt(PROMPT_FILE)        
+    
         prompt = prompt_template.format(
             training_plan=training_plan_json,
             training_history=training_history_json,
-            output_schema=json.dumps(output_schema, indent=2, default=str),
             user_prompt=user_prompt or ""
         )
         
@@ -57,35 +56,18 @@ def generate_workout(
         OPENAI_API_KEY = config.OPENAI_API_KEY2
         
         llm = ChatOpenAI(
-            model="gpt-4.1-nano",
-            # model="gpt-4.1",
-            api_key=OPENAI_API_KEY,
-            model_kwargs={"response_format": {"type": "json_object"}},
+            model="gpt-4.1-mini",
+            api_key=OPENAI_API_KEY
         )
         
-        chain = ChatPromptTemplate.from_template("{prompt}") | llm
+        # Nutze with_structured_output, um direkt ein WorkoutSchema zu erhalten
+        chain = (
+            ChatPromptTemplate.from_template("{prompt}")
+            | llm.with_structured_output(WorkoutSchema)
+        )
         print("Sending request to OpenAI API...")
-        response = chain.invoke({"prompt": prompt})
+        workout = chain.invoke({"prompt": prompt})
         print("Received response from OpenAI API")
-        
-        try:
-            response_json = json.loads(response.content)
-        except json.JSONDecodeError as e:
-            print(f"Error decoding JSON from LLM response: {e}")
-            print(f"Response content: {response.content}")
-            raise ValueError(f"Invalid JSON response from LLM: {e}")
-        
-        # Sicherstellen, dass der Workout-Status auf INCOMPLETE gesetzt ist
-        response_json["status"] = WorkoutStatus.INCOMPLETE
-        # Setze das Datum auf jetzt
-        response_json["date"] = datetime.now().isoformat()
-        
-        try:
-            workout = WorkoutSchema.model_validate(response_json)
-        except Exception as e:
-            print(f"Error validating workout schema: {e}")
-            print(f"Response JSON: {response_json}")
-            raise ValueError(f"Invalid workout schema: {e}")
         
         # Save response to a file for debugging
         try:

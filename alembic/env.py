@@ -7,9 +7,8 @@ from dotenv import load_dotenv
 
 from alembic import context
 from sqlmodel import SQLModel
-from src.app.models import (
+from app.models import (
     block_model,
-    enums,
     exercise_model,
     set_model,
     training_plan_follower_model,

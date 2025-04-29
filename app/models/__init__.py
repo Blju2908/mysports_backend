@@ -6,5 +6,4 @@ from .user_model import UserModel
 from .training_plan_model import TrainingPlan
 from .set_model import Set
 from .training_plan_follower_model import TrainingPlanFollower
-from .enums import BlockStatus
 from .showcase_feedback_model import ShowcaseQuestionnaireTemplate, ShowcaseFeedback, ShowcaseTrainingPlan

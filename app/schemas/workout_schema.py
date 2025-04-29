@@ -1,8 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
-from app.models.workout_model import WorkoutStatus
-from app.models.block_model import BlockStatus
 
 # Response Schemas
 class WorkoutResponseSchema(BaseModel):
@@ -10,7 +8,6 @@ class WorkoutResponseSchema(BaseModel):
     name: str
     date: datetime
     description: Optional[str] = None
-    status: WorkoutStatus
     
     class Config:
         from_attributes = True
@@ -21,7 +18,7 @@ class SetResponseSchema(BaseModel):
     exercise_id: int
     weight: Optional[float] = None
     reps: Optional[int] = None
-    duration: Optional[int] = None  # in seconds
+    duration: Optional[int] = None
     distance: Optional[float] = None
     speed: Optional[float] = None
     rest_time: Optional[int] = None
@@ -44,7 +41,6 @@ class BlockResponseSchema(BaseModel):
     workout_id: int
     name: str
     description: Optional[str] = None
-    status: BlockStatus
     exercises: List[ExerciseResponseSchema] = []
     
     class Config:

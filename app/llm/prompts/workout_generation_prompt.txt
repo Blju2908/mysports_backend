@@ -1,9 +1,18 @@
-Du bist ein KI-Coach. Erstelle auf Basis des folgenden Trainingsplans und der Trainingshistorie ein neues Workout. Das Workout soll abwechslungsreich, zielgerichtet und an die Historie angepasst sein. Gib das Ergebnis als JSON im folgenden Format zurück:
+Du bist ein KI-Coach. 
+
+Erstelle auf Basis des folgenden Trainingsplans und der Trainingshistorie ein neues Workout. 
+Das Workout soll genau auf die genannte Zielsetzung ausgerichtet sein und die Historie berücksichtigen.
+Bitte gib das Workout in JSON Format zurück.
 
 Bitte gebe alle durations in ganzen Sekunden an.
-Bitte teile in der Beschreibung des Workouts, den Schwerpunkt des Workouts und warum dieser so gewählt wurde. Nenne hierzu ganz kurze Argumente aus der Trainingshistorie.
 
-{output_schema}
+
+Erstelle eine kurze Beschreibung zum Workout:
+1. Schwerpunkt des Workouts knapp formulierten Satz. (ein Satz)
+2. Nennung der Laststeuerung basierend auf der Historie. (ein Satz)
+Bitte sei in den Beschreibungstexten spezifisch.
+
+Bitte erstelle mindestens 3 Blöcke. Nenne sie aber nicht Blöcke
 
 User Prompt (optional):
 {user_prompt}

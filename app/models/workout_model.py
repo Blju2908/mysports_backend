@@ -19,7 +19,6 @@ class Workout(SQLModel, table=True):
     name: str
     date: datetime
     description: Optional[str] = Field(default=None)
-    status: WorkoutStatus = Field(default=WorkoutStatus.INCOMPLETE)
 
     plan: Optional["TrainingPlan"] = Relationship(back_populates="workouts")
     blocks: List["Block"] = Relationship(back_populates="workout")

@@ -10,7 +10,7 @@ from app.models.training_plan_follower_model import TrainingPlanFollower
 from app.schemas.workout_schema import WorkoutResponseSchema, WorkoutDetailResponseSchema, BlockResponseSchema, ActivityBlockPayloadSchema, ActivitySetSchema
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
-from app.models.block_model import Block, BlockStatus
+from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set
 from app.models.training_history import ActivityLog
@@ -167,12 +167,7 @@ async def save_activity_block_endpoint(
             detail="Block not found or user does not have access"
         )
         
-    # Prevent overwriting if already completed (optional, depends on desired behavior)
-    if block_to_update.status == BlockStatus.complete:
-         raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Block is already marked as completed."
-        )
+
 
     # 2. Create ActivityLog entries for each set in the payload
     activity_logs: List[ActivityLog] = []
@@ -194,8 +189,6 @@ async def save_activity_block_endpoint(
         activity_logs.append(log_entry)
         db.add(log_entry)
 
-    # 3. Update the block status to completed
-    block_to_update.status = BlockStatus.complete
     db.add(block_to_update)
 
     # 4. Commit the transaction

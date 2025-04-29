@@ -8,7 +8,7 @@ from app.models.block_model import Block # Needed for selectinload path
 from app.models.exercise_model import Exercise # Needed for selectinload path
 from app.llm.schemas.workout_generation_schema import WorkoutSchema
 from app.models.set_model import Set
-
+from datetime import datetime
 
 async def get_workout_details(
     *, 
@@ -62,9 +62,8 @@ async def save_workout_to_db_async(
     workout_db = Workout(
         training_plan_id=training_plan_id,
         name=workout_schema.name,
-        date=workout_schema.date,
+        date=datetime.now(),
         description=workout_schema.description,
-        status=workout_schema.status
     )
     db.add(workout_db)
     await db.flush()
@@ -76,7 +75,6 @@ async def save_workout_to_db_async(
                 workout_id=workout_db.id,
                 name=block_schema.name,
                 description=block_schema.description,
-                status=block_schema.status
             )
             db.add(block_db)
             await db.flush()

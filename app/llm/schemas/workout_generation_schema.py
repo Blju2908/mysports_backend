@@ -1,56 +1,33 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, List
-from datetime import datetime
-from ...models.enums import BlockStatus
-from ...models.workout_model import WorkoutStatus
-class TrainingPlanSchema(BaseModel):
-    id: Optional[int]
-    goal: str
-    restrictions: str
-    equipment: str
-    session_duration: int
-    description: str
-
-class ActivityLogSchema(BaseModel):
-    id: Optional[int]
-    user_id: int
-    exercise_name: str
-    timestamp: datetime
-    weight: Optional[float]
-    reps: Optional[int]
-    duration: Optional[int] # in seconds
-    notes: Optional[str]
 
 class SetSchema(BaseModel):
-    id: Optional[int]
+    id: int
     exercise_id: int
     weight: Optional[float]
     reps: Optional[int]
-    duration: Optional[int] # in seconds
+    duration: Optional[int]
     distance: Optional[float]
     speed: Optional[float]
     rest_time: Optional[int]
 
 class ExerciseSchema(BaseModel):
-    id: Optional[int]
+    id: int
     name: str
-    description: Optional[str]
+    description: Optional[str] = Field(None, description="Schlagworte zur Durchführung (1 Satz) - wiederhole aber nicht die Anzahl der Sätze, das Gewicht und die Pausenzeiten. Nenne angesprochene Muskeln bzw. Zielsetzung der Übung")
     block_id: int
-    sets: Optional[List[SetSchema]] = []
+    sets: Optional[List[SetSchema]] = None
 
 class BlockSchema(BaseModel):
-    id: Optional[int]
+    id: int
     workout_id: int
     name: str
-    description: Optional[str]
-    status: BlockStatus
-    exercises: Optional[List[ExerciseSchema]] = []
+    description: Optional[str] = Field(None, description="Zielsetzung des Blocks in Schlagworten")
+    exercises: Optional[List[ExerciseSchema]] = None
 
 class WorkoutSchema(BaseModel):
     id: Optional[int]
     training_plan_id: Optional[int]
     name: str
-    date: datetime
-    status: WorkoutStatus
-    description: str
-    blocks: Optional[List[BlockSchema]] = [] 
+    description: str = Field(..., description="Schwerpunkt des Workouts in einem knapp formulierten Satz. Nennung der Laststeuerung basierend auf der Historie.")
+    blocks: Optional[List[BlockSchema]] = None 

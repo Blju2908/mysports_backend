@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException, Depends
 from pathlib import Path
 import json
 from sqlmodel import Session, select
-from app.llm.schemas.workout_generation_schema import TrainingPlanSchema, ActivityLogSchema
 from app.llm.chains.workout_generation_chain import generate_workout
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
@@ -12,7 +11,6 @@ from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set
-from app.models.enums import BlockStatus
 from datetime import datetime
 from app.models.training_history import ActivityLog
 from pydantic import BaseModel, Field
@@ -92,23 +90,13 @@ async def create_workout(
             .join(TrainingPlanFollower)
             .where(TrainingPlanFollower.user_id == current_user.id)
         )
-        result = db.exec(query).first()
+        trainings_plan = db.exec(query).first()
         
-        if not result:
+        if not trainings_plan:
             raise HTTPException(
                 status_code=404,
                 detail="Kein Trainingsplan gefunden. Bitte erstelle zuerst einen Trainingsplan."
             )
-        
-        # 2. Trainingsplan in das LLM-Schema konvertieren
-        training_plan_schema = TrainingPlanSchema(
-            id=result.id,
-            goal=result.goal,
-            restrictions=result.restrictions,
-            equipment=result.equipment,
-            session_duration=result.session_duration,
-            description=result.description
-        )
         
         # 3. Letzte 100 Einträge der Trainingshistorie des Users laden
         history_query = (
@@ -129,10 +117,10 @@ async def create_workout(
         
         # 4. LLM-Chain ausführen (übergibt nun die geladene Historie)
         # Note: generate_workout currently does not accept user_prompt
-        workout_result = generate_workout(training_plan_schema, training_history)
+        workout_result = generate_workout(trainings_plan, training_history)
         
         # 5. Workout in die Datenbank speichern
-        saved_workout = save_workout_to_db(workout_result, result.id, db)
+        saved_workout = save_workout_to_db(workout_result, trainings_plan.id, db)
         
         # 6. Erfolgreiche Antwort zurückgeben
         return {
