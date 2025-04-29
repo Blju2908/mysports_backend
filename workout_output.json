@@ -1,228 +1,210 @@
 {
-  "id": 21,
-  "training_plan_id": 13,
-  "name": "Moshpits-Ready – 30 Minuten",
-  "date": "2025-04-24T20:43:25.449791",
+  "id": null,
+  "training_plan_id": 34,
+  "name": "HYROX Conditioning & Kraftzirkel",
+  "date": "2025-04-28T22:18:21.208830",
   "status": "incomplete",
-  "description": "Schulter- und Core-Fokus mit moderaten Ausdauerintervallen, knieschonend gewählt: Historisch intensives Bankdrücken/Kniebeugen gemindert, Mobility für Festival und Trinkfestigkeit über Farmer’s Walk mit Bier.",
+  "description": "Das heutige Workout legt den Schwerpunkt auf Ganzkörper-Kraftausdauer mit spezieller HYROX-Orientierung. Die Intensität wird moderat gehalten, um nach Run und Push+Pull die Regeneration zu unterstützen, dabei aber das HYROX-spezifische Conditioning und funktionelle Kraft zu festigen. Limitiert durch Operationshistorie und Mobility-Einschränkung, werden belastende Übungen für Sprunggelenk und Schulter bedacht angepasst. \n\nSchwerpunkte:\n- Funktionelle Kraftausdauer (da zuletzt viel Ausdauer und Oberkörper, wenig Ganzkörper-Zirkel)\n- Fokus auf Rumpf, DB-Work, Rudern (sicher für Sprunggelenk)\n- Regenerative Belastung, kein all-out\n- Mobilitäts-schonende, aber challenge-orientierte Übungsauswahl",
   "blocks": [
     {
-      "id": 1,
-      "workout_id": 21,
-      "name": "Warm-up Mobilisation",
-      "description": "Lockern von Schultern, Hüfte und Rumpf.",
+      "id": null,
+      "workout_id": 1,
+      "name": "Warm-Up & Mobility",
+      "description": "Sanfte Aktivierung, Mobilisierung für Sprunggelenk und Schulter. Vorbereitung auf das Zirkeltraining.",
       "status": "incomplete",
       "exercises": [
         {
-          "id": 101,
-          "name": "Armkreisen & Schulteröffnung",
-          "description": "Rotationen vorwärts/rückwärts",
+          "id": null,
+          "name": "Ruderergometer lockeres Rudern",
+          "description": "Technikfokus, lockere Aktivierung, 18-20 Spm",
           "block_id": 1,
           "sets": [
             {
-              "id": 201,
-              "exercise_id": 101,
+              "id": null,
+              "exercise_id": 1,
               "weight": null,
               "reps": null,
-              "duration": 30,
-              "distance": null,
+              "duration": 300,
+              "distance": 1000.0,
               "speed": null,
-              "rest_time": 0
+              "rest_time": null
             }
           ]
         },
         {
-          "id": 102,
-          "name": "Rumpfkreisen im Stand",
-          "description": "Oberkörper in kreisenden Bewegungen",
+          "id": null,
+          "name": "Resistance Band Mobility (Schulter, Sprunggelenk)",
+          "description": "1 Satz Schulterkreisen/Überkopf-Mobility, 1 Satz Sprunggelenks-Kreisen/Band-Mobi",
           "block_id": 1,
           "sets": [
             {
-              "id": 202,
-              "exercise_id": 102,
+              "id": null,
+              "exercise_id": 2,
               "weight": null,
-              "reps": null,
-              "duration": 30,
+              "reps": 15,
+              "duration": 120,
               "distance": null,
               "speed": null,
-              "rest_time": 0
-            }
-          ]
-        },
-        {
-          "id": 103,
-          "name": "Dynamic Hip Stretch",
-          "description": "Hüftöffner in kontrollierter Bewegung",
-          "block_id": 1,
-          "sets": [
-            {
-              "id": 203,
-              "exercise_id": 103,
-              "weight": null,
-              "reps": null,
-              "duration": 30,
-              "distance": null,
-              "speed": null,
-              "rest_time": 0
+              "rest_time": null
             }
           ]
         }
       ]
     },
     {
-      "id": 2,
-      "workout_id": 21,
-      "name": "Strength Circuit",
-      "description": "3 Runden für Oberkörper- und Core-Stabilität, knieschonend.",
+      "id": null,
+      "workout_id": 1,
+      "name": "HYROX Conditioning Zirkel",
+      "description": "3 Runden Zirkel: Kraftausdauer und HYROX-Basics, moderate Belastung, Fokus auf Technik. Rudern als Cardio-Anteil.",
       "status": "incomplete",
       "exercises": [
         {
-          "id": 104,
-          "name": "Bankdips (Stuhl)",
-          "description": "Dips mit gebeugten Beinen",
+          "id": null,
+          "name": "Dumbbell Front Squat",
+          "description": "Schulter-schonend, DB nur zur Brust aufnehmen. Fokus Mobilität.",
           "block_id": 2,
           "sets": [
             {
-              "id": 204,
-              "exercise_id": 104,
-              "weight": null,
-              "reps": 12,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 45
-            },
-            {
-              "id": 205,
-              "exercise_id": 104,
-              "weight": null,
-              "reps": 12,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 45
-            },
-            {
-              "id": 206,
-              "exercise_id": 104,
-              "weight": null,
-              "reps": 12,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
-            }
-          ]
-        },
-        {
-          "id": 105,
-          "name": "Liegestütze",
-          "description": "Standard oder Knieliegestütze",
-          "block_id": 2,
-          "sets": [
-            {
-              "id": 207,
-              "exercise_id": 105,
-              "weight": null,
-              "reps": 15,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 45
-            },
-            {
-              "id": 208,
-              "exercise_id": 105,
-              "weight": null,
-              "reps": 15,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 45
-            },
-            {
-              "id": 209,
-              "exercise_id": 105,
-              "weight": null,
-              "reps": 15,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
-            }
-          ]
-        },
-        {
-          "id": 106,
-          "name": "Rumänisches Kreuzheben mit Bierkiste",
-          "description": "Hebung Hüftdominant, Gewicht ~20 kg",
-          "block_id": 2,
-          "sets": [
-            {
-              "id": 210,
-              "exercise_id": 106,
-              "weight": 20.0,
-              "reps": 12,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
-            },
-            {
-              "id": 211,
-              "exercise_id": 106,
-              "weight": 20.0,
-              "reps": 12,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
-            },
-            {
-              "id": 212,
-              "exercise_id": 106,
-              "weight": 20.0,
-              "reps": 12,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 90
-            }
-          ]
-        },
-        {
-          "id": 107,
-          "name": "Plank mit Schulter-Touch",
-          "description": "Core-Stabilität und Schulterkontrolle",
-          "block_id": 2,
-          "sets": [
-            {
-              "id": 213,
-              "exercise_id": 107,
-              "weight": null,
-              "reps": 20,
+              "id": null,
+              "exercise_id": 3,
+              "weight": 22.0,
+              "reps": 10,
               "duration": null,
               "distance": null,
               "speed": null,
               "rest_time": 30
             },
             {
-              "id": 214,
-              "exercise_id": 107,
-              "weight": null,
-              "reps": 20,
+              "id": null,
+              "exercise_id": 3,
+              "weight": 22.0,
+              "reps": 10,
               "duration": null,
               "distance": null,
               "speed": null,
               "rest_time": 30
             },
             {
-              "id": 215,
-              "exercise_id": 107,
-              "weight": null,
-              "reps": 20,
+              "id": null,
+              "exercise_id": 3,
+              "weight": 22.0,
+              "reps": 10,
               "duration": null,
               "distance": null,
+              "speed": null,
+              "rest_time": 30
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "DB Renegade Row",
+          "description": "Mit abgestützten Knien, um Sprunggelenk zu entlasten.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 22.0,
+              "reps": 8,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 22.0,
+              "reps": 8,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 22.0,
+              "reps": 8,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Reverse Lunge (ohne Zusatzgewicht)",
+          "description": "Schont das Sprunggelenk, fördert Stabilität.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": null,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": null,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": null,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Ruderergometer Intervall",
+          "description": "Kompakt & mittlere Intensität. 350 m pro Runde.",
+          "block_id": 2,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 6,
+              "weight": null,
+              "reps": null,
+              "duration": 80,
+              "distance": 350.0,
+              "speed": null,
+              "rest_time": 60
+            },
+            {
+              "id": null,
+              "exercise_id": 6,
+              "weight": null,
+              "reps": null,
+              "duration": 80,
+              "distance": 350.0,
+              "speed": null,
+              "rest_time": 60
+            },
+            {
+              "id": null,
+              "exercise_id": 6,
+              "weight": null,
+              "reps": null,
+              "duration": 80,
+              "distance": 350.0,
               "speed": null,
               "rest_time": 60
             }
@@ -231,130 +213,90 @@
       ]
     },
     {
-      "id": 3,
-      "workout_id": 21,
-      "name": "Ausdauer-Intervalle",
-      "description": "5 Intervalle für Herz-Kreislauf und Trinkfestigkeit.",
+      "id": null,
+      "workout_id": 1,
+      "name": "Core & Prehab",
+      "description": "Rumpf-Stabilität und Injury-Prevention, zu Hause & HYROX-relevant.",
       "status": "incomplete",
       "exercises": [
         {
-          "id": 108,
-          "name": "Shadowboxing",
-          "description": "Schnelle Schlagfolgen mit vollem Einsatz",
+          "id": null,
+          "name": "Plank mit Shoulder Tap",
+          "description": "Rumpfaktivierung, Schulter-Stabilität.",
           "block_id": 3,
           "sets": [
             {
-              "id": 216,
-              "exercise_id": 108,
+              "id": null,
+              "exercise_id": 7,
               "weight": null,
-              "reps": null,
-              "duration": 30,
+              "reps": 15,
+              "duration": null,
               "distance": null,
               "speed": null,
               "rest_time": 30
-            },
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Resistance Band Monster Walk",
+          "description": "Sprunggelenks-Stabilisation, Becken- und Gluteus-Fokus.",
+          "block_id": 3,
+          "sets": [
             {
-              "id": 217,
-              "exercise_id": 108,
+              "id": null,
+              "exercise_id": 8,
               "weight": null,
-              "reps": null,
-              "duration": 30,
+              "reps": 15,
+              "duration": null,
               "distance": null,
               "speed": null,
               "rest_time": 30
-            },
-            {
-              "id": 218,
-              "exercise_id": 108,
-              "weight": null,
-              "reps": null,
-              "duration": 30,
-              "distance": null,
-              "speed": null,
-              "rest_time": 30
-            },
-            {
-              "id": 219,
-              "exercise_id": 108,
-              "weight": null,
-              "reps": null,
-              "duration": 30,
-              "distance": null,
-              "speed": null,
-              "rest_time": 30
-            },
-            {
-              "id": 220,
-              "exercise_id": 108,
-              "weight": null,
-              "reps": null,
-              "duration": 30,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
             }
           ]
         }
       ]
     },
     {
-      "id": 4,
-      "workout_id": 21,
-      "name": "Cool-down & Stretch",
-      "description": "Abschluss mit Mobilisation und Dehnung.",
+      "id": null,
+      "workout_id": 1,
+      "name": "Cooldown",
+      "description": "Locker rudern, statisches Stretching (Schulter, Hüfte, Sprunggelenk). Fokus Regeneration.",
       "status": "incomplete",
       "exercises": [
         {
-          "id": 109,
-          "name": "Katzen-Kuh-Flow",
-          "description": "Wirbelsäule mobilisieren",
+          "id": null,
+          "name": "Ruderergometer lockeres Cooldown",
+          "description": "Sehr leicht, 15-18 Spm.",
           "block_id": 4,
           "sets": [
             {
-              "id": 221,
-              "exercise_id": 109,
+              "id": null,
+              "exercise_id": 9,
               "weight": null,
               "reps": null,
-              "duration": 60,
-              "distance": null,
+              "duration": 180,
+              "distance": 600.0,
               "speed": null,
-              "rest_time": 0
+              "rest_time": null
             }
           ]
         },
         {
-          "id": 110,
-          "name": "Stehender Vorbeuge-Stretch",
-          "description": "Beinrückseite dehnen",
+          "id": null,
+          "name": "Statisches Stretching",
+          "description": "Schultern, Hüfte, Sprunggelenk jede Seite 45 Sekunden.",
           "block_id": 4,
           "sets": [
             {
-              "id": 222,
-              "exercise_id": 110,
+              "id": null,
+              "exercise_id": 10,
               "weight": null,
               "reps": null,
-              "duration": 60,
+              "duration": 180,
               "distance": null,
               "speed": null,
-              "rest_time": 0
-            }
-          ]
-        },
-        {
-          "id": 111,
-          "name": "Brustdehnung an der Wand",
-          "description": "Brust- und Schulteröffnung",
-          "block_id": 4,
-          "sets": [
-            {
-              "id": 223,
-              "exercise_id": 111,
-              "weight": null,
-              "reps": null,
-              "duration": 60,
-              "distance": null,
-              "speed": null,
-              "rest_time": 0
+              "rest_time": null
             }
           ]
         }

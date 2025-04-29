@@ -16,7 +16,8 @@ from src.app.models import (
     training_plan_model,
     user_model,
     workout_model,
-    training_history
+    training_history,
+    showcase_feedback_model
 )  # Ensure User model is registered in SQLModel.metadata
 
 # this is the Alembic Config object, which provides
@@ -42,10 +43,10 @@ target_metadata = SQLModel.metadata
 # Added to load .env file
 load_dotenv()
 
-# Get Supabase URL from environment
-supabase_url = os.getenv("SUPABASE_DB_URL")
-if not supabase_url:
-    raise ValueError("SUPABASE_DB_URL environment variable not set.")
+# Get Alembic DB URL from environment
+alembic_url = os.getenv("ALEMBIC_DB_URL")
+if not alembic_url:
+    raise ValueError("ALEMBIC_DB_URL environment variable not set.")
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -60,7 +61,7 @@ def run_migrations_offline() -> None:
 
     """
     context.configure(
-        url=supabase_url,  # Use the loaded URL
+        url=alembic_url,  # Use the loaded ALEMBIC_DB_URL
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -79,7 +80,7 @@ def run_migrations_online() -> None:
     """
     # Create engine configuration dictionary manually
     engine_config = config.get_section(config.config_ini_section, {})
-    engine_config["sqlalchemy.url"] = supabase_url # Inject the URL
+    engine_config["sqlalchemy.url"] = alembic_url # Inject the ALEMBIC_DB_URL
 
     connectable = engine_from_config(
         # config.get_section(config.config_ini_section, {}), <-- Replaced

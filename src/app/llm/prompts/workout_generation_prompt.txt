@@ -5,6 +5,9 @@ Bitte teile in der Beschreibung des Workouts, den Schwerpunkt des Workouts und w
 
 {output_schema}
 
+User Prompt (optional):
+{user_prompt}
+
 Trainingsplan:
 {training_plan}
 

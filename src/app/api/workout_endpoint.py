@@ -10,11 +10,11 @@ from app.models.training_plan_follower_model import TrainingPlanFollower
 from app.schemas.workout_schema import WorkoutResponseSchema, WorkoutDetailResponseSchema, BlockResponseSchema, ActivityBlockPayloadSchema, ActivitySetSchema
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
-from sqlmodel import Session
 from app.models.block_model import Block, BlockStatus
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set
 from app.models.training_history import ActivityLog
+from app.services.workout_service import get_workout_details
 
 router = APIRouter(
     prefix="/workouts",
@@ -24,7 +24,7 @@ router = APIRouter(
 
 @router.get("/", response_model=List[WorkoutResponseSchema])
 async def get_user_workouts(
-    db: Session = Depends(get_session),
+    db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
     status: Optional[str] = None
 ):
@@ -36,7 +36,7 @@ async def get_user_workouts(
     follower_query = select(TrainingPlanFollower.training_plan_id).where(
         TrainingPlanFollower.user_id == current_user.id
     )
-    result = db.execute(follower_query)
+    result = await db.execute(follower_query)
     training_plan_ids = [row[0] for row in result.all()]
     
     if not training_plan_ids:
@@ -56,7 +56,7 @@ async def get_user_workouts(
             # Invalid status provided - ignore the filter
             pass
     
-    result = db.execute(workout_query)
+    result = await db.execute(workout_query)
     workouts = result.scalars().all()
     
     return workouts
@@ -65,47 +65,19 @@ async def get_user_workouts(
 @router.get("/{workout_id}", response_model=WorkoutDetailResponseSchema)
 async def get_workout_detail(
     workout_id: int,
-    db: Session = Depends(get_session),
+    db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
     """
     Get detailed information about a specific workout including all blocks and exercises.
+    Uses the workout service for logic and authorization.
     """
-    # First get the training plans the user is following
-    follower_query = select(TrainingPlanFollower.training_plan_id).where(
-        TrainingPlanFollower.user_id == current_user.id
+    # Call the service function, exceptions will propagate
+    workout = await get_workout_details(
+        workout_id=workout_id, 
+        user_id=current_user.id, 
+        db=db
     )
-    result = db.execute(follower_query)
-    training_plan_ids = [row[0] for row in result.all()]
-    
-    if not training_plan_ids:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No workouts found for this user"
-        )
-    
-    # Get the specific workout and verify it belongs to one of the user's training plans
-    # Eagerly load blocks and exercises using selectinload
-    workout_query = select(Workout).options(
-        selectinload(Workout.blocks).selectinload(Block.exercises).selectinload(Exercise.sets)
-    ).where(
-        Workout.id == workout_id,
-        Workout.training_plan_id.in_(training_plan_ids)
-    )
-    result = db.execute(workout_query)
-    workout = result.scalar_one_or_none()
-    
-    if not workout:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Workout not found or you don't have access to it"
-        )
-    
-    # Explicitly sort blocks after loading to ensure consistent order
-    if workout and workout.blocks:
-        # Sort by ID. If a specific sequence field exists later, adjust here.
-        workout.blocks.sort(key=lambda block: block.id if block.id is not None else 0)
-
     return workout 
 
 
@@ -113,7 +85,7 @@ async def get_workout_detail(
 async def get_block_detail(
     workout_id: int,
     block_id: int,
-    db: Session = Depends(get_session),
+    db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
     """
@@ -124,7 +96,7 @@ async def get_block_detail(
     follower_query = select(TrainingPlanFollower.training_plan_id).where(
         TrainingPlanFollower.user_id == current_user.id
     )
-    result = db.execute(follower_query)
+    result = await db.execute(follower_query)
     training_plan_ids = [row[0] for row in result.all()]
 
     if not training_plan_ids:
@@ -143,7 +115,7 @@ async def get_block_detail(
         Workout.training_plan_id.in_(training_plan_ids)
     )
     
-    result = db.execute(block_query)
+    result = await db.execute(block_query)
     block = result.scalar_one_or_none()
 
     if not block:
@@ -160,7 +132,7 @@ async def save_activity_block_endpoint(
     workout_id: int,
     block_id: int,
     payload: ActivityBlockPayloadSchema,
-    db: Session = Depends(get_session),
+    db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
     """
@@ -171,7 +143,7 @@ async def save_activity_block_endpoint(
     follower_query = select(TrainingPlanFollower.training_plan_id).where(
         TrainingPlanFollower.user_id == current_user.id
     )
-    f_result = db.execute(follower_query)
+    f_result = await db.execute(follower_query)
     training_plan_ids = [row[0] for row in f_result.all()]
 
     if not training_plan_ids:
@@ -186,7 +158,7 @@ async def save_activity_block_endpoint(
         Block.workout_id == workout_id,
         Workout.training_plan_id.in_(training_plan_ids)
     )
-    b_result = db.execute(block_query)
+    b_result = await db.execute(block_query)
     block_to_update = b_result.scalar_one_or_none()
 
     if not block_to_update:
@@ -228,9 +200,9 @@ async def save_activity_block_endpoint(
 
     # 4. Commit the transaction
     try:
-        db.commit()
+        await db.commit()
     except Exception as e:
-        db.rollback()
+        await db.rollback()
         print(f"Error saving activity block: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -243,7 +215,7 @@ async def save_activity_block_endpoint(
 @router.delete("/{workout_id}", status_code=204)
 async def delete_workout(
     workout_id: int,
-    db: Session = Depends(get_session),
+    db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
     """
@@ -254,7 +226,7 @@ async def delete_workout(
     follower_query = select(TrainingPlanFollower.training_plan_id).where(
         TrainingPlanFollower.user_id == current_user.id
     )
-    result = db.execute(follower_query)
+    result = await db.execute(follower_query)
     training_plan_ids = [row[0] for row in result.all()]
     
     if not training_plan_ids:
@@ -265,7 +237,7 @@ async def delete_workout(
         Workout.id == workout_id,
         Workout.training_plan_id.in_(training_plan_ids)
     )
-    result = db.execute(workout_query)
+    result = await db.execute(workout_query)
     workout = result.scalar_one_or_none()
     
     if not workout:
@@ -273,7 +245,7 @@ async def delete_workout(
     
     # Direkt mit SQL löschen, umgeht SQLAlchemy ORM Beziehungen
     from sqlalchemy import text
-    db.execute(text(f"DELETE FROM workouts WHERE id = :workout_id"), {"workout_id": workout_id})
-    db.commit()
+    await db.execute(text(f"DELETE FROM workouts WHERE id = :workout_id"), {"workout_id": workout_id})
+    await db.commit()
     
     return None 

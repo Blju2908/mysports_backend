@@ -9,16 +9,20 @@ from app.db.session import create_db_and_tables
 async def lifespan(app):
     load_dotenv()
     # Startup-Tasks: DB-Init, LLM-Cache etc.
-    create_db_and_tables()  # Tabellen erstellen (nur für lokale Entwicklung/Migrationen)
+    await create_db_and_tables()  # Tabellen erstellen (nur für lokale Entwicklung/Migrationen)
     yield
     # Shutdown-Tasks
 
 app = FastAPI(lifespan=lifespan)
 
+origins = [
+    "http://localhost:5173",
+]
+
 # CORS-Konfiguration für das lokale Frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
