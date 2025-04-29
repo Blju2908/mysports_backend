@@ -7,7 +7,6 @@ class Settings(BaseSettings):
     SUPABASE_URL: str
     SUPABASE_API_KEY: str
     SUPABASE_DB_URL: str
-    SUPABASE_BUCKET: str
     ALEMBIC_DB_URL: str
 
     class Config:
