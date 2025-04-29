@@ -1,22 +1,22 @@
 {
   "id": null,
-  "training_plan_id": 34,
-  "name": "HYROX Conditioning & Kraftzirkel",
-  "date": "2025-04-28T22:18:21.208830",
+  "training_plan_id": 40,
+  "name": "HYROX Conditioning & Strength Mix",
+  "date": "2025-04-29T09:07:23.601304",
   "status": "incomplete",
-  "description": "Das heutige Workout legt den Schwerpunkt auf Ganzkörper-Kraftausdauer mit spezieller HYROX-Orientierung. Die Intensität wird moderat gehalten, um nach Run und Push+Pull die Regeneration zu unterstützen, dabei aber das HYROX-spezifische Conditioning und funktionelle Kraft zu festigen. Limitiert durch Operationshistorie und Mobility-Einschränkung, werden belastende Übungen für Sprunggelenk und Schulter bedacht angepasst. \n\nSchwerpunkte:\n- Funktionelle Kraftausdauer (da zuletzt viel Ausdauer und Oberkörper, wenig Ganzkörper-Zirkel)\n- Fokus auf Rumpf, DB-Work, Rudern (sicher für Sprunggelenk)\n- Regenerative Belastung, kein all-out\n- Mobilitäts-schonende, aber challenge-orientierte Übungsauswahl",
+  "description": "In dieser Einheit liegt der Schwerpunkt auf einer ausgewogenen Mischung aus Cardio (Ruderergometer) und Ganzkörperkraft mit Schwerpunkt Core und Beine. Gleichzeitig werden Schulter und Sprunggelenk geschont (keine Sprünge, keine Überkopfdrückbewegungen). Die Abwechslung aus Intervallen und Supersätzen fördert Kondition, Muskelkraft und Workload-Toleranz. Warum: Nach Pausentag und vorherigem Lauf/Gym-Tag wird funktionelle Kraft und HYROX-spezifische Ausdauer (Rower/Legs/Core) optimal adressiert, Belastung ist gelenkschonend.",
   "blocks": [
     {
       "id": null,
       "workout_id": 1,
-      "name": "Warm-Up & Mobility",
-      "description": "Sanfte Aktivierung, Mobilisierung für Sprunggelenk und Schulter. Vorbereitung auf das Zirkeltraining.",
+      "name": "Warm Up",
+      "description": "Ganzkörperaktivierung, mit Fokus auf Mobility und Kreislauf.",
       "status": "incomplete",
       "exercises": [
         {
           "id": null,
           "name": "Ruderergometer lockeres Rudern",
-          "description": "Technikfokus, lockere Aktivierung, 18-20 Spm",
+          "description": "Steady State, Fokus auf Technik und Mobilisation.",
           "block_id": 1,
           "sets": [
             {
@@ -25,7 +25,7 @@
               "weight": null,
               "reps": null,
               "duration": 300,
-              "distance": 1000.0,
+              "distance": null,
               "speed": null,
               "rest_time": null
             }
@@ -33,19 +33,19 @@
         },
         {
           "id": null,
-          "name": "Resistance Band Mobility (Schulter, Sprunggelenk)",
-          "description": "1 Satz Schulterkreisen/Überkopf-Mobility, 1 Satz Sprunggelenks-Kreisen/Band-Mobi",
+          "name": "Resistance Band Mobility Circuit",
+          "description": "5 verschiedene Mobilitäts-Übungen: Schulterkreisen, Hüftkreisen, seitliches Ziehen, Squat to Stand, Schulterblattaktivierung.",
           "block_id": 1,
           "sets": [
             {
               "id": null,
               "exercise_id": 2,
               "weight": null,
-              "reps": 15,
-              "duration": 120,
+              "reps": 8,
+              "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": null
+              "rest_time": 10
             }
           ]
         }
@@ -54,159 +54,55 @@
     {
       "id": null,
       "workout_id": 1,
-      "name": "HYROX Conditioning Zirkel",
-      "description": "3 Runden Zirkel: Kraftausdauer und HYROX-Basics, moderate Belastung, Fokus auf Technik. Rudern als Cardio-Anteil.",
+      "name": "Block A: Rower Intervals",
+      "description": "Intervall-Block zur Verbesserung der anaeroben Kapazität und Technik.",
       "status": "incomplete",
       "exercises": [
         {
           "id": null,
-          "name": "Dumbbell Front Squat",
-          "description": "Schulter-schonend, DB nur zur Brust aufnehmen. Fokus Mobilität.",
+          "name": "Ruderergometer Intervalle",
+          "description": "4× 90s hochintensive Intervalle mit 90s Pause.",
           "block_id": 2,
           "sets": [
             {
               "id": null,
               "exercise_id": 3,
-              "weight": 22.0,
-              "reps": 10,
-              "duration": null,
+              "weight": null,
+              "reps": null,
+              "duration": 90,
               "distance": null,
               "speed": null,
-              "rest_time": 30
+              "rest_time": 90
             },
             {
               "id": null,
               "exercise_id": 3,
-              "weight": 22.0,
-              "reps": 10,
-              "duration": null,
+              "weight": null,
+              "reps": null,
+              "duration": 90,
               "distance": null,
               "speed": null,
-              "rest_time": 30
+              "rest_time": 90
             },
             {
               "id": null,
               "exercise_id": 3,
-              "weight": 22.0,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 30
-            }
-          ]
-        },
-        {
-          "id": null,
-          "name": "DB Renegade Row",
-          "description": "Mit abgestützten Knien, um Sprunggelenk zu entlasten.",
-          "block_id": 2,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 4,
-              "weight": 22.0,
-              "reps": 8,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 30
-            },
-            {
-              "id": null,
-              "exercise_id": 4,
-              "weight": 22.0,
-              "reps": 8,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 30
-            },
-            {
-              "id": null,
-              "exercise_id": 4,
-              "weight": 22.0,
-              "reps": 8,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 30
-            }
-          ]
-        },
-        {
-          "id": null,
-          "name": "Reverse Lunge (ohne Zusatzgewicht)",
-          "description": "Schont das Sprunggelenk, fördert Stabilität.",
-          "block_id": 2,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 5,
-              "weight": null,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 30
-            },
-            {
-              "id": null,
-              "exercise_id": 5,
-              "weight": null,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 30
-            },
-            {
-              "id": null,
-              "exercise_id": 5,
-              "weight": null,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 30
-            }
-          ]
-        },
-        {
-          "id": null,
-          "name": "Ruderergometer Intervall",
-          "description": "Kompakt & mittlere Intensität. 350 m pro Runde.",
-          "block_id": 2,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 6,
               "weight": null,
               "reps": null,
-              "duration": 80,
-              "distance": 350.0,
+              "duration": 90,
+              "distance": null,
               "speed": null,
-              "rest_time": 60
+              "rest_time": 90
             },
             {
               "id": null,
-              "exercise_id": 6,
+              "exercise_id": 3,
               "weight": null,
               "reps": null,
-              "duration": 80,
-              "distance": 350.0,
+              "duration": 90,
+              "distance": null,
               "speed": null,
-              "rest_time": 60
-            },
-            {
-              "id": null,
-              "exercise_id": 6,
-              "weight": null,
-              "reps": null,
-              "duration": 80,
-              "distance": 350.0,
-              "speed": null,
-              "rest_time": 60
+              "rest_time": 90
             }
           ]
         }
@@ -215,15 +111,138 @@
     {
       "id": null,
       "workout_id": 1,
-      "name": "Core & Prehab",
-      "description": "Rumpf-Stabilität und Injury-Prevention, zu Hause & HYROX-relevant.",
+      "name": "Block B: Superset Lower Body & Core",
+      "description": "Supersätze aus Unterkörper und Core, HYROX-orientiert, gelenkschonend und effektiv.",
       "status": "incomplete",
       "exercises": [
         {
           "id": null,
-          "name": "Plank mit Shoulder Tap",
-          "description": "Rumpfaktivierung, Schulter-Stabilität.",
+          "name": "Dumbbell Goblet Squat",
+          "description": "Moderates Gewicht, Fokus auf Kontrolle und Tiefe.",
           "block_id": 3,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 22.0,
+              "reps": 12,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 15
+            },
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 22.0,
+              "reps": 12,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 15
+            },
+            {
+              "id": null,
+              "exercise_id": 4,
+              "weight": 22.0,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 15
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Russian Twists (mit DB)",
+          "description": "Rumpfstabilisierung, je Seite 10–12 Wiederholungen",
+          "block_id": 3,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": 10.0,
+              "reps": 24,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": 10.0,
+              "reps": 24,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 5,
+              "weight": 10.0,
+              "reps": 20,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": null,
+      "workout_id": 1,
+      "name": "Block C: Upper Body Hyrox Strength",
+      "description": "Zugübungen mit DBs und Band, Fokus Rücken/Arm, minimal Schulterbelastung.",
+      "status": "incomplete",
+      "exercises": [
+        {
+          "id": null,
+          "name": "DB Row beidarmig (auf Bank/Kiste abgestützt falls nötig)",
+          "description": "Schulter schonend, Rückenstärkung.",
+          "block_id": 4,
+          "sets": [
+            {
+              "id": null,
+              "exercise_id": 6,
+              "weight": 22.0,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 6,
+              "weight": 22.0,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 6,
+              "weight": 22.0,
+              "reps": 8,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 30
+            }
+          ]
+        },
+        {
+          "id": null,
+          "name": "Resistance Band Face Pulls",
+          "description": "Schulterblattaktivierung, Haltung und Prävention.",
+          "block_id": 4,
           "sets": [
             {
               "id": null,
@@ -234,24 +253,26 @@
               "distance": null,
               "speed": null,
               "rest_time": 30
-            }
-          ]
-        },
-        {
-          "id": null,
-          "name": "Resistance Band Monster Walk",
-          "description": "Sprunggelenks-Stabilisation, Becken- und Gluteus-Fokus.",
-          "block_id": 3,
-          "sets": [
+            },
             {
               "id": null,
-              "exercise_id": 8,
+              "exercise_id": 7,
               "weight": null,
               "reps": 15,
               "duration": null,
               "distance": null,
               "speed": null,
               "rest_time": 30
+            },
+            {
+              "id": null,
+              "exercise_id": 7,
+              "weight": null,
+              "reps": 12,
+              "duration": null,
+              "distance": null,
+              "speed": null,
+              "rest_time": 45
             }
           ]
         }
@@ -260,40 +281,22 @@
     {
       "id": null,
       "workout_id": 1,
-      "name": "Cooldown",
-      "description": "Locker rudern, statisches Stretching (Schulter, Hüfte, Sprunggelenk). Fokus Regeneration.",
+      "name": "Cool Down",
+      "description": "Mobilisation & Stretching, Schwerpunkt untere Extremität und Schulter.",
       "status": "incomplete",
       "exercises": [
         {
           "id": null,
-          "name": "Ruderergometer lockeres Cooldown",
-          "description": "Sehr leicht, 15-18 Spm.",
-          "block_id": 4,
+          "name": "Stretch/Dehnungszirkel",
+          "description": "Oberschenkel, Hüfte, Schulterband. Fokus: Beweglichkeit erhalten.",
+          "block_id": 5,
           "sets": [
             {
               "id": null,
-              "exercise_id": 9,
+              "exercise_id": 8,
               "weight": null,
               "reps": null,
-              "duration": 180,
-              "distance": 600.0,
-              "speed": null,
-              "rest_time": null
-            }
-          ]
-        },
-        {
-          "id": null,
-          "name": "Statisches Stretching",
-          "description": "Schultern, Hüfte, Sprunggelenk jede Seite 45 Sekunden.",
-          "block_id": 4,
-          "sets": [
-            {
-              "id": null,
-              "exercise_id": 10,
-              "weight": null,
-              "reps": null,
-              "duration": 180,
+              "duration": 240,
               "distance": null,
               "speed": null,
               "rest_time": null

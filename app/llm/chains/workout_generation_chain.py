@@ -57,11 +57,10 @@ def generate_workout(
         # API key aus der config holen
         config = get_config()
         OPENAI_API_KEY = config.OPENAI_API_KEY2
-        print(f"Using OpenAI model: gpt-4.1-nano")
         
         llm = ChatOpenAI(
-            model="gpt-4.1-nano",
-            # model="gpt-4.1",
+            # model="gpt-4.1-nano",
+            model="gpt-4.1",
             api_key=OPENAI_API_KEY,
             model_kwargs={"response_format": {"type": "json_object"}},
         )
