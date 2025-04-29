@@ -1,8 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from ..schemas.workout_generation_schema import (
-    TrainingPlanSchema,
-    ActivityLogSchema,
     WorkoutSchema,
 )
 from ..utils.langchain_utils import load_prompt
@@ -59,8 +57,8 @@ def generate_workout(
         OPENAI_API_KEY = config.OPENAI_API_KEY2
         
         llm = ChatOpenAI(
-            # model="gpt-4.1-nano",
-            model="gpt-4.1",
+            model="gpt-4.1-nano",
+            # model="gpt-4.1",
             api_key=OPENAI_API_KEY,
             model_kwargs={"response_format": {"type": "json_object"}},
         )
