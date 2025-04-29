@@ -1,7 +1,7 @@
 VENV_ACTIVATE = source venv/bin/activate
 
 run:
-	PYTHONPATH=src uvicorn app.main:app --reload
+	uvicorn app.main:app --reload
 
 test:
 	pytest
