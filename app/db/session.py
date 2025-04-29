@@ -3,13 +3,17 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 from typing import AsyncGenerator
 from app.core.config import Settings
-
+from sqlalchemy.pool import NullPool
 settings = Settings()
 
 # Async Engine bauen
 engine = create_async_engine(
     settings.SUPABASE_DB_URL,  # Achte darauf: Muss async-fähig sein, z.B. postgresql+asyncpg://
-    echo=False,  # Optional: Logs zeigen
+    poolclass=NullPool,
+    connect_args={
+        "statement_cache_size": 0,              # Deaktiviert statement caching
+        "prepared_statement_cache_size": 0      # Für asyncpg spezifisch
+    }
 )
 
 # Session Dependency
