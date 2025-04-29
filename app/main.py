@@ -17,6 +17,8 @@ app = FastAPI(lifespan=lifespan)
 
 origins = [
     "http://localhost:5173",
+    "https://www.s3ssions.com",
+    "https://s3ssions.com",
 ]
 
 # CORS-Konfiguration für das lokale Frontend
