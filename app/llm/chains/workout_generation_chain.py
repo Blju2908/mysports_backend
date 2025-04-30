@@ -14,7 +14,7 @@ PROMPT_FILE = "workout_generation_prompt.txt"
 # LLM-Chain Funktion
 
 
-def generate_workout(
+async def generate_workout(
     training_plan,
     training_history=None,
     user_prompt: str = None
@@ -60,24 +60,17 @@ def generate_workout(
             api_key=OPENAI_API_KEY
         )
         
-        # Nutze with_structured_output, um direkt ein WorkoutSchema zu erhalten
+        # Nutze with_structured_output mit async=True
         chain = (
             ChatPromptTemplate.from_template("{prompt}")
-            | llm.with_structured_output(WorkoutSchema)
+            | llm.with_structured_output(WorkoutSchema, async_=True)  # async_=True ist wichtig
         )
         print("Sending request to OpenAI API...")
-        workout = chain.invoke({"prompt": prompt})
+        workout = await chain.ainvoke({"prompt": prompt})  # ainvoke statt invoke
         print("Received response from OpenAI API")
-        
-        # Save response to a file for debugging
-        try:
-            with open("workout_output.json", "w", encoding="utf-8") as f:
-                f.write(workout.model_dump_json(indent=2))
-            print("Workout-JSON wurde in workout_output.json gespeichert.")
-        except Exception as e:
-            print(f"Warning: Could not save workout to file: {e}")
-        
+    
         return workout
+    
     except Exception as e:
         print(f"Error in generate_workout: {e}")
         import traceback

@@ -329,7 +329,7 @@ async def create_training_plan(
 
         print("Generating workout...")
         try:
-            generated_workout = generate_workout(new_plan)
+            generated_workout = await generate_workout(new_plan)
             print("Workout generated successfully. Saving to database...")
         except Exception as e:
             print(f"Error generating workout: {e}")
