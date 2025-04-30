@@ -63,7 +63,7 @@ async def generate_workout(
         # Nutze with_structured_output mit async=True
         chain = (
             ChatPromptTemplate.from_template("{prompt}")
-            | llm.with_structured_output(WorkoutSchema, async_=True)  # async_=True ist wichtig
+            | llm.with_structured_output(WorkoutSchema)
         )
         print("Sending request to OpenAI API...")
         workout = await chain.ainvoke({"prompt": prompt})  # ainvoke statt invoke
