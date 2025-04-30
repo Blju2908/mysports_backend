@@ -96,7 +96,7 @@ async def get_showcase_questionnaire_template(
     if not logger.hasHandlers():
         logger.addHandler(handler)
 
-    questionnaire_id = "q_v1.1"
+    questionnaire_id = "q_v2.1"
 
     logger.info(f"[questionnaire] Fetching questionnaire template with ID: {questionnaire_id}")
 

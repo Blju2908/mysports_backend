@@ -1,78 +1,68 @@
 {
   "id": null,
-  "training_plan_id": 67,
-  "name": "HYROX Open Vorbereitung - Intervall und Kraftfokus",
-  "description": "Dieses Workout fokussiert auf die Verbesserung der aeroben Ausdauer und funktionellen Kraft für das HYROX Open, unter besonderer Berücksichtigung der Belastungssteuerung durch moderates bis intensives Training mit kurzen Pausen. Die Laststeuerung erfolgt progressiv, basierend auf den letzten trainingsfreien Tag und moderaten Belastungen der letzten Tage, um eine optimale Regeneration zu gewährleisten.",
+  "training_plan_id": 74,
+  "name": "HYROX Open Vorbereitung - Ganzkörper Power & Ausdauer",
+  "description": "Intensives Ganzkörper-Workout zur Verbesserung der Kraftausdauer und Herz-Kreislauf-Leistung mit Fokus auf gelenkschonende Übungen. Die Laststeuerung orientiert sich an moderater Belastung im Kraftbereich mit 70-80% des Maximalgewichts unter Berücksichtigung der kürzlichen Regeneration.",
   "blocks": [
     {
       "id": 1,
       "workout_id": 0,
-      "name": "Intervallrudern & Core-Activation",
-      "description": "Verbessert aerobe Kapazität und Rumpfstabilität unter Schonung des Sprunggelenks und der Schultern",
+      "name": "Kraftfokus Oberkörper & Rumpf",
+      "description": "Kräftigung des Oberkörpers und Rumpfes mit Fokus auf gelenkschonende Übungen, um Schulter-Mobility zu berücksichtigen.",
       "exercises": [
         {
           "id": 1,
-          "name": "Ruderergometer Intervalle",
-          "description": "Dynamische, kontrollierte Ruderzüge mit Fokus auf Herzfrequenzsteigerung, aktiviert vor allem Beine und Rücken",
+          "name": "Kurzhantel Goblet Squats",
+          "description": "Aktivierung der Bein- und Rumpfmuskulatur, Verbesserung der Kraftausdauer.",
           "block_id": 1,
           "sets": [
             {
               "id": 1,
               "exercise_id": 1,
-              "weight": null,
-              "reps": null,
-              "duration": 300,
-              "distance": 1200.0,
+              "weight": 22.0,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
               "speed": null,
               "rest_time": 60
             },
             {
               "id": 2,
               "exercise_id": 1,
-              "weight": null,
-              "reps": null,
-              "duration": 300,
-              "distance": 1200.0,
+              "weight": 22.0,
+              "reps": 10,
+              "duration": null,
+              "distance": null,
               "speed": null,
               "rest_time": 60
-            },
-            {
-              "id": 3,
-              "exercise_id": 1,
-              "weight": null,
-              "reps": null,
-              "duration": 300,
-              "distance": 1200.0,
-              "speed": null,
-              "rest_time": null
             }
           ]
         },
         {
           "id": 2,
-          "name": "Plank mit Resistance Band",
-          "description": "Stabilitätstraining des Core Bereichs mit leicht erhöhter Spannung zur Schonung der Schultergelenke",
+          "name": "Kurzhantel Renegade Rows mit Resistance Band",
+          "description": "Stärkung des oberen Rückens und Stabilisierung des Rumpfes, Schulterbeweglichkeit schonend trainierend.",
           "block_id": 1,
           "sets": [
             {
-              "id": 4,
+              "id": 3,
               "exercise_id": 2,
-              "weight": null,
-              "reps": null,
-              "duration": 45,
+              "weight": 10.0,
+              "reps": 8,
+              "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": 30
+              "rest_time": 60
             },
             {
-              "id": 5,
+              "id": 4,
               "exercise_id": 2,
-              "weight": null,
-              "reps": null,
-              "duration": 45,
+              "weight": 10.0,
+              "reps": 8,
+              "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": null
+              "rest_time": 60
             }
           ]
         }
@@ -81,21 +71,31 @@
     {
       "id": 2,
       "workout_id": 0,
-      "name": "Functional Kraft mit Kurzhanteln",
-      "description": "Gezielte Kräftigung der unteren Extremität und Rumpfmuskulatur unter Rücksicht auf Sprunggelenks-OP und eingeschränkte Schultermobilität",
+      "name": "Ausdauer- und Herz-Kreislauftraining",
+      "description": "Intervalltraining auf dem Ruderergometer zur Steigerung der aeroben Kapazität und anaeroben Schwelle.",
       "exercises": [
         {
           "id": 3,
-          "name": "Goblet Squats mit Kurzhantel",
-          "description": "Ganzkörperübung fokussiert Beine, Gesäß und Core, kontrollierte Bewegung ohne Schulterüberlastung",
+          "name": "Ruderergometer Intervalltraining",
+          "description": "Intensives Intervalltraining mit moderaten Belastungsphasen zur Verbesserung der Ausdauerleistung.",
           "block_id": 2,
           "sets": [
             {
+              "id": 5,
+              "exercise_id": 3,
+              "weight": null,
+              "reps": null,
+              "duration": 120,
+              "distance": null,
+              "speed": null,
+              "rest_time": 60
+            },
+            {
               "id": 6,
               "exercise_id": 3,
-              "weight": 22.0,
-              "reps": 12,
-              "duration": null,
+              "weight": null,
+              "reps": null,
+              "duration": 120,
               "distance": null,
               "speed": null,
               "rest_time": 60
@@ -103,60 +103,12 @@
             {
               "id": 7,
               "exercise_id": 3,
-              "weight": 22.0,
-              "reps": 12,
-              "duration": null,
+              "weight": null,
+              "reps": null,
+              "duration": 120,
               "distance": null,
               "speed": null,
-              "rest_time": 60
-            },
-            {
-              "id": 8,
-              "exercise_id": 3,
-              "weight": 22.0,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": null
-            }
-          ]
-        },
-        {
-          "id": 4,
-          "name": "Deadlifts mit Kurzhanteln",
-          "description": "Stärkt Rücken und hintere Oberschenkelmuskulatur, saubere Technik zur Schonung der Sprunggelenke",
-          "block_id": 2,
-          "sets": [
-            {
-              "id": 9,
-              "exercise_id": 4,
-              "weight": 22.0,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
-            },
-            {
-              "id": 10,
-              "exercise_id": 4,
-              "weight": 22.0,
-              "reps": 10,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": 60
-            },
-            {
-              "id": 11,
-              "exercise_id": 4,
-              "weight": 22.0,
-              "reps": 8,
-              "duration": null,
-              "distance": null,
-              "speed": null,
-              "rest_time": null
+              "rest_time": 90
             }
           ]
         }
@@ -165,18 +117,18 @@
     {
       "id": 3,
       "workout_id": 0,
-      "name": "Mobilität und aktive Regeneration",
-      "description": "Schonende Aktivierung der Mobilität ohne Belastung des rechten Sprunggelenks und der Schultern",
+      "name": "Mobilität & Regeneration",
+      "description": "Förderung der Beweglichkeit der Schultergelenke und aktive Regeneration unter Schonung des rechten Sprunggelenks.",
       "exercises": [
         {
-          "id": 5,
-          "name": "Resistance Band Pull-Aparts",
-          "description": "Aktiviert Schulterblattmuskulatur zur Förderung der Schultergesundheit ohne Überlastung",
+          "id": 4,
+          "name": "Resistance Band Schulter Mobilisation",
+          "description": "Sanfte Aktivierung und Mobilisierung der Schultern zur Verbesserung der Beweglichkeit.",
           "block_id": 3,
           "sets": [
             {
-              "id": 12,
-              "exercise_id": 5,
+              "id": 8,
+              "exercise_id": 4,
               "weight": null,
               "reps": 15,
               "duration": null,
@@ -185,42 +137,42 @@
               "rest_time": 30
             },
             {
-              "id": 13,
-              "exercise_id": 5,
+              "id": 9,
+              "exercise_id": 4,
               "weight": null,
               "reps": 15,
               "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": null
+              "rest_time": 30
             }
           ]
         },
         {
-          "id": 6,
-          "name": "Beinheben im Liegen",
-          "description": "Trainiert untere Bauchmuskulatur und Hüftbeuger ohne belastende Sprunggelenksbewegungen",
+          "id": 5,
+          "name": "Kurzhantel Deadbugs",
+          "description": "Core Stabilisation mit Fokus auf kontrollierte Bewegung ohne Beanspruchung des Sprunggelenks.",
           "block_id": 3,
           "sets": [
             {
-              "id": 14,
-              "exercise_id": 6,
-              "weight": null,
-              "reps": 15,
+              "id": 10,
+              "exercise_id": 5,
+              "weight": 5.0,
+              "reps": 12,
               "duration": null,
               "distance": null,
               "speed": null,
               "rest_time": 30
             },
             {
-              "id": 15,
-              "exercise_id": 6,
-              "weight": null,
-              "reps": 15,
+              "id": 11,
+              "exercise_id": 5,
+              "weight": 5.0,
+              "reps": 12,
               "duration": null,
               "distance": null,
               "speed": null,
-              "rest_time": null
+              "rest_time": 30
             }
           ]
         }
