@@ -29,5 +29,5 @@ class WorkoutSchema(BaseModel):
     id: Optional[int]
     training_plan_id: Optional[int]
     name: str
-    description: str = Field(..., description="Schwerpunkt des Workouts in einem knapp formulierten Satz. Nennung der Laststeuerung basierend auf der Historie.")
+    description: str = Field(..., description="Schwerpunkt des Workouts in Schlagworten")
     blocks: Optional[List[BlockSchema]] = None 

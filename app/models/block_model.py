@@ -20,4 +20,4 @@ class Block(SQLModel, table=True):
     status: BlockStatus = Field(default=BlockStatus.open, sa_column_kwargs={"nullable": False})
 
     workout: "Workout" = Relationship(back_populates="blocks")
-    exercises: List["Exercise"] = Relationship(back_populates="block")
+    exercises: List["Exercise"] = Relationship(back_populates="block", cascade_delete=True)

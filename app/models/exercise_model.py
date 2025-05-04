@@ -13,5 +13,5 @@ class Exercise(SQLModel, table=True):
     block_id: int = Field(foreign_key="blocks.id", ondelete="CASCADE")
     
     block: "Block" = Relationship(back_populates="exercises")
-    sets: List["Set"] = Relationship(back_populates="exercise")
+    sets: List["Set"] = Relationship(back_populates="exercise", cascade_delete=True)
     

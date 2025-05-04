@@ -6,10 +6,8 @@ from ..schemas.workout_generation_schema import (
 from ..utils.langchain_utils import load_prompt
 import json
 from app.core.config import get_config
-from app.models.workout_model import WorkoutStatus
 from datetime import datetime
-
-PROMPT_FILE = "workout_generation_prompt.txt"
+PROMPT_FILE = "workout_generation_prompt.md"
 
 # LLM-Chain Funktion
 
@@ -48,7 +46,8 @@ async def generate_workout(
         prompt = prompt_template.format(
             training_plan=training_plan_json,
             training_history=training_history_json,
-            user_prompt=user_prompt or ""
+            user_prompt=user_prompt or "",
+            current_date=datetime.now().strftime("%d.%m.%Y")
         )
         
         # API key aus der config holen
@@ -56,7 +55,7 @@ async def generate_workout(
         OPENAI_API_KEY = config.OPENAI_API_KEY2
         
         llm = ChatOpenAI(
-            model="gpt-4.1-mini",
+            model="o4-mini",
             api_key=OPENAI_API_KEY
         )
         

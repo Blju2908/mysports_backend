@@ -13,7 +13,7 @@ class ActivityLog(SQLModel, table=True):
     user_id: UUID = Field(foreign_key="users.id", ondelete="CASCADE")
     exercise_name: str = Field(nullable=False)
     timestamp: datetime = Field(default_factory=datetime.utcnow)
-    set_id: Optional[int] = Field(default=None, foreign_key="sets.id")
+    set_id: Optional[int] = Field(default=None, foreign_key="sets.id", ondelete="SET NULL")
     weight: Optional[float] = None
     reps: Optional[int] = None
     duration: Optional[int] = None  # Sekunden

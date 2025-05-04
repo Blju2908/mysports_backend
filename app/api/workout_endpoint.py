@@ -221,8 +221,8 @@ async def delete_workout(
     current_user: User = Depends(get_current_user),
 ):
     """
-    Löscht ein Workout mittels direktem SQL-Statement.
-    Alle abhängigen Objekte werden automatisch durch ON DELETE CASCADE gelöscht.
+    Löscht ein Workout samt aller abhängigen Objekte (Blocks, Exercises, Sets).
+    Die Trainingshistorie bleibt erhalten, nur die set_id wird automatisch auf NULL gesetzt.
     """
     # Prüfe, ob das Workout dem User gehört (über TrainingPlanFollower)
     follower_query = select(TrainingPlanFollower.training_plan_id).where(
@@ -245,16 +245,18 @@ async def delete_workout(
         raise HTTPException(
             status_code=404, detail="Workout nicht gefunden oder kein Zugriff."
         )
-
-    # Direkt mit SQL löschen, umgeht SQLAlchemy ORM Beziehungen
-    from sqlalchemy import text
-
-    await db.execute(
-        text(f"DELETE FROM workouts WHERE id = :workout_id"), {"workout_id": workout_id}
-    )
-    await db.commit()
-
-    return None
+        
+    try:
+        await db.delete(workout)
+        await db.commit()
+        return {"success": True}
+    except Exception as e:
+        await db.rollback()
+        print(f"Error deleting workout: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Fehler beim Löschen des Workouts."
+        )
 
 
 @router.post("/blocks/finish", status_code=status.HTTP_201_CREATED)

@@ -21,4 +21,4 @@ class Workout(SQLModel, table=True):
     description: Optional[str] = Field(default=None)
 
     plan: Optional["TrainingPlan"] = Relationship(back_populates="workouts")
-    blocks: List["Block"] = Relationship(back_populates="workout")
+    blocks: List["Block"] = Relationship(back_populates="workout", cascade_delete=True)
