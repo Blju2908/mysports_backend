@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Body
+from fastapi import APIRouter, Depends, HTTPException, status, Body, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, join, update
 from typing import List, Optional
 from sqlalchemy.orm import selectinload
 from datetime import datetime
+from pydantic import BaseModel
 
 from app.models.workout_model import Workout, WorkoutStatus
 from app.models.training_plan_follower_model import TrainingPlanFollower
@@ -309,4 +310,52 @@ async def finish_block(
         raise HTTPException(
             status_code=500, detail="Fehler beim Abschließen des Blocks."
         )
+    return {"success": True}
+
+
+class ResetBlocksPayload(BaseModel):
+    block_ids: list[int]
+
+@router.put("/reset-blocks")
+async def reset_blocks(
+    payload: ResetBlocksPayload,
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    if not payload.block_ids or not isinstance(payload.block_ids, list):
+        raise HTTPException(status_code=400, detail="block_ids müssen angegeben werden.")
+
+    # prüfe, ob die Blöcke existieren
+    block_query = select(Block).where(Block.id.in_(payload.block_ids))
+    try:
+        b_result = await db.execute(block_query)
+        blocks = b_result.scalars().all()
+    except Exception as e:
+        print(f"DB-Fehler beim Laden der Blöcke: {e}")
+        raise HTTPException(status_code=500, detail="Fehler beim Laden der Blöcke.")
+
+    if not blocks:
+        raise HTTPException(status_code=404, detail="Keine Blöcke gefunden.")
+
+    # prüfe, ob alle angeforderten Blöcke gefunden wurden
+    found_block_ids = {block.id for block in blocks}
+    missing_ids = set(payload.block_ids) - found_block_ids
+    if missing_ids:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Folgende Block-IDs wurden nicht gefunden: {sorted(missing_ids)}"
+        )
+
+    # setze den Status der Blöcke auf 'open'
+    for block in blocks:
+        block.status = BlockStatus.open
+        db.add(block)
+
+    try:
+        await db.commit()
+    except Exception as e:
+        await db.rollback()
+        print(f"Fehler beim Zurücksetzen der Blöcke: {e}")
+        raise HTTPException(status_code=500, detail="Fehler beim Zurücksetzen der Blöcke.")
+
     return {"success": True}
