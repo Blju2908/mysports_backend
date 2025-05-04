@@ -1,122 +1,142 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlmodel import Session, delete, select
-from pydantic import BaseModel
 from app.models.training_plan_model import TrainingPlan
 from app.models.training_plan_follower_model import TrainingPlanFollower
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
-from app.schemas.training_plan_schema import TrainingPlanResponse, APIResponse
+from app.schemas.training_plan_schema import TrainingPlanSchema, APIResponse
+from sqlalchemy.ext.asyncio import AsyncSession
+from uuid import UUID
+import logging
 
 router = APIRouter(tags=["training-plan"])
 
-class TrainingPlanCreate(BaseModel):
-    goal: str
-    restrictions: str
-    equipment: str
-    session_duration: int
-    description: str
+logger = logging.getLogger("training_plan")
+
+
     
 
 @router.post("/", response_model=APIResponse, status_code=status.HTTP_201_CREATED)
 async def create_training_plan(
-    plan_data: TrainingPlanCreate,
+    plan_data: TrainingPlanSchema,
     db: Session = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
-    # 1. Trainingsplan anlegen
-    plan = TrainingPlan(**plan_data.model_dump())
-    db.add(plan)
-    db.commit()
-    db.refresh(plan)  # Holt alle Felder inkl. id
+    try:
+        # 1. Trainingsplan anlegen
+        plan = TrainingPlan(**plan_data.model_dump())
+        db.add(plan)
+        db.commit()
+        db.refresh(plan)  # Holt alle Felder inkl. id
+        logger.info(f"[Create] Created plan: {plan}")
 
-    print(plan)
+        # 2. Alte Verknüpfungen löschen
+        db.exec(
+            delete(TrainingPlanFollower).where(TrainingPlanFollower.user_id == current_user.id)
+        )
+        db.commit()
 
-    # 2. Alte Verknüpfungen löschen
-    db.exec(
-        delete(TrainingPlanFollower).where(TrainingPlanFollower.user_id == current_user.id)
-    )
-    db.commit()
+        # 3. Neue Verknüpfung User <-> Plan
+        follower = TrainingPlanFollower(user_id=current_user.id, training_plan_id=plan.id)
+        db.add(follower)
+        db.commit()
 
-    # 3. Neue Verknüpfung User <-> Plan
-    follower = TrainingPlanFollower(user_id=current_user.id, training_plan_id=plan.id)
-    db.add(follower)
-    db.commit()
+        # 4. Response sauber zurückgeben
+        return {
+            "success": True,
+            "data": plan,
+            "message": "Trainingsplan erfolgreich erstellt."
+        }
+    except Exception as e:
+        logger.error(f"[Create][Exception] {e}")
+        logger.error(f"[Create][Exception] plan_data: {plan_data}")
+        logger.error(f"[Create][Exception] current_user: {current_user}")
+        raise HTTPException(status_code=500, detail=f"Fehler beim Erstellen des Trainingsplans: {e}")
 
-    # 4. Response sauber zurückgeben
-    return {
-        "success": True,
-        "data": plan,
-        "message": "Trainingsplan erfolgreich erstellt."
-    }
 
-
-@router.get("/mine", response_model=TrainingPlanResponse)
+@router.get("/mine", response_model=TrainingPlanSchema)
 async def get_my_training_plan(
-    db: Session = Depends(get_session),
+    db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
-    """
-    Retrieves the training plan the current user is following.
-    """
-    # Find the follower entry for the current user
-    follower_query = select(TrainingPlanFollower).where(TrainingPlanFollower.user_id == current_user.id)
-    follower = db.exec(follower_query).first()
+    try:
+        user_uuid = UUID(current_user.id)
+        follower_query = select(TrainingPlanFollower).where(TrainingPlanFollower.user_id == user_uuid)
+        result = await db.exec(follower_query)
+        follower = result.first()
 
-    if not follower or not follower.training_plan_id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No active training plan found for this user."
-        )
+        if not follower or not follower.training_plan_id:
+            empty_plan = TrainingPlan(goal="", restrictions="", equipment="", session_duration="")
+            db.add(empty_plan)
+            await db.commit()
+            await db.refresh(empty_plan)
+            new_follower = TrainingPlanFollower(user_id=user_uuid, training_plan_id=empty_plan.id)
+            db.add(new_follower)
+            await db.commit()
+            logger.info(f"[Get] Created empty plan for user {user_uuid}: {empty_plan}")
+            return empty_plan
 
-    # Retrieve the actual training plan
-    plan_query = select(TrainingPlan).where(TrainingPlan.id == follower.training_plan_id)
-    plan = db.exec(plan_query).first()
+        plan_query = select(TrainingPlan).where(TrainingPlan.id == follower.training_plan_id)
+        plan_result = await db.exec(plan_query)
+        plan = plan_result.first()
 
-    if not plan:
-        # This case should ideally not happen if follower entry exists, but good to handle
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Training plan details not found."
-        )
+        if not plan:
+            empty_plan = TrainingPlan(goal="", restrictions="", equipment="", session_duration="")
+            db.add(empty_plan)
+            await db.commit()
+            await db.refresh(empty_plan)
+            new_follower = TrainingPlanFollower(user_id=user_uuid, training_plan_id=empty_plan.id)
+            db.add(new_follower)
+            await db.commit()
+            logger.info(f"[Get] Fallback: Created empty plan for user {user_uuid}: {empty_plan}")
+            return empty_plan
 
-    return plan
+        return plan
+    except Exception as e:
+        logger.error(f"[Get][Exception] {e}")
+        logger.error(f"[Get][Exception] current_user: {current_user}")
+        raise HTTPException(status_code=500, detail=f"Fehler beim Laden des Trainingsplans: {e}")
 
 
-@router.put("/mine", response_model=TrainingPlanResponse)
+@router.put("/mine", response_model=TrainingPlanSchema)
 async def update_my_training_plan(
-    plan_data: TrainingPlanCreate,
-    db: Session = Depends(get_session),
+    plan_data: TrainingPlanSchema,
+    db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
-    """
-    Updates the training plan the current user is following.
-    """
-    # Find the follower entry for the current user
-    follower_query = select(TrainingPlanFollower).where(TrainingPlanFollower.user_id == current_user.id)
-    follower = db.exec(follower_query).first()
+    try:
+        user_uuid = UUID(current_user.id)
+        follower_query = select(TrainingPlanFollower).where(TrainingPlanFollower.user_id == user_uuid)
+        result = await db.exec(follower_query)
+        follower = result.first()
 
-    if not follower or not follower.training_plan_id:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No active training plan found to update."
-        )
+        if not follower or not follower.training_plan_id:
+            logger.warning(f"[Update] No active plan for user {user_uuid}")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No active training plan found to update."
+            )
 
-    # Retrieve the actual training plan to update
-    plan_to_update = db.get(TrainingPlan, follower.training_plan_id)
+        plan_to_update = await db.get(TrainingPlan, follower.training_plan_id)
 
-    if not plan_to_update:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Training plan details not found for update."
-        )
+        if not plan_to_update:
+            logger.warning(f"[Update] Plan not found for id {follower.training_plan_id}")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Training plan details not found for update."
+            )
 
-    # Update the plan fields
-    update_data = plan_data.model_dump(exclude_unset=True)
-    for key, value in update_data.items():
-        setattr(plan_to_update, key, value)
+        update_data = plan_data.model_dump(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(plan_to_update, key, value)
 
-    db.add(plan_to_update)
-    db.commit()
-    db.refresh(plan_to_update)
-
-    return plan_to_update
+        db.add(plan_to_update)
+        await db.commit()
+        await db.refresh(plan_to_update)
+        logger.info(f"[Update] Updated plan {plan_to_update.id} for user {user_uuid}")
+        return plan_to_update
+    except Exception as e:
+        logger.error(f"[Update][Exception] {e}")
+        logger.error(f"[Update][Exception] plan_data: {plan_data}")
+        logger.error(f"[Update][Exception] current_user: {current_user}")
+        raise HTTPException(status_code=500, detail=f"Fehler beim Aktualisieren des Trainingsplans: {e}")

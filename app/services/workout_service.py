@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.models.workout_model import Workout
-from app.models.block_model import Block # Needed for selectinload path
+from app.models.block_model import Block, BlockStatus # Needed for selectinload path
 from app.models.exercise_model import Exercise # Needed for selectinload path
 from app.llm.schemas.workout_generation_schema import WorkoutSchema
 from app.models.set_model import Set
@@ -75,6 +75,7 @@ async def save_workout_to_db_async(
                 workout_id=workout_db.id,
                 name=block_schema.name,
                 description=block_schema.description,
+                status=BlockStatus.open
             )
             db.add(block_db)
             await db.flush()

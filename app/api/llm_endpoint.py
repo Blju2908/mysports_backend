@@ -1,88 +1,30 @@
 from fastapi import APIRouter, HTTPException, Depends
-from pathlib import Path
-import json
-from sqlmodel import Session, select
+from sqlmodel import select
 from app.llm.chains.workout_generation_chain import generate_workout
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
 from app.models.training_plan_follower_model import TrainingPlanFollower
 from app.models.training_plan_model import TrainingPlan
-from app.models.workout_model import Workout
-from app.models.block_model import Block
-from app.models.exercise_model import Exercise
-from app.models.set_model import Set
-from datetime import datetime
 from app.models.training_history import ActivityLog
 from pydantic import BaseModel, Field
+from sqlalchemy.ext.asyncio import AsyncSession
+import logging
+from app.services.workout_service import save_workout_to_db_async
 
 router = APIRouter()
+logger = logging.getLogger("llm_endpoint")
 
 # Define a Pydantic model for the request body
 class CreateWorkoutRequest(BaseModel):
     prompt: str | None = Field(None, description="Optional user prompt for workout generation")
 
-def save_workout_to_db(workout_schema, training_plan_id: int, db: Session) -> Workout:
-    """
-    Speichert das generierte Workout in der Datenbank und gibt das gespeicherte Workout-Objekt zurück.
-    """
-    # 1. Workout erstellen
-    workout_db = Workout(
-        training_plan_id=training_plan_id,
-        name=workout_schema.name,
-        date=workout_schema.date,
-        description=workout_schema.description
-    )
-    db.add(workout_db)
-    db.flush()  # Flush um die ID zu bekommen
-    
-    # 2. Blocks erstellen
-    if workout_schema.blocks:
-        for block_schema in workout_schema.blocks:
-            block_db = Block(
-                workout_id=workout_db.id,
-                name=block_schema.name,
-                description=block_schema.description,
-                status=block_schema.status
-            )
-            db.add(block_db)
-            db.flush()  # Flush um die ID zu bekommen
-            
-            # 3. Exercises erstellen
-            if block_schema.exercises:
-                for exercise_schema in block_schema.exercises:
-                    exercise_db = Exercise(
-                        block_id=block_db.id,
-                        name=exercise_schema.name,
-                        description=exercise_schema.description
-                    )
-                    db.add(exercise_db)
-                    db.flush()  # Flush um die ID zu bekommen
-                    
-                    # 4. Sets erstellen
-                    if exercise_schema.sets:
-                        for set_schema in exercise_schema.sets:
-                            set_db = Set(
-                                exercise_id=exercise_db.id,
-                                weight=set_schema.weight,
-                                reps=set_schema.reps,
-                                duration=set_schema.duration,
-                                distance=set_schema.distance,
-                                speed=set_schema.speed,
-                                rest_time=set_schema.rest_time
-                            )
-                            db.add(set_db)
-    
-    # Commit the transaction
-    db.commit()
-    db.refresh(workout_db)
-    return workout_db
-
 @router.post("/llm/create-workout")
 async def create_workout(
-    request_data: CreateWorkoutRequest, # Use the Pydantic model for the body
+    request_data: CreateWorkoutRequest,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_session)
+    db: AsyncSession = Depends(get_session)
 ):
+    logger.info("[llm/create-workout] Start - User: %s", current_user.id)
     try:
         # 1. Aktuellen Trainingsplan des Benutzers laden
         query = (
@@ -90,9 +32,12 @@ async def create_workout(
             .join(TrainingPlanFollower)
             .where(TrainingPlanFollower.user_id == current_user.id)
         )
-        trainings_plan = db.exec(query).first()
+        result = await db.exec(query)
+        trainings_plan = result.first()
+        logger.info("[llm/create-workout] Trainingsplan: %s", trainings_plan)
         
         if not trainings_plan:
+            logger.warning("[llm/create-workout] Kein Trainingsplan gefunden für User: %s", current_user.id)
             raise HTTPException(
                 status_code=404,
                 detail="Kein Trainingsplan gefunden. Bitte erstelle zuerst einen Trainingsplan."
@@ -105,22 +50,27 @@ async def create_workout(
             .order_by(ActivityLog.timestamp.desc())
             .limit(100)
         )
-        training_history = db.exec(history_query).all()
+        history_result = await db.exec(history_query)
+        training_history = history_result.all()
+        logger.info("[llm/create-workout] Training History Count: %d", len(training_history))
         
         # Access the user prompt from the request body
         user_prompt = request_data.prompt
+        logger.info("[llm/create-workout] User Prompt: %s", user_prompt)
         
-        # TODO: Pass user_prompt to the LLM chain
-        # For now, we just receive it. The actual LLM call modification
-        # will be done in the next step.
-        print(f"Received user prompt: {user_prompt}") # Example logging
+        # 4. LLM-Chain ausführen (übergibt nun die geladene Historie und den Prompt)
+        logger.info("[llm/create-workout] Starte LLM-Generierung...")
+        workout_result = await generate_workout(trainings_plan, training_history, user_prompt)
+        logger.info("[llm/create-workout] LLM-Generierung abgeschlossen.")
         
-        # 4. LLM-Chain ausführen (übergibt nun die geladene Historie)
-        # Note: generate_workout currently does not accept user_prompt
-        workout_result = generate_workout(trainings_plan, training_history)
-        
-        # 5. Workout in die Datenbank speichern
-        saved_workout = save_workout_to_db(workout_result, trainings_plan.id, db)
+        # 5. Workout in die Datenbank speichern (Servicefunktion)
+        logger.info("[llm/create-workout] Speichere Workout in DB (Service)...")
+        saved_workout = await save_workout_to_db_async(
+            workout_schema=workout_result,
+            training_plan_id=trainings_plan.id,
+            db=db
+        )
+        logger.info("[llm/create-workout] Workout gespeichert mit ID: %s", saved_workout.id)
         
         # 6. Erfolgreiche Antwort zurückgeben
         return {
@@ -128,9 +78,11 @@ async def create_workout(
             "message": "Workout erfolgreich erstellt und in der Datenbank gespeichert.",
             "data": {"workout_id": saved_workout.id}
         }
-    except HTTPException:
+    except HTTPException as he:
+        logger.error("[llm/create-workout] HTTPException: %s", he.detail)
         raise  # Bereits formatierte HTTP-Fehler weiterleiten
     except Exception as e:
+        logger.error("[llm/create-workout] Exception: %s", str(e), exc_info=True)
         raise HTTPException(
             status_code=500, 
             detail=f"Fehler bei der Workout-Erstellung: {str(e)}"

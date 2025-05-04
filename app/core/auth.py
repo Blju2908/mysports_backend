@@ -26,10 +26,8 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     )
     
     try:
-        # Verify token with Supabase (GoTrue)
-        supabase = get_supabase_client()
-        # The token will be verified by Supabase
-        user = supabase.auth.get_user(token)
+        supabase = await get_supabase_client()
+        user = await supabase.auth.get_user(token)
         
         if not user or not user.user:
             raise credentials_exception
@@ -41,5 +39,9 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
             role=user.user.app_metadata.get("role") if user.user.app_metadata else None
         )
         
-    except JWTError:
+    except JWTError as e:
+        print(f"[Auth] JWTError: {e}")
+        raise credentials_exception
+    except Exception as e:
+        print(f"[Auth] Exception: {e}")
         raise credentials_exception 

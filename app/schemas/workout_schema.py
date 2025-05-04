@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
-
+from app.models.block_model import BlockStatus
 # Response Schemas
 class WorkoutResponseSchema(BaseModel):
     id: int
@@ -41,6 +41,7 @@ class BlockResponseSchema(BaseModel):
     workout_id: int
     name: str
     description: Optional[str] = None
+    status: BlockStatus
     exercises: List[ExerciseResponseSchema] = []
     
     class Config:

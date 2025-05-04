@@ -3,7 +3,6 @@ from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .exercise_model import Exercise
-    from .block_model import Block
 
 class Set(SQLModel, table=True):
     __tablename__ = "sets"

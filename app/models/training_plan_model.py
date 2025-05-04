@@ -14,8 +14,7 @@ class TrainingPlan(SQLModel, table=True):
     goal: str
     restrictions: str
     equipment: str
-    session_duration: int
-    description: str
+    session_duration: str
 
     # followers verweist auf UserModel mit Supabase-User-ID (UUID)
     followers: List["UserModel"] = Relationship(

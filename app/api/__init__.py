@@ -11,6 +11,6 @@ def create_api_router() -> APIRouter:
     api_router.include_router(llm_router, tags=["llm"])
     api_router.include_router(auth_router, prefix="/auth", tags=["auth"])
     api_router.include_router(training_plan_router, prefix="/training-plan", tags=["training-plan"])
-    api_router.include_router(workout_router)
+    api_router.include_router(workout_router, prefix="/workouts", tags=["workout"])
     api_router.include_router(showcase_router, tags=["showcase"])
     return api_router 

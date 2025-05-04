@@ -7,6 +7,7 @@ from .training_plan_follower_model import TrainingPlanFollower
 if TYPE_CHECKING:
     from .training_plan_model import TrainingPlan
     from .training_history import ActivityLog
+
 class UserModel(SQLModel, table=True):
     """
     UserModel dient als Platzhalter für zusätzliche User-Informationen.

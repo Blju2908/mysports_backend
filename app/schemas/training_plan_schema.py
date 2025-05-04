@@ -1,18 +1,17 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class TrainingPlanResponse(BaseModel):
-    id: Optional[int]
+class TrainingPlanSchema(BaseModel):
+    id: Optional[int] = None
     goal: str
     restrictions: str
     equipment: str
-    session_duration: int
-    description: str
+    session_duration: str
 
     class Config:
         from_attributes = True
 
 class APIResponse(BaseModel):
     success: bool
-    data: Optional[TrainingPlanResponse]
+    data: Optional[TrainingPlanSchema]
     message: str 
