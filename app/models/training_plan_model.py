@@ -11,10 +11,10 @@ if TYPE_CHECKING:
 class TrainingPlan(SQLModel, table=True):
     __tablename__ = "training_plans"
     id: Optional[int] = Field(default=None, primary_key=True)
-    goal: str
-    restrictions: str
-    equipment: str
-    session_duration: str
+    goal: Optional[str] = None
+    restrictions: Optional[str] = None
+    equipment: Optional[str] = None
+    session_duration: Optional[str] = None
 
     # followers verweist auf UserModel mit Supabase-User-ID (UUID)
     followers: List["UserModel"] = Relationship(

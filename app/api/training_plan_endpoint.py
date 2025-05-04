@@ -8,6 +8,7 @@ from app.schemas.training_plan_schema import TrainingPlanSchema, APIResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 import logging
+from app.models.user_model import UserModel
 
 router = APIRouter(tags=["training-plan"])
 
@@ -61,6 +62,14 @@ async def get_my_training_plan(
 ):
     try:
         user_uuid = UUID(current_user.id)
+        # Sicherstellen, dass der User in der eigenen Tabelle existiert
+        user_in_db = await db.get(UserModel, user_uuid)
+        if not user_in_db:
+            new_user = UserModel(id=user_uuid)
+            db.add(new_user)
+            await db.commit()
+            await db.refresh(new_user)
+
         follower_query = select(TrainingPlanFollower).where(TrainingPlanFollower.user_id == user_uuid)
         result = await db.exec(follower_query)
         follower = result.first()
@@ -73,7 +82,6 @@ async def get_my_training_plan(
             new_follower = TrainingPlanFollower(user_id=user_uuid, training_plan_id=empty_plan.id)
             db.add(new_follower)
             await db.commit()
-            logger.info(f"[Get] Created empty plan for user {user_uuid}: {empty_plan}")
             return empty_plan
 
         plan_query = select(TrainingPlan).where(TrainingPlan.id == follower.training_plan_id)
@@ -88,7 +96,6 @@ async def get_my_training_plan(
             new_follower = TrainingPlanFollower(user_id=user_uuid, training_plan_id=empty_plan.id)
             db.add(new_follower)
             await db.commit()
-            logger.info(f"[Get] Fallback: Created empty plan for user {user_uuid}: {empty_plan}")
             return empty_plan
 
         return plan
