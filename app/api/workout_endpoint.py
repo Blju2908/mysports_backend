@@ -10,7 +10,7 @@ from app.models.workout_model import Workout, WorkoutStatus
 from app.models.training_plan_follower_model import TrainingPlanFollower
 from app.schemas.workout_schema import (
     WorkoutResponseSchema,
-    WorkoutDetailResponseSchema,
+    WorkoutSchemaWithBlocks,
     BlockResponseSchema,
     ActivityBlockPayloadSchema,
     ActivitySetSchema,
@@ -68,7 +68,7 @@ async def get_user_workouts(
     return workouts
 
 
-@router.get("/{workout_id}", response_model=WorkoutDetailResponseSchema)
+@router.get("/{workout_id}", response_model=WorkoutSchemaWithBlocks)
 async def get_workout_detail(
     workout_id: int,
     db: AsyncSession = Depends(get_session),

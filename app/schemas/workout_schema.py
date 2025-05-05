@@ -47,7 +47,7 @@ class BlockResponseSchema(BaseModel):
     class Config:
         from_attributes = True
 
-class WorkoutDetailResponseSchema(WorkoutResponseSchema):
+class WorkoutSchemaWithBlocks(WorkoutResponseSchema):
     blocks: List[BlockResponseSchema] = []
     
     class Config:

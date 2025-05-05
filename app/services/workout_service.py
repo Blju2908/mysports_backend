@@ -4,9 +4,9 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.models.workout_model import Workout
-from app.models.block_model import Block, BlockStatus # Needed for selectinload path
-from app.models.exercise_model import Exercise # Needed for selectinload path
-from app.llm.schemas.workout_generation_schema import WorkoutSchema
+from app.models.block_model import Block, BlockStatus
+from app.models.exercise_model import Exercise 
+from app.schemas.workout_schema import WorkoutSchemaWithBlocks
 from app.models.set_model import Set
 from datetime import datetime
 
@@ -52,7 +52,7 @@ async def get_workout_details(
 
 async def save_workout_to_db_async(
     *,
-    workout_schema: WorkoutSchema,
+    workout_schema: WorkoutSchemaWithBlocks,
     training_plan_id: int,
     db: AsyncSession
 ) -> Workout:

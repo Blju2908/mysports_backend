@@ -1,0 +1,409 @@
+{
+  "training_plan_id": 45,
+  "name": "Push-Training mit Core-Fokus",
+  "description": "Push-Einheit mit Fokus auf Brust, Schultern, Trizeps und Core. Dauer ca. 1h.",
+  "blocks": [
+    {
+      "name": "Aufwärmen und Mobilisation",
+      "description": "Leichtes Cardio und dynamische Mobilisation, um Gelenke vorzubereiten.",
+      "exercises": [
+        {
+          "name": "Rudergerät",
+          "description": "Leichtes Aufwärmen auf dem Rudergerät.",
+          "sets": [
+            {
+              "values": [
+                0.0,
+                0.0,
+                300.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Armkreisen mit Kurzhanteln",
+          "description": "Dynamische Schultermobilisation.",
+          "sets": [
+            {
+              "values": [
+                2.0,
+                15.0,
+                0.0,
+                0.0,
+                0.0,
+                30.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Band Pull-Aparts",
+          "description": "Schulterblatt-Retraktion und Stabilisierung.",
+          "sets": [
+            {
+              "values": [
+                0.0,
+                15.0,
+                0.0,
+                0.0,
+                0.0,
+                30.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hauptteil – Push-Übungen",
+      "description": "Vier Hauptübungen für Brust, Schultern und Trizeps.",
+      "exercises": [
+        {
+          "name": "Langhantel Bankdrücken",
+          "description": "Flachbankdrücken für Brustmuskulatur.",
+          "sets": [
+            {
+              "values": [
+                50.0,
+                8.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            },
+            {
+              "values": [
+                50.0,
+                8.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            },
+            {
+              "values": [
+                50.0,
+                8.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            },
+            {
+              "values": [
+                50.0,
+                8.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Schrägbankdrücken mit Kurzhanteln",
+          "description": "Obere Brust fokussiert.",
+          "sets": [
+            {
+              "values": [
+                20.0,
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            },
+            {
+              "values": [
+                20.0,
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            },
+            {
+              "values": [
+                20.0,
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            },
+            {
+              "values": [
+                20.0,
+                10.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Schulterdrücken stehend (Langhantel)",
+          "description": "Vordere und seitliche Schultermuskulatur.",
+          "sets": [
+            {
+              "values": [
+                30.0,
+                8.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            },
+            {
+              "values": [
+                30.0,
+                8.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            },
+            {
+              "values": [
+                30.0,
+                8.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            },
+            {
+              "values": [
+                30.0,
+                8.0,
+                0.0,
+                0.0,
+                0.0,
+                90.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Trizepsdrücken am Kabelzug (Seilgriff)",
+          "description": "Isolationstraining für den Trizeps.",
+          "sets": [
+            {
+              "values": [
+                30.0,
+                12.0,
+                0.0,
+                0.0,
+                0.0,
+                60.0
+              ]
+            },
+            {
+              "values": [
+                30.0,
+                12.0,
+                0.0,
+                0.0,
+                0.0,
+                60.0
+              ]
+            },
+            {
+              "values": [
+                30.0,
+                12.0,
+                0.0,
+                0.0,
+                0.0,
+                60.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Core-Training",
+      "description": "Kräftigung der Rumpfmuskulatur zur Unterstützung des Oberkörpers.",
+      "exercises": [
+        {
+          "name": "Unterarmstütz (Plank)",
+          "description": "Statische Rumpfspannung.",
+          "sets": [
+            {
+              "values": [
+                0.0,
+                0.0,
+                45.0,
+                0.0,
+                0.0,
+                30.0
+              ]
+            },
+            {
+              "values": [
+                0.0,
+                0.0,
+                45.0,
+                0.0,
+                0.0,
+                30.0
+              ]
+            },
+            {
+              "values": [
+                0.0,
+                0.0,
+                45.0,
+                0.0,
+                0.0,
+                30.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Russische Drehung mit Kurzhantel",
+          "description": "Rotationsspannung für seitliche Bauchmuskeln.",
+          "sets": [
+            {
+              "values": [
+                12.0,
+                20.0,
+                0.0,
+                0.0,
+                0.0,
+                30.0
+              ]
+            },
+            {
+              "values": [
+                12.0,
+                20.0,
+                0.0,
+                0.0,
+                0.0,
+                30.0
+              ]
+            },
+            {
+              "values": [
+                12.0,
+                20.0,
+                0.0,
+                0.0,
+                0.0,
+                30.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Hängendes Beinheben an der Klimmzugstange",
+          "description": "Beinaufrichtung und untere Bauchmuskeln.",
+          "sets": [
+            {
+              "values": [
+                0.0,
+                12.0,
+                0.0,
+                0.0,
+                0.0,
+                60.0
+              ]
+            },
+            {
+              "values": [
+                0.0,
+                12.0,
+                0.0,
+                0.0,
+                0.0,
+                60.0
+              ]
+            },
+            {
+              "values": [
+                0.0,
+                12.0,
+                0.0,
+                0.0,
+                0.0,
+                60.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cooldown & Stretching",
+      "description": "Dehnung zur Förderung der Regeneration.",
+      "exercises": [
+        {
+          "name": "Brustdehnung mit Widerstandsband",
+          "description": "Dehnung der Brustmuskulatur.",
+          "sets": [
+            {
+              "values": [
+                0.0,
+                0.0,
+                30.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Trizepsdehnung",
+          "description": "Dehnung des Trizeps und der Schulter.",
+          "sets": [
+            {
+              "values": [
+                0.0,
+                0.0,
+                30.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Seitliche Rumpfdehnung",
+          "description": "Dehnung der seitlichen Bauchmuskulatur.",
+          "sets": [
+            {
+              "values": [
+                0.0,
+                0.0,
+                30.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

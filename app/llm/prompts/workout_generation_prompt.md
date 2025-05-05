@@ -29,3 +29,7 @@ Trainingshistorie:
 {training_history} 
 
 Bitte gib das Workout in JSON Format zurück.
+Bitte gib das Workout als JSON zurück. 
+- Lasse alle Felder, die keinen Wert haben (null/None), komplett weg.
+- Erzeuge KEINE Felder mit null/None.
+- Nur Felder mit tatsächlichen Werten sollen im JSON erscheinen.
