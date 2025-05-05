@@ -10,7 +10,7 @@ Es ist wichtig, dass du die Historie berücksichtigst und die Zielsetzung des Us
 - Gehe davon aus, dass der User die Session direkt jetzt starten möchte, außer er sagt etwas anderes.
 - Bitte strukturiere das Training mindestens in 3 Blöcke. Nenne sie aber nicht Blöcke.
 - Bitte gib immer spezifische Übungen aus. Ich möchte nicht sowas wie "Ganzkörperdehnen"
-- Bitte stelle sicher, dass alle Übungsnamen auf Deutsch sind.
+- Bitte stelle sicher, dass für die Übungsnamen Tutorials auf YouToube gefunden werden. (nicht zu exotische Beschreibungen)
 
 - Bitte tue Einschränkungen des Nutzers nicht überbetonen, berücksichtige sie einfach.
 

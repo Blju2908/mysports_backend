@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Body
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from app.core.supabase import get_supabase_client
 from app.db.session import get_session
@@ -19,12 +19,21 @@ class UserResponse(BaseModel):
     
 class TokenResponse(BaseModel):
     access_token: str
+    refresh_token: str
     token_type: str = "bearer"
     user: UserResponse
 
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
+
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
+
+class RefreshTokenResponse(BaseModel):
+    access_token: str
+    refresh_token: str
+    user: UserResponse
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login-form")
 
@@ -87,6 +96,7 @@ async def login(login_data: LoginRequest):
             )
         return TokenResponse(
             access_token=response.session.access_token,
+            refresh_token=response.session.refresh_token,
             user=UserResponse(
                 email=response.user.email,
                 id=response.user.id
@@ -155,3 +165,25 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
     Get current user information
     """
     return current_user
+
+@router.post("/refresh", response_model=RefreshTokenResponse)
+async def refresh_token(data: RefreshTokenRequest):
+    """
+    Refresh the access token using a refresh token.
+    """
+    try:
+        supabase = await get_supabase_client()
+        session = await supabase.auth.refresh_session(data.refresh_token)
+        if not session or not session.access_token or not session.user:
+            raise HTTPException(status_code=401, detail="Invalid refresh token")
+        return RefreshTokenResponse(
+            access_token=session.access_token,
+            refresh_token=session.refresh_token,
+            user=UserResponse(
+                email=session.user.email,
+                id=session.user.id
+            )
+        )
+    except Exception as e:
+        print(f"[Auth][Refresh][Exception] {e}")
+        raise HTTPException(status_code=401, detail="Could not refresh token")
