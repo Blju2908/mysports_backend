@@ -38,10 +38,6 @@ async def generate_workout(
             current_date=datetime.now().strftime("%d.%m.%Y"),
         )
 
-        # speicher den prompt in einer strukturierten markdown datei
-        with open("prompt.md", "w") as f:
-            f.write(prompt)
-
         # API key aus der config holen
         config = get_config()
         OPENAI_API_KEY = config.OPENAI_API_KEY2
