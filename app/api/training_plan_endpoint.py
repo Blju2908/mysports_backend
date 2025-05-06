@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, status, HTTPException, Body
 from sqlmodel import Session, delete, select
 from app.models.training_plan_model import TrainingPlan
 from app.models.training_plan_follower_model import TrainingPlanFollower
@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 import logging
 from app.models.user_model import UserModel
+import json
 
 router = APIRouter(tags=["training-plan"])
 
@@ -105,9 +106,9 @@ async def get_my_training_plan(
         raise HTTPException(status_code=500, detail=f"Fehler beim Laden des Trainingsplans: {e}")
 
 
-@router.put("/mine", response_model=TrainingPlanSchema)
+@router.put("/mine")
 async def update_my_training_plan(
-    plan_data: TrainingPlanSchema,
+    plan_data: dict = Body(...),
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
@@ -118,26 +119,37 @@ async def update_my_training_plan(
         follower = result.first()
 
         if not follower or not follower.training_plan_id:
-            logger.warning(f"[Update] No active plan for user {user_uuid}")
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="No active training plan found to update."
-            )
+            # Wenn kein Plan existiert, lege einen neuen an
+            new_plan = TrainingPlan(goal="", restrictions="", equipment="", session_duration="")
+            db.add(new_plan)
+            await db.commit()
+            await db.refresh(new_plan)
+            new_follower = TrainingPlanFollower(user_id=user_uuid, training_plan_id=new_plan.id)
+            db.add(new_follower)
+            await db.commit()
+            return new_plan
 
         plan_to_update = await db.get(TrainingPlan, follower.training_plan_id)
 
         if not plan_to_update:
-            logger.warning(f"[Update] Plan not found for id {follower.training_plan_id}")
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Training plan details not found for update."
-            )
+            # Wenn Plan nicht gefunden, lege einen neuen an
+            new_plan = TrainingPlan(goal="", restrictions="", equipment="", session_duration="")
+            db.add(new_plan)
+            await db.commit()
+            await db.refresh(new_plan)
+            new_follower = TrainingPlanFollower(user_id=user_uuid, training_plan_id=new_plan.id)
+            db.add(new_follower)
+            await db.commit()
+            return new_plan
 
-        update_data = plan_data.model_dump(exclude_unset=True)
-        for key, value in update_data.items():
-            setattr(plan_to_update, key, value)
-
+        # Überschreibe das Feld 'goal' mit dem JSON-String
+        plan_to_update.goal = plan_data.get("goal", "")
+        plan_to_update.restrictions = plan_data.get("restrictions", "")
+        plan_to_update.equipment = plan_data.get("equipment", "")
+        plan_to_update.session_duration = plan_data.get("session_duration", "")
+        
         db.add(plan_to_update)
+        
         await db.commit()
         await db.refresh(plan_to_update)
         logger.info(f"[Update] Updated plan {plan_to_update.id} for user {user_uuid}")
