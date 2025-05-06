@@ -53,10 +53,6 @@ async def run_workout_chain(
         training_plan, filtered_training_history, user_prompt
     )
 
-    # output the short result as json
-    with open("workout_short.json", "w") as f:
-        json.dump(result.model_dump(), f, ensure_ascii=False, indent=2)
-
     # Konvertiere das LLM-Ergebnis in ein Datenbankmodell
     workout_model = convert_llm_output_to_db_models(
         result.model_dump(),
