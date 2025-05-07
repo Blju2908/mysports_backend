@@ -6,9 +6,11 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import datetime
 import time
+import logging
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login-form")
 
+logger = logging.getLogger("auth")
 
 class User(BaseModel):
     id: str
@@ -26,13 +28,16 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     )
     
     try:
+        logger.info(f"[get_current_user] Prüfe Token: {token[:8]}... (truncated)")
         supabase = await get_supabase_client()
         user = await supabase.auth.get_user(token)
         
         if not user or not user.user:
+            logger.warning(f"[get_current_user] Kein User gefunden für Token: {token[:8]}... (truncated)")
             raise credentials_exception
             
         # Return the user data
+        logger.info(f"[get_current_user] User validiert: {user.user.email}")
         return User(
             id=user.user.id,
             email=user.user.email,
@@ -40,8 +45,8 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         )
         
     except JWTError as e:
-        print(f"[Auth] JWTError: {e}")
+        logger.error(f"[get_current_user] JWTError: {e}")
         raise credentials_exception
     except Exception as e:
-        print(f"[Auth] Exception: {e}")
+        logger.error(f"[get_current_user] Exception: {e}")
         raise credentials_exception 
