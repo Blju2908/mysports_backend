@@ -174,7 +174,18 @@ async def refresh_token(data: RefreshTokenRequest):
     try:
         supabase = await get_supabase_client()
         session = await supabase.auth.refresh_session(data.refresh_token)
-        if not session or not session.access_token or not session.user:
+        # print(f"session: {session}")
+        # print(f"session.access_token: {getattr(session, 'access_token', None)}")
+        # print(f"session.refresh_token: {getattr(session, 'refresh_token', None)}")
+        # print(f"session.user: {getattr(session, 'user', None)}")
+        # print(f"session.error: {getattr(session, 'error', None)}")
+        if (
+            not session
+            or getattr(session, 'error', None)
+            or getattr(session, 'access_token', None) is None
+            or getattr(session, 'user', None) is None
+        ):
+            print(f"[Auth][Refresh][Error] Invalid session or missing attributes: {session}")
             raise HTTPException(status_code=401, detail="Invalid refresh token")
         return RefreshTokenResponse(
             access_token=session.access_token,
