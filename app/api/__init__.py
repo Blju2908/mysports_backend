@@ -5,6 +5,7 @@ from .auth_endpoint import router as auth_router
 from .training_plan_endpoint import router as training_plan_router
 from .workout_endpoint import router as workout_router
 from .showcase_endpoint import router as showcase_router
+from .user_history_endpoint import router as user_history_router
 
 def create_api_router() -> APIRouter:
     api_router = APIRouter()
@@ -13,4 +14,6 @@ def create_api_router() -> APIRouter:
     api_router.include_router(training_plan_router, prefix="/training-plan", tags=["training-plan"])
     api_router.include_router(workout_router, prefix="/workouts", tags=["workout"])
     api_router.include_router(showcase_router, tags=["showcase"])
+    api_router.include_router(user_history_router, prefix="/user-history", tags=["user-history"])
+    
     return api_router 
