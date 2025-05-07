@@ -64,7 +64,11 @@ async def get_my_training_plan(
     try:
         user_uuid = UUID(current_user.id)
         # Sicherstellen, dass der User in der eigenen Tabelle existiert
-        user_in_db = await db.get(UserModel, user_uuid)
+        user_query = select(UserModel).where(UserModel.id == user_uuid)
+        result = await db.execute(user_query)
+        user_in_db = result.scalar_one_or_none()
+        
+        
         if not user_in_db:
             new_user = UserModel(id=user_uuid)
             db.add(new_user)
