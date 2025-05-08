@@ -48,26 +48,68 @@ class ChangeEmailRequest(BaseModel):
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login-form")
 
-@router.post("/register", response_model=UserResponse)
+@router.post(
+    "/register",
+    response_model=UserResponse,
+    status_code=status.HTTP_201_CREATED,
+    responses={
+        status.HTTP_201_CREATED: {
+            "model": UserResponse,
+            "description": "User registered successfully.",
+        },
+        status.HTTP_400_BAD_REQUEST: {
+            "description": "Registration failed.",
+        },
+    },
+)
 async def register(user_data: UserRegister, db: Session = Depends(get_session)):
     """
     Register a new user with Supabase Auth. Returns only user info, no token.
     """
+    logger.info(f"[Register] Attempting to register user: {user_data.email}")
     try:
-        logger.info(f"[Register] Attempting to register user: {user_data.email}")
         supabase = await get_supabase_client()
         response = await supabase.auth.sign_up({
             "email": user_data.email,
             "password": user_data.password
         })
-        if not response.user:
-            logger.error(f"[Register][Error] Supabase response: {response}")
+        
+        # Check specifically for already registered email
+        if not response.user or (
+            hasattr(response.user, 'identities') and 
+            (response.user.identities is None or len(response.user.identities) == 0)
+        ):
+            logger.warning(f"[Register] Email already registered: {user_data.email}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Diese E-Mail-Adresse wird bereits verwendet"
+            )
+            
+        if getattr(response, "error", None):
             logger.error(f"[Register][Error] Supabase error: {getattr(response, 'error', None)}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(getattr(response, 'error', "Registration failed"))
+            )
+            
+        if not getattr(response, "user", None):
+            logger.error(f"[Register][Error] Supabase response: {response}")
             logger.error(f"[Register][Error] Supabase user: {getattr(response, 'user', None)}")
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Registration failed"
             )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception(f"[Register][Exception] {e}")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+        
+    try:
         # Nach erfolgreicher Registrierung: UserModel-Eintrag anlegen
         user_model = UserModel(id=response.user.id)
         db.add(user_model)
@@ -79,10 +121,16 @@ async def register(user_data: UserRegister, db: Session = Depends(get_session)):
             id=response.user.id
         )
     except Exception as e:
-        logger.exception(f"[Register][Exception] {e}")
+        logger.exception(f"[Register][Exception] Error creating user model: {e}")
+        # Try to clean up the Supabase user if we can't create the UserModel
+        try:
+            # Admin delete user would go here if you implement it
+            pass
+        except:
+            pass
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=str(e)
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error creating user record"
         )
 
 @router.post("/login", response_model=TokenResponse)
