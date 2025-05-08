@@ -38,6 +38,14 @@ class RefreshTokenResponse(BaseModel):
     refresh_token: str
     user: UserResponse
 
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+class ChangeEmailRequest(BaseModel):
+    new_email: EmailStr
+    password: str
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login-form")
 
 @router.post("/register", response_model=UserResponse)
@@ -194,3 +202,125 @@ async def refresh_token(data: RefreshTokenRequest):
     except Exception as e:
         logger.exception(f"[Refresh][Exception] {e}")
         raise HTTPException(status_code=401, detail="Could not refresh token")
+
+@router.post("/change-password", status_code=status.HTTP_200_OK)
+async def change_password(
+    password_data: ChangePasswordRequest,
+    current_user: User = Depends(get_current_user),
+    token: str = Depends(oauth2_scheme)
+):
+    """
+    Change user password.
+    Requires authentication and current password.
+    """
+    try:
+        logger.info(f"[ChangePassword] Attempting password change for user: {current_user.email}")
+        supabase = await get_supabase_client()
+        
+        # First verify the current password
+        try:
+            # Use sign_in_with_password to verify current password
+            verify_response = await supabase.auth.sign_in_with_password({
+                "email": current_user.email,
+                "password": password_data.current_password
+            })
+            
+            if not verify_response.user:
+                logger.warning(f"[ChangePassword] Current password verification failed for: {current_user.email}")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Current password is incorrect"
+                )
+        except Exception as e:
+            logger.warning(f"[ChangePassword] Current password verification failed for: {current_user.email}, {str(e)}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Current password is incorrect"
+            )
+        
+        # If verification succeeded, change the password
+        update_response = await supabase.auth.update_user(
+            {
+                "password": password_data.new_password
+            }, 
+            token
+        )
+        
+        if update_response.user:
+            logger.info(f"[ChangePassword] Password changed successfully for user: {current_user.email}")
+            return {"message": "Password changed successfully"}
+        else:
+            logger.error(f"[ChangePassword] Failed to change password for user: {current_user.email}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to change password"
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception(f"[ChangePassword] Error changing password: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to change password: {str(e)}"
+        )
+
+@router.post("/change-email", status_code=status.HTTP_200_OK)
+async def change_email(
+    email_data: ChangeEmailRequest,
+    current_user: User = Depends(get_current_user),
+    token: str = Depends(oauth2_scheme)
+):
+    """
+    Change user email address.
+    Requires authentication and password verification.
+    """
+    try:
+        logger.info(f"[ChangeEmail] Attempting email change for user: {current_user.email} to {email_data.new_email}")
+        supabase = await get_supabase_client()
+        
+        # First verify the password
+        try:
+            # Use sign_in_with_password to verify password
+            verify_response = await supabase.auth.sign_in_with_password({
+                "email": current_user.email,
+                "password": email_data.password
+            })
+            
+            if not verify_response.user:
+                logger.warning(f"[ChangeEmail] Password verification failed for: {current_user.email}")
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Password is incorrect"
+                )
+        except Exception as e:
+            logger.warning(f"[ChangeEmail] Password verification failed for: {current_user.email}, {str(e)}")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Password is incorrect"
+            )
+        
+        # If verification succeeded, change the email
+        update_response = await supabase.auth.update_user(
+            {
+                "email": email_data.new_email
+            }, 
+            token
+        )
+        
+        if update_response.user:
+            logger.info(f"[ChangeEmail] Email changed successfully from {current_user.email} to {email_data.new_email}")
+            return {"message": "Email changed successfully. Please verify your new email address if required."}
+        else:
+            logger.error(f"[ChangeEmail] Failed to change email for user: {current_user.email}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to change email"
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.exception(f"[ChangeEmail] Error changing email: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to change email: {str(e)}"
+        )
