@@ -6,7 +6,7 @@ from app.db.trainingplan_db_access import get_training_plan_for_user
 from app.db.training_history import get_training_history_for_user
 from app.llm.chains.workout_generation_chain import generate_workout
 from app.services.workout_service import save_workout_to_db_async
-from app.llm.schemas.workout_generation_schema import (
+from app.llm.schemas.create_workout_schemas import (
     WorkoutSchema,
     BlockSchema,
     ExerciseSchema,
@@ -170,16 +170,14 @@ def filter_training_history(training_history: list) -> str:
       24kg, 20 reps
     Klimmzüge (Band):
       6 reps
+    Falls in der Spalte "notes" etwas steht, wird es ebenfalls ausgegeben.
     """
     set_fields = ["weight", "reps", "duration"]
-    # Gruppierung: {datum: OrderedDict{übung: [satzdict, ...]}}
     grouped = defaultdict(lambda: OrderedDict())
-    # Hilfsstruktur, um die Reihenfolge der Übungen nach erstem Auftreten zu sichern
     for entry in sorted(
         training_history, key=lambda e: (str(e.timestamp)[:10], e.timestamp)
     ):
         entry_dict = entry.model_dump() if hasattr(entry, "model_dump") else dict(entry)
-        # Datum normalisieren
         ts = entry_dict.get("timestamp")
         try:
             dt = datetime.fromisoformat(str(ts))
@@ -190,12 +188,13 @@ def filter_training_history(training_history: list) -> str:
         set_data = {
             k: v for k, v in entry_dict.items() if k in set_fields and v is not None
         }
-        # Reihenfolge der Übungen nach erstem Auftreten sichern
+        notes = entry_dict.get("notes")
+        if notes:
+            set_data["notes"] = notes
         if exercise not in grouped[date_str]:
             grouped[date_str][exercise] = []
         grouped[date_str][exercise].append(set_data)
 
-    # Text bauen
     lines = []
     for date in sorted(grouped.keys(), reverse=True):
         lines.append(date)
@@ -209,6 +208,8 @@ def filter_training_history(training_history: list) -> str:
                     attribs.append(f"{set_data['reps']} reps")
                 if "duration" in set_data:
                     attribs.append(f"{set_data['duration']} sek")
+                if "notes" in set_data and set_data["notes"]:
+                    attribs.append(f"Notiz: {set_data['notes']}")
                 attrib_str = ", ".join(attribs)
                 lines.append(f"  {attrib_str}" if attrib_str else "  -")
     return "\n".join(lines)

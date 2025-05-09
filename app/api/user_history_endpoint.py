@@ -28,6 +28,11 @@ class ActivityLogSchema(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+class ManualActivityLogCreateSchema(BaseModel):
+    exercise_name: str = Field(..., description="Name der Aktivität")
+    notes: str = Field(..., description="Beschreibung der Aktivität")
+    timestamp: Optional[datetime] = Field(default_factory=datetime.utcnow, description="Zeitpunkt der Aktivität")
+
 @router.get("/", response_model=List[ActivityLogSchema])
 async def get_user_history(
     db: AsyncSession = Depends(get_session),
@@ -96,4 +101,31 @@ async def delete_history_entry(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to delete history entry: {str(e)}"
+        )
+
+@router.post("/", status_code=201)
+async def add_manual_activity_log(
+    payload: ManualActivityLogCreateSchema,
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Füge einen manuellen Aktivitäts-Eintrag für den aktuellen User hinzu.
+    """
+    new_log = ActivityLog(
+        user_id=current_user.id,
+        exercise_name=payload.exercise_name,
+        notes=payload.notes,
+        timestamp=payload.timestamp,
+    )
+    db.add(new_log)
+    try:
+        await db.commit()
+        await db.refresh(new_log)
+        return {"success": True, "id": new_log.id}
+    except Exception as e:
+        await db.rollback()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Fehler beim Speichern des Aktivitäts-Eintrags: {str(e)}"
         ) 

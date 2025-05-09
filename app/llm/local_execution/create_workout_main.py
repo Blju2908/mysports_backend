@@ -13,7 +13,7 @@ import asyncio
 from uuid import UUID
 from app.db.session import get_engine
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.llm.service.run_workout_chain import run_workout_chain
+from backend.app.llm.service.create_workout_service import run_workout_chain
 
 
 async def main():

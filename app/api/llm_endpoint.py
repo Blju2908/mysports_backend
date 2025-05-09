@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import select
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
-from app.llm.service.run_workout_chain import run_workout_chain
+from app.llm.service.create_workout_service import run_workout_chain
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 import logging

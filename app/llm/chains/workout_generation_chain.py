@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
-from app.llm.schemas.workout_generation_schema import WorkoutSchema
+from app.llm.schemas.create_workout_schemas import WorkoutSchema
 from app.llm.utils.langchain_utils import load_prompt
 import json
 from app.core.config import get_config
