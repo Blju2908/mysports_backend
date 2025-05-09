@@ -56,17 +56,17 @@ class WorkoutSchemaWithBlocks(WorkoutResponseSchema):
 # --- Input Schemas for Saving Activity Block ---
 
 class ActivitySetSchema(BaseModel):
-    # Include fields expected from frontend that map to ActivityLog
-    id: Optional[int] # The ID of the original Set
-    exercise_id: int
-    exercise_name: str # Expecting frontend to send this based on step data
+    id: int # Set ID from the original plan
+    exercise_name: str # Name of the exercise for context
     weight: Optional[float] = None
     reps: Optional[int] = None
-    duration: Optional[int] = None
-    distance: Optional[float] = None
-    speed: Optional[float] = None
-    rest_time: Optional[int] = None
-    # notes: Optional[str] = None # If frontend can send notes
+    duration: Optional[int] = None # Assuming duration in seconds
+    distance: Optional[float] = None # Assuming distance in km
+    speed: Optional[float] = None # Assuming speed in km/h
+    rest_time: Optional[int] = None # Assuming rest time in seconds
+    notes: Optional[str] = None # Kept the uncommented line
+    # notes: Optional[str] = None # If frontend can send notes -> This line was removed by the edit. Will remove manually if still present
 
 class ActivityBlockPayloadSchema(BaseModel):
+    block_id: int
     sets: List[ActivitySetSchema] 

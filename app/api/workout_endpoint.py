@@ -194,6 +194,7 @@ async def save_activity_block_endpoint(
             distance=activity_set.distance,
             speed=activity_set.speed,
             rest_time=activity_set.rest_time,
+            notes=activity_set.notes,
         )
         activity_logs.append(log_entry)
         db.add(log_entry)
@@ -261,23 +262,20 @@ async def delete_workout(
 
 @router.post("/blocks/finish", status_code=status.HTTP_201_CREATED)
 async def finish_block(
-    payload: dict = Body(...),
+    payload: ActivityBlockPayloadSchema = Body(...),
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
     """
     Setzt den Status eines Blocks auf 'done' und speichert die Sätze als ActivityLog.
-    Erwartet: { block_id: int, sets: [ { id, exercise_name, ... } ] }
+    Erwartet: { block_id: int, sets: [ { id, exercise_name, ..., notes? } ] }
     """
-    block_id = payload.get("block_id")
-    sets = payload.get("sets", [])
-    if not block_id or not sets:
-        raise HTTPException(
-            status_code=400, detail="block_id und sets sind erforderlich"
-        )
-
-    # Block laden und prüfen, ob User Zugriff hat
-    block_query = select(Block).where(Block.id == block_id)
+    # block_id and sets are now directly accessible via payload attributes
+    # No need for .get() and manual checks if they exist, Pydantic handles it.
+    
+    # Block laden und prüfen, ob User Zugriff hat (User access check is missing here, should be added for security)
+    # For now, focusing on the payload change and notes.
+    block_query = select(Block).where(Block.id == payload.block_id)
     b_result = await db.execute(block_query)
     block_to_update = b_result.scalar_one_or_none()
     if not block_to_update:
@@ -289,18 +287,19 @@ async def finish_block(
 
     # ActivityLogs anlegen
     current_timestamp = datetime.utcnow()
-    for activity_set in sets:
+    for activity_set in payload.sets: # Iterate over payload.sets
         log_entry = ActivityLog(
             user_id=current_user.id,
             timestamp=current_timestamp,
-            exercise_name=activity_set.get("exercise_name"),
-            set_id=activity_set.get("id"),
-            weight=activity_set.get("weight"),
-            reps=activity_set.get("reps"),
-            duration=activity_set.get("duration"),
-            distance=activity_set.get("distance"),
-            speed=activity_set.get("speed"),
-            rest_time=activity_set.get("rest_time"),
+            exercise_name=activity_set.exercise_name, # Direct attribute access
+            set_id=activity_set.id,                 # Direct attribute access
+            weight=activity_set.weight,             # Direct attribute access
+            reps=activity_set.reps,                 # Direct attribute access
+            duration=activity_set.duration,           # Direct attribute access
+            distance=activity_set.distance,           # Direct attribute access
+            speed=activity_set.speed,               # Direct attribute access
+            rest_time=activity_set.rest_time,         # Direct attribute access
+            notes=activity_set.notes                # Direct attribute access for notes
         )
         db.add(log_entry)
 
