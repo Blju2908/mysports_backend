@@ -229,40 +229,56 @@ async def refresh_token(data: RefreshTokenRequest):
     try:
         logger.info(f"[Refresh] Attempting refresh for refresh_token: {data.refresh_token[:8]}... (truncated)")
         supabase = await get_supabase_client()
-        session = await supabase.auth.refresh_session(data.refresh_token)
+        session_obj = await supabase.auth.refresh_session(data.refresh_token)
         
-        # Check for essential data first
-        if not session or not getattr(session, 'access_token', None) or not getattr(session, 'user', None):
-            logger.warning(f"[Refresh][Error] Critical session attributes missing: {session}")
-            raise HTTPException(status_code=401, detail="Invalid refresh token: Critical attributes missing")
+        logger.info(f"[Refresh] Received session object from Supabase: {str(session_obj)[:500]}..., type: {type(session_obj)}")
 
-        # Now, check for a specific error attribute, but be mindful of its meaning
-        session_error = getattr(session, 'error', None)
+        if session_obj is None:
+            logger.error("[Refresh][Error] Supabase returned None for session.")
+            raise HTTPException(status_code=401, detail="Invalid refresh token: Supabase returned no session")
+
+        access_token = getattr(session_obj, 'access_token', None)
+        user = getattr(session_obj, 'user', None)
+        new_refresh_token = getattr(session_obj, 'refresh_token', None)
+
+        # Detailed check for each attribute
+        is_access_token_missing = not access_token
+        is_user_object_none = user is None
+        user_id = getattr(user, 'id', None) if user is not None else None
+        is_user_id_missing = not user_id # Checks if user_id is None or empty
+        is_new_refresh_token_missing = not new_refresh_token
+
+        if is_access_token_missing or is_user_id_missing or is_new_refresh_token_missing:
+            logger.warning(
+                f"[Refresh][Error] Critical attributes missing. "
+                f"AT Missing: {is_access_token_missing} (Value: '{str(access_token)[:20]}...'), "
+                f"User Obj None: {is_user_object_none}, "
+                f"User ID Missing: {is_user_id_missing} (User ID Value: '{str(user_id)[:20]}...', User Obj: {str(user)[:100]}...), "
+                f"New RT Missing: {is_new_refresh_token_missing} (Value: '{str(new_refresh_token)[:20]}...'). "
+                f"Session Raw: {str(session_obj)[:500]}..."
+            )
+            raise HTTPException(status_code=401, detail="Invalid refresh token: Critical attributes missing (detailed check)")
+
+        session_error = getattr(session_obj, 'error', None)
         if session_error:
-            # You might need to inspect the type or content of session_error
-            # to see if it's a "fatal" error or just informational (like old token revoked)
-            logger.warning(f"[Refresh][Warning] Session object has an error attribute: {session_error}. Session: {session}")
-            # Depending on the nature of session_error, you might still proceed if new tokens are present
-            # For now, let's assume any error here is problematic as per your original logic.
-            # If Supabase ALWAYS revokes and sets error, this needs to change.
-            # A more robust check would be to see if the refresh_token in the session is the NEW one.
-            if session.refresh_token == data.refresh_token: # If refresh token hasn't changed, it's likely an error
-                logger.error(f"[Refresh][Error] Refresh token was not updated, and error attribute present: {session_error}")
-                raise HTTPException(status_code=401, detail=f"Refresh token processing error: {session_error}")
+            logger.info(f"[Refresh][Info] Session object has an 'error' attribute: {session_error}. Proceeding as new tokens/user are present.")
+            if new_refresh_token == data.refresh_token:
+                logger.warning(f"[Refresh][Warning] Refresh token did not rotate despite 'error' attribute. Old: {data.refresh_token[:8]}, New: {new_refresh_token[:8]}. Error: {session_error}")
 
-        # If we have new tokens and a user, and the error (if any) isn't fatal:
-        logger.info(f"[Refresh] Token refresh successful for user: {session.user.email}")
+        logger.info(f"[Refresh] Token refresh successful for user: {user.email}. New refresh token {new_refresh_token[:8]}... issued.")
         return RefreshTokenResponse(
-            access_token=session.access_token,
-            refresh_token=session.refresh_token, # This should be the NEW refresh token
+            access_token=access_token,
+            refresh_token=new_refresh_token,
             user=UserResponse(
-                email=session.user.email,
-                id=session.user.id
+                email=user.email,
+                id=user.id
             )
         )
+    except HTTPException:
+        raise
     except Exception as e:
-        logger.exception(f"[Refresh][Exception] {e}")
-        raise HTTPException(status_code=401, detail="Could not refresh token")
+        logger.exception(f"[Refresh][Exception] General error: {e}")
+        raise HTTPException(status_code=401, detail=f"Could not refresh token: {e}")
 
 @router.post("/change-password", status_code=status.HTTP_200_OK)
 async def change_password(
