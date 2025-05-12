@@ -69,4 +69,5 @@ class ActivitySetSchema(BaseModel):
 
 class ActivityBlockPayloadSchema(BaseModel):
     block_id: int
+    workout_id: int  # Neu: Workout-ID für die Verknüpfung
     sets: List[ActivitySetSchema] 

@@ -16,7 +16,8 @@ from app.models import (
     user_model,
     workout_model,
     training_history,
-    showcase_feedback_model
+    showcase_feedback_model,
+    workout_feedback_model
 )  # Ensure User model is registered in SQLModel.metadata
 
 # this is the Alembic Config object, which provides

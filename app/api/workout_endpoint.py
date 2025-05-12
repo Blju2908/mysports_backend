@@ -15,12 +15,14 @@ from app.schemas.workout_schema import (
     ActivityBlockPayloadSchema,
     ActivitySetSchema,
 )
+from app.schemas.workout_feedback_schema import WorkoutFeedbackSchema, WorkoutFeedbackResponseSchema
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
 from app.models.block_model import Block, BlockStatus
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set
 from app.models.training_history import ActivityLog
+from app.models.workout_feedback_model import WorkoutFeedback
 from app.services.workout_service import get_workout_details
 
 router = APIRouter(tags=["workouts"])
@@ -268,18 +270,24 @@ async def finish_block(
 ):
     """
     Setzt den Status eines Blocks auf 'done' und speichert die Sätze als ActivityLog.
-    Erwartet: { block_id: int, sets: [ { id, exercise_name, ..., notes? } ] }
+    Erwartet: { block_id: int, workout_id: int, sets: [ { id, exercise_name, ..., notes? } ] }
     """
-    # block_id and sets are now directly accessible via payload attributes
-    # No need for .get() and manual checks if they exist, Pydantic handles it.
-    
-    # Block laden und prüfen, ob User Zugriff hat (User access check is missing here, should be added for security)
-    # For now, focusing on the payload change and notes.
+    # Block laden und prüfen
     block_query = select(Block).where(Block.id == payload.block_id)
     b_result = await db.execute(block_query)
     block_to_update = b_result.scalar_one_or_none()
     if not block_to_update:
         raise HTTPException(status_code=404, detail="Block nicht gefunden")
+    
+    # Optional: Prüfen, ob das Workout existiert und zum Block passt
+    if payload.workout_id:
+        workout_query = select(Workout).where(Workout.id == payload.workout_id)
+        w_result = await db.execute(workout_query)
+        workout = w_result.scalar_one_or_none()
+        if not workout:
+            raise HTTPException(status_code=404, detail="Workout nicht gefunden")
+        if block_to_update.workout_id != payload.workout_id:
+            raise HTTPException(status_code=400, detail="Block gehört nicht zum angegebenen Workout")
 
     # Block-Status setzen
     block_to_update.status = BlockStatus.done
@@ -287,19 +295,20 @@ async def finish_block(
 
     # ActivityLogs anlegen
     current_timestamp = datetime.utcnow()
-    for activity_set in payload.sets: # Iterate over payload.sets
+    for activity_set in payload.sets:
         log_entry = ActivityLog(
             user_id=current_user.id,
+            workout_id=payload.workout_id,  # Neu: Speichere die workout_id
             timestamp=current_timestamp,
-            exercise_name=activity_set.exercise_name, # Direct attribute access
-            set_id=activity_set.id,                 # Direct attribute access
-            weight=activity_set.weight,             # Direct attribute access
-            reps=activity_set.reps,                 # Direct attribute access
-            duration=activity_set.duration,           # Direct attribute access
-            distance=activity_set.distance,           # Direct attribute access
-            speed=activity_set.speed,               # Direct attribute access
-            rest_time=activity_set.rest_time,         # Direct attribute access
-            notes=activity_set.notes                # Direct attribute access for notes
+            exercise_name=activity_set.exercise_name,
+            set_id=activity_set.id,
+            weight=activity_set.weight,
+            reps=activity_set.reps,
+            duration=activity_set.duration,
+            distance=activity_set.distance,
+            speed=activity_set.speed,
+            rest_time=activity_set.rest_time,
+            notes=activity_set.notes
         )
         db.add(log_entry)
 
@@ -360,3 +369,169 @@ async def reset_blocks(
         raise HTTPException(status_code=500, detail="Fehler beim Zurücksetzen der Blöcke.")
 
     return {"success": True}
+
+
+@router.post("/feedback", status_code=status.HTTP_201_CREATED, response_model=WorkoutFeedbackResponseSchema)
+async def submit_workout_feedback(
+    feedback: WorkoutFeedbackSchema,
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Speichert neues Feedback zu einem Workout
+    """
+    # Prüfen ob das Workout existiert und User Zugriff hat
+    workout_query = select(Workout).where(Workout.id == feedback.workout_id)
+    result = await db.execute(workout_query)
+    workout = result.scalar_one_or_none()
+    
+    if not workout:
+        raise HTTPException(status_code=404, detail="Workout nicht gefunden")
+    
+    # Prüfen ob User bereits Feedback abgegeben hat (optional)
+    existing_feedback_query = select(WorkoutFeedback).where(
+        WorkoutFeedback.workout_id == feedback.workout_id,
+        WorkoutFeedback.user_id == current_user.id
+    )
+    result = await db.execute(existing_feedback_query)
+    existing = result.scalar_one_or_none()
+    
+    if existing:
+        raise HTTPException(status_code=400, detail="Du hast bereits Feedback zu diesem Workout abgegeben")
+    
+    # Feedback erstellen
+    new_feedback = WorkoutFeedback(
+        workout_id=feedback.workout_id,
+        user_id=current_user.id,
+        rating=feedback.rating,
+        duration_rating=feedback.duration_rating,
+        intensity_rating=feedback.intensity_rating,
+        comment=feedback.comment
+    )
+    
+    db.add(new_feedback)
+    
+    try:
+        await db.commit()
+        await db.refresh(new_feedback)
+        
+        # UUID zu String konvertieren, um Serialisierungsfehler zu vermeiden
+        response_data = {
+            "id": new_feedback.id,
+            "workout_id": new_feedback.workout_id,
+            "user_id": str(new_feedback.user_id),  # UUID zu String konvertieren
+            "rating": new_feedback.rating,
+            "duration_rating": new_feedback.duration_rating,
+            "intensity_rating": new_feedback.intensity_rating,
+            "comment": new_feedback.comment,
+            "created_at": new_feedback.created_at
+        }
+        
+        return response_data
+    except Exception as e:
+        await db.rollback()
+        print(f"Error submitting feedback: {e}")
+        raise HTTPException(status_code=500, detail="Fehler beim Speichern des Feedbacks")
+
+
+@router.get("/feedback/{workout_id}", response_model=WorkoutFeedbackResponseSchema)
+async def get_workout_feedback(
+    workout_id: int,
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Holt das Feedback eines Users zu einem bestimmten Workout
+    """
+    # Prüfen ob das Workout existiert
+    workout_query = select(Workout).where(Workout.id == workout_id)
+    result = await db.execute(workout_query)
+    workout = result.scalar_one_or_none()
+    
+    if not workout:
+        raise HTTPException(status_code=404, detail="Workout nicht gefunden")
+    
+    # Feedback des Users abrufen
+    feedback_query = select(WorkoutFeedback).where(
+        WorkoutFeedback.workout_id == workout_id,
+        WorkoutFeedback.user_id == current_user.id
+    )
+    result = await db.execute(feedback_query)
+    feedback = result.scalar_one_or_none()
+    
+    if not feedback:
+        raise HTTPException(status_code=404, detail="Kein Feedback für dieses Workout gefunden")
+    
+    # UUID zu String konvertieren
+    response_data = {
+        "id": feedback.id,
+        "workout_id": feedback.workout_id,
+        "user_id": str(feedback.user_id),
+        "rating": feedback.rating,
+        "duration_rating": feedback.duration_rating,
+        "intensity_rating": feedback.intensity_rating,
+        "comment": feedback.comment,
+        "created_at": feedback.created_at
+    }
+    
+    return response_data
+
+
+@router.put("/feedback/{feedback_id}", response_model=WorkoutFeedbackResponseSchema)
+async def update_workout_feedback(
+    feedback_id: int,
+    updated_feedback: WorkoutFeedbackSchema,
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Aktualisiert ein bestehendes Feedback
+    """
+    # Prüfen ob das Feedback existiert und dem User gehört
+    feedback_query = select(WorkoutFeedback).where(
+        WorkoutFeedback.id == feedback_id,
+        WorkoutFeedback.user_id == current_user.id
+    )
+    result = await db.execute(feedback_query)
+    feedback = result.scalar_one_or_none()
+    
+    if not feedback:
+        raise HTTPException(status_code=404, detail="Feedback nicht gefunden oder keine Berechtigung")
+    
+    # Prüfen ob das Workout existiert
+    workout_query = select(Workout).where(Workout.id == updated_feedback.workout_id)
+    result = await db.execute(workout_query)
+    workout = result.scalar_one_or_none()
+    
+    if not workout:
+        raise HTTPException(status_code=404, detail="Workout nicht gefunden")
+    
+    # Feedback aktualisieren
+    feedback.rating = updated_feedback.rating
+    feedback.duration_rating = updated_feedback.duration_rating
+    feedback.intensity_rating = updated_feedback.intensity_rating
+    feedback.comment = updated_feedback.comment
+    
+    db.add(feedback)
+    
+    try:
+        await db.commit()
+        await db.refresh(feedback)
+        
+        # UUID zu String konvertieren
+        response_data = {
+            "id": feedback.id,
+            "workout_id": feedback.workout_id,
+            "user_id": str(feedback.user_id),
+            "rating": feedback.rating,
+            "duration_rating": feedback.duration_rating,
+            "intensity_rating": feedback.intensity_rating,
+            "comment": feedback.comment,
+            "created_at": feedback.created_at
+        }
+        
+        return response_data
+    except Exception as e:
+        await db.rollback()
+        print(f"Error updating feedback: {e}")
+        raise HTTPException(status_code=500, detail="Fehler beim Aktualisieren des Feedbacks")

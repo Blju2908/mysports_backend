@@ -11,6 +11,7 @@ class ActivityLog(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     # user_id ist die Supabase-User-ID (UUID)
     user_id: UUID = Field(foreign_key="users.id", ondelete="CASCADE")
+    workout_id: Optional[int] = Field(default=None, foreign_key="workouts.id", ondelete="SET NULL")
     exercise_name: str = Field(nullable=False)
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     set_id: Optional[int] = Field(default=None, foreign_key="sets.id", ondelete="SET NULL")
