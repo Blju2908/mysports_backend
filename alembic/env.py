@@ -11,11 +11,9 @@ from app.models import (
     block_model,
     exercise_model,
     set_model,
-    training_plan_follower_model,
     training_plan_model,
     user_model,
     workout_model,
-    training_history,
     showcase_feedback_model,
     workout_feedback_model
 )  # Ensure User model is registered in SQLModel.metadata
@@ -40,13 +38,16 @@ target_metadata = SQLModel.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
-# Added to load .env file
-load_dotenv()
+# Get environment and load the appropriate .env file
+env = os.getenv("APP_ENV", "development")
+env_file = f".env.{env}"
+load_dotenv(env_file)
+print(f"Loading environment from {env_file}")
 
 # Get Alembic DB URL from environment
 alembic_url = os.getenv("ALEMBIC_DB_URL")
 if not alembic_url:
-    raise ValueError("ALEMBIC_DB_URL environment variable not set.")
+    raise ValueError(f"ALEMBIC_DB_URL environment variable not set in {env_file}")
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.

@@ -1,4 +1,9 @@
 from pydantic_settings import BaseSettings
+import os
+
+# Determine environment
+def get_environment():
+    return os.getenv("APP_ENV", "development")
 
 class Settings(BaseSettings):
     OPENAI_API_KEY2: str
@@ -10,7 +15,7 @@ class Settings(BaseSettings):
     ALEMBIC_DB_URL: str
 
     class Config:
-        env_file = ".env"
+        env_file = f".env.{get_environment()}"
         case_sensitive = True 
 
 # Create a singleton instance
