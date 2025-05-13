@@ -261,24 +261,3 @@ async def generate_training_principles(
             status_code=500, 
             detail=f"Fehler bei der Generierung der Trainingsprinzipien: {e}"
         )
-
-def to_frontend_format(self) -> Dict[str, Any]:
-    # Convert to dict
-    result = self.model_dump(exclude_none=True)
-    
-    # Ensure equipment is properly serialized as an array
-    if isinstance(result.get('equipment'), list) and result['equipment'] and isinstance(result['equipment'][0], str) and len(result['equipment'][0]) > 1:
-        # If it's an array with a single string that has multiple characters
-        # It's already correct, no change needed
-        pass
-    elif isinstance(result.get('equipment'), list) and result['equipment'] and len(result['equipment']) > 1 and len(result['equipment'][0]) == 1:
-        # If it's an array of characters, join them
-        result['equipment'] = [''.join(result['equipment'])]
-    
-    # Same for goal_types
-    if isinstance(result.get('goal_types'), list) and result['goal_types'] and isinstance(result['goal_types'][0], str) and len(result['goal_types'][0]) > 1:
-        pass
-    elif isinstance(result.get('goal_types'), list) and result['goal_types'] and len(result['goal_types']) > 1 and len(result['goal_types'][0]) == 1:
-        result['goal_types'] = [''.join(result['goal_types'])]
-    
-    return result

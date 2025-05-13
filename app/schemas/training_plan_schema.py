@@ -45,36 +45,6 @@ class TrainingPlanSchema(BaseModel):
         # Create a copy to avoid modifying the original
         processed_data = dict(data)
         
-        # Fix equipment array if it's characters of a PostgreSQL array
-        if isinstance(processed_data.get('equipment'), list) and processed_data['equipment']:
-            if (len(processed_data['equipment']) > 2 and 
-                isinstance(processed_data['equipment'][0], str) and 
-                len(processed_data['equipment'][0]) == 1 and
-                processed_data['equipment'][0] == '{' and
-                processed_data['equipment'][-1] == '}'):
-                
-                # This looks like a PostgreSQL array that was split into characters
-                joined = ''.join(processed_data['equipment'])
-                # Remove the PostgreSQL array braces and split by comma
-                items = joined[1:-1].split(',')
-                processed_data['equipment'] = items
-                logger.info(f"Fixed equipment array: {processed_data['equipment']}")
-        
-        # Fix goal_types array if it's characters of a PostgreSQL array
-        if isinstance(processed_data.get('goal_types'), list) and processed_data['goal_types']:
-            if (len(processed_data['goal_types']) > 2 and 
-                isinstance(processed_data['goal_types'][0], str) and 
-                len(processed_data['goal_types'][0]) == 1 and
-                processed_data['goal_types'][0] == '{' and
-                processed_data['goal_types'][-1] == '}'):
-                
-                # This looks like a PostgreSQL array that was split into characters
-                joined = ''.join(processed_data['goal_types'])
-                # Remove the PostgreSQL array braces and split by comma
-                items = joined[1:-1].split(',')
-                processed_data['goal_types'] = items
-                logger.info(f"Fixed goal_types array: {processed_data['goal_types']}")
-        
         # Handle birthdate
         if 'birthdate' in processed_data and isinstance(processed_data['birthdate'], str):
             try:
@@ -90,8 +60,10 @@ class TrainingPlanSchema(BaseModel):
         return cls(**processed_data)
     
     def to_frontend_format(self) -> Dict[str, Any]:
-        # No conversion needed as model now matches frontend format
-        return self.model_dump(exclude_none=True)
+        # Convert to dict
+        result = self.model_dump(exclude_none=True)
+        
+        return result
 
 class APIResponse(BaseModel):
     success: bool
