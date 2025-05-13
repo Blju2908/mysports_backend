@@ -2,6 +2,7 @@ from typing import Optional, List, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 from uuid import UUID
 from datetime import date
+from sqlalchemy import ARRAY, String, Column
 
 if TYPE_CHECKING:
     from .user_model import UserModel
@@ -18,9 +19,10 @@ class TrainingPlan(SQLModel, table=True):
     height: Optional[float] = Field(default=None)
     weight: Optional[float] = Field(default=None)
     
-    # Trainingsziele
-    goal: Optional[str] = Field(default=None)
-    goal_type: Optional[str] = Field(default=None)  # Komma-separierte Liste von Zielen
+    # Trainingsziele - Anpassung, um Frontend-Format direkt zu unterstützen
+    goal_types: Optional[List[str]] = Field(
+        sa_column=Column(ARRAY(String)), default=None
+    )
     goal_details: Optional[str] = Field(default=None)
     
     # Erfahrungslevel
@@ -31,10 +33,12 @@ class TrainingPlan(SQLModel, table=True):
     training_frequency: Optional[int] = Field(default=None)
     session_duration: Optional[int] = Field(default=None)
     
-    # Equipment und Umgebung
-    equipment: Optional[str] = Field(default=None)  # Komma-separierte Liste von Equipment
+    # Equipment und Umgebung - Anpassung, um Frontend-Format direkt zu unterstützen
+    equipment: Optional[List[str]] = Field(
+        sa_column=Column(ARRAY(String)), default=None
+    )
     equipment_details: Optional[str] = Field(default=None)
-    include_cardio: Optional[bool] = Field(default=None)
+    include_cardio: Optional[str] = Field(default=None)  # 'yes' oder 'no' statt boolean
     
     # Einschränkungen
     restrictions: Optional[str] = Field(default=None)

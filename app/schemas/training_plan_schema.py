@@ -1,62 +1,99 @@
-from pydantic import BaseModel, field_validator, Field
-from typing import Optional, List, Union
-from datetime import date, datetime
+# 1. Update backend/app/schemas/training_plan_schema.py
+from pydantic import BaseModel, Field
+from typing import Optional, List, Union, Dict, Any
+from datetime import date
 import logging
 
-logger = logging.getLogger("training_plan")
+logger = logging.getLogger(__name__)
 
 class TrainingPlanSchema(BaseModel):
     id: Optional[int] = None
     
-    # Persönliche Informationen
+    # Personal Info
     gender: Optional[str] = None
     birthdate: Optional[date] = None
     height: Optional[float] = None
     weight: Optional[float] = None
     
-    # Trainingsziele
-    goal: Optional[str] = None
-    goal_type: Optional[str] = None
+    # Training Goals
+    goal_types: Optional[List[str]] = None
     goal_details: Optional[str] = None
     
-    # Erfahrungslevel
+    # Experience & Fitness
     fitness_level: Optional[int] = None
     experience_level: Optional[int] = None
     
-    # Trainingsplan
+    # Training Schedule
     training_frequency: Optional[int] = None
-    session_duration: Optional[Union[int, str]] = None
+    session_duration: Optional[Union[str, int]] = None
     
-    # Equipment und Umgebung
-    equipment: Optional[str] = None
+    # Equipment & Environment
+    equipment: Optional[List[str]] = None
     equipment_details: Optional[str] = None
-    include_cardio: Optional[bool] = None
+    include_cardio: Optional[str] = None  # 'yes' or 'no'
     
-    # Einschränkungen
+    # Restrictions & Limitations
     restrictions: Optional[str] = None
     mobility_restrictions: Optional[str] = None
     
-    # Trainingsprinzipien
+    # Training Principles (AI-generated)
     training_principles: Optional[str] = None
-
-    @field_validator('session_duration')
+    
+    # Simplified conversion methods
     @classmethod
-    def validate_session_duration(cls, value):
-        if value is None:
-            return None
-        if isinstance(value, int):
-            return value
-        if isinstance(value, str):
+    def from_frontend_format(cls, data: Dict[str, Any]) -> "TrainingPlanSchema":
+        # Create a copy to avoid modifying the original
+        processed_data = dict(data)
+        
+        # Fix equipment array if it's characters of a PostgreSQL array
+        if isinstance(processed_data.get('equipment'), list) and processed_data['equipment']:
+            if (len(processed_data['equipment']) > 2 and 
+                isinstance(processed_data['equipment'][0], str) and 
+                len(processed_data['equipment'][0]) == 1 and
+                processed_data['equipment'][0] == '{' and
+                processed_data['equipment'][-1] == '}'):
+                
+                # This looks like a PostgreSQL array that was split into characters
+                joined = ''.join(processed_data['equipment'])
+                # Remove the PostgreSQL array braces and split by comma
+                items = joined[1:-1].split(',')
+                processed_data['equipment'] = items
+                logger.info(f"Fixed equipment array: {processed_data['equipment']}")
+        
+        # Fix goal_types array if it's characters of a PostgreSQL array
+        if isinstance(processed_data.get('goal_types'), list) and processed_data['goal_types']:
+            if (len(processed_data['goal_types']) > 2 and 
+                isinstance(processed_data['goal_types'][0], str) and 
+                len(processed_data['goal_types'][0]) == 1 and
+                processed_data['goal_types'][0] == '{' and
+                processed_data['goal_types'][-1] == '}'):
+                
+                # This looks like a PostgreSQL array that was split into characters
+                joined = ''.join(processed_data['goal_types'])
+                # Remove the PostgreSQL array braces and split by comma
+                items = joined[1:-1].split(',')
+                processed_data['goal_types'] = items
+                logger.info(f"Fixed goal_types array: {processed_data['goal_types']}")
+        
+        # Handle birthdate
+        if 'birthdate' in processed_data and isinstance(processed_data['birthdate'], str):
             try:
-                return int(value)
-            except ValueError:
-                return 45
-        return value
-
-    class Config:
-        from_attributes = True
+                # Parse ISO format date string
+                year, month, day = processed_data['birthdate'].split('-')
+                processed_data['birthdate'] = date(int(year), int(month), int(day))
+                logger.info(f"Converted birthdate string to date: {processed_data['birthdate']}")
+            except (ValueError, TypeError) as e:
+                logger.error(f"Error converting birthdate: {e}")
+                # Keep as string if conversion fails
+                pass
+        
+        return cls(**processed_data)
+    
+    def to_frontend_format(self) -> Dict[str, Any]:
+        # No conversion needed as model now matches frontend format
+        return self.model_dump(exclude_none=True)
 
 class APIResponse(BaseModel):
     success: bool
-    data: Optional[TrainingPlanSchema] = None
-    message: str 
+    data: Optional[Any] = None
+    message: Optional[str] = None
