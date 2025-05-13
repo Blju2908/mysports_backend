@@ -13,7 +13,7 @@ from app.llm.schemas.create_workout_schemas import (
     SetSchema,
 )
 from app.models.workout_model import Workout
-from app.models.block_model import Block, BlockStatus
+from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set
 from datetime import datetime
@@ -101,7 +101,6 @@ def convert_llm_output_to_db_models(
         block = Block(
             name=block_data.get("name", ""),
             description=block_data.get("description", ""),
-            status=BlockStatus.open,
             exercises=[],  # Wird später befüllt
         )
 

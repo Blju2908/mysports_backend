@@ -2,17 +2,25 @@ from uuid import UUID
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select
 from app.models.training_plan_model import TrainingPlan
-from app.models.training_plan_follower_model import TrainingPlanFollower
+from app.models.user_model import UserModel
 
 
 async def get_training_plan_for_user(user_id: UUID, db: AsyncSession) -> TrainingPlan | None:
-    query = (
-        select(TrainingPlan)
-        .join(TrainingPlanFollower)
-        .where(TrainingPlanFollower.user_id == user_id)
-    )
-    result = await db.exec(query)
-    return result.first()
+    """
+    Holt den Trainingsplan eines Users basierend auf der direkten Beziehung in UserModel.
+    """
+    # 1. Hole den User
+    user_query = select(UserModel).where(UserModel.id == user_id)
+    result = await db.execute(user_query)
+    user = result.scalar_one_or_none()
+    
+    if not user or not user.training_plan_id:
+        return None
+    
+    # 2. Hole den Trainingsplan
+    plan_query = select(TrainingPlan).where(TrainingPlan.id == user.training_plan_id)
+    result = await db.execute(plan_query)
+    return result.scalar_one_or_none()
 
 def filter_training_history(training_history: list) -> list[dict]:
     """

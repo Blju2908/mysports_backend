@@ -6,7 +6,7 @@ class TrainingPlanSchema(BaseModel):
     goal: str
     restrictions: str
     equipment: str
-    session_duration: str
+    session_duration: Optional[int] = None
 
     class Config:
         from_attributes = True

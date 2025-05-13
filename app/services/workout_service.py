@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.models.workout_model import Workout
-from app.models.block_model import Block, BlockStatus
+from app.models.block_model import Block
 from app.models.exercise_model import Exercise 
 from app.schemas.workout_schema import WorkoutSchemaWithBlocks
 from app.models.set_model import Set
@@ -62,8 +62,9 @@ async def save_workout_to_db_async(
     workout_db = Workout(
         training_plan_id=training_plan_id,
         name=workout_schema.name,
-        date=datetime.now(),
+        date_created=datetime.now(),  # Verwende date_created statt date
         description=workout_schema.description,
+        notes=None  # Explizit auf None setzen als Standard
     )
     db.add(workout_db)
     await db.flush()
@@ -75,7 +76,7 @@ async def save_workout_to_db_async(
                 workout_id=workout_db.id,
                 name=block_schema.name,
                 description=block_schema.description,
-                status=BlockStatus.open
+                notes=None  # Explizit auf None setzen als Standard
             )
             db.add(block_db)
             await db.flush()
@@ -86,7 +87,8 @@ async def save_workout_to_db_async(
                     exercise_db = Exercise(
                         block_id=block_db.id,
                         name=exercise_schema.name,
-                        description=exercise_schema.description
+                        description=exercise_schema.description,
+                        notes=None  # Explizit auf None setzen als Standard
                     )
                     db.add(exercise_db)
                     await db.flush()
@@ -96,12 +98,22 @@ async def save_workout_to_db_async(
                         for set_schema in exercise_schema.sets:
                             set_db = Set(
                                 exercise_id=exercise_db.id,
-                                weight=set_schema.weight,
-                                reps=set_schema.reps,
-                                duration=set_schema.duration,
-                                distance=set_schema.distance,
-                                speed=set_schema.speed,
-                                rest_time=set_schema.rest_time
+                                # Plan-Werte setzen (waren vorher einfache Werte)
+                                plan_weight=set_schema.weight,
+                                plan_reps=set_schema.reps,
+                                plan_duration=set_schema.duration,
+                                plan_distance=set_schema.distance,
+                                plan_speed=set_schema.speed,
+                                # Execution-Werte zunächst auf None lassen
+                                execution_weight=None,
+                                execution_reps=None,
+                                execution_duration=None,
+                                execution_distance=None,
+                                execution_speed=None,
+                                rest_time=set_schema.rest_time,
+                                notes=set_schema.notes,
+                                status='open',  # Standardmäßig offen
+                                completed_at=None  # Wird gesetzt, wenn das Set abgeschlossen wird
                             )
                             db.add(set_db)
     await db.commit()

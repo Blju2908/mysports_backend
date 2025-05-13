@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Body
-from sqlmodel import Session, delete, select
+from sqlmodel import Session, select
 from app.models.training_plan_model import TrainingPlan
-from app.models.training_plan_follower_model import TrainingPlanFollower
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
 from app.schemas.training_plan_schema import TrainingPlanSchema, APIResponse
@@ -25,27 +24,33 @@ async def create_training_plan(
     current_user: User = Depends(get_current_user)
 ):
     try:
+        user_id_uuid = UUID(current_user.id)
+        
+        # Hole den User aus der Datenbank oder erstelle einen neuen
+        user_query = select(UserModel).where(UserModel.id == user_id_uuid)
+        result = db.exec(user_query)
+        user = result.first()
+        
+        if not user:
+            user = UserModel(id=user_id_uuid)
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        
         # 1. Trainingsplan anlegen
         plan = TrainingPlan(**plan_data.model_dump())
         db.add(plan)
         db.commit()
-        db.refresh(plan)  # Holt alle Felder inkl. id
+        db.refresh(plan)
         logger.info(f"[Create] Created plan: {plan}")
 
-        user_id_uuid = UUID(current_user.id)
-        # 2. Alte Verknüpfungen löschen
-        db.exec(
-            delete(TrainingPlanFollower).where(TrainingPlanFollower.user_id == user_id_uuid)
-        )
+        # 2. Verbinde den User direkt mit dem Trainingsplan
+        user.training_plan_id = plan.id
+        db.add(user)
         db.commit()
+        db.refresh(user)
 
-        # 3. Neue Verknüpfung User <-> Plan
-        follower = TrainingPlanFollower(user_id=user_id_uuid, training_plan_id=plan.id)
-        db.add(follower)
-        db.commit()
-        db.refresh(follower)
-
-        # 4. Response sauber zurückgeben
+        # 3. Response sauber zurückgeben
         return APIResponse(
             success=True,
             data=TrainingPlanSchema.model_validate(plan),
@@ -70,41 +75,44 @@ async def get_my_training_plan(
         result = await db.execute(user_query)
         user_in_db = result.scalar_one_or_none()
         
-        
         if not user_in_db:
             new_user = UserModel(id=user_uuid)
             db.add(new_user)
             await db.commit()
             await db.refresh(new_user)
+            user_in_db = new_user
 
-        follower_query = select(TrainingPlanFollower).where(TrainingPlanFollower.user_id == user_uuid)
-        result = await db.exec(follower_query)
-        follower = result.first()
-
-        if not follower or not follower.training_plan_id:
-            empty_plan = TrainingPlan(goal="", restrictions="", equipment="", session_duration="")
+        # Prüfe, ob der User einen Trainingsplan hat
+        if not user_in_db.training_plan_id:
+            empty_plan = TrainingPlan(goal="", restrictions="", equipment="", session_duration=45, description="", workouts_per_week=3)
             db.add(empty_plan)
             await db.commit()
             await db.refresh(empty_plan)
-            new_follower_data = {"user_id": user_uuid, "training_plan_id": empty_plan.id}
-            new_follower = TrainingPlanFollower(**new_follower_data)
-            db.add(new_follower)
+            
+            # Verknüpfe User mit neuem Plan
+            user_in_db.training_plan_id = empty_plan.id
+            db.add(user_in_db)
             await db.commit()
+            await db.refresh(user_in_db)
             return TrainingPlanSchema.model_validate(empty_plan)
 
-        plan_query = select(TrainingPlan).where(TrainingPlan.id == follower.training_plan_id)
-        plan_result = await db.exec(plan_query)
-        plan = plan_result.first()
+        # Hole den Trainingsplan des Users
+        plan_query = select(TrainingPlan).where(TrainingPlan.id == user_in_db.training_plan_id)
+        plan_result = await db.execute(plan_query)
+        plan = plan_result.scalar_one_or_none()
 
         if not plan:
-            empty_plan = TrainingPlan(goal="", restrictions="", equipment="", session_duration="")
+            # Falls Plan nicht gefunden, erstelle einen neuen
+            empty_plan = TrainingPlan(goal="", restrictions="", equipment="", session_duration=45, description="", workouts_per_week=3)
             db.add(empty_plan)
             await db.commit()
             await db.refresh(empty_plan)
-            new_follower_data = {"user_id": user_uuid, "training_plan_id": empty_plan.id}
-            new_follower = TrainingPlanFollower(**new_follower_data)
-            db.add(new_follower)
+            
+            # Verknüpfe User mit neuem Plan
+            user_in_db.training_plan_id = empty_plan.id
+            db.add(user_in_db)
             await db.commit()
+            await db.refresh(user_in_db)
             return TrainingPlanSchema.model_validate(empty_plan)
 
         return TrainingPlanSchema.model_validate(plan)
@@ -122,37 +130,47 @@ async def update_my_training_plan(
 ):
     try:
         user_uuid = UUID(current_user.id)
-        follower_query = select(TrainingPlanFollower).where(TrainingPlanFollower.user_id == user_uuid)
-        result = await db.exec(follower_query)
-        follower = result.first()
+        
+        # Hole den User
+        user_query = select(UserModel).where(UserModel.id == user_uuid)
+        result = await db.execute(user_query)
+        user = result.scalar_one_or_none()
+        
+        if not user:
+            # Erstelle User, falls nicht vorhanden
+            user = UserModel(id=user_uuid)
+            db.add(user)
+            await db.commit()
+            await db.refresh(user)
 
         plan_to_update: TrainingPlan
-        if not follower or not follower.training_plan_id:
+        if not user.training_plan_id:
             # Wenn kein Plan existiert, lege einen neuen an
             new_plan = TrainingPlan(**plan_data.model_dump(exclude_unset=True))
             db.add(new_plan)
             await db.commit()
             await db.refresh(new_plan)
             
-            new_follower_data = {"user_id": user_uuid, "training_plan_id": new_plan.id}
-            new_follower = TrainingPlanFollower(**new_follower_data)
-            db.add(new_follower)
+            # Verknüpfe mit User
+            user.training_plan_id = new_plan.id
+            db.add(user)
             await db.commit()
-            await db.refresh(new_follower)
+            await db.refresh(user)
             plan_to_update = new_plan
         else:
-            retrieved_plan = await db.get(TrainingPlan, follower.training_plan_id)
+            retrieved_plan = await db.get(TrainingPlan, user.training_plan_id)
             if not retrieved_plan:
                 # Wenn Plan nicht gefunden, lege einen neuen an basierend auf input
                 new_plan = TrainingPlan(**plan_data.model_dump(exclude_unset=True))
                 db.add(new_plan)
                 await db.commit()
                 await db.refresh(new_plan)
-                # Update follower to point to the new plan
-                follower.training_plan_id = new_plan.id
-                db.add(follower) # Add updated follower to session
+                
+                # Update user to point to the new plan
+                user.training_plan_id = new_plan.id
+                db.add(user)
                 await db.commit()
-                await db.refresh(follower)
+                await db.refresh(user)
                 plan_to_update = new_plan
             else:
                 plan_to_update = retrieved_plan

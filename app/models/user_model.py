@@ -5,6 +5,7 @@ from uuid import UUID
 
 if TYPE_CHECKING:
     from .training_plan_model import TrainingPlan
+    from .training_history import ActivityLog
 
 class UserModel(SQLModel, table=True):
     """
@@ -12,6 +13,7 @@ class UserModel(SQLModel, table=True):
     Die Authentifizierung läuft über Supabase (auth.users).
     Die ID entspricht der Supabase-User-ID (UUID).
     """
+    
     __tablename__ = "users"
     id: UUID = Field(primary_key=True)
     created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
@@ -20,3 +22,6 @@ class UserModel(SQLModel, table=True):
     # Direkte Beziehung zum Trainingsplan (One-to-One)
     training_plan_id: Optional[int] = Field(default=None, foreign_key="training_plans.id")
     training_plan: Optional["TrainingPlan"] = Relationship(back_populates="user")
+    
+    # Beziehung zu activity_log (One-to-Many)
+    activity_log: List["ActivityLog"] = Relationship(back_populates="user")

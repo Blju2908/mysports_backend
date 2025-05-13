@@ -5,9 +5,9 @@ from typing import List, Optional
 from sqlalchemy.orm import selectinload
 from datetime import datetime
 from pydantic import BaseModel
+from uuid import UUID
 
-from app.models.workout_model import Workout, WorkoutStatus
-from app.models.training_plan_follower_model import TrainingPlanFollower
+from app.models.workout_model import Workout
 from app.schemas.workout_schema import (
     WorkoutResponseSchema,
     WorkoutSchemaWithBlocks,
@@ -18,11 +18,13 @@ from app.schemas.workout_schema import (
 from app.schemas.workout_feedback_schema import WorkoutFeedbackSchema, WorkoutFeedbackResponseSchema
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
-from app.models.block_model import Block, BlockStatus
+from app.models.user_model import UserModel
+from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set
 from app.models.training_history import ActivityLog
 from app.models.workout_feedback_model import WorkoutFeedback
+from app.models.user_model import UserModel
 from app.services.workout_service import get_workout_details
 
 router = APIRouter(tags=["workouts"])
@@ -38,31 +40,20 @@ async def get_user_workouts(
     Get all workouts for the current user.
     Optionally filter by status (COMPLETED, INCOMPLETE, etc.)
     """
-    # First get the training plans the user is following
-    follower_query = select(TrainingPlanFollower.training_plan_id).where(
-        TrainingPlanFollower.user_id == current_user.id
-    )
-    result = await db.execute(follower_query)
-    training_plan_ids = [row[0] for row in result.all()]
+    # Hole den User mit seinem Trainingsplan
+    user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
+    result = await db.execute(user_query)
+    user = result.scalar_one_or_none()
 
-    if not training_plan_ids:
-        return []  # User is not following any training plans
+    if not user or not user.training_plan_id:
+        return []  # User hat keinen Trainingsplan
 
-    # Then get the workouts for those training plans
+    # Hole die Workouts des Trainingsplans
     workout_query = (
         select(Workout)
-        .where(Workout.training_plan_id.in_(training_plan_ids))
-        .order_by(Workout.date.desc())
+        .where(Workout.training_plan_id == user.training_plan_id)
+        .order_by(Workout.date_created.desc())  # Hier date_created statt date verwenden
     )
-
-    # Apply status filter if provided
-    if status:
-        try:
-            workout_status = WorkoutStatus(status.lower())
-            workout_query = workout_query.where(Workout.status == workout_status)
-        except ValueError:
-            # Invalid status provided - ignore the filter
-            pass
 
     result = await db.execute(workout_query)
     workouts = result.scalars().all()
@@ -82,6 +73,19 @@ async def get_workout_detail(
     """
     # Call the service function, exceptions will propagate
     workout = await get_workout_details(workout_id=workout_id, db=db)
+    
+    # Überprüfe, ob der User Zugriff auf dieses Workout hat
+    user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
+    result = await db.execute(user_query)
+    user = result.scalar_one_or_none()
+    
+    if (not user or not user.training_plan_id or 
+        workout.training_plan_id != user.training_plan_id):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Keine Berechtigung für den Zugriff auf dieses Workout"
+        )
+    
     return workout
 
 
@@ -97,16 +101,14 @@ async def get_block_detail(
     Ensures the block belongs to a workout the user has access to.
     """
     # 1. Prüfen, ob der User Zugriff auf das Workout hat
-    follower_query = select(TrainingPlanFollower.training_plan_id).where(
-        TrainingPlanFollower.user_id == current_user.id
-    )
-    result = await db.execute(follower_query)
-    training_plan_ids = [row[0] for row in result.all()]
+    user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
+    result = await db.execute(user_query)
+    user = result.scalar_one_or_none()
 
-    if not training_plan_ids:
+    if not user or not user.training_plan_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="User has no access to any training plans",
+            detail="User has no training plan",
         )
 
     # 2. Den spezifischen Block holen und sicherstellen, dass er zum richtigen Workout gehört,
@@ -118,7 +120,7 @@ async def get_block_detail(
         .where(
             Block.id == block_id,
             Block.workout_id == workout_id,
-            Workout.training_plan_id.in_(training_plan_ids),
+            Workout.training_plan_id == user.training_plan_id,
         )
     )
 
@@ -149,16 +151,14 @@ async def save_activity_block_endpoint(
     Updates the block status to 'completed'.
     """
     # 1. Verify user access to the workout and get the block
-    follower_query = select(TrainingPlanFollower.training_plan_id).where(
-        TrainingPlanFollower.user_id == current_user.id
-    )
-    f_result = await db.execute(follower_query)
-    training_plan_ids = [row[0] for row in f_result.all()]
+    user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
+    result = await db.execute(user_query)
+    user = result.scalar_one_or_none()
 
-    if not training_plan_ids:
+    if not user or not user.training_plan_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="User has no access to any training plans",
+            detail="User has no training plan",
         )
 
     # Fetch the specific block and verify it belongs to the workout and user
@@ -168,11 +168,11 @@ async def save_activity_block_endpoint(
         .where(
             Block.id == block_id,
             Block.workout_id == workout_id,
-            Workout.training_plan_id.in_(training_plan_ids),
+            Workout.training_plan_id == user.training_plan_id,
         )
     )
-    b_result = await db.execute(block_query)
-    block_to_update = b_result.scalar_one_or_none()
+    result = await db.execute(block_query)
+    block_to_update = result.scalar_one_or_none()
 
     if not block_to_update:
         raise HTTPException(
@@ -227,19 +227,10 @@ async def delete_workout(
     Löscht ein Workout samt aller abhängigen Objekte (Blocks, Exercises, Sets).
     Die Trainingshistorie bleibt erhalten, nur die set_id wird automatisch auf NULL gesetzt.
     """
-    # Prüfe, ob das Workout dem User gehört (über TrainingPlanFollower)
-    follower_query = select(TrainingPlanFollower.training_plan_id).where(
-        TrainingPlanFollower.user_id == current_user.id
-    )
-    result = await db.execute(follower_query)
-    training_plan_ids = [row[0] for row in result.all()]
-
-    if not training_plan_ids:
-        raise HTTPException(status_code=404, detail="Kein Workout gefunden.")
-
+    
     # Prüfe, ob das Workout existiert und zum User gehört
     workout_query = select(Workout).where(
-        Workout.id == workout_id, Workout.training_plan_id.in_(training_plan_ids)
+        Workout.id == workout_id, Workout.training_plan_id == UserModel.training_plan_id
     )
     result = await db.execute(workout_query)
     workout = result.scalar_one_or_none()
