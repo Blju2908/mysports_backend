@@ -8,14 +8,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 import logging
 from app.models.user_model import UserModel
+from datetime import date
+from typing import Optional
 import json
+from pydantic import ValidationError
 
 router = APIRouter(tags=["training-plan"])
 
 logger = logging.getLogger("training_plan")
-
-
-    
 
 @router.post("/", response_model=APIResponse, status_code=status.HTTP_201_CREATED)
 async def create_training_plan(
@@ -38,7 +38,8 @@ async def create_training_plan(
             db.refresh(user)
         
         # 1. Trainingsplan anlegen
-        plan = TrainingPlan(**plan_data.model_dump())
+        plan_dict = plan_data.model_dump(exclude_unset=True)
+        plan = TrainingPlan(**plan_dict)
         db.add(plan)
         db.commit()
         db.refresh(plan)
@@ -84,7 +85,17 @@ async def get_my_training_plan(
 
         # Prüfe, ob der User einen Trainingsplan hat
         if not user_in_db.training_plan_id:
-            empty_plan = TrainingPlan(goal="", restrictions="", equipment="", session_duration=45, description="", workouts_per_week=3)
+            # Erstelle einen leeren Trainingsplan mit Standardwerten
+            empty_plan = TrainingPlan(
+                goal="",
+                restrictions="",
+                equipment="",
+                session_duration=45,
+                training_frequency=3,
+                fitness_level=3,
+                experience_level=3,
+                include_cardio=True
+            )
             db.add(empty_plan)
             await db.commit()
             await db.refresh(empty_plan)
@@ -103,7 +114,16 @@ async def get_my_training_plan(
 
         if not plan:
             # Falls Plan nicht gefunden, erstelle einen neuen
-            empty_plan = TrainingPlan(goal="", restrictions="", equipment="", session_duration=45, description="", workouts_per_week=3)
+            empty_plan = TrainingPlan(
+                goal="",
+                restrictions="",
+                equipment="",
+                session_duration=45,
+                training_frequency=3,
+                fitness_level=3,
+                experience_level=3,
+                include_cardio=True
+            )
             db.add(empty_plan)
             await db.commit()
             await db.refresh(empty_plan)
@@ -129,6 +149,9 @@ async def update_my_training_plan(
     current_user: User = Depends(get_current_user)
 ):
     try:
+        # Log received data for debugging
+        logger.info(f"[Update] Received raw update data: {plan_data}")
+        
         user_uuid = UUID(current_user.id)
         
         # Hole den User
@@ -146,7 +169,8 @@ async def update_my_training_plan(
         plan_to_update: TrainingPlan
         if not user.training_plan_id:
             # Wenn kein Plan existiert, lege einen neuen an
-            new_plan = TrainingPlan(**plan_data.model_dump(exclude_unset=True))
+            plan_dict = plan_data.model_dump(exclude_unset=True)
+            new_plan = TrainingPlan(**plan_dict)
             db.add(new_plan)
             await db.commit()
             await db.refresh(new_plan)
@@ -161,7 +185,8 @@ async def update_my_training_plan(
             retrieved_plan = await db.get(TrainingPlan, user.training_plan_id)
             if not retrieved_plan:
                 # Wenn Plan nicht gefunden, lege einen neuen an basierend auf input
-                new_plan = TrainingPlan(**plan_data.model_dump(exclude_unset=True))
+                plan_dict = plan_data.model_dump(exclude_unset=True)
+                new_plan = TrainingPlan(**plan_dict)
                 db.add(new_plan)
                 await db.commit()
                 await db.refresh(new_plan)
@@ -184,9 +209,75 @@ async def update_my_training_plan(
 
         logger.info(f"[Update] Updated/Created plan {plan_to_update.id} for user {user_uuid}")
         return TrainingPlanSchema.model_validate(plan_to_update)
+    except ValidationError as ve:
+        logger.error(f"[Update][ValidationError] {ve}")
+        logger.error(f"[Update][ValidationError] Errors: {ve.errors()}")
+        await db.rollback()
+        raise HTTPException(
+            status_code=422, 
+            detail=f"Validierungsfehler: {ve.errors()}"
+        )
     except Exception as e:
         await db.rollback()
         logger.error(f"[Update][Exception] {e}")
         logger.error(f"[Update][Exception] plan_data: {plan_data}")
         logger.error(f"[Update][Exception] current_user: {current_user}")
         raise HTTPException(status_code=500, detail=f"Fehler beim Aktualisieren des Trainingsplans: {e}")
+
+@router.post("/mine/principles", response_model=TrainingPlanSchema)
+async def generate_training_principles(
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Generiert Trainingsprinzipien basierend auf dem Benutzerprofil.
+    In dieser Version wird nur ein Platzhalter-Text zurückgegeben. 
+    Die tatsächliche KI-Integration wird später implementiert.
+    """
+    try:
+        user_uuid = UUID(current_user.id)
+        
+        # Hole den User und seinen Trainingsplan
+        user_query = select(UserModel).where(UserModel.id == user_uuid)
+        result = await db.execute(user_query)
+        user = result.scalar_one_or_none()
+        
+        if not user or not user.training_plan_id:
+            raise HTTPException(
+                status_code=404, 
+                detail="Kein Trainingsplan gefunden. Bitte fülle zuerst dein Trainingsprofil aus."
+            )
+            
+        plan = await db.get(TrainingPlan, user.training_plan_id)
+        if not plan:
+            raise HTTPException(
+                status_code=404, 
+                detail="Trainingsplan nicht gefunden."
+            )
+            
+        # Platzhalter für Trainingsprinzipien (später wird hier die OpenAI-Integration implementiert)
+        plan.training_principles = """
+        Dies sind deine personalisierten Trainingsprinzipien, basierend auf deinen Zielen und Einschränkungen:
+        
+        1. Progressive Belastungssteigerung: Erhöhe kontinuierlich die Trainingsintensität, um Adaptation zu fördern.
+        2. Individuelle Anpassung: Das Training ist auf deine persönlichen Ziele und Voraussetzungen abgestimmt.
+        3. Funktionelle Bewegungsmuster: Konzentration auf natürliche, alltagsrelevante Bewegungen.
+        4. Ausgewogene Entwicklung: Balance zwischen Kraft, Ausdauer, Beweglichkeit und Koordination.
+        5. Regeneration und Erholung: Ausreichende Erholungsphasen sind für deinen Trainingserfolg essenziell.
+        
+        Diese Prinzipien dienen als Grundlage für die Erstellung und Anpassung deines individuellen Trainingsplans.
+        """
+        
+        db.add(plan)
+        await db.commit()
+        await db.refresh(plan)
+        
+        return TrainingPlanSchema.model_validate(plan)
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"[Principles][Exception] {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Fehler bei der Generierung der Trainingsprinzipien: {e}"
+        )
