@@ -22,6 +22,3 @@ class UserModel(SQLModel, table=True):
     # Direkte Beziehung zum Trainingsplan (One-to-One)
     training_plan_id: Optional[int] = Field(default=None, foreign_key="training_plans.id")
     training_plan: Optional["TrainingPlan"] = Relationship(back_populates="user")
-    
-    # Beziehung zu activity_log (One-to-Many)
-    activity_log: List["ActivityLog"] = Relationship(back_populates="user")

@@ -181,7 +181,6 @@ async def save_activity_block_endpoint(
         )
 
     # 2. Create ActivityLog entries for each set in the payload
-    activity_logs: List[ActivityLog] = []
     current_timestamp = datetime.utcnow()
     for activity_set in payload.sets:
         # Ensure the set ID exists if needed for linking, otherwise rely on other fields
@@ -198,7 +197,6 @@ async def save_activity_block_endpoint(
             rest_time=activity_set.rest_time,
             notes=activity_set.notes,
         )
-        activity_logs.append(log_entry)
         db.add(log_entry)
 
     db.add(block_to_update)

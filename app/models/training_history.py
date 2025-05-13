@@ -22,4 +22,3 @@ class ActivityLog(SQLModel, table=True):
     speed: Optional[float] = None
     rest_time: Optional[int] = None  # Sekunden
     notes: Optional[str] = None  # Freitext für Bemerkungen
-    user: "UserModel" = Relationship(back_populates="activity_log")

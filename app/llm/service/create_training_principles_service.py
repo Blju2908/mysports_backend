@@ -23,12 +23,7 @@ async def run_training_principles_chain(
         if training_plan is None:
             raise ValueError("Kein Trainingsplan für den Nutzer gefunden.")
         # Extrahiere relevante Ziele aus dem Trainingsplan
-        training_goals = {
-            "goal": training_plan.goal,
-            "restrictions": training_plan.restrictions,
-            "equipment": training_plan.equipment,
-            "session_duration": training_plan.session_duration,
-        }
+        training_goals = training_plan.model_dump()
     else:
         training_goals = None
 
