@@ -2,11 +2,10 @@ from pydantic import BaseModel, Field
 from typing import List, Optional, Union
 
 class SetSchema(BaseModel):
-    values: List[Optional[Union[float, int]]] = Field(
-        default_factory=lambda: [None] * 6, # Default to a list of 6 Nones
-        description="Geplante Werte in der Reihenfolge: [Gewicht (kg), Wdh, Dauer (sekunden), Distanz (m/km), Pause (sekunden)]. Null eintragen, wenn nicht relevant."
+    values: List[Optional[Union[float, int, str]]] = Field(
+        default_factory=list, 
+        description="Geplante Werte in der Reihenfolge: [Gewicht (kg), Wdh, Dauer (sekunden), Distanz (m/km), Pause (sekunden)]. Für Zahlenwerte Null oder den Wert eintragen. Für Notizen einen String oder Null/leeren String."
     )
-    notes: Optional[str] = Field(default=None, description="Optionale Notizen für diesen spezifischen Satz z.B. 'langsame Ausführung', 'bis Muskelversagen'")
 
 class ExerciseSchema(BaseModel):
     name: str = Field(..., description="Name der Übung.")

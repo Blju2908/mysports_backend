@@ -75,7 +75,7 @@ async def run_workout_chain(
     )
 
     workout_model = convert_llm_output_to_db_models(
-        llm_output_schema.model_dump(),  # Pass the dict from Pydantic model
+        llm_output_schema.model_dump(),
         training_plan_id=training_plan_id_for_saving,
     )
 
@@ -105,48 +105,54 @@ def format_training_history_for_llm(
 
     history_output_condensed = []
     for workout in training_history_workouts:
+        # Get the earliest completed_at from sets as the workout completion date
+        workout_completion_date_str = None
+        earliest_completed_at = None
+        if workout.blocks:
+            for block in workout.blocks:
+                if block.exercises:
+                    for exercise in block.exercises:
+                        if exercise.sets:
+                            for s_set in exercise.sets:
+                                if s_set.status == SetStatus.done and s_set.completed_at:
+                                    if earliest_completed_at is None or s_set.completed_at < earliest_completed_at:
+                                        earliest_completed_at = s_set.completed_at
+        if earliest_completed_at:
+            workout_completion_date_str = earliest_completed_at.strftime("%Y-%m-%d")
+
         workout_data = {
+            "name": workout.name,
+            "focus": workout.focus if workout.focus else None,
+            "duration_minutes": workout.duration if workout.duration else None,
             "workout_notes": workout.notes if workout.notes else None,
-            "date": (
-                next(
-                    (
-                        s.completed_at.strftime("%Y-%m-%d")
-                        for block in workout.blocks or []
-                        for exercise in block.exercises or []
-                        for s in exercise.sets or []
-                        if s.completed_at
-                    ),
-                    None,
-                )
-            ),
+            "date": workout_completion_date_str,
             "blocks": [],
         }
         for block in workout.blocks:
             block_data = {
+                "name": block.name,
                 "block_notes": block.notes if block.notes else None,
-                "exercises_executed": [],  # Focus on executed exercises
+                "exercises_executed": [],
             }
             for exercise in block.exercises:
                 executed_sets_data = []
                 for s in exercise.sets:
                     if s.status == SetStatus.done:  # Only include completed sets
-                        # Standardized array: [weight, reps, duration, distance, rest_time]
-                        # Fill with 0.0 or 0 if None, to maintain array structure for LLM
                         set_params = [
                             (
-                                s.execution_weight
-                                if s.execution_weight is not None
+                                s.weight
+                                if s.weight is not None
                                 else 0.0
                             ),
-                            s.execution_reps if s.execution_reps is not None else 0,
+                            s.reps if s.reps is not None else 0,
                             (
-                                s.execution_duration
-                                if s.execution_duration is not None
+                                s.duration
+                                if s.duration is not None
                                 else 0
                             ),  # seconds
                             (
-                                s.execution_distance
-                                if s.execution_distance is not None
+                                s.distance
+                                if s.distance is not None
                                 else 0.0
                             ),
                             s.rest_time if s.rest_time is not None else 0,  # seconds
@@ -154,10 +160,11 @@ def format_training_history_for_llm(
                         set_info = {
                             "params": set_params,
                             "set_notes": s.notes if s.notes else None,
+                            "completed_at": s.completed_at.strftime("%Y-%m-%d %H:%M:%S") if s.completed_at else None
                         }
                         executed_sets_data.append(set_info)
 
-                if executed_sets_data:  # Only add exercises that have completed sets
+                if executed_sets_data:
                     exercise_info = {
                         "name": exercise.name,
                         "exercise_notes": exercise.notes if exercise.notes else None,
@@ -167,10 +174,10 @@ def format_training_history_for_llm(
 
             if block_data[
                 "exercises_executed"
-            ]:  # Only add blocks that have executed exercises
+            ]:
                 workout_data["blocks"].append(block_data)
 
-        if workout_data["blocks"]:  # Only add workouts that have executed blocks
+        if workout_data["blocks"]: 
             history_output_condensed.append(workout_data)
 
     if not history_output_condensed:
@@ -217,9 +224,9 @@ def convert_llm_output_to_db_models(
         training_plan_id=training_plan_id,
         name=workout_dict.get("name", "Unbenanntes Workout"),
         description=workout_dict.get("description"),
-        notes=workout_dict.get("notes"),
         focus=workout_dict.get("focus"),
         duration=workout_dict.get("duration"),
+        date_created=datetime.utcnow(),
         blocks=[],
     )
 
@@ -227,7 +234,6 @@ def convert_llm_output_to_db_models(
         block_model = Block(
             name=block_data.get("name", "Unbenannter Block"),
             description=block_data.get("description"),
-            notes=block_data.get("notes"),
             exercises=[],
         )
 
@@ -235,106 +241,43 @@ def convert_llm_output_to_db_models(
             exercise_model = Exercise(
                 name=exercise_data.get("name", "Unbenannte Übung"),
                 description=exercise_data.get("description"),
-                notes=exercise_data.get("notes"),
                 sets=[],
             )
 
             for set_data_from_llm in exercise_data.get("sets", []):
-                # Accept both explicit field format and old 'values' array format
-                if isinstance(set_data_from_llm, dict):
-                    # Prefer explicit fields if present
-                    if any(
-                        k in set_data_from_llm
-                        for k in [
-                            "plan_weight",
-                            "plan_reps",
-                            "plan_duration",
-                            "plan_distance",
-                            "rest_time",
-                        ]
-                    ):
+                set_obj = None
+                if isinstance(set_data_from_llm, dict) and "values" in set_data_from_llm:
+                    values = set_data_from_llm.get("values", [])
+                    if not isinstance(values, list):
+                        print(f"Skipping set data as 'values' is not a list: {values}")
+                        continue
+
+                    # Ensure values list has at least 5 elements, padding with None if shorter
+                    padded_values = (values + [None] * 5)[:5]
+                    
+                    v_weight, v_reps, v_duration, v_distance, v_rest_time = padded_values
+
+                    # Check if any numerical value is present or if notes are present
+                    has_numerical_value = any(
+                        val is not None for val in [v_weight, v_reps, v_duration, v_distance, v_rest_time]
+                    )
+
+                    if has_numerical_value:
                         set_obj = Set(
-                            plan_weight=(
-                                float(set_data_from_llm.get("plan_weight"))
-                                if set_data_from_llm.get("plan_weight") is not None
-                                else None
-                            ),
-                            plan_reps=(
-                                int(set_data_from_llm.get("plan_reps"))
-                                if set_data_from_llm.get("plan_reps") is not None
-                                else None
-                            ),
-                            plan_duration=(
-                                int(set_data_from_llm.get("plan_duration"))
-                                if set_data_from_llm.get("plan_duration") is not None
-                                else None
-                            ),
-                            plan_distance=(
-                                float(set_data_from_llm.get("plan_distance"))
-                                if set_data_from_llm.get("plan_distance") is not None
-                                else None
-                            ),
-                            rest_time=(
-                                int(set_data_from_llm.get("rest_time"))
-                                if set_data_from_llm.get("rest_time") is not None
-                                else None
-                            ),
-                            notes=set_data_from_llm.get("notes"),
-                        )
-                    elif "values" in set_data_from_llm:
-                        values = set_data_from_llm.get("values", [])
-                        set_notes = set_data_from_llm.get("notes")
-                        # [weight, reps, duration, distance, rest_time]
-                        (
-                            plan_weight,
-                            plan_reps,
-                            plan_duration,
-                            plan_distance,
-                            rest_time_val,
-                        ) = (values + [None] * 5)[:5]
-                        set_obj = Set(
-                            plan_weight=(
-                                float(plan_weight) if plan_weight is not None else None
-                            ),
-                            plan_reps=int(plan_reps) if plan_reps is not None else None,
-                            plan_duration=(
-                                int(plan_duration)
-                                if plan_duration is not None
-                                else None
-                            ),
-                            plan_distance=(
-                                float(plan_distance)
-                                if plan_distance is not None
-                                else None
-                            ),
-                            rest_time=(
-                                int(rest_time_val)
-                                if rest_time_val is not None
-                                else None
-                            ),
-                            notes=set_notes,
+                            weight=float(v_weight) if v_weight is not None else None,
+                            reps=int(v_reps) if v_reps is not None else None,
+                            duration=int(v_duration) if v_duration is not None else None,
+                            distance=float(v_distance) if v_distance is not None else None,
+                            rest_time=int(v_rest_time) if v_rest_time is not None else None,
                         )
                     else:
-                        print(
-                            f"Skipping set data due to unexpected format: {set_data_from_llm}"
-                        )
+                        print(f"Skipping set data as all values are None and no notes provided: {values}")
                         continue
                 else:
-                    print(
-                        f"Skipping set data due to unexpected type: {set_data_from_llm}"
-                    )
+                    print(f"Skipping set data due to unexpected format or missing 'values' key: {set_data_from_llm}")
                     continue
-
-                if any(
-                    [
-                        set_obj.plan_weight is not None,
-                        set_obj.plan_reps is not None,
-                        set_obj.plan_duration is not None,
-                        set_obj.plan_distance is not None,
-                        set_obj.rest_time is not None,
-                        set_obj.notes is not None,
-                    ]
-                ):
+                
+                if set_obj:
                     exercise_model.sets.append(set_obj)
 
             if exercise_model.sets:

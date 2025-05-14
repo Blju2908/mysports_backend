@@ -40,12 +40,11 @@ Jedes Workout-Objekt in der Liste hat folgende Struktur:
     - `exercise_notes`: Optionale Notizen zur Übung.
     - `sets_executed`: Eine Liste der durchgeführten Sätze.
       Jeder Satz in `sets_executed` ist eine Liste/Array mit genau diesen Werten in dieser Reihenfolge:
-      1. `execution_weight`: Ausgeführtes Gewicht (kg)
-      2. `execution_reps`: Ausgeführte Wiederholungen
-      3. `execution_duration`: Ausgeführte Dauer (Sekunden)
-      4. `execution_distance`: Ausgeführte Distanz (km oder m)
+      1. `weight`: Ausgeführtes Gewicht (kg)
+      2. `reps`: Ausgeführte Wiederholungen
+      3. `duration`: Ausgeführte Dauer (Sekunden)
+      4. `distance`: Ausgeführte Distanz (km oder m)
       5. `rest_time`: Pause nach dem Satz (Sekunden)
-      6. `status`: Status des Satzes (z.B. "done")
 
 # Output JSON Format
 Bitte gib das Workout als JSON zurück, das dem folgenden Pydantic-Schema entspricht.
@@ -71,10 +70,11 @@ Beispiel für einen HIIT-Block mit 4 Runden 'Liegestütze' und 'Squats':
 Jede Übung hier ist ein eigenständiges Objekt in der Liste, auch wenn sich der Name wiederholt. Jeder dieser Einträge sollte typischerweise einen Satz (`SetSchema`) enthalten, der die Parameter für diese spezifische Runde der Übung definiert. Die `description` der Übung kann optional genutzt werden, um die Runde oder spezifische Hinweise für diese Instanz der Übung zu kennzeichnen (z.B. "Runde 1/4").
 
 **SetSchema (für jeden geplanten Satz):**
-- `plan_weight`: Optional[float] (Geplantes Gewicht in kg. Nur angeben, wenn relevant.)
-- `plan_reps`: Optional[int] (Geplante Wiederholungen. Nur angeben, wenn relevant.)
-- `plan_duration`: Optional[int] (Geplante Dauer in Sekunden, z.B. für Halteübungen oder Cardio. Nur angeben, wenn relevant.)
-- `plan_distance`: Optional[float] (Geplante Distanz, z.B. in km oder m für Cardio. Nur angeben, wenn relevant.)
-- `rest_time`: Optional[int] (Geplante Pause NACH diesem Satz in Sekunden. Nur angeben, wenn relevant.)
-- `notes`: Optional[str] (Spezifische Notizen für diesen Satz, z.B. "langsame Ausführung", "bis Muskelversagen")
+Das `SetSchema`-Objekt für jeden Satz MUSS ein Feld namens `values` enthalten. 
+`values` ist eine Liste/Array mit genau 6 Elementen in der folgenden festen Reihenfolge:
+1.  `Gewicht` (Optional[float]): Geplantes Gewicht in kg. `null` oder Wert eintragen, falls nicht relevant.
+2.  `Wiederholungen` (Optional[int]): Geplante Wiederholungen. `null` oder Wert eintragen, falls nicht relevant.
+3.  `Dauer` (Optional[int]): Geplante Dauer in Sekunden (z.B. für Halteübungen oder Cardio). `null` oder Wert eintragen, falls nicht relevant.
+4.  `Distanz` (Optional[float]): Geplante Distanz (z.B. in km oder m für Cardio). `null` oder Wert eintragen, falls nicht relevant.
+5.  `Pause` (Optional[int]): Geplante Pause NACH diesem Satz in Sekunden. `null` oder Wert eintragen, falls nicht relevant.
 
