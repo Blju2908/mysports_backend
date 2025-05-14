@@ -23,7 +23,6 @@ class ActivityLogSchema(BaseModel):
     reps: Optional[int] = None
     duration: Optional[int] = None
     distance: Optional[float] = None
-    speed: Optional[float] = None
     notes: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)

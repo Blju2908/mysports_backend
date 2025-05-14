@@ -193,7 +193,6 @@ async def save_activity_block_endpoint(
             reps=activity_set.reps,
             duration=activity_set.duration,
             distance=activity_set.distance,
-            speed=activity_set.speed,
             rest_time=activity_set.rest_time,
             notes=activity_set.notes,
         )
@@ -295,7 +294,6 @@ async def finish_block(
             reps=activity_set.reps,
             duration=activity_set.duration,
             distance=activity_set.distance,
-            speed=activity_set.speed,
             rest_time=activity_set.rest_time,
             notes=activity_set.notes
         )

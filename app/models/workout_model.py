@@ -14,6 +14,8 @@ class Workout(SQLModel, table=True):
     name: str
     date_created: datetime = Field(default_factory=datetime.utcnow)
     description: Optional[str] = Field(default=None)
+    duration: Optional[int] = Field(default=None)
+    focus: Optional[str] = Field(default=None)
     notes: Optional[str] = Field(default=None)
 
     plan: Optional["TrainingPlan"] = Relationship(back_populates="workouts")

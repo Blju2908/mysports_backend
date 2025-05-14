@@ -20,7 +20,6 @@ class SetResponseSchema(BaseModel):
     reps: Optional[int] = None
     duration: Optional[int] = None
     distance: Optional[float] = None
-    speed: Optional[float] = None
     rest_time: Optional[int] = None
     
     class Config:
@@ -61,7 +60,6 @@ class ActivitySetSchema(BaseModel):
     reps: Optional[int] = None
     duration: Optional[int] = None # Assuming duration in seconds
     distance: Optional[float] = None # Assuming distance in km
-    speed: Optional[float] = None # Assuming speed in km/h
     rest_time: Optional[int] = None # Assuming rest time in seconds
     notes: Optional[str] = None # Kept the uncommented line
     # notes: Optional[str] = None # If frontend can send notes -> This line was removed by the edit. Will remove manually if still present

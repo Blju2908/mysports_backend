@@ -103,13 +103,11 @@ async def save_workout_to_db_async(
                                 plan_reps=set_schema.reps,
                                 plan_duration=set_schema.duration,
                                 plan_distance=set_schema.distance,
-                                plan_speed=set_schema.speed,
                                 # Execution-Werte zunächst auf None lassen
                                 execution_weight=None,
                                 execution_reps=None,
                                 execution_duration=None,
                                 execution_distance=None,
-                                execution_speed=None,
                                 rest_time=set_schema.rest_time,
                                 notes=set_schema.notes,
                                 status='open',  # Standardmäßig offen
