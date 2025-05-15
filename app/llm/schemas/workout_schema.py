@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import List, Optional, Union
 from datetime import datetime
 from enum import Enum
+from app.models.set_model import SetStatus
 
 # Enum for Workout Status
 class WorkoutStatusEnum(str, Enum):
@@ -120,6 +121,29 @@ class IdMappingSchema(BaseModel):
     db_id: int
     entity_type: str # "exercise" or "set"
 
-class SaveBlockResponseSchema(BaseModel):
-    message: str
-    id_mappings: List[IdMappingSchema] 
+class SetSchema(BaseModel):
+    id: Optional[Union[int, str]] = None
+    exercise_id: Optional[Union[int, str]] = None
+    reps: Optional[int] = None
+    weight: Optional[float] = None
+    duration: Optional[int] = None
+    distance: Optional[float] = None
+    rest_time: Optional[int] = None
+    status: SetStatus
+    completed_at: Optional[datetime] = None
+
+class ExerciseSchema(BaseModel):
+    id: Optional[Union[int, str]]
+    block_id: Optional[Union[int, str]] = None
+    name: str
+    description: Optional[str]
+    notes: Optional[str]
+    sets: List[SetSchema]
+
+class BlockSchema(BaseModel):
+    id: Optional[Union[int, str]]
+    workout_id: Optional[Union[int, str]] = None
+    name: str
+    description: Optional[str]
+    notes: Optional[str]
+    exercises: List[ExerciseSchema] 

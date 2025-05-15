@@ -20,14 +20,8 @@ from app.llm.schemas.workout_schema import (
     BlockResponseSchema,
     ExerciseResponseSchema,
     SetResponseSchema,
-    ExtendedBlockActivityPayloadSchema,
-    NewExerciseInputSchema,
-    NewSetInputSchema,
-    AddedSetsToExistingExerciseSchema,
-    SetUpdateInputSchema,
-    SaveBlockResponseSchema,
-    IdMappingSchema,
-    WorkoutStatusEnum
+    WorkoutStatusEnum,
+    BlockSchema
 )
 from app.schemas.workout_feedback_schema import WorkoutFeedbackSchema, WorkoutFeedbackResponseSchema
 from app.core.auth import get_current_user, User
@@ -205,228 +199,219 @@ async def get_workout_detail(
     )
 
 
-# @router.get("/{workout_id}/blocks/{block_id}", response_model=BlockResponseSchema)
-# async def get_block_detail(
-#     workout_id: int,
-#     block_id: int,
-#     db: AsyncSession = Depends(get_session),
-#     current_user: User = Depends(get_current_user),
-# ):
-#     """
-#     Get detailed information about a specific block including all exercises and sets.
-#     Ensures the block belongs to a workout the user has access to.
-#     """
-#     # 1. Prüfen, ob der User Zugriff auf das Workout hat
-#     user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-#     result = await db.execute(user_query)
-#     user = result.scalar_one_or_none()
-
-#     if not user or not user.training_plan_id:
-#         raise HTTPException(
-#             status_code=status.HTTP_403_FORBIDDEN,
-#             detail="User has no training plan",
-#         )
-
-#     # 2. Den spezifischen Block holen und sicherstellen, dass er zum richtigen Workout gehört,
-#     #    auf das der User Zugriff hat. Lade Übungen und Sets.
-#     block_query = (
-#         select(Block)
-#         .options(selectinload(Block.exercises).selectinload(Exercise.sets))
-#         .join(Workout, Block.workout_id == Workout.id)
-#         .where(
-#             Block.id == block_id,
-#             Block.workout_id == workout_id,
-#             Workout.training_plan_id == user.training_plan_id,
-#         )
-#     )
-
-#     result = await db.execute(block_query)
-#     block = result.scalar_one_or_none()
-
-#     if not block:
-#         raise HTTPException(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             detail="Block not found or user does not have access to the parent workout",
-#         )
-
-#     return block
-
-
-@router.post(
-    "/{workout_id}/blocks/{block_id}/save-activity", 
-    status_code=status.HTTP_200_OK,
-    response_model=SaveBlockResponseSchema
-)
-async def save_block_activity_endpoint( 
-    workout_id: int, 
-    block_id: int,   
-    payload: ExtendedBlockActivityPayloadSchema,
+@router.get("/{workout_id}/blocks/{block_id}", response_model=BlockResponseSchema)
+async def get_block_detail(
+    workout_id: int,
+    block_id: int,
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
     """
-    Saves extended activity for a block, including new/deleted exercises & sets, and updated sets.
-    Returns ID mappings for newly created entities.
+    Get detailed information about a specific block including all exercises and sets.
+    Ensures the block belongs to a workout the user has access to.
     """
+    # 1. Prüfen, ob der User Zugriff auf das Workout hat
     user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-    user_result = await db.execute(user_query)
-    user = user_result.scalar_one_or_none()
+    result = await db.execute(user_query)
+    user = result.scalar_one_or_none()
 
     if not user or not user.training_plan_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="User has no training plan.",
+            detail="User has no training plan",
         )
-    
-    # Verify block exists and belongs to the user and the specified workout
-    block_check_query = (
+
+    # 2. Den spezifischen Block holen und sicherstellen, dass er zum richtigen Workout gehört,
+    #    auf das der User Zugriff hat. Lade Übungen und Sets.
+    block_query = (
         select(Block)
+        .options(selectinload(Block.exercises).selectinload(Exercise.sets))
         .join(Workout, Block.workout_id == Workout.id)
         .where(
             Block.id == block_id,
-            Workout.id == workout_id,
+            Block.workout_id == workout_id,
             Workout.training_plan_id == user.training_plan_id,
         )
     )
-    db_block_result = await db.execute(block_check_query)
-    db_block = db_block_result.scalar_one_or_none()
 
-    if not db_block:
+    result = await db.execute(block_query)
+    block = result.scalar_one_or_none()
+
+    if not block:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Block with id {block_id} in workout {workout_id} not found or user lacks access.",
+            detail="Block not found or user does not have access to the parent workout",
         )
 
-    id_mappings: List[IdMappingSchema] = []
-
-    try:
-        # 1. Process Deletions (Sets first, then Exercises due to FK constraints)
-        if payload.deleted_set_ids:
-            # Ensure sets belong to the current block for security/consistency
-            delete_set_stmt = (
-                delete(Set)
-                .where(Set.id.in_(payload.deleted_set_ids))
-                .where(Set.exercise.has(Exercise.block_id == block_id))
+    # Build response using BlockResponseSchema
+    response_exercises_data = []
+    for exercise_orm in block.exercises:
+        response_sets_data = [SetResponseSchema.from_orm(s) for s in exercise_orm.sets]
+        response_exercises_data.append(
+            ExerciseResponseSchema(
+                id=exercise_orm.id,
+                name=exercise_orm.name,
+                description=exercise_orm.description,
+                notes=exercise_orm.notes,
+                block_id=exercise_orm.block_id,
+                sets=response_sets_data
             )
-            await db.execute(delete_set_stmt)
-
-        if payload.deleted_exercise_ids:
-            # cascade_delete=True on Exercise.sets relationship should handle their sets
-            delete_exercise_stmt = (
-                delete(Exercise)
-                .where(Exercise.id.in_(payload.deleted_exercise_ids))
-                .where(Exercise.block_id == block_id) # Ensure exercises belong to current block
-            )
-            await db.execute(delete_exercise_stmt)
-        
-        # 2. Process Updates to Existing Sets
-        for set_update_data in payload.updated_sets:
-            # Ensure set belongs to the current block for security/consistency
-            set_to_update_query = (
-                select(Set)
-                .where(Set.id == set_update_data.set_id)
-                .where(Set.exercise.has(Exercise.block_id == block_id))
-            )
-            set_result = await db.execute(set_to_update_query)
-            db_set = set_result.scalar_one_or_none()
-
-            if not db_set:
-                # Log or decide if this should be an error (e.g., set not found or not in this block)
-                print(f"Skipping update for set_id {set_update_data.set_id}: Not found in block {block_id}.")
-                continue
-            
-            db_set.weight = set_update_data.weight
-            db_set.reps = set_update_data.reps
-            db_set.duration = set_update_data.duration
-            db_set.distance = set_update_data.distance
-            db_set.rest_time = set_update_data.rest_time
-            db_set.status = set_update_data.status
-            
-            # Convert completed_at to naive UTC datetime if present
-            if set_update_data.status == SetStatus.done and set_update_data.completed_at:
-                db_set.completed_at = set_update_data.completed_at.replace(tzinfo=None)
-            else:
-                db_set.completed_at = None
-            # db_set.notes = set_update_data.notes # Assuming notes are handled
-            db.add(db_set)
-
-        # 3. Process Creations
-        # 3a. New Exercises (and their new sets)
-        for new_exercise_data in payload.added_exercises:
-            db_exercise = Exercise(
-                name=new_exercise_data.name,
-                description=new_exercise_data.description,
-                notes=new_exercise_data.notes,
-                block_id=block_id # From path parameter
-            )
-            db.add(db_exercise)
-            await db.flush() # To get db_exercise.id
-            id_mappings.append(IdMappingSchema(local_id=new_exercise_data.local_id, db_id=db_exercise.id, entity_type="exercise"))
-
-            for new_set_data_for_new_ex in new_exercise_data.sets:
-                completed_at_naive = None
-                if new_set_data_for_new_ex.status == SetStatus.done and new_set_data_for_new_ex.completed_at:
-                    completed_at_naive = new_set_data_for_new_ex.completed_at.replace(tzinfo=None)
-                
-                db_set_for_new_ex = Set(
-                    exercise_id=db_exercise.id, # Link to newly created exercise
-                    weight=new_set_data_for_new_ex.weight,
-                    reps=new_set_data_for_new_ex.reps,
-                    duration=new_set_data_for_new_ex.duration,
-                    distance=new_set_data_for_new_ex.distance,
-                    rest_time=new_set_data_for_new_ex.rest_time,
-                    status=new_set_data_for_new_ex.status,
-                    completed_at=completed_at_naive,
-                    # notes=new_set_data_for_new_ex.notes
-                )
-                db.add(db_set_for_new_ex)
-                await db.flush() # To get db_set_for_new_ex.id
-                id_mappings.append(IdMappingSchema(local_id=new_set_data_for_new_ex.local_id, db_id=db_set_for_new_ex.id, entity_type="set"))
-
-        # 3b. New Sets for Existing Exercises
-        for new_sets_for_existing_ex_data in payload.added_sets_to_existing_exercises:
-            # Optional: Verify existing_exercise_id actually belongs to this block_id
-            parent_exercise_query = select(Exercise).where(Exercise.id == new_sets_for_existing_ex_data.existing_exercise_id, Exercise.block_id == block_id)
-            parent_exercise_result = await db.execute(parent_exercise_query)
-            if not parent_exercise_result.scalar_one_or_none():
-                print(f"Skipping added_sets for non-existent/unauthorized exercise_id: {new_sets_for_existing_ex_data.existing_exercise_id}")
-                continue
-                
-            for new_set_data in new_sets_for_existing_ex_data.new_sets:
-                completed_at_naive_existing_ex = None
-                if new_set_data.status == SetStatus.done and new_set_data.completed_at:
-                    completed_at_naive_existing_ex = new_set_data.completed_at.replace(tzinfo=None)
-
-                db_set = Set(
-                    exercise_id=new_sets_for_existing_ex_data.existing_exercise_id,
-                    weight=new_set_data.weight,
-                    reps=new_set_data.reps,
-                    duration=new_set_data.duration,
-                    distance=new_set_data.distance,
-                    rest_time=new_set_data.rest_time,
-                    status=new_set_data.status,
-                    completed_at=completed_at_naive_existing_ex,
-                    # notes=new_set_data.notes
-                )
-                db.add(db_set)
-                await db.flush() # To get db_set.id
-                id_mappings.append(IdMappingSchema(local_id=new_set_data.local_id, db_id=db_set.id, entity_type="set"))
-
-        await db.commit()
-
-    except Exception as e:
-        await db.rollback()
-        print(f"Error saving extended block activity: {e}")
-        # Consider logging the payload as well for debugging, being mindful of sensitive data
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to save extended block activity. Error: {str(e)}",
         )
-
-    return SaveBlockResponseSchema(
-        message=f"Activity for block {block_id} processed successfully.",
-        id_mappings=id_mappings
+    return BlockResponseSchema(
+        id=block.id,
+        name=block.name,
+        description=block.description,
+        notes=block.notes,
+        workout_id=block.workout_id,
+        exercises=response_exercises_data
     )
+
+
+@router.post(
+    "/{workout_id}/blocks/{block_id}",
+    response_model=BlockSchema
+)
+async def save_block(
+    workout_id: int,
+    block_id: int,
+    block: BlockSchema,
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Speichert einen kompletten Block (inkl. Exercises und Sets) und übernimmt das Diffing.
+    """
+    # 1. Lade aktuellen Block inkl. Exercises & Sets
+    db_block_query = (
+        select(Block)
+        .options(selectinload(Block.exercises).selectinload(Exercise.sets))
+        .join(Workout, Block.workout_id == Workout.id)
+        .where(Block.id == block_id, Workout.id == workout_id)
+    )
+    db_block_result = await db.execute(db_block_query)
+    db_block = db_block_result.scalar_one_or_none()
+    if not db_block:
+        raise HTTPException(status_code=404, detail="Block nicht gefunden")
+
+    # Hilfsfunktionen für schnellen Zugriff
+    def get_exercise_map(exercises):
+        return {ex.id: ex for ex in exercises}
+    def get_set_map(sets):
+        return {s.id: s for s in sets}
+
+    # 2. Diffing: Exercises
+    db_exercise_map = get_exercise_map(db_block.exercises)
+    payload_exercise_map = get_exercise_map(block.exercises)
+
+    # 2a. Delete Exercises (in DB, aber nicht mehr im Payload)
+    for db_ex in db_block.exercises:
+        if db_ex.id not in payload_exercise_map:
+            await db.delete(db_ex)
+
+    # 2b. Add/Update Exercises
+    for ex in block.exercises:
+        if isinstance(ex.id, str) or ex.id is None:
+            # Neu: Exercise anlegen
+            new_ex = Exercise(
+                name=ex.name,
+                description=ex.description,
+                notes=ex.notes,
+                block_id=block_id
+            )
+            db.add(new_ex)
+            await db.flush()  # ID für Sets
+            db_ex_id = new_ex.id
+        else:
+            # Update: Exercise updaten
+            db_ex = db_exercise_map.get(ex.id)
+            if db_ex:
+                db_ex.name = ex.name
+                db_ex.description = ex.description
+                db_ex.notes = ex.notes
+                db.add(db_ex)
+                db_ex_id = db_ex.id
+            else:
+                continue  # Sollte nicht passieren
+
+        # 3. Diffing: Sets für diese Exercise
+        # Hole aktuelle Sets aus DB (nach dem Anlegen ggf. leer)
+        if isinstance(ex.id, str) or ex.id is None:
+            db_sets = []
+        else:
+            db_sets = db_exercise_map[ex.id].sets if ex.id in db_exercise_map else []
+        db_set_map = get_set_map(db_sets)
+        payload_set_map = get_set_map(ex.sets)
+
+        # 3a. Delete Sets
+        for db_set in db_sets:
+            if db_set.id not in payload_set_map:
+                await db.delete(db_set)
+
+        # 3b. Add/Update Sets
+        for s in ex.sets:
+            if isinstance(s.id, str) or s.id is None:
+                # Neu: Set anlegen
+                new_set = Set(
+                    exercise_id=db_ex_id,
+                    reps=s.reps,
+                    weight=s.weight,
+                    duration=s.duration,
+                    distance=s.distance,
+                    rest_time=s.rest_time,
+                    status=s.status,
+                    completed_at=make_naive(s.completed_at) if s.completed_at else None,
+                    notes=s.notes
+                )
+                db.add(new_set)
+            else:
+                # Update: Set updaten
+                db_set = db_set_map.get(s.id)
+                if db_set:
+                    db_set.reps = s.reps
+                    db_set.weight = s.weight
+                    db_set.duration = s.duration
+                    db_set.distance = s.distance
+                    db_set.rest_time = s.rest_time
+                    db_set.status = s.status
+                    db_set.completed_at = make_naive(s.completed_at) if s.completed_at else None
+                    db.add(db_set)
+
+    await db.commit()
+
+    # Lade den aktualisierten Block erneut
+    db_block_result = await db.execute(db_block_query)
+    db_block = db_block_result.scalar_one_or_none()
+
+    # Baue das Response-Objekt
+    def orm_to_schema_block(db_block):
+        return BlockSchema(
+            id=db_block.id,
+            workout_id=db_block.workout_id,
+            name=db_block.name,
+            description=db_block.description,
+            notes=db_block.notes,
+            exercises=[
+                dict(
+                    id=ex.id,
+                    name=ex.name,
+                    description=ex.description,
+                    notes=ex.notes,
+                    sets=[
+                        dict(
+                            id=s.id,
+                            reps=s.reps,
+                            weight=s.weight,
+                            duration=s.duration,
+                            distance=s.distance,
+                            rest_time=s.rest_time,
+                            status=s.status,
+                            completed_at=s.completed_at
+                        ) for s in ex.sets
+                    ]
+                ) for ex in db_block.exercises
+            ]
+        )
+    return orm_to_schema_block(db_block)
 
 
 @router.delete("/{workout_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -709,3 +694,8 @@ async def update_set_status_endpoint(
             detail=f"Failed to update status for set {set_id}.",
         )
     return db_set
+
+def make_naive(dt: datetime) -> datetime:
+    if dt is not None and dt.tzinfo is not None:
+        return dt.replace(tzinfo=None)
+    return dt
