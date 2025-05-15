@@ -14,17 +14,20 @@ from app.models.set_model import Set, SetStatus
 from app.models.workout_feedback_model import WorkoutFeedback
 from app.models.user_model import UserModel
 from app.services.workout_service import get_workout_details
-from app.schemas.workout_schema import (
+from app.llm.schemas.workout_schema import (
     WorkoutResponseSchema,
     WorkoutSchemaWithBlocks,
     BlockResponseSchema,
+    ExerciseResponseSchema,
     SetResponseSchema,
     ExtendedBlockActivityPayloadSchema,
-    SaveBlockResponseSchema,
-    IdMappingSchema,
     NewExerciseInputSchema,
     NewSetInputSchema,
-    SetUpdateInputSchema
+    AddedSetsToExistingExerciseSchema,
+    SetUpdateInputSchema,
+    SaveBlockResponseSchema,
+    IdMappingSchema,
+    WorkoutStatusEnum
 )
 from app.schemas.workout_feedback_schema import WorkoutFeedbackSchema, WorkoutFeedbackResponseSchema
 from app.core.auth import get_current_user, User
@@ -58,6 +61,33 @@ class ResetBlocksPayload(BaseModel): # Moved from inline for clarity
 
 router = APIRouter(tags=["workouts"])
 
+def calculate_workout_status(workout_orm: Workout) -> WorkoutStatusEnum:
+    if not workout_orm.blocks:
+        return WorkoutStatusEnum.NOT_STARTED
+
+    all_sets = []
+    for block in workout_orm.blocks:
+        for exercise in block.exercises:
+            all_sets.extend(exercise.sets)
+
+    if not all_sets:
+        return WorkoutStatusEnum.NOT_STARTED
+
+    num_done_sets = sum(1 for s in all_sets if s.status == SetStatus.done)
+
+    if num_done_sets == len(all_sets):
+        return WorkoutStatusEnum.DONE
+    elif num_done_sets > 0 or any(s.status == SetStatus.open for s in all_sets): # Simplified: if any progress or any open sets (and not all done)
+        # More precise: if num_done_sets > 0, it's definitely STARTED.
+        # If num_done_sets == 0 but there are sets (implicitly all OPEN), it's NOT_STARTED.
+        # Let's refine: if any set is 'done', it's 'started'. If no sets are 'done' but sets exist (all 'open'), it's 'not_started'.
+        if num_done_sets > 0:
+             return WorkoutStatusEnum.STARTED
+        else: # No sets are 'done', all existing sets must be 'open'
+             return WorkoutStatusEnum.NOT_STARTED
+    
+    return WorkoutStatusEnum.NOT_STARTED # Default/fallback if no sets or unexpected state
+
 
 @router.get("/", response_model=List[WorkoutResponseSchema])
 async def get_user_workouts(
@@ -67,25 +97,44 @@ async def get_user_workouts(
     """
     Get all workouts for the current user.
     """
-    # Hole den User mit seinem Trainingsplan
     user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
     result = await db.execute(user_query)
     user = result.scalar_one_or_none()
 
     if not user or not user.training_plan_id:
-        return []  # User hat keinen Trainingsplan
+        return []
 
-    # Hole die Workouts des Trainingsplans
     workout_query = (
         select(Workout)
         .where(Workout.training_plan_id == user.training_plan_id)
+        .options(
+            selectinload(Workout.blocks)
+            .selectinload(Block.exercises)
+            .selectinload(Exercise.sets)
+        )
         .order_by(Workout.date_created.desc())
     )
 
     result = await db.execute(workout_query)
-    workouts = result.scalars().all()
+    workouts_orm = result.scalars().all()
 
-    return workouts
+    response_workouts = []
+    for workout_orm_item in workouts_orm:
+        status = calculate_workout_status(workout_orm_item)
+        response_workout = WorkoutResponseSchema(
+            id=workout_orm_item.id,
+            training_plan_id=workout_orm_item.training_plan_id,
+            name=workout_orm_item.name,
+            date_created=workout_orm_item.date_created,
+            description=workout_orm_item.description,
+            duration=workout_orm_item.duration,
+            focus=workout_orm_item.focus,
+            notes=workout_orm_item.notes,
+            status=status,
+        )
+        response_workouts.append(response_workout)
+
+    return response_workouts
 
 
 @router.get("/{workout_id}", response_model=WorkoutSchemaWithBlocks)
@@ -96,24 +145,64 @@ async def get_workout_detail(
 ):
     """
     Get detailed information about a specific workout including all blocks and exercises.
-    Uses the workout service for logic and authorization.
+    Calculates and includes workout status.
     """
-    # Call the service function, exceptions will propagate
-    workout = await get_workout_details(workout_id=workout_id, db=db)
+    workout_orm = await get_workout_details(workout_id=workout_id, db=db)
     
-    # Überprüfe, ob der User Zugriff auf dieses Workout hat
     user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
     result = await db.execute(user_query)
     user = result.scalar_one_or_none()
     
     if (not user or not user.training_plan_id or 
-        workout.training_plan_id != user.training_plan_id):
+        workout_orm.training_plan_id != user.training_plan_id):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Keine Berechtigung für den Zugriff auf dieses Workout"
         )
     
-    return workout
+    calculated_status = calculate_workout_status(workout_orm)
+
+    # Explicitly construct the response data if direct ORM to Pydantic conversion is problematic
+    # or if sub-models need specific handling.
+    response_blocks_data = []
+    for block_orm in workout_orm.blocks:
+        response_exercises_data = []
+        for exercise_orm in block_orm.exercises:
+            response_sets_data = [SetResponseSchema.from_orm(s) for s in exercise_orm.sets]
+            response_exercises_data.append(
+                ExerciseResponseSchema(
+                    id=exercise_orm.id,
+                    name=exercise_orm.name,
+                    description=exercise_orm.description,
+                    notes=exercise_orm.notes,
+                    block_id=exercise_orm.block_id,
+                    sets=response_sets_data
+                )
+            )
+        response_blocks_data.append(
+            BlockResponseSchema(
+                id=block_orm.id,
+                name=block_orm.name,
+                description=block_orm.description,
+                notes=block_orm.notes,
+                workout_id=block_orm.workout_id,
+                exercises=response_exercises_data
+            )
+        )
+
+    # Construct the final response using the Pydantic model
+    return WorkoutSchemaWithBlocks(
+        id=workout_orm.id,
+        training_plan_id=workout_orm.training_plan_id,
+        name=workout_orm.name,
+        date_created=workout_orm.date_created,
+        description=workout_orm.description,
+        duration=workout_orm.duration,
+        focus=workout_orm.focus,
+        notes=workout_orm.notes,
+        status=calculated_status,
+        blocks=response_blocks_data
+    )
 
 
 # @router.get("/{workout_id}/blocks/{block_id}", response_model=BlockResponseSchema)

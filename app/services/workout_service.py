@@ -6,7 +6,7 @@ from sqlalchemy.orm import selectinload
 from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise 
-from app.schemas.workout_schema import WorkoutSchemaWithBlocks, BlockResponseSchema, ExerciseResponseSchema, SetResponseSchema
+from app.llm.schemas.workout_schema import WorkoutSchemaWithBlocks, BlockResponseSchema, ExerciseResponseSchema, SetResponseSchema
 from app.models.set_model import Set, SetStatus
 from datetime import datetime
 

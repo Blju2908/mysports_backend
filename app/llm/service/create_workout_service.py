@@ -5,22 +5,13 @@ from typing import Any, List, Dict, Optional
 from app.db.trainingplan_db_access import get_training_plan_for_user
 from app.db.workout_db_access import get_training_history_for_user_from_db
 from app.llm.chains.workout_generation_chain import generate_workout
-from app.services.workout_service import save_workout_to_db_async
-from app.llm.schemas.create_workout_schemas import (
-    WorkoutSchema,
-    BlockSchema,
-    ExerciseSchema,
-    SetSchema,
-)
 from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set, SetStatus
 from datetime import datetime
-from collections import defaultdict, OrderedDict
 import json
 from pathlib import Path
-import pickle
 
 async def run_workout_chain(
     user_id: UUID | None,
@@ -95,18 +86,21 @@ def format_training_history_for_llm(
     training_history_workouts: List[Workout],
 ) -> str | None:
     """
-    Formats the training history into a compact JSON string suitable for the LLM.
+    Formats the training history into a compact plain text string suitable for the LLM.
     Focuses on when the user trained, their notes, and actual executed exercises.
-    Set parameters are standardized: [weight, reps, duration, distance, rest_time].
+    Set parameters are comma-separated: weight, reps, duration, distance, rest_time.
     Only includes sets with status 'done'.
     """
     if not training_history_workouts:
         return None
 
-    history_output_condensed = []
-    for workout in training_history_workouts:
+    history_lines = []
+    for workout_idx, workout in enumerate(training_history_workouts):
+        if workout_idx > 0:
+            history_lines.append("---") # Separator for multiple workouts
+
         # Get the earliest completed_at from sets as the workout completion date
-        workout_completion_date_str = None
+        workout_completion_date_str = "N/A"
         earliest_completed_at = None
         if workout.blocks:
             for block in workout.blocks:
@@ -120,83 +114,62 @@ def format_training_history_for_llm(
         if earliest_completed_at:
             workout_completion_date_str = earliest_completed_at.strftime("%Y-%m-%d")
 
-        workout_data = {
-            "name": workout.name,
-            "focus": workout.focus if workout.focus else None,
-            "duration_minutes": workout.duration if workout.duration else None,
-            "workout_notes": workout.notes if workout.notes else None,
-            "date": workout_completion_date_str,
-            "blocks": [],
-        }
+        history_lines.append(f"Workout: {workout.name if workout.name else 'Unnamed Workout'}")
+        if workout.focus:
+            history_lines.append(f"Focus: {workout.focus}")
+        if workout.duration:
+            history_lines.append(f"Duration: {workout.duration} min")
+        history_lines.append(f"Date: {workout_completion_date_str}")
+        if workout.notes:
+            history_lines.append(f"Workout Notes: {workout.notes}")
+        
+        history_lines.append("") # Add a blank line for readability
+
         for block in workout.blocks:
-            block_data = {
-                "name": block.name,
-                "block_notes": block.notes if block.notes else None,
-                "exercises_executed": [],
-            }
+            history_lines.append(f"  Block: {block.name if block.name else 'Unnamed Block'}")
+            if block.notes:
+                history_lines.append(f"  Block Notes: {block.notes}")
+            
             for exercise in block.exercises:
-                executed_sets_data = []
+                history_lines.append(f"    Exercise: {exercise.name if exercise.name else 'Unnamed Exercise'}")
+                if exercise.notes:
+                    history_lines.append(f"    Exercise Notes: {exercise.notes}")
+                
+                executed_sets_lines = []
                 for s in exercise.sets:
                     if s.status == SetStatus.done:  # Only include completed sets
-                        set_params = [
-                            (
-                                s.weight
-                                if s.weight is not None
-                                else 0.0
-                            ),
-                            s.reps if s.reps is not None else 0,
-                            (
-                                s.duration
-                                if s.duration is not None
-                                else 0
-                            ),  # seconds
-                            (
-                                s.distance
-                                if s.distance is not None
-                                else 0.0
-                            ),
-                            s.rest_time if s.rest_time is not None else 0,  # seconds
+                        # weight, reps, duration, distance, rest_time
+                        set_params_list = [
+                            str(s.weight if s.weight is not None else "null"),
+                            str(s.reps if s.reps is not None else "null"),
+                            str(s.duration if s.duration is not None else "null"),
+                            str(s.distance if s.distance is not None else "null"),
+                            str(s.rest_time if s.rest_time is not None else "null"),
                         ]
-                        set_info = {
-                            "params": set_params,
-                            "set_notes": s.notes if s.notes else None,
-                            "completed_at": s.completed_at.strftime("%Y-%m-%d %H:%M:%S") if s.completed_at else None
-                        }
-                        executed_sets_data.append(set_info)
+                        executed_sets_lines.append(f"      - {', '.join(set_params_list)}")
 
-                if executed_sets_data:
-                    exercise_info = {
-                        "name": exercise.name,
-                        "exercise_notes": exercise.notes if exercise.notes else None,
-                        "sets_completed": executed_sets_data,
-                    }
-                    block_data["exercises_executed"].append(exercise_info)
+                if executed_sets_lines:
+                    history_lines.append("    Sets completed:")
+                    history_lines.extend(executed_sets_lines)
+            history_lines.append("") # Add a blank line after each exercise block for readability
+        history_lines.append("") # Add a blank line after each workout block for readability
 
-            if block_data[
-                "exercises_executed"
-            ]:
-                workout_data["blocks"].append(block_data)
 
-        if workout_data["blocks"]: 
-            history_output_condensed.append(workout_data)
-
-    if not history_output_condensed:
+    if not history_lines:
         return None
 
-    history_json_str = json.dumps(
-        history_output_condensed, indent=2, ensure_ascii=False
-    )
+    history_text_output = "\\n".join(history_lines)
 
     # Save to file for debugging (optional, can be removed in production)
     output_dir = Path(__file__).resolve().parents[1] / "local_execution" / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    file_path = output_dir / f"formatted_training_history_condensed_{timestamp}.json"
+    file_path = output_dir / f"formatted_training_history_text_{timestamp}.txt"
     with open(file_path, "w", encoding="utf-8") as f:
-        f.write(history_json_str)
-    print(f"Formatted condensed training history saved to: {file_path}")
+        f.write(history_text_output.replace("\\\\n", "\\n")) # For readability in the text file
+    print(f"Formatted text training history saved to: {file_path}")
 
-    return history_json_str
+    return history_text_output
 
 
 

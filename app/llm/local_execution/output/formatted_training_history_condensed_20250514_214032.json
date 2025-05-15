@@ -1,0 +1,311 @@
+[
+  {
+    "name": "Push & Explosiv-Kraft Gym-Session",
+    "focus": "Brust, Schulter, Explosivkraft",
+    "duration_minutes": 65,
+    "workout_notes": null,
+    "date": "2025-05-14",
+    "blocks": [
+      {
+        "name": "Aufwärmen & Mobilität",
+        "block_notes": null,
+        "exercises_executed": [
+          {
+            "name": "Band Pull Aparts",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  0.0,
+                  15,
+                  0,
+                  0.0,
+                  30
+                ],
+                "completed_at": "2025-05-14 19:39:28"
+              }
+            ]
+          },
+          {
+            "name": "World's Greatest Stretch",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  0.0,
+                  6,
+                  0,
+                  0.0,
+                  20
+                ],
+                "completed_at": "2025-05-14 19:39:29"
+              }
+            ]
+          },
+          {
+            "name": "Arm Circles",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  0.0,
+                  20,
+                  0,
+                  0.0,
+                  20
+                ],
+                "completed_at": "2025-05-14 19:39:29"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Hauptteil: Schweres Push-Workout",
+        "block_notes": null,
+        "exercises_executed": [
+          {
+            "name": "Bankdrücken",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  92.5,
+                  5,
+                  0,
+                  0.0,
+                  120
+                ],
+                "completed_at": "2025-05-14 19:39:37"
+              },
+              {
+                "params": [
+                  92.5,
+                  5,
+                  0,
+                  0.0,
+                  120
+                ],
+                "completed_at": "2025-05-14 19:39:38"
+              },
+              {
+                "params": [
+                  92.5,
+                  5,
+                  0,
+                  0.0,
+                  150
+                ],
+                "completed_at": "2025-05-14 19:39:43"
+              }
+            ]
+          },
+          {
+            "name": "Schrägbank-Kurzhantel-Press",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  32.0,
+                  8,
+                  0,
+                  0.0,
+                  90
+                ],
+                "completed_at": "2025-05-14 19:39:44"
+              },
+              {
+                "params": [
+                  32.0,
+                  8,
+                  0,
+                  0.0,
+                  90
+                ],
+                "completed_at": "2025-05-14 19:39:45"
+              },
+              {
+                "params": [
+                  28.0,
+                  10,
+                  0,
+                  0.0,
+                  120
+                ],
+                "completed_at": "2025-05-14 19:39:45"
+              }
+            ]
+          },
+          {
+            "name": "Kurzhantel-Seitheben",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  12.0,
+                  12,
+                  0,
+                  0.0,
+                  60
+                ],
+                "completed_at": "2025-05-14 19:39:47"
+              },
+              {
+                "params": [
+                  12.0,
+                  12,
+                  0,
+                  0.0,
+                  60
+                ],
+                "completed_at": "2025-05-14 19:39:47"
+              },
+              {
+                "params": [
+                  10.0,
+                  15,
+                  0,
+                  0.0,
+                  75
+                ],
+                "completed_at": "2025-05-14 19:39:48"
+              }
+            ]
+          },
+          {
+            "name": "Kabelzug Trizepsdrücken (einarmig, abwechselnd)",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  18.0,
+                  12,
+                  0,
+                  0.0,
+                  40
+                ],
+                "completed_at": "2025-05-14 19:39:49"
+              },
+              {
+                "params": [
+                  18.0,
+                  12,
+                  0,
+                  0.0,
+                  40
+                ],
+                "completed_at": "2025-05-14 19:39:49"
+              },
+              {
+                "params": [
+                  14.0,
+                  15,
+                  0,
+                  0.0,
+                  60
+                ],
+                "completed_at": "2025-05-14 19:39:50"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Explosiv-Kapazität & Plyometrie",
+        "block_notes": null,
+        "exercises_executed": [
+          {
+            "name": "Medicine Ball Chest Pass (explosiv)",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  6.0,
+                  8,
+                  0,
+                  0.0,
+                  60
+                ],
+                "completed_at": "2025-05-14 19:40:02"
+              },
+              {
+                "params": [
+                  6.0,
+                  8,
+                  0,
+                  0.0,
+                  60
+                ],
+                "completed_at": "2025-05-14 19:40:03"
+              }
+            ]
+          },
+          {
+            "name": "Clap Push-Ups",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  0.0,
+                  6,
+                  0,
+                  0.0,
+                  75
+                ],
+                "completed_at": "2025-05-14 19:40:04"
+              },
+              {
+                "params": [
+                  0.0,
+                  5,
+                  0,
+                  0.0,
+                  75
+                ],
+                "completed_at": "2025-05-14 19:40:04"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Cooldown",
+        "block_notes": null,
+        "exercises_executed": [
+          {
+            "name": "Pec Doorway Stretch",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  0.0,
+                  0,
+                  30,
+                  0.0,
+                  15
+                ],
+                "completed_at": "2025-05-14 19:40:10"
+              }
+            ]
+          },
+          {
+            "name": "Child's Pose & Overhead Lat Stretch",
+            "exercise_notes": null,
+            "sets_completed": [
+              {
+                "params": [
+                  0.0,
+                  0,
+                  40,
+                  0.0,
+                  0
+                ],
+                "completed_at": "2025-05-14 19:40:11"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

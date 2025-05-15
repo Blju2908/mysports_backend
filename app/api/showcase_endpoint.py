@@ -23,7 +23,7 @@ from app.schemas.showcase_schema import (
     ShowcaseTrainingPlanCreate,
     ShowcaseTrainingPlanResponse,
 )
-from app.schemas.workout_schema import WorkoutSchemaWithBlocks
+from app.llm.schemas.workout_schema import WorkoutSchemaWithBlocks
 from app.services.workout_service import get_workout_details, save_workout_to_db_async
 from app.llm.chains.workout_generation_chain import generate_workout
 from app.llm.schemas.create_workout_schemas import WorkoutSchema

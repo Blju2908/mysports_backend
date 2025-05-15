@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import select
 from app.core.auth import get_current_user, User
 from app.db.session import get_session

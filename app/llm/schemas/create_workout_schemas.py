@@ -21,5 +21,5 @@ class WorkoutSchema(BaseModel):
     name: str = Field(..., description="Name des Workouts. z.B. 'Push-Training'")
     description: str = Field(default=None, description="Kurze Beschreibung des gesamten Workouts.")
     duration: int = Field(default=None, description="Dauer des Workouts in Minuten.")
-    focus: str = Field(default=None, description="Hauptfokus des Workouts, z.B. 'Brust, Schultern' oder 'Ausdauer'.")
+    focus: str = Field(default=None, description="Hauptfokus des Workouts in max. 3 Schlagworten, z.B. 'Brust, Schultern' oder 'Ausdauer'.")
     blocks: List[BlockSchema] = Field(..., description="Liste der Blöcke, aus denen das Workout besteht.")
