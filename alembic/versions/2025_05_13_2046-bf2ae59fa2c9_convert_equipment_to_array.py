@@ -24,7 +24,7 @@ def upgrade() -> None:
     op.execute("ALTER TABLE training_plans ALTER COLUMN equipment TYPE varchar[] USING ARRAY[equipment]::varchar[]")
     
     # Drop unrelated table that was auto-detected
-    op.drop_table('training_history')
+    pass
 
 
 def downgrade() -> None:
