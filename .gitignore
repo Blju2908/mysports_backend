@@ -39,3 +39,5 @@ env/
 
 # env
 .env
+.env.production
+.env.development
