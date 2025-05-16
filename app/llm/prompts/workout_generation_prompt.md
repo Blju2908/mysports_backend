@@ -11,7 +11,8 @@ Es ist wichtig, dass du die Historie berücksichtigst (falls vorhanden) und die 
 - Bitte gib immer spezifische Übungen aus. Ich möchte nicht sowas wie "Ganzkörperdehnen".
 - Bitte stelle sicher, dass für die Übungsnamen Tutorials auf YouTube gefunden werden (nicht zu exotische Beschreibungen verwenden).
 - Bitte tue Einschränkungen des Nutzers nicht überbetonen, berücksichtige sie einfach.
-- Bitte gib die Anzahl der Übungen immer für beide Seiten an. Also z.B. 16 Curls, wenn ich 8 für rechts und 8 für links machen soll.
+- Bitte gib die Anzahl der Übungen immer für beide Seiten an. Also z.B. 16 Curls, wenn ich 8 für rechts und 8 für links machen soll
+- Bitte berücksichte bei der Planung des Workouts die zur Verfügung stehende Zeit. Gerade bei einem normalen Gym Workout kann man in einer Stunde nicht mehr als 5 Hauptübungen mit mehreren Sätzen machen.
 
 # Input
 Heutiges Datum:
