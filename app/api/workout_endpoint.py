@@ -695,6 +695,101 @@ async def update_set_status_endpoint(
         )
     return db_set
 
+
+# Schema for manual activity entry
+class ManualActivitySchema(BaseModel):
+    name: str
+    description: str
+    timestamp: Optional[datetime] = None
+
+
+@router.post("/manual-activity", response_model=WorkoutResponseSchema)
+async def create_manual_activity(
+    activity: ManualActivitySchema,
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Creates a simple workout from a manual activity entry.
+    Creates one block, one exercise, and one completed set with the activity information.
+    """
+    # Validate user and get training plan
+    user_db_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
+    user_res = await db.execute(user_db_query)
+    user_db = user_res.scalar_one_or_none()
+
+    if not user_db or not user_db.training_plan_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, 
+            detail="User has no training plan"
+        )
+    
+    # Use provided timestamp or current time
+    activity_time = activity.timestamp or datetime.utcnow()
+    
+    try:
+        # 1. Create the workout
+        new_workout = Workout(
+            training_plan_id=user_db.training_plan_id,
+            name=activity.name,
+            description=activity.description,
+            date_created=activity_time,
+        )
+        db.add(new_workout)
+        await db.flush()  # Get ID for relationships
+        
+        # 2. Create the block
+        new_block = Block(
+            workout_id=new_workout.id,
+            name="Block 1",
+            description="Manuell dokumentierte Aktivität",
+        )
+        db.add(new_block)
+        await db.flush()  # Get ID for relationships
+        
+        # 3. Create the exercise
+        new_exercise = Exercise(
+            block_id=new_block.id,
+            name=activity.name,
+            notes=activity.description,
+        )
+        db.add(new_exercise)
+        await db.flush()  # Get ID for relationships
+        
+        # 4. Create the set
+        new_set = Set(
+            exercise_id=new_exercise.id,
+            status=SetStatus.done,
+            completed_at=activity_time,
+            reps=0,
+            weight=0,
+            duration=0,
+            distance=0,
+        )
+        db.add(new_set)
+        
+        await db.commit()
+        await db.refresh(new_workout)
+        
+        # Return the created workout
+        return WorkoutResponseSchema(
+            id=new_workout.id,
+            training_plan_id=new_workout.training_plan_id,
+            name=new_workout.name,
+            date_created=new_workout.date_created,
+            description=new_workout.description,
+            status=WorkoutStatusEnum.DONE,  # It's done since the single set is marked as done
+        )
+        
+    except Exception as e:
+        await db.rollback()
+        print(f"Error creating manual activity workout: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to create workout from manual activity"
+        )
+
+
 def make_naive(dt: datetime) -> datetime:
     if dt is not None and dt.tzinfo is not None:
         return dt.replace(tzinfo=None)

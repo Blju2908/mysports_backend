@@ -161,13 +161,13 @@ def format_training_history_for_llm(
     history_text_output = "\\n".join(history_lines)
 
     # Save to file for debugging (optional, can be removed in production)
-    output_dir = Path(__file__).resolve().parents[1] / "local_execution" / "output"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    file_path = output_dir / f"formatted_training_history_text_{timestamp}.txt"
-    with open(file_path, "w", encoding="utf-8") as f:
-        f.write(history_text_output.replace("\\\\n", "\\n")) # For readability in the text file
-    print(f"Formatted text training history saved to: {file_path}")
+    # output_dir = Path(__file__).resolve().parents[1] / "local_execution" / "output"
+    # output_dir.mkdir(parents=True, exist_ok=True)
+    # timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    # file_path = output_dir / f"formatted_training_history_text_{timestamp}.txt"
+    # with open(file_path, "w", encoding="utf-8") as f:
+    #     f.write(history_text_output.replace("\\\\n", "\\n")) # For readability in the text file
+    # print(f"Formatted text training history saved to: {file_path}")
 
     return history_text_output
 
