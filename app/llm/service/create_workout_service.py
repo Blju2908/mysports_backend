@@ -1,6 +1,9 @@
 from uuid import UUID
 from sqlmodel.ext.asyncio.session import AsyncSession
 from typing import Any, List, Dict, Optional
+import json
+from pathlib import Path
+from datetime import datetime
 
 from app.db.trainingplan_db_access import get_training_plan_for_user
 from app.db.workout_db_access import get_training_history_for_user_from_db
@@ -9,9 +12,6 @@ from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set, SetStatus
-from datetime import datetime
-import json
-from pathlib import Path
 
 async def run_workout_chain(
     user_id: UUID | None,
@@ -36,7 +36,7 @@ async def run_workout_chain(
 
     training_principles_text = None
     training_plan_id_for_saving = None
-    formatted_history_json = None
+    formatted_history = None
 
     if user_id is not None:
         # Get training principles from the user's training plan
@@ -47,21 +47,26 @@ async def run_workout_chain(
             training_principles_text = training_plan_db_obj.training_principles
         if training_plan_db_obj:
             training_plan_id_for_saving = training_plan_db_obj.id
+            
+            
 
         # Get and format training history (last 10 workouts)
         raw_training_history: List[Workout] = (
             await get_training_history_for_user_from_db(user_id, db, limit=10)
         )
+        
         if raw_training_history:
-            formatted_history_json = format_training_history_for_llm(
+            formatted_history = format_training_history_for_llm(
                 raw_training_history
             )
-
+        
+        
+        
     # LLM-Call durchführen
     # generate_workout signature will be (training_plan_text, training_history_json, user_prompt)
     llm_output_schema = await generate_workout(
         training_plan=training_principles_text,
-        training_history=formatted_history_json,
+        training_history=formatted_history,
         user_prompt=user_prompt,
     )
 
@@ -86,93 +91,99 @@ def format_training_history_for_llm(
     training_history_workouts: List[Workout],
 ) -> str | None:
     """
-    Formats the training history into a compact plain text string suitable for the LLM.
+    Formats the training history into a structured JSON string suitable for the LLM.
     Focuses on when the user trained, their notes, and actual executed exercises.
-    Set parameters are comma-separated: weight, reps, duration, distance, rest_time.
-    Only includes sets with status 'done'.
+    Only includes workouts that have at least one completed set.
+    Returns None if no workouts are provided.
     """
     if not training_history_workouts:
         return None
-
-    history_lines = []
-    for workout_idx, workout in enumerate(training_history_workouts):
-        if workout_idx > 0:
-            history_lines.append("---") # Separator for multiple workouts
-
-        # Get the earliest completed_at from sets as the workout completion date
+    
+    # Note: The workout history is already filtered by get_user_workout_history
+    # to only include completed sets and their parent elements
+    
+    history_data = []
+    
+    for workout in training_history_workouts:
+        # Find the earliest completed_at from sets as the workout completion date
         workout_completion_date_str = "N/A"
         earliest_completed_at = None
-        if workout.blocks:
-            for block in workout.blocks:
-                if block.exercises:
-                    for exercise in block.exercises:
-                        if exercise.sets:
-                            for s_set in exercise.sets:
-                                if s_set.status == SetStatus.done and s_set.completed_at:
-                                    if earliest_completed_at is None or s_set.completed_at < earliest_completed_at:
-                                        earliest_completed_at = s_set.completed_at
+        
+        for block in workout.blocks:
+            for exercise in block.exercises:
+                for s_set in exercise.sets:
+                    if s_set.completed_at:
+                        if earliest_completed_at is None or s_set.completed_at < earliest_completed_at:
+                            earliest_completed_at = s_set.completed_at
+                            
         if earliest_completed_at:
             workout_completion_date_str = earliest_completed_at.strftime("%Y-%m-%d")
 
-        history_lines.append(f"Workout: {workout.name if workout.name else 'Unnamed Workout'}")
-        if workout.focus:
-            history_lines.append(f"Focus: {workout.focus}")
-        if workout.duration:
-            history_lines.append(f"Duration: {workout.duration} min")
-        history_lines.append(f"Date: {workout_completion_date_str}")
-        if workout.notes:
-            history_lines.append(f"Workout Notes: {workout.notes}")
+        # Create workout object
+        workout_obj = {
+            "name": workout.name if workout.name else "Unnamed Workout",
+            "date": workout_completion_date_str,
+            "blocks": []
+        }
         
-        history_lines.append("") # Add a blank line for readability
-
+        if workout.focus:
+            workout_obj["focus"] = workout.focus
+        if workout.duration:
+            workout_obj["duration"] = workout.duration
+        if workout.notes:
+            workout_obj["notes"] = workout.notes
+        
+        # Add blocks
         for block in workout.blocks:
-            history_lines.append(f"  Block: {block.name if block.name else 'Unnamed Block'}")
-            if block.notes:
-                history_lines.append(f"  Block Notes: {block.notes}")
+            block_obj = {
+                "name": block.name if block.name else "Unnamed Block",
+                "exercises": []
+            }
             
+            if block.notes:
+                block_obj["notes"] = block.notes
+            
+            # Add exercises
             for exercise in block.exercises:
-                history_lines.append(f"    Exercise: {exercise.name if exercise.name else 'Unnamed Exercise'}")
-                if exercise.notes:
-                    history_lines.append(f"    Exercise Notes: {exercise.notes}")
+                exercise_obj = {
+                    "name": exercise.name if exercise.name else "Unnamed Exercise",
+                    "sets": []
+                }
                 
-                executed_sets_lines = []
+                if exercise.notes:
+                    exercise_obj["notes"] = exercise.notes
+                
+                # Add sets
                 for s in exercise.sets:
-                    if s.status == SetStatus.done:  # Only include completed sets
-                        # weight, reps, duration, distance, rest_time
-                        set_params_list = [
-                            str(s.weight if s.weight is not None else "null"),
-                            str(s.reps if s.reps is not None else "null"),
-                            str(s.duration if s.duration is not None else "null"),
-                            str(s.distance if s.distance is not None else "null"),
-                            str(s.rest_time if s.rest_time is not None else "null"),
-                        ]
-                        executed_sets_lines.append(f"      - {', '.join(set_params_list)}")
+                    set_obj = {}
+                    if s.weight is not None:
+                        set_obj["weight"] = s.weight
+                    if s.reps is not None:
+                        set_obj["reps"] = s.reps
+                    if s.duration is not None:
+                        set_obj["duration"] = s.duration
+                    if s.distance is not None:
+                        set_obj["distance"] = s.distance
+                    if s.rest_time is not None:
+                        set_obj["rest"] = s.rest_time
+                    
+                    if set_obj:  # Only add if there's at least one value
+                        exercise_obj["sets"].append(set_obj)
+                
+                if exercise_obj["sets"]:  # Only add if there's at least one set
+                    block_obj["exercises"].append(exercise_obj)
+            
+            if block_obj["exercises"]:  # Only add if there's at least one exercise
+                workout_obj["blocks"].append(block_obj)
+        
+        if workout_obj["blocks"]:  # Only add if there's at least one block
+            history_data.append(workout_obj)
 
-                if executed_sets_lines:
-                    history_lines.append("    Sets completed:")
-                    history_lines.extend(executed_sets_lines)
-            history_lines.append("") # Add a blank line after each exercise block for readability
-        history_lines.append("") # Add a blank line after each workout block for readability
-
-
-    if not history_lines:
+    if not history_data:
         return None
 
-    history_text_output = "\\n".join(history_lines)
-
-    # Save to file for debugging (optional, can be removed in production)
-    # output_dir = Path(__file__).resolve().parents[1] / "local_execution" / "output"
-    # output_dir.mkdir(parents=True, exist_ok=True)
-    # timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    # file_path = output_dir / f"formatted_training_history_text_{timestamp}.txt"
-    # with open(file_path, "w", encoding="utf-8") as f:
-    #     f.write(history_text_output.replace("\\\\n", "\\n")) # For readability in the text file
-    # print(f"Formatted text training history saved to: {file_path}")
-
-    return history_text_output
-
-
-
+    # Convert to JSON string
+    return json.dumps(history_data, ensure_ascii=False)
 
 def convert_llm_output_to_db_models(
     workout_dict: Dict[str, Any],  # Expecting dict from WorkoutSchema.model_dump()

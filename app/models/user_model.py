@@ -5,7 +5,7 @@ from uuid import UUID
 
 if TYPE_CHECKING:
     from .training_plan_model import TrainingPlan
-    from .training_history import ActivityLog
+    from .set_model import Set
 
 class UserModel(SQLModel, table=True):
     """
@@ -22,3 +22,4 @@ class UserModel(SQLModel, table=True):
     # Direkte Beziehung zum Trainingsplan (One-to-One)
     training_plan_id: Optional[int] = Field(default=None, foreign_key="training_plans.id")
     training_plan: Optional["TrainingPlan"] = Relationship(back_populates="user")
+

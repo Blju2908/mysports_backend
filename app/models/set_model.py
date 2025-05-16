@@ -28,4 +28,5 @@ class Set(SQLModel, table=True):
     status: SetStatus = Field(default=SetStatus.open)
     completed_at: Optional[datetime] = None
     
+    
     exercise: "Exercise" = Relationship(back_populates="sets")

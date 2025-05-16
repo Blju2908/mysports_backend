@@ -16,7 +16,7 @@ from app.models import (
     workout_model,
     showcase_feedback_model,
     workout_feedback_model
-)  # Ensure User model is registered in SQLModel.metadata
+)  
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -39,7 +39,8 @@ target_metadata = SQLModel.metadata
 # ... etc.
 
 # Get environment and load the appropriate .env file
-APP_ENV = "production"
+APP_ENV = "development"
+# APP_ENV = "production"
 env = os.getenv("APP_ENV", APP_ENV)
 env_file = f".env.{env}"
 load_dotenv(env_file)
