@@ -48,8 +48,8 @@ async def generate_workout(
         chain = llm.with_structured_output(WorkoutSchema) 
         
         # Debugging: Store the formatted prompt in a markdown file
-        # with open("formatted_prompt.md", "w") as f:
-        #     f.write(formatted_prompt)
+        with open("formatted_prompt.md", "w") as f:
+            f.write(formatted_prompt)
         
         print("Sending request to OpenAI API...")
         # We pass the fully formatted prompt directly.

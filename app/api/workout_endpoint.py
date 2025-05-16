@@ -360,7 +360,6 @@ async def save_block(
                     rest_time=s.rest_time,
                     status=s.status,
                     completed_at=make_naive(s.completed_at) if s.completed_at else None,
-                    notes=s.notes
                 )
                 db.add(new_set)
             else:

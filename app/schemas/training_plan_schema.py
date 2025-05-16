@@ -30,7 +30,7 @@ class TrainingPlanSchema(BaseModel):
     # Equipment & Environment
     equipment: Optional[List[str]] = None
     equipment_details: Optional[str] = None
-    include_cardio: Optional[str] = None  # 'yes' or 'no'
+    include_cardio: Optional[bool] = None  
     
     # Restrictions & Limitations
     restrictions: Optional[str] = None

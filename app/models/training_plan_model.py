@@ -38,7 +38,7 @@ class TrainingPlan(SQLModel, table=True):
         sa_column=Column(ARRAY(String)), default=None
     )
     equipment_details: Optional[str] = Field(default=None)
-    include_cardio: Optional[str] = Field(default=None)  # 'yes' oder 'no' statt boolean
+    include_cardio: Optional[bool] = Field(default=None)  # 'yes' oder 'no' statt boolean
     
     # Einschränkungen
     restrictions: Optional[str] = Field(default=None)
