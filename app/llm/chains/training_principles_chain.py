@@ -24,7 +24,7 @@ async def generate_training_principles(training_goals: dict | None = None) -> st
 
         config = get_config()
         OPENAI_API_KEY = config.OPENAI_API_KEY2
-        llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY)
+        llm = ChatOpenAI(model="gpt4.1", api_key=OPENAI_API_KEY)
 
         chain = ChatPromptTemplate.from_template(
             "{prompt}"
