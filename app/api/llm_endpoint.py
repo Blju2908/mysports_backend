@@ -11,7 +11,8 @@ from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 import logging
-from typing import Dict, Any # Hinzugefügt für den Response-Typ
+from typing import Dict, Any, List, Optional # Hinzugefügt für den Response-Typ
+from datetime import datetime, date # Added for date conversion
 
 router = APIRouter()
 logger = logging.getLogger("llm_endpoint")
@@ -19,6 +20,26 @@ logger = logging.getLogger("llm_endpoint")
 # Define a Pydantic model for the request body
 class CreateWorkoutRequest(BaseModel):
     prompt: str | None = Field(None, description="Optional user prompt for workout generation")
+
+# Define a Pydantic model for the training plan request from frontend
+class TrainingPlanRequest(BaseModel):
+    id: Optional[int] = None
+    gender: Optional[str] = None
+    birthdate: Optional[str] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
+    goal_types: Optional[List[str]] = None
+    goal_details: Optional[str] = None
+    fitness_level: Optional[int] = None
+    experience_level: Optional[int] = None
+    training_frequency: Optional[int] = None
+    session_duration: Optional[int] = None
+    equipment: Optional[List[str]] = None
+    equipment_details: Optional[str] = None
+    include_cardio: Optional[bool] = None
+    restrictions: Optional[str] = None
+    mobility_restrictions: Optional[str] = None
+    training_principles: Optional[str] = None
 
 @router.post("/llm/create-workout")
 async def create_workout(
@@ -53,6 +74,7 @@ async def create_workout(
 
 @router.post("/llm/create-training-principles", response_model=Dict[str, Any])
 async def create_training_principles_endpoint(
+    training_plan_data: TrainingPlanRequest,
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session)
 ):
@@ -93,18 +115,40 @@ async def create_training_principles_endpoint(
             logger.error(f"[llm/create-training-principles] Critical error: training_plan is None for user {user_uuid} after attempting to load/create.")
             raise HTTPException(status_code=500, detail="Fehler beim Laden oder Erstellen des Trainingsplans.")
 
-        # 3. Trainingsprinzipien generieren
+        # 3. Update training plan with data from frontend
+        # Only update fields that are provided in the request
+        update_dict = training_plan_data.model_dump(exclude_unset=True, exclude_none=True)
+        
+        # Handle date conversion for birthdate
+        if 'birthdate' in update_dict and update_dict['birthdate']:
+            try:
+                # Convert ISO string to date object
+                if isinstance(update_dict['birthdate'], str):
+                    # Parse ISO format date string
+                    dt = datetime.fromisoformat(update_dict['birthdate'].replace('Z', '+00:00'))
+                    update_dict['birthdate'] = dt.date()
+                    logger.info(f"[llm/create-training-principles] Converted birthdate from {training_plan_data.birthdate} to {update_dict['birthdate']}")
+            except Exception as e:
+                logger.error(f"[llm/create-training-principles] Error converting birthdate: {e}")
+                # If conversion fails, remove birthdate to prevent DB errors
+                update_dict.pop('birthdate')
+        
+        for field, value in update_dict.items():
+            if field != "id" and hasattr(training_plan, field):  # Skip id and check if field exists on model
+                setattr(training_plan, field, value)
+        
+        # 4. Trainingsprinzipien generieren
         # Die run_training_principles_chain erwartet user_id (UUID) und db Session
         generated_principles_text = await run_training_principles_chain(
             user_id=user_uuid, 
             db=db
         )
 
-        # 4. Generierte Prinzipien im Trainingsplan speichern
+        # 5. Generierte Prinzipien im Trainingsplan speichern
         training_plan.training_principles = generated_principles_text
         db.add(training_plan) # Stelle sicher, dass der Plan für das Update markiert ist
 
-        # 5. User mit Trainingsplan verknüpfen, falls noch nicht geschehen oder Plan neu erstellt wurde
+        # 6. User mit Trainingsplan verknüpfen, falls noch nicht geschehen oder Plan neu erstellt wurde
         if not user_db.training_plan_id or user_db.training_plan_id != training_plan.id:
             user_db.training_plan_id = training_plan.id
             db.add(user_db)
@@ -116,7 +160,7 @@ async def create_training_principles_endpoint(
 
         logger.info(f"[llm/create-training-principles] Trainingsprinzipien für User {user_uuid} erfolgreich erstellt und gespeichert.")
 
-        # 6. Aktualisierten Trainingsplan im Frontend-Format zurückgeben
+        # 7. Aktualisierten Trainingsplan im Frontend-Format zurückgeben
         # Die `to_frontend_format` Methode ist im TrainingPlanSchema definiert
         response_schema = TrainingPlanSchema(**training_plan.model_dump())
         return response_schema.to_frontend_format()
