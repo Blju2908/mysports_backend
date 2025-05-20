@@ -1,16 +1,41 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Body
+from fastapi import APIRouter, Depends, HTTPException, status, Body, BackgroundTasks
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from app.core.supabase import get_supabase_client
 from app.db.session import get_session
 from app.models.user_model import UserModel
 from app.core.auth import get_current_user, User
 from pydantic import BaseModel, EmailStr
-from sqlmodel import Session
+from sqlmodel import Session, select
 import logging
+import random
+import string
+from datetime import datetime, timedelta
+from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
+from app.core.config import get_config
+import os
+import httpx
 
 router = APIRouter(tags=["auth"])
 
 logger = logging.getLogger("auth")
+
+# Hole die Konfiguration
+settings = get_config()
+
+# Mail configuration
+mail_config = ConnectionConfig(
+    MAIL_USERNAME=settings.MAIL_USERNAME,
+    MAIL_PASSWORD=settings.MAIL_PASSWORD,
+    MAIL_FROM=settings.MAIL_FROM,
+    MAIL_PORT=settings.MAIL_PORT,
+    MAIL_SERVER=settings.MAIL_SERVER,
+    MAIL_FROM_NAME=settings.MAIL_FROM_NAME,
+    MAIL_STARTTLS=settings.MAIL_STARTTLS,
+    MAIL_SSL_TLS=settings.MAIL_SSL_TLS,
+    USE_CREDENTIALS=settings.MAIL_USE_CREDENTIALS,
+    VALIDATE_CERTS=settings.MAIL_VALIDATE_CERTS,
+    TEMPLATE_FOLDER=os.path.join(os.path.dirname(os.path.dirname(__file__)), "templates")
+)
 
 class UserRegister(BaseModel):
     email: EmailStr
@@ -46,7 +71,40 @@ class ChangeEmailRequest(BaseModel):
     new_email: EmailStr
     password: str
 
+class OtpRequest(BaseModel):
+    email: EmailStr
+
+class OtpVerifyRequest(BaseModel):
+    email: EmailStr
+    otp: str
+
+# OTP model for database
+class OtpModel(BaseModel):
+    email: str
+    otp: str
+    created_at: datetime
+    expires_at: datetime
+    
+# In-memory OTP store (replace with database in production)
+otp_store = {}
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login-form")
+
+async def send_otp_email(email: str, otp: str):
+    message = MessageSchema(
+        subject="Dein Einmalpasswort für MySports",
+        recipients=[email],
+        template_body={"otp": otp},
+        subtype=MessageType.html
+    )
+    
+    fm = FastMail(mail_config)
+    await fm.send_message(message, template_name="otp_email.html")
+    logger.info(f"OTP email sent to {email}")
+
+def generate_otp(length=6):
+    """Generate a numeric OTP of specified length."""
+    return ''.join(random.choices(string.digits, k=length))
 
 @router.post(
     "/register",
@@ -80,6 +138,9 @@ async def register(user_data: UserRegister, db: Session = Depends(get_session)):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Diese E-Mail-Adresse wird bereits verwendet"
             )
+        
+        # Send confirmation email using Supabase's built-in functionality
+        logger.info(f"[Register] User registered successfully, confirmation email sent: {response.user.email}")
     except Exception as e:
         logger.exception(f"[Register][Exception] {e}")
         raise HTTPException(
@@ -147,6 +208,73 @@ async def login_form(form_data: OAuth2PasswordRequestForm = Depends()):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(e),
             headers={"WWW-Authenticate": "Bearer"},
+        )
+
+@router.post("/request-otp", status_code=status.HTTP_200_OK)
+async def request_otp(otp_request: OtpRequest):
+    """
+    Request an OTP for a new or existing user using Supabase's OTP functionality.
+    This will send a "magic link" OTP email to the user regardless of whether they exist or not.
+    """
+    logger.info(f"[RequestOTP] Requesting OTP for: {otp_request.email}")
+    try:
+        supabase = await get_supabase_client()
+        response = await supabase.auth.sign_in_with_otp(
+            {
+                "email": otp_request.email,
+            }
+        )
+        logger.info(f"[RequestOTP] OTP sent to: {otp_request.email}")
+        return {"message": "OTP sent to your email"}
+    except Exception as e:
+        logger.exception(f"[RequestOTP][Exception] {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
+    
+
+@router.post("/verify-otp", response_model=TokenResponse)
+async def verify_otp(verify_request: OtpVerifyRequest, db: Session = Depends(get_session)):
+    """Verify OTP and return session tokens for automatic login"""
+    logger.info(f"[VerifyOTP] Verifying OTP for: {verify_request.email}")
+    config = get_config()
+    try:
+        supabase = await get_supabase_client()
+        response = await supabase.auth.verify_otp(
+            {
+                "email": verify_request.email,
+                "token": verify_request.otp,
+                "type": "email"
+            }
+        )
+
+        # Handle the response from Supabase
+        session = getattr(response, "session", None)
+        user = getattr(session, "user", None) if session else None
+        access_token = getattr(session, "access_token", None) if session else None
+        refresh_token = getattr(session, "refresh_token", None) if session else None
+
+        if not session or not user or not access_token or not refresh_token:
+            logger.error(f"[VerifyOTP] Invalid response from Supabase: {response}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid OTP or session could not be created"
+            )
+
+        # Optionally, you could create the user in your own DB here if needed
+
+        return TokenResponse(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            user=UserResponse(email=user.email, id=user.id)
+        )
+
+    except Exception as e:
+        logger.exception(f"[VerifyOTP][Exception] {e}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"OTP verification failed: {e}"
         )
 
 @router.post("/logout")
