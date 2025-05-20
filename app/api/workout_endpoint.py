@@ -666,18 +666,18 @@ async def update_set_status_endpoint(
     # Update fields from payload
     db_set.status = payload.status
     if payload.status == SetStatus.done:
-        db_set.completed_at = payload.completed_at if payload.completed_at else datetime.utcnow()
+        db_set.completed_at = make_naive(payload.completed_at) if payload.completed_at else datetime.utcnow()
     else:
         db_set.completed_at = None # Clear if not 'done'
 
-    if payload.execution_weight is not None:
-        db_set.execution_weight = payload.execution_weight
-    if payload.execution_reps is not None:
-        db_set.execution_reps = payload.execution_reps
-    if payload.execution_duration is not None:
-        db_set.execution_duration = payload.execution_duration
-    if payload.execution_distance is not None:
-        db_set.execution_distance = payload.execution_distance
+    if payload.weight is not None:
+        db_set.weight = payload.weight
+    if payload.reps is not None:
+        db_set.reps = payload.reps
+    if payload.duration is not None:
+        db_set.duration = payload.duration
+    if payload.distance is not None:
+        db_set.distance = payload.distance
     if payload.notes is not None: # Allow updating notes
         db_set.notes = payload.notes
 
