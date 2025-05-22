@@ -39,7 +39,7 @@ target_metadata = SQLModel.metadata
 # ... etc.
 
 # Get environment and load the appropriate .env file
-APP_ENV = "development"
+APP_ENV = "production"
 # APP_ENV = "production"
 env = os.getenv("APP_ENV", APP_ENV)
 env_file = f".env.{env}"

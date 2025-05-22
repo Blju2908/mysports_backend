@@ -39,6 +39,9 @@ class TrainingPlanSchema(BaseModel):
     # Training Principles (AI-generated)
     training_principles: Optional[str] = None
     
+    # Structured training principles
+    training_principles_json: Optional[Dict[str, Any]] = None
+    
     # Simplified conversion methods
     @classmethod
     def from_frontend_format(cls, data: Dict[str, Any]) -> "TrainingPlanSchema":

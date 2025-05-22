@@ -1,8 +1,8 @@
-from typing import Optional, List, TYPE_CHECKING
+from typing import Optional, List, TYPE_CHECKING, Dict, Any
 from sqlmodel import SQLModel, Field, Relationship
 from uuid import UUID
 from datetime import date
-from sqlalchemy import ARRAY, String, Column
+from sqlalchemy import ARRAY, String, Column, JSON
 
 if TYPE_CHECKING:
     from .user_model import UserModel
@@ -46,6 +46,13 @@ class TrainingPlan(SQLModel, table=True):
     
     # Trainingsprinzipien (KI-generiert)
     training_principles: Optional[str] = Field(default=None)
+    
+    # Structured training principles as JSON
+    training_principles_json: Optional[Dict[str, Any]] = Field(
+        sa_column=Column(JSON), 
+        default=None,
+        description="Structured training principles in JSON format"
+    )
 
     # Direkte Beziehung zum User (One-to-One)
     user: Optional["UserModel"] = Relationship(back_populates="training_plan")

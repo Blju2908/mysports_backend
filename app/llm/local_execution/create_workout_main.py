@@ -25,8 +25,8 @@ import json
 from datetime import datetime
 
 async def main():
-    user_id = UUID("e505cc55-a07a-4bd1-816d-b56611308b15") # Beispiel User ID
-    user_prompt = "Heute würde ich gerne Mal eine HIIT Einheit mit eine Kettlebell machen."
+    user_id = UUID("df668bed-9092-4035-82fa-c68e6fa2a8ff") # Beispiel User ID
+    user_prompt = ""
 
     engine = get_engine()
 

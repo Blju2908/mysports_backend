@@ -13,6 +13,14 @@ from typing import Optional, Dict, Any
 import json
 from pydantic import ValidationError
 
+# JSON-Encoder für date-Objekte
+class DateEncoder(json.JSONEncoder):
+    """JSON-Encoder, der date-Objekte automatisch in ISO-Format-Strings umwandelt."""
+    def default(self, obj):
+        if isinstance(obj, date):
+            return obj.isoformat()
+        return super().default(obj)
+
 router = APIRouter(tags=["training-plan"])
 
 logger = logging.getLogger("training_plan")
@@ -200,3 +208,54 @@ async def update_my_training_plan(
         logger.error(f"[Update][Exception] plan_data: {plan_data}")
         logger.error(f"[Update][Exception] current_user: {current_user}")
         raise HTTPException(status_code=500, detail=f"Fehler beim Aktualisieren des Trainingsplans: {e}")
+
+@router.post("/update-training-principles", response_model=dict)
+async def update_training_principles(
+    principles_data: Dict[str, Any] = Body(...),
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user)
+):
+    try:
+        user_uuid = UUID(current_user.id)
+        
+        # Get the user
+        user_query = select(UserModel).where(UserModel.id == user_uuid)
+        result = await db.execute(user_query)
+        user = result.scalar_one_or_none()
+        
+        if not user or not user.training_plan_id:
+            raise HTTPException(status_code=404, detail="Kein Trainingsplan gefunden")
+            
+        # Get the training plan
+        plan_query = select(TrainingPlan).where(TrainingPlan.id == user.training_plan_id)
+        plan_result = await db.execute(plan_query)
+        plan = plan_result.scalar_one_or_none()
+        
+        if not plan:
+            raise HTTPException(status_code=404, detail="Trainingsplan nicht gefunden")
+        
+        # Ensure date objects are converted to strings before storing in DB
+        # Convert any date objects to ISO format strings
+        serialized_data = json.loads(json.dumps(principles_data, cls=DateEncoder))
+            
+        # Update the training principles JSON
+        plan.training_principles_json = serialized_data
+        
+        # Also update the text version for backward compatibility
+        if "training_principles_text" in principles_data:
+            plan.training_principles = principles_data["training_principles_text"]
+        
+        # Save changes
+        db.add(plan)
+        await db.commit()
+        await db.refresh(plan)
+        
+        # Return updated plan
+        plan_dict = plan.model_dump()
+        response_schema = TrainingPlanSchema(**plan_dict)
+        return response_schema.to_frontend_format()
+        
+    except Exception as e:
+        await db.rollback()
+        logger.error(f"[UpdatePrinciples][Exception] {e}")
+        raise HTTPException(status_code=500, detail=f"Fehler beim Aktualisieren der Trainingsprinzipien: {e}")
