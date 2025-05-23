@@ -520,14 +520,15 @@ async def submit_workout_feedback(
         raise HTTPException(status_code=500, detail="Fehler beim Speichern des Feedbacks")
 
 
-@router.get("/feedback/{workout_id}", response_model=WorkoutFeedbackResponseSchema)
+@router.get("/feedback/{workout_id}", response_model=Optional[WorkoutFeedbackResponseSchema])
 async def get_workout_feedback(
     workout_id: int,
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
     """
-    Holt das Feedback eines Users zu einem bestimmten Workout
+    Holt das Feedback eines Users zu einem bestimmten Workout.
+    Gibt null zurück wenn kein Feedback vorhanden ist (normales Verhalten).
     """
     # Prüfen ob das Workout existiert
     workout_query = select(Workout).where(Workout.id == workout_id)
@@ -545,8 +546,9 @@ async def get_workout_feedback(
     result = await db.execute(feedback_query)
     feedback = result.scalar_one_or_none()
     
+    # Kein Feedback ist normales Verhalten - return null instead of 404
     if not feedback:
-        raise HTTPException(status_code=404, detail="Kein Feedback für dieses Workout gefunden")
+        return None
     
     # UUID zu String konvertieren
     response_data = {
