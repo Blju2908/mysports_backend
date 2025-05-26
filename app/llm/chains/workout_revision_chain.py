@@ -53,8 +53,8 @@ async def revise_workout(
         chain = llm.with_structured_output(WorkoutSchema)
         
         # Debugging: Store the formatted prompt in a markdown file
-        with open("formatted_revision_prompt.md", "w") as f:
-            f.write(formatted_prompt)
+        # with open("formatted_revision_prompt.md", "w") as f:
+        #     f.write(formatted_prompt)
         
         print("Sending workout revision request to OpenAI API...")
         # Send the formatted prompt to the LLM

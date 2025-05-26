@@ -1,4 +1,3 @@
-from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from app.llm.utils.langchain_utils import load_prompt
 from app.core.config import get_config

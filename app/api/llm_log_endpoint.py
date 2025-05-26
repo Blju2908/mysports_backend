@@ -272,4 +272,73 @@ async def get_my_llm_summary(
         days=days,
         current_user=current_user,
         db=db
-    ) 
+    )
+
+
+@router.get("/workout-usage", response_model=Dict[str, Any])
+async def get_workout_usage_stats(
+    period_start: Optional[datetime] = Query(None, description="Start of the billing period"),
+    period_end: Optional[datetime] = Query(None, description="End of the billing period"),
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_session),
+):
+    """
+    Get workout-related API usage statistics for the current user.
+    Returns successful calls to llm/create-workout and workout/revise endpoints in the last 30 days.
+    """
+    try:
+        # Use provided period or default to last 30 days
+        if period_start and period_end:
+            # Convert timezone-aware datetimes to naive UTC for database compatibility
+            start_date = period_start.replace(tzinfo=None) if period_start.tzinfo else period_start
+            end_date = period_end.replace(tzinfo=None) if period_end.tzinfo else period_end
+        else:
+            # Fallback to 30 days if no subscription period provided
+            end_date = datetime.utcnow()
+            start_date = end_date - timedelta(days=30)
+        
+        # Query for successful workout-related API calls
+        workout_endpoints = ['llm/create-workout', 'workout/revise']
+        
+        result = await db.execute(
+            select(func.count(LlmCallLog.id)).where(
+                and_(
+                    LlmCallLog.user_id == current_user.id,
+                    LlmCallLog.timestamp >= start_date,
+                    LlmCallLog.timestamp <= end_date,
+                    LlmCallLog.success == True,
+                    LlmCallLog.endpoint_name.in_(workout_endpoints)
+                )
+            )
+        )
+        
+        total_calls = result.scalar() or 0
+        max_calls = 100
+        remaining_calls = max(0, max_calls - total_calls)
+        usage_percentage = (total_calls / max_calls * 100) if max_calls > 0 else 0
+        
+        # Determine usage status based on percentage (renamed to avoid conflict)
+        if usage_percentage >= 75:
+            usage_status = "critical"
+        elif usage_percentage >= 25:
+            usage_status = "warning"
+        else:
+            usage_status = "normal"
+        
+        return {
+            "total_calls": total_calls,
+            "max_calls": max_calls,
+            "remaining_calls": remaining_calls,
+            "usage_percentage": round(usage_percentage, 1),
+            "status": usage_status,
+            "period_start": start_date.isoformat(),
+            "period_end": end_date.isoformat(),
+            "tracked_endpoints": workout_endpoints
+        }
+        
+    except Exception as e:
+        print(f"Error getting workout usage stats: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error retrieving workout usage statistics"
+        ) 
