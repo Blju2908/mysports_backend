@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Body, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, join, update, delete
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict, Any
 from sqlalchemy.orm import selectinload
 from datetime import datetime
 from pydantic import BaseModel
@@ -14,6 +14,7 @@ from app.models.set_model import Set, SetStatus
 from app.models.workout_feedback_model import WorkoutFeedback
 from app.models.user_model import UserModel
 from app.services.workout_service import get_workout_details
+from app.services.llm_logging_service import log_workout_revision, log_workout_revision_accept
 from app.llm.schemas.workout_schema import (
     WorkoutResponseSchema,
     WorkoutSchemaWithBlocks,
@@ -23,6 +24,12 @@ from app.llm.schemas.workout_schema import (
     WorkoutStatusEnum,
     BlockSchema
 )
+from app.llm.schemas.workout_revision_schemas import (
+    WorkoutRevisionRequestSchema,
+    WorkoutRevisionResponseSchema
+)
+from app.llm.service.workout_revision_service import run_workout_revision_chain, save_revised_workout
+from app.llm.schemas.create_workout_schemas import WorkoutSchema
 from app.schemas.workout_feedback_schema import WorkoutFeedbackSchema, WorkoutFeedbackResponseSchema
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
@@ -795,3 +802,205 @@ def make_naive(dt: datetime) -> datetime:
     if dt is not None and dt.tzinfo is not None:
         return dt.replace(tzinfo=None)
     return dt
+
+
+@router.post("/{workout_id}/revise", response_model=WorkoutRevisionResponseSchema)
+async def change_workout_endpoint(
+    workout_id: int,
+    request_data: WorkoutRevisionRequestSchema,
+    request: Request,
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Überarbeitet ein bestehendes Workout basierend auf User-Feedback.
+    """
+    # Prepare request data for logging
+    request_log_data = {
+        "workout_id": workout_id,
+        "user_feedback": request_data.user_feedback,
+        "has_training_plan": request_data.training_plan is not None,
+        "has_training_history": request_data.training_history is not None and len(request_data.training_history) > 0
+    }
+    
+    async with await log_workout_revision(
+        db=db,
+        user=current_user,
+        workout_id=workout_id,
+        request=request,
+        request_data=request_log_data
+    ) as call_logger:
+        try:
+            # Verify user has access to this workout
+            workout_orm = await get_workout_details(workout_id=workout_id, db=db)
+            
+            user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
+            result = await db.execute(user_query)
+            user = result.scalar_one_or_none()
+            
+            if (not user or not user.training_plan_id or 
+                workout_orm.training_plan_id != user.training_plan_id):
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Keine Berechtigung für den Zugriff auf dieses Workout"
+                )
+            
+            # Update training_plan_id für Logging
+            if call_logger.log_entry:
+                call_logger.log_entry.training_plan_id = user.training_plan_id
+            
+            # Run the workout revision chain
+            revised_workout_schema = await run_workout_revision_chain(
+                workout_id=workout_id,
+                user_feedback=request_data.user_feedback,
+                training_plan=request_data.training_plan,
+                training_history=request_data.training_history,
+                db=db
+            )
+            
+            # Create response
+            response = WorkoutRevisionResponseSchema(
+                original_workout_id=workout_id,
+                user_feedback=request_data.user_feedback,
+                revised_workout=revised_workout_schema,
+                revision_timestamp=datetime.utcnow().isoformat()
+            )
+            
+            # Log success
+            await call_logger.log_success(
+                http_status_code=200,
+                response_summary=f"Workout revision completed for workout {workout_id}"
+            )
+            
+            return response
+            
+        except HTTPException:
+            # Log error wird automatisch durch den Context Manager gemacht
+            raise
+        except Exception as e:
+            print(f"Error in change_workout_endpoint: {e}")
+            import traceback
+            traceback.print_exc()
+            # Log error wird automatisch durch den Context Manager gemacht
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Fehler bei der Workout-Überarbeitung"
+            )
+
+
+@router.post("/{workout_id}/revise/accept", response_model=WorkoutSchemaWithBlocks)
+async def accept_revised_workout_endpoint(
+    workout_id: int,
+    revised_workout: WorkoutSchema,
+    request: Request,
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Akzeptiert ein überarbeitetes Workout und speichert es in der Datenbank.
+    """
+    # Prepare request data for logging
+    request_log_data = {
+        "workout_id": workout_id,
+        "revised_workout_name": revised_workout.name,
+        "revised_workout_description": revised_workout.description,
+        "num_blocks": len(revised_workout.blocks) if revised_workout.blocks else 0
+    }
+    
+    async with await log_workout_revision_accept(
+        db=db,
+        user=current_user,
+        workout_id=workout_id,
+        request=request,
+        request_data=request_log_data
+    ) as call_logger:
+        try:
+            # Verify user has access to this workout
+            workout_orm = await get_workout_details(workout_id=workout_id, db=db)
+            
+            user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
+            result = await db.execute(user_query)
+            user = result.scalar_one_or_none()
+            
+            if (not user or not user.training_plan_id or 
+                workout_orm.training_plan_id != user.training_plan_id):
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Keine Berechtigung für den Zugriff auf dieses Workout"
+                )
+            
+            # Update training_plan_id für Logging
+            if call_logger.log_entry:
+                call_logger.log_entry.training_plan_id = user.training_plan_id
+            
+            # Save the revised workout to the database
+            updated_workout = await save_revised_workout(
+                workout_id=workout_id,
+                revised_workout_schema=revised_workout,
+                db=db
+            )
+            
+            # Calculate status for the updated workout
+            calculated_status = calculate_workout_status(updated_workout)
+            
+            # Build response data
+            response_blocks_data = []
+            for block_orm in updated_workout.blocks:
+                response_exercises_data = []
+                for exercise_orm in block_orm.exercises:
+                    response_sets_data = [SetResponseSchema.from_orm(s) for s in exercise_orm.sets]
+                    response_exercises_data.append(
+                        ExerciseResponseSchema(
+                            id=exercise_orm.id,
+                            name=exercise_orm.name,
+                            description=exercise_orm.description,
+                            notes=exercise_orm.notes,
+                            block_id=exercise_orm.block_id,
+                            sets=response_sets_data
+                        )
+                    )
+                response_blocks_data.append(
+                    BlockResponseSchema(
+                        id=block_orm.id,
+                        name=block_orm.name,
+                        description=block_orm.description,
+                        notes=block_orm.notes,
+                        workout_id=block_orm.workout_id,
+                        exercises=response_exercises_data
+                    )
+                )
+            
+            result = WorkoutSchemaWithBlocks(
+                id=updated_workout.id,
+                training_plan_id=updated_workout.training_plan_id,
+                name=updated_workout.name,
+                date_created=updated_workout.date_created,
+                description=updated_workout.description,
+                duration=updated_workout.duration,
+                focus=updated_workout.focus,
+                notes=updated_workout.notes,
+                status=calculated_status,
+                blocks=response_blocks_data
+            )
+            
+            # Log success
+            await call_logger.log_success(
+                http_status_code=200,
+                response_summary=f"Revised workout {workout_id} accepted and saved successfully"
+            )
+            
+            # Return the updated workout
+            return result
+            
+        except HTTPException:
+            # Log error wird automatisch durch den Context Manager gemacht
+            raise
+        except Exception as e:
+            print(f"Error in accept_revised_workout_endpoint: {e}")
+            import traceback
+            traceback.print_exc()
+            # Log error wird automatisch durch den Context Manager gemacht
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Fehler beim Speichern des überarbeiteten Workouts"
+            )

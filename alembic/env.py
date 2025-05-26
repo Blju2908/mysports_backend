@@ -15,7 +15,9 @@ from app.models import (
     user_model,
     workout_model,
     showcase_feedback_model,
-    workout_feedback_model
+    workout_feedback_model,
+    app_feedback_model,
+    llm_call_log_model
 )  
 
 # this is the Alembic Config object, which provides
