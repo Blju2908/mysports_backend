@@ -4,6 +4,7 @@ from app.api import create_api_router
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.session import create_db_and_tables
+from app.middleware.activity_logging_middleware import ActivityLoggingMiddleware
 
 @asynccontextmanager
 async def lifespan(app):
@@ -28,6 +29,12 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+# Activity Logging Middleware hinzufügen
+app.add_middleware(
+    ActivityLoggingMiddleware,
+    exclude_paths=["/docs", "/openapi.json", "/redoc", "/favicon.ico", "/health"]
 )
 
 app.include_router(create_api_router())

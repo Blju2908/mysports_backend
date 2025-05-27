@@ -6,3 +6,4 @@ from .training_plan_model import TrainingPlan
 from .set_model import Set
 from .app_feedback_model import AppFeedbackModel
 from .showcase_feedback_model import ShowcaseQuestionnaireTemplate, ShowcaseFeedback, ShowcaseTrainingPlan
+from .user_activity_log_model import UserActivityLog, ActivityActionType, RiskLevel

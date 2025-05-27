@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from app.core.supabase import get_supabase_client
@@ -50,3 +50,21 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     except Exception as e:
         logger.error(f"[get_current_user] Exception: {e}")
         raise credentials_exception 
+
+async def get_current_user_optional(request: Request) -> Optional[User]:
+    """
+    Versucht den aktuellen User zu extrahieren, gibt None zurück falls nicht authentifiziert.
+    Für Middleware-Verwendung ohne Exceptions.
+    """
+    try:
+        # Authorization Header prüfen
+        authorization = request.headers.get("authorization")
+        if not authorization or not authorization.startswith("Bearer "):
+            return None
+        
+        token = authorization.split(" ")[1]
+        user = await get_current_user(token)
+        return user
+        
+    except Exception:
+        return None
