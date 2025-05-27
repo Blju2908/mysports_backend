@@ -40,7 +40,7 @@ async def generate_workout(
         config = get_config()
         OPENAI_API_KEY = config.OPENAI_API_KEY2
 
-        llm = ChatOpenAI(model="gpt-4.1-mini", api_key=OPENAI_API_KEY)
+        llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY)
         # llm = ChatOpenAI(model="gpt-4.1", api_key=OPENAI_API_KEY) 
 
         # Nutze with_structured_output mit async=True
