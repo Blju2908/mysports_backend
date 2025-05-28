@@ -14,6 +14,7 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
 from app.core.config import get_config
 import os
 import httpx
+from uuid import UUID
 
 router = APIRouter(tags=["auth"])
 
@@ -31,6 +32,8 @@ class UserRegister(BaseModel):
 class UserResponse(BaseModel):
     email: EmailStr
     id: str
+    onboarding_completed: bool
+    is_new_user: bool
 
 
 class TokenResponse(BaseModel):
@@ -91,7 +94,7 @@ otp_store = {}
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login-form")
 
 
-async def _login(email: str, password: str) -> TokenResponse:
+async def _login(email: str, password: str, db: Session) -> TokenResponse:
     supabase = await get_supabase_client()
     response = await supabase.auth.sign_in_with_password(
         {"email": email, "password": password}
@@ -102,17 +105,26 @@ async def _login(email: str, password: str) -> TokenResponse:
             detail="Invalid credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    
+    # Get user profile data including onboarding status
+    profile_data = await get_user_profile_data(response.user.id, db)
+    
     return TokenResponse(
         access_token=response.session.access_token,
         refresh_token=response.session.refresh_token,
-        user=UserResponse(email=response.user.email, id=response.user.id),
+        user=UserResponse(
+            email=response.user.email, 
+            id=response.user.id,
+            onboarding_completed=profile_data["onboarding_completed"],
+            is_new_user=profile_data["is_new_user"]
+        ),
     )
 
 
 @router.post("/login", response_model=TokenResponse)
-async def login(login_data: LoginRequest):
+async def login(login_data: LoginRequest, db: Session = Depends(get_session)):
     try:
-        return await _login(login_data.email, login_data.password)
+        return await _login(login_data.email, login_data.password, db)
     except Exception as e:
         logger.exception(f"[Login][Exception] {e}")
         raise HTTPException(
@@ -123,9 +135,9 @@ async def login(login_data: LoginRequest):
 
 
 @router.post("/login-form", response_model=TokenResponse)
-async def login_form(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_form(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_session)):
     try:
-        return await _login(form_data.username, form_data.password)
+        return await _login(form_data.username, form_data.password, db)
     except Exception as e:
         logger.exception(f"[Login-Form][Exception] {e}")
         raise HTTPException(
@@ -194,12 +206,37 @@ async def verify_otp(
                 detail="Invalid OTP or session could not be created",
             )
 
-        # Optionally, you could create the user in your own DB here if needed
+        # Create the user in the database
+        user_query = select(UserModel).where(UserModel.id == UUID(user.id))
+        db_user = (await db.exec(user_query)).first()
+        
+        if not db_user:
+            db_user = UserModel(
+                id=UUID(user.id),
+                onboarding_completed=False,
+                created_at=datetime.utcnow()
+            )
+            db.add(db_user)
+            await db.commit()
+            await db.refresh(db_user)
+            logger.info(f"[VerifyOTP] Created user in database: {user.id}")
+        else:
+            logger.info(f"[VerifyOTP] User already exists in database: {user.id}")
+            db.refresh(db_user)
+            logger.info(f"[VerifyOTP] Refreshed user in database: {user.id}")
 
+        # Get user profile data including onboarding status
+        profile_data = await get_user_profile_data(db_user.id, db)
+        
         return TokenResponse(
             access_token=access_token,
             refresh_token=refresh_token,
-            user=UserResponse(email=user.email, id=user.id),
+            user=UserResponse(
+                email=user.email, 
+                id=user.id,
+                onboarding_completed=profile_data["onboarding_completed"],
+                is_new_user=profile_data["is_new_user"]
+            ),
         )
 
     except Exception as e:
@@ -223,17 +260,26 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
 
 
 @router.post("/refresh", response_model=RefreshTokenResponse)
-async def refresh_token(data: RefreshTokenRequest):
+async def refresh_token(data: RefreshTokenRequest, db: Session = Depends(get_session)):
     try:
         supabase = await get_supabase_client()
         result = await supabase.auth.refresh_session(data.refresh_token)
         session = result.session
         if not session or not session.user:
             raise HTTPException(status_code=401, detail="Could not refresh token")
+        
+        # Get user profile data including onboarding status
+        profile_data = await get_user_profile_data(session.user.id, db)
+        
         return RefreshTokenResponse(
             access_token=session.access_token,
             refresh_token=session.refresh_token,
-            user=UserResponse(email=session.user.email, id=session.user.id),
+            user=UserResponse(
+                email=session.user.email, 
+                id=session.user.id,
+                onboarding_completed=profile_data["onboarding_completed"],
+                is_new_user=profile_data["is_new_user"]
+            ),
         )
     except Exception as e:
         logger.exception(f"[Refresh][Exception] {e}")
@@ -245,6 +291,7 @@ async def set_password(
     password_data: SetPasswordRequest,
     current_user: User = Depends(get_current_user),
     token: str = Depends(oauth2_scheme),
+    db: Session = Depends(get_session),
 ):
     logger.info(f"[SetPassword] Setting password for user: {current_user.email}")
     try:
@@ -285,11 +332,19 @@ async def set_password(
         
         if not session or not user:
             raise Exception("Failed to get new session after password update")
+        
+        # Get user profile data including onboarding status
+        profile_data = await get_user_profile_data(session.user.id, db)
             
         return TokenResponse(
             access_token=session.access_token,
             refresh_token=session.refresh_token,
-            user=UserResponse(email=session.user.email, id=session.user.id),
+            user=UserResponse(
+                email=session.user.email, 
+                id=session.user.id,
+                onboarding_completed=profile_data["onboarding_completed"],
+                is_new_user=profile_data["is_new_user"]
+            ),
         )
     except HTTPException:
         # Re-raise HTTP exceptions to preserve the status code
@@ -300,3 +355,73 @@ async def set_password(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to set password: {str(e)}",
         )
+
+
+@router.post("/complete-onboarding", status_code=status.HTTP_200_OK)
+async def complete_onboarding(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_session),
+):
+    """Mark user's onboarding as completed"""
+    logger.info(f"[CompleteOnboarding] Marking onboarding complete for user: {current_user.email}")
+    try:
+        # Get or create user in our database
+        user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
+        db_user = (await db.exec(user_query)).first()
+        
+        if not db_user:
+            # Create user if not exists
+            db_user = UserModel(
+                id=UUID(current_user.id),
+                onboarding_completed=True,
+                created_at=datetime.utcnow()
+            )
+            db.add(db_user)
+        else:
+            # Update existing user
+            db_user.onboarding_completed = True
+            db_user.updated_at = datetime.utcnow()
+        
+        await db.commit()
+        await db.refresh(db_user)
+        
+        return {"message": "Onboarding completed successfully"}
+    except Exception as e:
+        await db.rollback()
+        logger.exception(f"[CompleteOnboarding][Exception] {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to complete onboarding: {str(e)}",
+        )
+
+
+async def get_user_profile_data(user_id: str, db: Session) -> dict:
+    """Helper function to get user profile data including onboarding status"""
+    try:
+        # Query our local database for user profile
+        user_query = select(UserModel).where(UserModel.id == UUID(user_id))
+        db_user = (await db.exec(user_query)).first()
+        
+        if db_user:
+            # Calculate if user is "new" (created within last 5 minutes)
+            is_new_user = (
+                db_user.created_at and 
+                datetime.utcnow() - db_user.created_at < timedelta(minutes=5)
+            )
+            return {
+                "onboarding_completed": db_user.onboarding_completed,
+                "is_new_user": is_new_user
+            }
+        else:
+            # User doesn't exist in our DB yet - they are definitely new
+            return {
+                "onboarding_completed": False,
+                "is_new_user": True
+            }
+    except Exception as e:
+        logger.warning(f"Error getting user profile data for {user_id}: {e}")
+        # Default to safe values
+        return {
+            "onboarding_completed": False,
+            "is_new_user": True
+        }

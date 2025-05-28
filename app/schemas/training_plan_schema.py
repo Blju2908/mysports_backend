@@ -1,5 +1,5 @@
-# 1. Update backend/app/schemas/training_plan_schema.py
-from pydantic import BaseModel, Field
+# backend/app/schemas/training_plan_schema.py
+from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List, Union, Dict, Any
 from datetime import date
 import logging
@@ -16,7 +16,7 @@ class TrainingPlanSchema(BaseModel):
     weight: Optional[float] = None
     
     # Training Goals
-    goal_types: Optional[List[str]] = None
+    goal_types: Optional[List[str]] = Field(default_factory=list)
     goal_details: Optional[str] = None
     
     # Experience & Fitness
@@ -28,7 +28,7 @@ class TrainingPlanSchema(BaseModel):
     session_duration: Optional[Union[str, int]] = None
     
     # Equipment & Environment
-    equipment: Optional[List[str]] = None
+    equipment: Optional[List[str]] = Field(default_factory=list)
     equipment_details: Optional[str] = None
     include_cardio: Optional[bool] = None  
     
@@ -38,34 +38,42 @@ class TrainingPlanSchema(BaseModel):
     
     # Training Principles (AI-generated)
     training_principles: Optional[str] = None
-    
-    # Structured training principles
     training_principles_json: Optional[Dict[str, Any]] = None
     
-    # Simplified conversion methods
+    @field_validator('birthdate', mode='before')
+    @classmethod
+    def parse_birthdate(cls, v):
+        """Parse birthdate from various formats"""
+        if v is None:
+            return None
+        if isinstance(v, date):
+            return v
+        if isinstance(v, str):
+            try:
+                # Parse ISO format date string (YYYY-MM-DD)
+                year, month, day = v.split('-')
+                return date(int(year), int(month), int(day))
+            except (ValueError, TypeError) as e:
+                logger.error(f"Error parsing birthdate '{v}': {e}")
+                return None
+        return v
+    
     @classmethod
     def from_frontend_format(cls, data: Dict[str, Any]) -> "TrainingPlanSchema":
-        # Create a copy to avoid modifying the original
-        processed_data = dict(data)
-        
-        # Handle birthdate
-        if 'birthdate' in processed_data and isinstance(processed_data['birthdate'], str):
-            try:
-                # Parse ISO format date string
-                year, month, day = processed_data['birthdate'].split('-')
-                processed_data['birthdate'] = date(int(year), int(month), int(day))
-                logger.info(f"Converted birthdate string to date: {processed_data['birthdate']}")
-            except (ValueError, TypeError) as e:
-                logger.error(f"Error converting birthdate: {e}")
-                # Keep as string if conversion fails
-                pass
-        
-        return cls(**processed_data)
+        """Convert frontend data to schema format"""
+        # Pydantic handles the validation automatically with field_validator
+        return cls(**data)
     
     def to_frontend_format(self) -> Dict[str, Any]:
-        # Convert to dict
+        """Convert schema to frontend format with proper date serialization"""
         result = self.model_dump(exclude_none=True)
         
+        # Ensure arrays are always arrays (never None)
+        if result.get('goal_types') is None:
+            result['goal_types'] = []
+        if result.get('equipment') is None:
+            result['equipment'] = []
+            
         return result
 
 class APIResponse(BaseModel):

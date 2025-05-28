@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, status, HTTPException, Body
+# backend/app/routers/training_plan.py - SIMPLIFIED VERSION
+from fastapi import APIRouter, Depends, HTTPException, Body
 from sqlmodel import Session, select
 from app.models.training_plan_model import TrainingPlan
 from app.core.auth import get_current_user, User
@@ -8,240 +9,169 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 import logging
 from app.models.user_model import UserModel
-from datetime import date
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 import json
-from pydantic import ValidationError
-
-# JSON-Encoder für date-Objekte
-class DateEncoder(json.JSONEncoder):
-    """JSON-Encoder, der date-Objekte automatisch in ISO-Format-Strings umwandelt."""
-    def default(self, obj):
-        if isinstance(obj, date):
-            return obj.isoformat()
-        return super().default(obj)
+from datetime import date
 
 router = APIRouter(tags=["training-plan"])
-
 logger = logging.getLogger("training_plan")
 
+# 🔧 HELPER FUNCTIONS - Reduce duplication
+async def get_or_create_user(db: AsyncSession, user_id: UUID) -> UserModel:
+    """Get user from DB or create if doesn't exist"""
+    user_query = select(UserModel).where(UserModel.id == user_id)
+    result = await db.execute(user_query)
+    user = result.scalar_one_or_none()
+    
+    if not user:
+        user = UserModel(id=user_id)
+        db.add(user)
+        await db.commit()
+        await db.refresh(user)
+    
+    return user
 
+async def get_or_create_training_plan(db: AsyncSession, user: UserModel) -> TrainingPlan:
+    """Get user's training plan or create empty one"""
+    if user.training_plan_id:
+        # Try to get existing plan
+        plan_query = select(TrainingPlan).where(TrainingPlan.id == user.training_plan_id)
+        plan_result = await db.execute(plan_query)
+        plan = plan_result.scalar_one_or_none()
+        
+        if plan:
+            return plan
+    
+    # Create new empty plan with defaults
+    new_plan = TrainingPlan(
+        equipment="",
+        session_duration=45,
+        training_frequency=3,
+        fitness_level=3,
+        experience_level=3,
+        include_cardio=True
+    )
+    db.add(new_plan)
+    await db.commit()
+    await db.refresh(new_plan)
+    
+    # Link user to plan
+    user.training_plan_id = new_plan.id
+    db.add(user)
+    await db.commit()
+    await db.refresh(user)
+    
+    return new_plan
+
+def safe_json_serialize(data: Dict[str, Any]) -> Dict[str, Any]:
+    """Safely serialize data with date objects"""
+    def date_serializer(obj):
+        if isinstance(obj, date):
+            return obj.isoformat()
+        raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
+    
+    # Convert to JSON string and back to ensure all dates are serialized
+    json_str = json.dumps(data, default=date_serializer)
+    return json.loads(json_str)
+
+# 🎯 SIMPLIFIED ENDPOINTS
 @router.get("/mine", response_model=Dict[str, Any])
 async def get_my_training_plan(
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
+    """Get current user's training plan"""
     try:
         user_uuid = UUID(current_user.id)
-        # Sicherstellen, dass der User in der eigenen Tabelle existiert
-        user_query = select(UserModel).where(UserModel.id == user_uuid)
-        result = await db.execute(user_query)
-        user_in_db = result.scalar_one_or_none()
         
-        if not user_in_db:
-            new_user = UserModel(id=user_uuid)
-            db.add(new_user)
-            await db.commit()
-            await db.refresh(new_user)
-            user_in_db = new_user
-
-        # Prüfe, ob der User einen Trainingsplan hat
-        if not user_in_db.training_plan_id:
-            # Erstelle einen leeren Trainingsplan mit Standardwerten
-            empty_plan = TrainingPlan(
-                equipment="",
-                session_duration=45,
-                training_frequency=3,
-                fitness_level=3,
-                experience_level=3,
-                include_cardio=True
-            )
-            db.add(empty_plan)
-            await db.commit()
-            await db.refresh(empty_plan)
-            
-            # Verknüpfe User mit neuem Plan
-            user_in_db.training_plan_id = empty_plan.id
-            db.add(user_in_db)
-            await db.commit()
-            await db.refresh(user_in_db)
-            
-            # Konvertiere in Frontend-Format
-            plan_dict = empty_plan.model_dump()
-            schema = TrainingPlanSchema(**plan_dict)
-            return schema.to_frontend_format()
-
-        # Hole den Trainingsplan des Users
-        plan_query = select(TrainingPlan).where(TrainingPlan.id == user_in_db.training_plan_id)
-        plan_result = await db.execute(plan_query)
-        plan = plan_result.scalar_one_or_none()
-
-        if not plan:
-            # Falls Plan nicht gefunden, erstelle einen neuen
-            empty_plan = TrainingPlan(
-                equipment="",
-                session_duration=45,
-                training_frequency=3,
-                fitness_level=3,
-                experience_level=3,
-                include_cardio=True
-            )
-            db.add(empty_plan)
-            await db.commit()
-            await db.refresh(empty_plan)
-            
-            # Verknüpfe User mit neuem Plan
-            user_in_db.training_plan_id = empty_plan.id
-            db.add(user_in_db)
-            await db.commit()
-            await db.refresh(user_in_db)
-            
-            # Konvertiere in Frontend-Format
-            plan_dict = empty_plan.model_dump()
-            schema = TrainingPlanSchema(**plan_dict)
-            return schema.to_frontend_format()
-
-        # Konvertiere in Frontend-Format
+        # Get or create user
+        user = await get_or_create_user(db, user_uuid)
+        
+        # Get or create training plan
+        plan = await get_or_create_training_plan(db, user)
+        
+        # Convert to frontend format
         plan_dict = plan.model_dump()
         schema = TrainingPlanSchema(**plan_dict)
+        
+        logger.info(f"[Get] Successfully retrieved plan for user {user_uuid}")
         return schema.to_frontend_format()
+        
     except Exception as e:
-        logger.error(f"[Get][Exception] {e}")
-        logger.error(f"[Get][Exception] current_user: {current_user}")
-        raise HTTPException(status_code=500, detail=f"Fehler beim Laden des Trainingsplans: {e}")
+        logger.error(f"[Get] Error for user {current_user.id}: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Fehler beim Laden des Trainingsplans: {str(e)}"
+        )
 
-
-@router.put("/mine", response_model=dict)
+@router.put("/mine", response_model=Dict[str, Any])
 async def update_my_training_plan(
-    plan_data: dict = Body(...),
+    plan_data: Dict[str, Any] = Body(...),
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
+    """Update current user's training plan"""
     try:
-        # Log received data for debugging
-        logger.info(f"[Update] Received raw update data: {plan_data}")
-        
-        # Konvertiere vom Frontend in Backend-Format
-        schema_data = TrainingPlanSchema.from_frontend_format(plan_data)
+        logger.info(f"[Update] Received data: {plan_data}")
         
         user_uuid = UUID(current_user.id)
         
-        # Hole den User
-        user_query = select(UserModel).where(UserModel.id == user_uuid)
-        result = await db.execute(user_query)
-        user = result.scalar_one_or_none()
+        # Get or create user
+        user = await get_or_create_user(db, user_uuid)
         
-        if not user:
-            # Erstelle User, falls nicht vorhanden
-            user = UserModel(id=user_uuid)
-            db.add(user)
-            await db.commit()
-            await db.refresh(user)
-
-        # Prüfe, ob der Plan existiert und hole ihn oder erstelle einen neuen
-        if not user.training_plan_id:
-            logger.info(f"[Update] User {user_uuid} has no training plan, creating new one")
-            # Erstelle einen leeren Plan
-            new_plan = TrainingPlan()
-            db.add(new_plan)
-            await db.commit()
-            await db.refresh(new_plan)
-            
-            # Verknüpfe mit User
-            user.training_plan_id = new_plan.id
-            db.add(user)
-            await db.commit()
-            await db.refresh(user)
-            plan_to_update = new_plan
-        else:
-            # Versuche existierenden Plan zu laden
-            plan_query = select(TrainingPlan).where(TrainingPlan.id == user.training_plan_id)
-            plan_result = await db.execute(plan_query)
-            existing_plan = plan_result.scalar_one_or_none()
-            
-            if not existing_plan:
-                logger.info(f"[Update] Training plan ID {user.training_plan_id} not found for user {user_uuid}, creating new one")
-                # Plan existiert nicht mehr, erstelle einen neuen
-                new_plan = TrainingPlan()
-                db.add(new_plan)
-                await db.commit()
-                await db.refresh(new_plan)
-                
-                # Update user reference
-                user.training_plan_id = new_plan.id
-                db.add(user)
-                await db.commit()
-                await db.refresh(user)
-                plan_to_update = new_plan
-            else:
-                plan_to_update = existing_plan
-
-        # Aktualisiere den Plan mit den neuen Daten
-        logger.info(f"[Update] Updating plan {plan_to_update.id} with new data")
-        update_data = schema_data.model_dump(exclude_unset=True, exclude={"id"})
+        # Get or create training plan
+        plan = await get_or_create_training_plan(db, user)
+        
+        # Convert from frontend format and validate
+        schema = TrainingPlanSchema.from_frontend_format(plan_data)
+        
+        # Update plan with validated data
+        update_data = schema.model_dump(exclude_unset=True, exclude={"id"})
         for key, value in update_data.items():
-            # Don't update ID field
-            if key != "id":
-                setattr(plan_to_update, key, value)
+            if key != "id":  # Never update ID
+                setattr(plan, key, value)
         
-        db.add(plan_to_update)
+        # Save changes
+        db.add(plan)
         await db.commit()
-        await db.refresh(plan_to_update)
-
-        logger.info(f"[Update] Successfully updated plan {plan_to_update.id} for user {user_uuid}")
+        await db.refresh(plan)
         
-        # Konvertiere zurück zum Frontend-Format
-        plan_dict = plan_to_update.model_dump()
+        # Return updated plan
+        plan_dict = plan.model_dump()
         response_schema = TrainingPlanSchema(**plan_dict)
+        
+        logger.info(f"[Update] Successfully updated plan {plan.id} for user {user_uuid}")
         return response_schema.to_frontend_format()
-    except ValidationError as ve:
-        logger.error(f"[Update][ValidationError] {ve}")
-        logger.error(f"[Update][ValidationError] Errors: {ve.errors()}")
-        await db.rollback()
-        raise HTTPException(
-            status_code=422, 
-            detail=f"Validierungsfehler: {ve.errors()}"
-        )
+        
     except Exception as e:
         await db.rollback()
-        logger.error(f"[Update][Exception] {e}")
-        logger.error(f"[Update][Exception] plan_data: {plan_data}")
-        logger.error(f"[Update][Exception] current_user: {current_user}")
-        raise HTTPException(status_code=500, detail=f"Fehler beim Aktualisieren des Trainingsplans: {e}")
+        logger.error(f"[Update] Error for user {current_user.id}: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Fehler beim Aktualisieren des Trainingsplans: {str(e)}"
+        )
 
-@router.post("/update-training-principles", response_model=dict)
+@router.post("/update-training-principles", response_model=Dict[str, Any])
 async def update_training_principles(
     principles_data: Dict[str, Any] = Body(...),
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
+    """Update training principles for current user's plan"""
     try:
         user_uuid = UUID(current_user.id)
         
-        # Get the user
-        user_query = select(UserModel).where(UserModel.id == user_uuid)
-        result = await db.execute(user_query)
-        user = result.scalar_one_or_none()
+        # Get user and plan
+        user = await get_or_create_user(db, user_uuid)
+        plan = await get_or_create_training_plan(db, user)
         
-        if not user or not user.training_plan_id:
-            raise HTTPException(status_code=404, detail="Kein Trainingsplan gefunden")
-            
-        # Get the training plan
-        plan_query = select(TrainingPlan).where(TrainingPlan.id == user.training_plan_id)
-        plan_result = await db.execute(plan_query)
-        plan = plan_result.scalar_one_or_none()
+        # Safely serialize the principles data
+        serialized_data = safe_json_serialize(principles_data)
         
-        if not plan:
-            raise HTTPException(status_code=404, detail="Trainingsplan nicht gefunden")
-        
-        # Ensure date objects are converted to strings before storing in DB
-        # Convert any date objects to ISO format strings
-        serialized_data = json.loads(json.dumps(principles_data, cls=DateEncoder))
-            
-        # Update the training principles JSON
+        # Update training principles
         plan.training_principles_json = serialized_data
         
-        # Also update the text version for backward compatibility
+        # Also update text version for backward compatibility
         if "training_principles_text" in principles_data:
             plan.training_principles = principles_data["training_principles_text"]
         
@@ -253,9 +183,14 @@ async def update_training_principles(
         # Return updated plan
         plan_dict = plan.model_dump()
         response_schema = TrainingPlanSchema(**plan_dict)
+        
+        logger.info(f"[UpdatePrinciples] Successfully updated principles for user {user_uuid}")
         return response_schema.to_frontend_format()
         
     except Exception as e:
         await db.rollback()
-        logger.error(f"[UpdatePrinciples][Exception] {e}")
-        raise HTTPException(status_code=500, detail=f"Fehler beim Aktualisieren der Trainingsprinzipien: {e}")
+        logger.error(f"[UpdatePrinciples] Error for user {current_user.id}: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Fehler beim Aktualisieren der Trainingsprinzipien: {str(e)}"
+        )

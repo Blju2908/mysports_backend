@@ -20,6 +20,9 @@ class UserModel(SQLModel, table=True):
     created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = None
     
+    # Onboarding Status
+    onboarding_completed: bool = Field(default=False)
+    
     # Direkte Beziehung zum Trainingsplan (One-to-One)
     training_plan_id: Optional[int] = Field(default=None, foreign_key="training_plans.id")
     training_plan: Optional["TrainingPlan"] = Relationship(back_populates="user")
