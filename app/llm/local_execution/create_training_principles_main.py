@@ -54,7 +54,7 @@ def print_summary(principles_schema: TrainingPrinciplesSchema):
         print(f"- {phase.name} ({phase.duration}): {phase.focus}")
     
     # Validity info
-    print(f"\nGültig bis: {principles_schema.valid_until}")
+    print(f"\nGültig bis: {principles_schema.valid_until.strftime('%d.%m.%Y')}")
 
 async def main():
     user_id = UUID("df668bed-9092-4035-82fa-c68e6fa2a8ff") # Beispiel User ID
