@@ -17,7 +17,8 @@ from app.models import (
     showcase_feedback_model,
     workout_feedback_model,
     app_feedback_model,
-    llm_call_log_model
+    llm_call_log_model,
+    landing_page_survey_model
 )  
 
 # this is the Alembic Config object, which provides
@@ -41,8 +42,8 @@ target_metadata = SQLModel.metadata
 # ... etc.
 
 # Get environment and load the appropriate .env file
-APP_ENV = "production"
 # APP_ENV = "production"
+APP_ENV = "development"
 env = os.getenv("APP_ENV", APP_ENV)
 env_file = f".env.{env}"
 load_dotenv(env_file)

@@ -20,22 +20,43 @@ install:
 alembic-init:
 	alembic init alembic
 
-alembic-migration:
+alembic-migration-dev:
 	export APP_ENV=development && \
 	alembic revision --autogenerate -m "New migration"
 
-alembic-upgrade:
+alembic-migration-prod:
+	export APP_ENV=production && \
+	alembic revision --autogenerate -m "New migration"
+
+alembic-upgrade-dev:
 	export APP_ENV=development && \
 	alembic upgrade head
 
-alembic-downgrade:
+alembic-upgrade-prod:
+	export APP_ENV=production && \
+	alembic upgrade head
+
+
+alembic-downgrade-dev:
 	export APP_ENV=development && \
 	alembic downgrade -1
 
-alembic-current:
+alembic-downgrade-prod:
+	export APP_ENV=production && \
+	alembic downgrade -1
+
+alembic-current-dev:
 	export APP_ENV=development && \
 	alembic current
 
-alembic-history:
+alembic-current-prod:
+	export APP_ENV=production && \
+	alembic current
+
+alembic-history-dev:
 	export APP_ENV=development && \
+	alembic history
+
+alembic-history-prod:
+	export APP_ENV=production && \
 	alembic history
