@@ -20,7 +20,7 @@ import asyncio
 from uuid import UUID
 from app.db.session import get_engine # app. is now resolvable due to sys.path modification
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.llm.service.create_workout_service import run_workout_chain
+from app.llm.workout_generation.create_workout_service import run_workout_chain
 import json
 from datetime import datetime
 

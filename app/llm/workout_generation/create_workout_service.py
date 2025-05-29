@@ -7,7 +7,7 @@ from datetime import datetime
 
 from app.db.trainingplan_db_access import get_training_plan_for_user
 from app.db.workout_db_access import get_training_history_for_user_from_db
-from app.llm.chains.workout_generation_chain import generate_workout
+from app.llm.workout_generation.workout_generation_chain import generate_workout
 from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise

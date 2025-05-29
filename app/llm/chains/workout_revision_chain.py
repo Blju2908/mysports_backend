@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
-from app.llm.schemas.create_workout_schemas import WorkoutSchema
+from backend.app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 from app.llm.utils.langchain_utils import load_prompt
 import json
 from app.core.config import get_config
@@ -47,7 +47,12 @@ async def revise_workout(
         config = get_config()
         OPENAI_API_KEY = config.OPENAI_API_KEY2
 
-        llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY)
+        reasoning = {
+            "effort": "low",
+            "summary": None
+        }
+
+        llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
         
         # Create chain with structured output
         chain = llm.with_structured_output(WorkoutSchema)

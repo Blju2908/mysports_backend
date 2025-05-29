@@ -34,7 +34,7 @@ def test_imports():
         # Test other dependencies
         print("3. Testing other dependencies...")
         from app.services.workout_service import get_workout_details
-        from app.llm.schemas.create_workout_schemas import WorkoutSchema
+        from backend.app.llm.workout_generation.create_workout_schemas import WorkoutSchema
         from app.models.workout_model import Workout
         from app.models.set_model import Set, SetStatus
         print("   ✓ All dependencies imported successfully")

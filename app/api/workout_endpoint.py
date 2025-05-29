@@ -29,7 +29,7 @@ from app.llm.schemas.workout_revision_schemas import (
     WorkoutRevisionResponseSchema
 )
 from app.llm.service.workout_revision_service import run_workout_revision_chain, save_revised_workout
-from app.llm.schemas.create_workout_schemas import WorkoutSchema
+from backend.app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 from app.schemas.workout_feedback_schema import WorkoutFeedbackSchema, WorkoutFeedbackResponseSchema
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
