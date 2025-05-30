@@ -6,6 +6,7 @@ import json
 from app.core.config import get_config
 from datetime import datetime
 from typing import Optional, Dict, Any
+from pathlib import Path
 
 PROMPT_FILE = "workout_revision_prompt.md"
 
@@ -29,7 +30,9 @@ async def revise_workout(
     """
     try:
         # Load the prompt template
-        prompt_template_content = load_prompt(PROMPT_FILE)
+        prompt_path = Path(__file__).parent / PROMPT_FILE
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            prompt_template_content = f.read()
 
         # Convert existing workout to JSON string for the prompt
         existing_workout_json = json.dumps(existing_workout, indent=2, ensure_ascii=False, default=str)
