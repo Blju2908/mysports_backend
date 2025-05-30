@@ -24,11 +24,11 @@ from app.llm.schemas.workout_schema import (
     WorkoutStatusEnum,
     BlockSchema
 )
-from app.llm.schemas.workout_revision_schemas import (
+from app.llm.workout_revision.workout_revision_schemas import (
     WorkoutRevisionRequestSchema,
     WorkoutRevisionResponseSchema
 )
-from app.llm.service.workout_revision_service import run_workout_revision_chain, save_revised_workout
+from app.llm.workout_revision.workout_revision_service import run_workout_revision_chain, save_revised_workout
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 from app.schemas.workout_feedback_schema import WorkoutFeedbackSchema, WorkoutFeedbackResponseSchema
 from app.core.auth import get_current_user, User

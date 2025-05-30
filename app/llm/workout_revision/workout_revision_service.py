@@ -8,7 +8,7 @@ from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set, SetStatus
 from app.services.workout_service import get_workout_details
-from app.llm.chains.workout_revision_chain import revise_workout
+from app.llm.workout_revision.workout_revision_chain import revise_workout
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 
 

@@ -19,7 +19,7 @@ load_dotenv(dotenv_path=dotenv_path)
 import asyncio
 from app.db.session import get_engine  # app. is now resolvable due to sys.path modification
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.llm.service.workout_revision_service import run_workout_revision_chain, get_workout_for_revision
+from backend.app.llm.workout_revision.workout_revision_service import run_workout_revision_chain, get_workout_for_revision
 import json
 from datetime import datetime
 
