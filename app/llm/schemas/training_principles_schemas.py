@@ -11,6 +11,7 @@ class PersonOverviewSchema(BaseModel):
     """Basic information about the person"""
     base_data: str = Field(..., description="Age, gender, height, weight in a concise format")
     training_goals: str = Field(..., description="Brief summary of training goals")
+    frequency: str = Field(..., description="Frequency of training per week and duration of a sessions")
     experience_level: str = Field(..., description="Training experience level and relevant details")
     training_environment: str = Field(..., description="Available equipment and training location")
     limitations: Optional[str] = Field(None, description="Relevant health factors or limitations")

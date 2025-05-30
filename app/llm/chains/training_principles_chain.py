@@ -22,14 +22,18 @@ async def generate_training_principles(training_goals: dict | None = None) -> Tr
             current_date=current_date_iso
         )
 
+        reasoning = {
+            "effort": "low",
+            "summary": None
+        }
+
         config = get_config()
         OPENAI_API_KEY = config.OPENAI_API_KEY2
-        llm = ChatOpenAI(model="gpt-4.1", api_key=OPENAI_API_KEY)
+        llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
 
         # Explicitly specify function calling as the method
         structured_llm = llm.with_structured_output(
             TrainingPrinciplesSchema,
-            method="function_calling"  # Use function calling instead of default structured output
         )
         
         print("Sending request to OpenAI API for training principles (structured JSON output)...")

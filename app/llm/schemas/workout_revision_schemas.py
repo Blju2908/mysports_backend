@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional
-from app.llm.schemas.create_workout_schemas import WorkoutSchema
+from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 
 
 class WorkoutRevisionRequestSchema(BaseModel):

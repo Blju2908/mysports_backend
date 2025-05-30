@@ -1,0 +1,77 @@
+{
+    "name": "Grundlagen Ganzkörper 1",
+    "description": "Ganzkörper-Workout mit Technikfokus und Pull-Schwerpunkt zur Basisstärkung",
+    "duration": 60,
+    "focus": "Ganzkörper, Pull",
+    "blocks": [
+        {
+            "name": "Aufwärmen",
+            "description": "Dynamische Mobilität und Aktivierung",
+            "exercises": [
+                {
+                    "name": "Beinschwingen (vorwärts/rückwärts)",
+                    "description": "Dynamische Hüftmobilisierung",
+                    "sets": [{ "values": [0, 10, null, null, 30] }]
+                },
+                {
+                    "name": "Band Pull-Aparts",
+                    "description": "Schulterblattaktivierung",
+                    "sets": [{ "values": [0, 12, null, null, 30] }]
+                }
+            ]
+        },
+        {
+            "name": "Hauptteil",
+            "description": null,
+            "exercises": [
+                {
+                    "name": "Back Squat",
+                    "description": "Kontrollierte Kniebeuge, Brust aufrecht",
+                    "sets": [
+                        { "values": [60, 8, null, null, 90] },
+                        { "values": [60, 8, null, null, 90] },
+                        { "values": [65, 8, null, null, 90] },
+                        { "values": [65, 8, null, null, 90] }
+                    ]
+                },
+                {
+                    "name": "Barbell Bench Press",
+                    "description": "Langsame Negativphase, volle Kontrolle",
+                    "sets": [
+                        { "values": [50, 10, null, null, 90] },
+                        { "values": [50, 10, null, null, 90] },
+                        { "values": [55, 10, null, null, 90] }
+                    ]
+                },
+                {
+                    "name": "Barbell Bent-over Row",
+                    "description": "Rücken aktiv ziehen, Rücken neutral",
+                    "sets": [
+                        { "values": [50, 10, null, null, 90] },
+                        { "values": [50, 10, null, null, 90] },
+                        { "values": [55, 10, null, null, 90] },
+                        { "values": [55, 10, null, null, 90] }
+                    ]
+                },
+                {
+                    "name": "Assisted Chin-Up",
+                    "description": "Kinn über die Stange, volle Streckung unten",
+                    "sets": [
+                        { "values": [0, 8, null, null, 90] },
+                        { "values": [0, 8, null, null, 90] },
+                        { "values": [0, 8, null, null, 90] }
+                    ]
+                },
+                {
+                    "name": "Plank",
+                    "description": "Rumpf angespannt, Körper in Linie",
+                    "sets": [
+                        { "values": [0, null, 45, null, 60] },
+                        { "values": [0, null, 45, null, 60] },
+                        { "values": [0, null, 45, null, 60] }
+                    ]
+                }
+            ]
+        }
+    ]
+}
