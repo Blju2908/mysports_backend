@@ -25,9 +25,9 @@ from app.schemas.showcase_schema import (
 )
 from app.llm.schemas.workout_schema import WorkoutSchemaWithBlocks
 from app.services.workout_service import get_workout_details, save_workout_to_db_async
-from backend.app.llm.workout_generation.workout_generation_chain import generate_workout
-from backend.app.llm.workout_generation.create_workout_schemas import WorkoutSchema
-from backend.app.llm.workout_generation.create_workout_service import run_workout_chain
+from app.llm.workout_generation.workout_generation_chain import generate_workout
+from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
+from app.llm.workout_generation.create_workout_service import run_workout_chain
 
 router = APIRouter(prefix="/showcase")
 
