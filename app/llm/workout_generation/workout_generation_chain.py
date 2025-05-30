@@ -54,7 +54,7 @@ async def generate_workout(
         # The prompt itself is now already formatted and contains all instructions.
         chain = llm.with_structured_output(WorkoutSchema) 
         
-        should_document_input = True
+        should_document_input = False
         if should_document_input:
             await document_input(formatted_prompt)
         
@@ -63,7 +63,7 @@ async def generate_workout(
         print("Received response from OpenAI API")
 
 
-        should_document_output = True
+        should_document_output = False
         if should_document_output:
             await document_output(workout_schema_instance)
 
