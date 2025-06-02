@@ -165,16 +165,23 @@ async def generate_training_principles(
         user = await get_or_create_user(db, user_uuid)
         plan = await get_or_create_training_plan(db, user)
         
+        # Remove the column training_principles_json from the plan
+        plan.training_principles_json = None
+        plan.training_principles = ""
+        
         # Generate new training principles using the simplified service
+        # This automatically saves the new principles to the database
         generated_plan = await run_training_plan_generation(user_uuid, db)
         
-        # Return the generated plan data
-        result = {
-            "training_principles": generated_plan.training_principles.content,
-            "training_principles_json": generated_plan.model_dump()
-        }
+        # Reload the updated plan from database to get the complete saved data
+        await db.refresh(plan)
         
-        logger.info(f"[GeneratePrinciples] Successfully generated principles for user {user_uuid}")
+        # Convert to schema and return in frontend format
+        plan_dict = plan.model_dump()
+        response_schema = TrainingPlanSchema(**plan_dict)
+        result = response_schema.to_frontend_format()
+        
+        logger.info(f"[GeneratePrinciples] Successfully generated and saved principles for user {user_uuid}")
         return result
         
     except Exception as e:

@@ -34,6 +34,9 @@ async def run_training_plan_generation(
     training_plan = None
     if user_id is not None:
         training_plan = await get_training_plan_for_user(user_id, db)
+        # Remove the column training_principles_json from the plan
+        training_plan.training_principles_json = None
+        training_plan.training_principles = ""
         if training_plan is None:
             raise ValueError("Kein Trainingsplan für den Nutzer gefunden.")
     

@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables
-dotenv_path = Path(__file__).resolve().parents[3] / '.env.development'
+dotenv_path = Path(__file__).resolve().parents[3] / '.env.production'
 load_dotenv(dotenv_path=dotenv_path)
 
 import asyncio
