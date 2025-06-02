@@ -12,6 +12,7 @@ from app.models.user_model import UserModel
 from typing import Dict, Any
 import json
 from datetime import date
+from app.llm.training_plan_generation.training_plan_generation_service import run_training_plan_generation
 
 router = APIRouter(tags=["training-plan"])
 logger = logging.getLogger("training_plan")
@@ -151,13 +152,45 @@ async def update_my_training_plan(
             detail=f"Fehler beim Aktualisieren des Trainingsplans: {str(e)}"
         )
 
+@router.post("/generate-training-principles", response_model=Dict[str, Any])
+async def generate_training_principles(
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user)
+):
+    """Generate training principles for current user's plan using the new simplified structure"""
+    try:
+        user_uuid = UUID(current_user.id)
+        
+        # Get user and plan
+        user = await get_or_create_user(db, user_uuid)
+        plan = await get_or_create_training_plan(db, user)
+        
+        # Generate new training principles using the simplified service
+        generated_plan = await run_training_plan_generation(user_uuid, db)
+        
+        # Return the generated plan data
+        result = {
+            "training_principles": generated_plan.training_principles.content,
+            "training_principles_json": generated_plan.model_dump()
+        }
+        
+        logger.info(f"[GeneratePrinciples] Successfully generated principles for user {user_uuid}")
+        return result
+        
+    except Exception as e:
+        logger.error(f"[GeneratePrinciples] Error for user {current_user.id}: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Fehler beim Generieren der Trainingsprinzipien: {str(e)}"
+        )
+
 @router.post("/update-training-principles", response_model=Dict[str, Any])
 async def update_training_principles(
     principles_data: Dict[str, Any] = Body(...),
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
-    """Update training principles for current user's plan"""
+    """Update training principles for current user's plan - supports both old and new structure"""
     try:
         user_uuid = UUID(current_user.id)
         
@@ -171,9 +204,12 @@ async def update_training_principles(
         # Update training principles
         plan.training_principles_json = serialized_data
         
-        # Also update text version for backward compatibility
+        # Update text version - handle both old and new structure
         if "training_principles_text" in principles_data:
             plan.training_principles = principles_data["training_principles_text"]
+        elif "training_principles" in principles_data and isinstance(principles_data["training_principles"], dict):
+            # New structure: use the content field
+            plan.training_principles = principles_data["training_principles"].get("content", "")
         
         # Save changes
         db.add(plan)
@@ -193,4 +229,132 @@ async def update_training_principles(
         raise HTTPException(
             status_code=500, 
             detail=f"Fehler beim Aktualisieren der Trainingsprinzipien: {str(e)}"
+        )
+
+@router.patch("/update-category", response_model=Dict[str, Any])
+async def update_training_principles_category(
+    category_data: Dict[str, Any] = Body(...),
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user)
+):
+    """Update a specific category in the training principles"""
+    try:
+        user_uuid = UUID(current_user.id)
+        
+        # Validate required fields
+        if "category" not in category_data or "content" not in category_data:
+            raise HTTPException(
+                status_code=400,
+                detail="Fehlende Felder: 'category' und 'content' sind erforderlich"
+            )
+        
+        category = category_data["category"]
+        content = category_data["content"]
+        
+        logger.info(f"[UpdateCategory] Updating category '{category}' for user {user_uuid}")
+        
+        # Get user and plan
+        user = await get_or_create_user(db, user_uuid)
+        plan = await get_or_create_training_plan(db, user)
+        
+        # Initialize training_principles_json if not exists
+        if not plan.training_principles_json:
+            plan.training_principles_json = {}
+        
+        # Update the specific category
+        current_principles = plan.training_principles_json.copy()
+        current_principles[category] = {"content": content}
+        
+        # Safely serialize and update
+        serialized_data = safe_json_serialize(current_principles)
+        plan.training_principles_json = serialized_data
+        
+        # Update the text version if it's the main training_principles category
+        if category == "training_principles":
+            plan.training_principles = content
+        
+        # Save changes
+        db.add(plan)
+        await db.commit()
+        await db.refresh(plan)
+        
+        # Return updated plan
+        plan_dict = plan.model_dump()
+        response_schema = TrainingPlanSchema(**plan_dict)
+        
+        logger.info(f"[UpdateCategory] Successfully updated category '{category}' for user {user_uuid}")
+        return response_schema.to_frontend_format()
+        
+    except HTTPException:
+        # Re-raise HTTP exceptions as-is
+        raise
+    except Exception as e:
+        await db.rollback()
+        logger.error(f"[UpdateCategory] Error for user {current_user.id}: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Fehler beim Aktualisieren der Kategorie: {str(e)}"
+        )
+
+@router.post("/update-via-chat", response_model=Dict[str, Any])
+async def update_training_plan_via_chat(
+    chat_data: Dict[str, Any] = Body(...),
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user)
+):
+    """Update training plan based on user chat input (MVP implementation)"""
+    try:
+        user_uuid = UUID(current_user.id)
+        
+        # Validate required fields
+        if "user_request" not in chat_data:
+            raise HTTPException(
+                status_code=400,
+                detail="Fehlende Felder: 'user_request' ist erforderlich"
+            )
+        
+        user_request = chat_data["user_request"]
+        
+        logger.info(f"[UpdateViaChat] Processing request for user {user_uuid}: {user_request}")
+        
+        # Get user and plan
+        user = await get_or_create_user(db, user_uuid)
+        plan = await get_or_create_training_plan(db, user)
+        
+        # MVP implementation: Simple text append to training principles
+        # In production, this would call an LLM service
+        current_principles = plan.training_principles or ""
+        
+        # Simple mock implementation - append user request
+        if user_request.lower().find('mehr cardio') != -1:
+            updated_principles = f"{current_principles}\n\n**Erweitert um:** Mehr Kardio-Training wurde integriert."
+        elif user_request.lower().find('weniger zeit') != -1:
+            updated_principles = f"{current_principles}\n\n**Erweitert um:** Trainingseinheiten wurden verkürzt."
+        else:
+            updated_principles = f"{current_principles}\n\n**Angepasst:** {user_request}"
+        
+        # Update the plan
+        plan.training_principles = updated_principles
+        
+        # Save changes
+        db.add(plan)
+        await db.commit()
+        await db.refresh(plan)
+        
+        # Return updated plan
+        plan_dict = plan.model_dump()
+        response_schema = TrainingPlanSchema(**plan_dict)
+        
+        logger.info(f"[UpdateViaChat] Successfully updated plan via chat for user {user_uuid}")
+        return response_schema.to_frontend_format()
+        
+    except HTTPException:
+        # Re-raise HTTP exceptions as-is
+        raise
+    except Exception as e:
+        await db.rollback()
+        logger.error(f"[UpdateViaChat] Error for user {current_user.id}: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Fehler beim Aktualisieren über Chat: {str(e)}"
         )

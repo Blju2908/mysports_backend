@@ -1,13 +1,13 @@
 from langchain_openai import ChatOpenAI
-from app.llm.utils.langchain_utils import load_prompt
 from app.core.config import get_config
 from datetime import date
 import json
-from app.llm.schemas.training_principles_schemas import TrainingPrinciplesSchema
+from app.llm.training_plan_generation.training_plan_generation_schemas import TrainingPlanGenerationSchema
+from pathlib import Path
 
-PROMPT_FILE = "training_principles_prompt.md"
+PROMPT_FILE = "training_plan_generation_prompt.md"
 
-async def generate_training_principles(training_goals: dict | None = None) -> TrainingPrinciplesSchema:
+async def generate_training_plan_generation(training_goals: dict | None = None) -> TrainingPlanGenerationSchema:
     """
     Leitet aus den Trainingszielen professionelle Trainingsprinzipien als strukturiertes JSON ab.
     Enthält Personenübersicht, Kernprinzipien, Trainingsempfehlungen und Trainingsphasen.
@@ -16,8 +16,11 @@ async def generate_training_principles(training_goals: dict | None = None) -> Tr
         training_goals_json = json.dumps(training_goals, ensure_ascii=False, indent=2, default=str) if training_goals else None
         current_date_iso = date.today().isoformat()
         
-        prompt_template = load_prompt(PROMPT_FILE)
-        prompt = prompt_template.format(
+        prompt_path = Path(__file__).parent / PROMPT_FILE
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            prompt_template_content = f.read()
+
+        prompt = prompt_template_content.format(
             training_goals=training_goals_json or "{}",
             current_date=current_date_iso
         )
@@ -33,7 +36,7 @@ async def generate_training_principles(training_goals: dict | None = None) -> Tr
 
         # Explicitly specify function calling as the method
         structured_llm = llm.with_structured_output(
-            TrainingPrinciplesSchema,
+            TrainingPlanGenerationSchema,
         )
         
         print("Sending request to OpenAI API for training principles (structured JSON output)...")

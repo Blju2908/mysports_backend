@@ -3,7 +3,7 @@ from sqlmodel import select
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
 from app.llm.workout_generation.create_workout_service import run_workout_chain
-from app.llm.service.create_training_principles_service import run_training_principles_chain
+from app.llm.training_plan_generation.training_plan_generation_service import run_training_plan_generation
 from app.models.training_plan_model import TrainingPlan
 from app.models.user_model import UserModel
 from app.schemas.training_plan_schema import TrainingPlanSchema # Für die Response
@@ -199,7 +199,7 @@ async def create_training_principles_endpoint(
             await db.refresh(training_plan)
             
             # 4. Trainingsprinzipien generieren mit der überarbeiteten Funktion
-            principles_schema = await run_training_principles_chain(
+            principles_schema = await run_training_plan_generation(
                 user_id=user_uuid, 
                 db=db
             )
