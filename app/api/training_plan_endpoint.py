@@ -296,13 +296,13 @@ async def update_training_principles_category(
             detail=f"Fehler beim Aktualisieren der Kategorie: {str(e)}"
         )
 
-@router.post("/update-via-chat", response_model=Dict[str, Any])
-async def update_training_plan_via_chat(
+@router.post("/chat-revision-preview", response_model=Dict[str, Any])
+async def create_training_plan_chat_revision_preview(
     chat_data: Dict[str, Any] = Body(...),
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
-    """Update training plan based on user chat input (MVP implementation)"""
+    """Create a preview of training plan revision based on user chat input"""
     try:
         user_uuid = UUID(current_user.id)
         
@@ -314,39 +314,87 @@ async def update_training_plan_via_chat(
             )
         
         user_request = chat_data["user_request"]
+        user_context = chat_data.get("user_context")
         
-        logger.info(f"[UpdateViaChat] Processing request for user {user_uuid}: {user_request}")
+        logger.info(f"[ChatRevisionPreview] Processing preview request for user {user_uuid}: {user_request}")
         
-        # Get user and plan
-        user = await get_or_create_user(db, user_uuid)
-        plan = await get_or_create_training_plan(db, user)
+        # Import the training plan revision service
+        from app.llm.training_plan_revision.revise_training_plan_main import run_training_plan_revision_preview
         
-        # MVP implementation: Simple text append to training principles
-        # In production, this would call an LLM service
-        current_principles = plan.training_principles or ""
+        # Create revision preview using LLM
+        preview = await run_training_plan_revision_preview(
+            user_id=user_uuid,
+            user_request=user_request,
+            db=db,
+            user_context=user_context
+        )
         
-        # Simple mock implementation - append user request
-        if user_request.lower().find('mehr cardio') != -1:
-            updated_principles = f"{current_principles}\n\n**Erweitert um:** Mehr Kardio-Training wurde integriert."
-        elif user_request.lower().find('weniger zeit') != -1:
-            updated_principles = f"{current_principles}\n\n**Erweitert um:** Trainingseinheiten wurden verkürzt."
-        else:
-            updated_principles = f"{current_principles}\n\n**Angepasst:** {user_request}"
+        # Convert to frontend format
+        result = {
+            "revised_training_plan": preview.revised_training_plan.model_dump(),
+            "changes_summary": preview.changes_summary,
+            "original_request": preview.original_request
+        }
         
-        # Update the plan
-        plan.training_principles = updated_principles
+        logger.info(f"[ChatRevisionPreview] Successfully created preview for user {user_uuid}")
+        return result
         
-        # Save changes
-        db.add(plan)
-        await db.commit()
-        await db.refresh(plan)
+    except HTTPException:
+        # Re-raise HTTP exceptions as-is
+        raise
+    except Exception as e:
+        logger.error(f"[ChatRevisionPreview] Error for user {current_user.id}: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Fehler beim Erstellen der Vorschau: {str(e)}"
+        )
+
+
+@router.post("/update-via-chat", response_model=Dict[str, Any])
+async def update_training_plan_via_chat(
+    chat_data: Dict[str, Any] = Body(...),
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user)
+):
+    """Update training plan based on user chat input using LLM"""
+    try:
+        user_uuid = UUID(current_user.id)
         
-        # Return updated plan
-        plan_dict = plan.model_dump()
-        response_schema = TrainingPlanSchema(**plan_dict)
+        # Validate required fields
+        if "user_request" not in chat_data:
+            raise HTTPException(
+                status_code=400,
+                detail="Fehlende Felder: 'user_request' ist erforderlich"
+            )
         
-        logger.info(f"[UpdateViaChat] Successfully updated plan via chat for user {user_uuid}")
-        return response_schema.to_frontend_format()
+        user_request = chat_data["user_request"]
+        user_context = chat_data.get("user_context")
+        save_backup = chat_data.get("save_backup", True)
+        
+        logger.info(f"[UpdateViaChat] Processing LLM request for user {user_uuid}: {user_request}")
+        
+        # Import the training plan revision service
+        from app.llm.training_plan_revision.revise_training_plan_main import run_training_plan_revision
+        
+        # Apply revision using LLM
+        response = await run_training_plan_revision(
+            user_id=user_uuid,
+            user_request=user_request,
+            db=db,
+            user_context=user_context,
+            save_backup=save_backup
+        )
+        
+        # Convert to frontend format
+        result = {
+            "training_principles": response.revised_training_plan.training_principles.content,
+            "training_principles_json": response.revised_training_plan.model_dump(),
+            "changes_summary": response.changes_summary,
+            "revision_timestamp": response.revision_timestamp
+        }
+        
+        logger.info(f"[UpdateViaChat] Successfully updated plan via LLM chat for user {user_uuid}")
+        return result
         
     except HTTPException:
         # Re-raise HTTP exceptions as-is
