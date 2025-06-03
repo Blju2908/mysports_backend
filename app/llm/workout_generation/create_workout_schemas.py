@@ -11,6 +11,7 @@ class ExerciseSchema(BaseModel):
     name: str = Field(..., description="Name der Übung.")
     description: Optional[str] = Field(default=None, description="Kurze Beschreibung der Übung, z.B. Ausführungshinweise, Zielfokus")
     sets: List[SetSchema] = Field(..., description="Liste der Sätze für diese Übung.")
+    superset_id: Optional[str] = Field(default=None, description="Eindeutige ID für Supersets. Übungen mit derselben superset_id werden abwechselnd ausgeführt (z.B. 'A', 'B', 'C'). Null für normale Übungen ohne Superset.")
 
 class BlockSchema(BaseModel):
     name: str = Field(..., description="Name des Workout-Blocks (z.B. Aufwärmen, Hauptteil, Cooldown).")

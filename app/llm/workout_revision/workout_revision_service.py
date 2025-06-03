@@ -46,6 +46,7 @@ def workout_to_dict(workout: Workout) -> Dict[str, Any]:
                         "name": exercise.name,
                         "description": exercise.description,
                         "notes": exercise.notes,
+                        "superset_id": exercise.superset_id,
                         "sets": []
                     }
                     
@@ -128,7 +129,8 @@ async def save_revised_workout(
                 new_exercise = Exercise(
                     block_id=new_block.id,
                     name=exercise_schema.name,
-                    description=exercise_schema.description
+                    description=exercise_schema.description,
+                    superset_id=exercise_schema.superset_id
                 )
                 db.add(new_exercise)
                 await db.flush()  # Get exercise ID

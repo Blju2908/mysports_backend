@@ -176,6 +176,7 @@ async def get_workout_detail(
                     name=exercise_orm.name,
                     description=exercise_orm.description,
                     notes=exercise_orm.notes,
+                    superset_id=exercise_orm.superset_id,
                     block_id=exercise_orm.block_id,
                     sets=response_sets_data
                 )
@@ -260,6 +261,7 @@ async def get_block_detail(
                 name=exercise_orm.name,
                 description=exercise_orm.description,
                 notes=exercise_orm.notes,
+                superset_id=exercise_orm.superset_id,
                 block_id=exercise_orm.block_id,
                 sets=response_sets_data
             )
@@ -323,6 +325,7 @@ async def save_block(
                 name=ex.name,
                 description=ex.description,
                 notes=ex.notes,
+                superset_id=ex.superset_id,
                 block_id=block_id
             )
             db.add(new_ex)
@@ -335,6 +338,7 @@ async def save_block(
                 db_ex.name = ex.name
                 db_ex.description = ex.description
                 db_ex.notes = ex.notes
+                db_ex.superset_id = ex.superset_id
                 db.add(db_ex)
                 db_ex_id = db_ex.id
             else:
@@ -402,6 +406,7 @@ async def save_block(
                     name=ex.name,
                     description=ex.description,
                     notes=ex.notes,
+                    superset_id=ex.superset_id,
                     sets=[
                         dict(
                             id=s.id,
@@ -955,6 +960,7 @@ async def accept_revised_workout_endpoint(
                             name=exercise_orm.name,
                             description=exercise_orm.description,
                             notes=exercise_orm.notes,
+                            superset_id=exercise_orm.superset_id,
                             block_id=exercise_orm.block_id,
                             sets=response_sets_data
                         )

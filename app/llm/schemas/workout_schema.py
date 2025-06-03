@@ -30,6 +30,7 @@ class ExerciseResponseSchema(BaseModel):
     name: str
     description: Optional[str] = None
     notes: Optional[str] = None
+    superset_id: Optional[str] = None
     block_id: int
     sets: List[SetResponseSchema]
 
@@ -91,6 +92,7 @@ class NewExerciseInputSchema(BaseModel):
     name: str
     description: Optional[str] = None
     notes: Optional[str] = None
+    superset_id: Optional[str] = None
     sets: List[NewSetInputSchema]
 
 class SetUpdateInputSchema(BaseModel): # No longer inherits from NewSetInputSchema
@@ -138,6 +140,7 @@ class ExerciseSchema(BaseModel):
     name: str
     description: Optional[str]
     notes: Optional[str]
+    superset_id: Optional[str] = None
     sets: List[SetSchema]
 
 class BlockSchema(BaseModel):

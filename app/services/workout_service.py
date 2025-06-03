@@ -92,7 +92,8 @@ async def save_workout_to_db_async(
                         block_id=block_db.id, # Ensure block_db.id is available
                         name=exercise_schema.name,
                         description=exercise_schema.description,
-                        notes=exercise_schema.notes  # Use notes from exercise_schema
+                        notes=exercise_schema.notes,  # Use notes from exercise_schema
+                        superset_id=exercise_schema.superset_id  # Include superset_id
                     )
                     db.add(exercise_db)
                     await db.flush() # Flush to get exercise_db.id

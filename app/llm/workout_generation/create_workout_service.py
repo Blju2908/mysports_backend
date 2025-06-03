@@ -8,69 +8,10 @@ from datetime import datetime
 from app.db.trainingplan_db_access import get_training_plan_for_user
 from app.db.workout_db_access import get_training_history_for_user_from_db
 from app.llm.workout_generation.workout_generation_chain import generate_workout
-from app.llm.workout_generation.workout_generation_chain_2 import generate_workout_reasoning_only
 from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise
-from app.models.set_model import Set, SetStatus
-
-async def run_workout_chain_v2(
-    user_id: UUID | None,
-    user_prompt: str | None,
-    db: AsyncSession,
-    chain_version: str = "v2",
-) -> str:
-    """
-    Führt den Workout-Generierungs-Prozess mit dem LLM durch (v2 - Reasoning Chain).
-    Lädt die letzten 10 Workouts des Users als Trainingshistorie.
-    
-    Args:
-        user_id: Die ID des Benutzers.
-        user_prompt: Ein optionaler Prompt des Benutzers.
-        db: Die Datenbankverbindung.
-        chain_version: Version der Chain ("v1" oder "v2")
-        
-    Returns:
-        str: Text output des Reasoning Chains
-    """
-    
-    training_principles_text = None
-    formatted_history = None
-
-    if user_id is not None:
-        # Get training principles from the user's training plan
-        training_plan_db_obj = await get_training_plan_for_user(user_id, db)
-        if training_plan_db_obj and hasattr(
-            training_plan_db_obj, "training_principles"
-        ):
-            training_principles_text = training_plan_db_obj.training_principles
-
-        # Get and format training history (last 10 workouts)
-        raw_training_history: List[Workout] = (
-            await get_training_history_for_user_from_db(user_id, db, limit=10)
-        )
-        
-        if raw_training_history:
-            formatted_history = format_training_history_for_llm(
-                raw_training_history
-            )
-    
-    if chain_version == "v2":
-        # Step 1: Reasoning Chain (text output)
-        reasoning_output = await generate_workout_reasoning_only(
-            training_plan=training_principles_text,
-            training_history=formatted_history,
-            user_prompt=user_prompt,
-        )
-        return reasoning_output
-    else:
-        # Fallback to v1 (original implementation)
-        llm_output_schema = await generate_workout(
-            training_plan=training_principles_text,
-            training_history=formatted_history,
-            user_prompt=user_prompt,
-        )
-        return llm_output_schema.model_dump_json()
+from app.models.set_model import Set
 
 async def run_workout_chain(
     user_id: UUID | None,
@@ -211,6 +152,8 @@ def format_training_history_for_llm(
                 
                 if exercise.notes:
                     exercise_obj["notes"] = exercise.notes
+                if exercise.superset_id:
+                    exercise_obj["superset_id"] = exercise.superset_id
                 
                 # Add sets
                 for s in exercise.sets:
@@ -284,6 +227,7 @@ def convert_llm_output_to_db_models(
             exercise_model = Exercise(
                 name=exercise_data.get("name", "Unbenannte Übung"),
                 description=exercise_data.get("description"),
+                superset_id=exercise_data.get("superset_id"),
                 sets=[],
             )
 

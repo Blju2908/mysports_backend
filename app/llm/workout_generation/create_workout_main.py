@@ -17,45 +17,95 @@ dotenv_path = BACKEND_DIR / ".env.development"
 load_dotenv(dotenv_path=dotenv_path)
 
 import asyncio
-from uuid import UUID
-from app.db.session import get_engine # app. is now resolvable due to sys.path modification
-from sqlmodel.ext.asyncio.session import AsyncSession
-from app.llm.workout_generation.create_workout_service import run_workout_chain
+from app.llm.workout_generation.workout_generation_chain import generate_workout
 import json
 from datetime import datetime
 
 async def main():
-    user_id = UUID("df668bed-9092-4035-82fa-c68e6fa2a8ff") # Beispiel User ID
-    user_prompt = ""
-
-    engine = get_engine()
-
-    async with AsyncSession(engine) as session:
-        # Run workout chain, save_to_db=False to get the raw LLM output dict
-        generated_workout_llm_output_dict = await run_workout_chain(
-            user_id=user_id, 
-            user_prompt=user_prompt, 
-            db=session, 
-            save_to_db=True
+    """
+    Test der Superset-Funktionalität ohne Datenbankzugriff
+    """
+    user_prompt = "Erstelle ein effizientes 30-Minuten HIIT Workout."
+    
+    print("Starte LLM-Workout-Generierung mit Superset-Anfrage...")
+    print(f"User Prompt: {user_prompt}")
+    print("-" * 80)
+    
+    try:
+        # Direkter LLM-Call ohne Datenbankzugriff
+        llm_output_schema = await generate_workout(
+            training_plan=None,  # Keine Trainingsprinzipien
+            training_history=None,  # Keine Historie
+            user_prompt=user_prompt,
         )
         
-        if generated_workout_llm_output_dict:
+        # Konvertiere zu Dictionary
+        generated_workout_dict = llm_output_schema.model_dump()
+        
+        if generated_workout_dict:
             # Save the generated workout dict (raw LLM output) to a JSON file
-            # in the project's root directory.
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            # Use ROOT_DIR for the output path
-            file_path = ROOT_DIR / f"llm_generated_workout_output_{timestamp}.json"
+            file_path = ROOT_DIR / f"llm_generated_workout_output_superset_test_{timestamp}.json"
             
             try:
                 with open(file_path, "w", encoding="utf-8") as f:
-                    json.dump(generated_workout_llm_output_dict, f, indent=2, ensure_ascii=False)
-                print(f"LLM generated workout output saved to: {file_path}")
+                    json.dump(generated_workout_dict, f, indent=2, ensure_ascii=False)
+                print(f"✅ LLM generated workout output saved to: {file_path}")
+                
+                print("\n" + "="*80)
+                print("GENERIERTES WORKOUT (JSON):")
+                print("="*80)
+                print(json.dumps(generated_workout_dict, indent=2, ensure_ascii=False))
+                
+                # Analysiere Supersets
+                print("\n" + "="*80)
+                print("SUPERSET-ANALYSE:")
+                print("="*80)
+                analyze_supersets(generated_workout_dict)
+                
             except Exception as e:
-                print(f"Error saving LLM output to JSON: {e}")
+                print(f"❌ Error saving LLM output to JSON: {e}")
         else:
-            print("Workout generation (LLM output) did not return a result.")
+            print("❌ Workout generation (LLM output) did not return a result.")
+            
+    except Exception as e:
+        print(f"❌ Error during workout generation: {e}")
+        import traceback
+        traceback.print_exc()
+
+def analyze_supersets(workout_dict):
+    """Analysiert das generierte Workout auf Supersets"""
+    found_supersets = False
+    
+    for block in workout_dict.get("blocks", []):
+        block_name = block.get("name", "Unnamed Block")
+        print(f"\n📋 Block: {block_name}")
+        
+        superset_groups = {}
+        
+        for exercise in block.get("exercises", []):
+            exercise_name = exercise.get("name", "Unnamed Exercise")
+            superset_id = exercise.get("superset_id")
+            
+            if superset_id:
+                found_supersets = True
+                if superset_id not in superset_groups:
+                    superset_groups[superset_id] = []
+                superset_groups[superset_id].append(exercise_name)
+                print(f"  💪 {exercise_name} [Superset {superset_id}]")
+            else:
+                print(f"  💪 {exercise_name} [Normale Übung]")
+        
+        # Zeige Superset-Gruppierungen
+        if superset_groups:
+            print(f"\n  🔗 Superset-Gruppierungen in '{block_name}':")
+            for superset_id, exercises in superset_groups.items():
+                print(f"    Superset {superset_id}: {' ↔ '.join(exercises)}")
+    
+    if not found_supersets:
+        print("⚠️  Keine Supersets gefunden! Das LLM hat möglicherweise die Superset-Anweisung nicht befolgt.")
+    else:
+        print(f"\n✅ Superset-Funktionalität erfolgreich implementiert!")
 
 if __name__ == "__main__":
-    # Ensure the script can find the 'app' module if run directly
-    # This is handled by the sys.path.append at the top
     asyncio.run(main())

@@ -30,6 +30,7 @@ class ExerciseBaseSchema(BaseModel):
     name: str
     description: Optional[str] = None
     notes: Optional[str] = None
+    superset_id: Optional[str] = None
 
 class ExerciseResponseSchema(ExerciseBaseSchema):
     id: int
