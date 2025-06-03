@@ -44,7 +44,7 @@ Kurze Erklärung des Prinzips in Schlagworten.
 Entwickle 2-3 Phasen mit klarer Markdown-Struktur:
 ```markdown
 ### Phase 1
-**Zeitraum:** Datum bis Datum
+**Zeitraum:** Datum bis Datum (DD.MM.YYYY - DD.MM.YYYY)
 **Fokus:** Hauptziel dieser Phase  
 **Beschreibung:** Was passiert in dieser Phase  
 **Workout-Typen:** Empfohlene Trainingsarten und Intensitäten
