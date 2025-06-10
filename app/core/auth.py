@@ -28,20 +28,23 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     )
     
     try:
-        logger.info(f"[get_current_user] Prüfe Token: {token[:8]}... (truncated)")
-        supabase = await get_supabase_client()
-        user = await supabase.auth.get_user(token)
+        logger.info(f"[get_current_user] Validating token: {token[:8]}...")
         
-        if not user or not user.user:
-            logger.warning(f"[get_current_user] Kein User gefunden für Token: {token[:8]}... (truncated)")
+        # ✅ WICHTIG: use_service_role=True für Backend Token-Validierung
+        supabase = await get_supabase_client(use_service_role=True)
+        user_response = await supabase.auth.get_user(token)
+        
+        if not user_response or not user_response.user:
+            logger.warning(f"[get_current_user] No user found for token: {token[:8]}...")
             raise credentials_exception
             
-        # Return the user data
-        logger.info(f"[get_current_user] User validiert: {user.user.email}")
+        user = user_response.user
+        logger.info(f"[get_current_user] User validated: {user.email}")
+        
         return User(
-            id=user.user.id,
-            email=user.user.email,
-            role=user.user.app_metadata.get("role") if user.user.app_metadata else None
+            id=user.id,
+            email=user.email,
+            role=user.app_metadata.get("role") if user.app_metadata else None
         )
         
     except JWTError as e:
@@ -63,8 +66,20 @@ async def get_current_user_optional(request: Request) -> Optional[User]:
             return None
         
         token = authorization.split(" ")[1]
-        user = await get_current_user(token)
-        return user
+        
+        # ✅ WICHTIG: use_service_role=True auch hier
+        supabase = await get_supabase_client(use_service_role=True)
+        user_response = await supabase.auth.get_user(token)
+        
+        if not user_response or not user_response.user:
+            return None
+            
+        user = user_response.user
+        return User(
+            id=user.id,
+            email=user.email,
+            role=user.app_metadata.get("role") if user.app_metadata else None
+        )
         
     except Exception:
         return None

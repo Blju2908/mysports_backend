@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     SUPABASE_URL: str
     SUPABASE_API_KEY: str  # This should be the anon key (public, for client-side usage)
     SUPABASE_DB_URL: str
+    SUPABASE_SERVICE_ROLE: str
     ALEMBIC_DB_URL: str
     
     # Email settings
