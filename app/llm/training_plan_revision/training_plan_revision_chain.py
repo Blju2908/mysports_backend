@@ -62,15 +62,10 @@ async def revise_training_plan(
             api_key=OPENAI_API_KEY, 
             use_responses_api=True, 
             model_kwargs={"reasoning": reasoning}
-            # Note: temperature is not supported with structured output on this model
         )
         
         # Create chain with structured output
         chain = llm.with_structured_output(TrainingPlanGenerationSchema)
-        
-        # Debugging: Store the formatted prompt in a markdown file (optional)
-        # with open("formatted_training_plan_revision_prompt.md", "w") as f:
-        #     f.write(formatted_prompt)
         
         print("[TrainingPlanRevision] Sending training plan revision request to OpenAI API...")
         # Send the formatted prompt to the LLM

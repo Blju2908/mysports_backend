@@ -1,10 +1,10 @@
 # backend/app/routers/training_plan.py - SIMPLIFIED VERSION
 from fastapi import APIRouter, Depends, HTTPException, Body
-from sqlmodel import Session, select
+from sqlmodel import select
 from app.models.training_plan_model import TrainingPlan
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
-from app.schemas.training_plan_schema import TrainingPlanSchema, APIResponse
+from app.schemas.training_plan_schema import TrainingPlanSchema
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 import logging
@@ -171,7 +171,7 @@ async def generate_training_principles(
         
         # Generate new training principles using the simplified service
         # This automatically saves the new principles to the database
-        generated_plan = await run_training_plan_generation(user_uuid, db)
+        await run_training_plan_generation(user_uuid, db)
         
         # Reload the updated plan from database to get the complete saved data
         await db.refresh(plan)

@@ -1,6 +1,7 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
+from app.llm.utils.llm_documentation import document_llm_session, document_llm_input, document_llm_output
 import json
 from app.core.config import get_config
 from datetime import datetime
@@ -59,14 +60,20 @@ async def revise_workout(
         # Create chain with structured output
         chain = llm.with_structured_output(WorkoutSchema)
         
-        # Debugging: Store the formatted prompt in a markdown file
-        # with open("formatted_revision_prompt.md", "w") as f:
-        #     f.write(formatted_prompt)
+        # Document input if enabled
+        should_document_input = False
+        if should_document_input:
+            await document_llm_input(formatted_prompt, "workout_revision")
         
         print("Sending workout revision request to OpenAI API...")
         # Send the formatted prompt to the LLM
         revised_workout_schema = await chain.ainvoke(formatted_prompt)
         print("Received workout revision response from OpenAI API")
+
+        # Document output if enabled
+        should_document_output = False
+        if should_document_output:
+            await document_llm_output(revised_workout_schema, "workout_revision")
 
         return revised_workout_schema
 

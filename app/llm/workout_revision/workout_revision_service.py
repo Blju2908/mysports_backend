@@ -1,5 +1,6 @@
 import json
 from typing import Dict, Any, Optional
+from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
@@ -10,6 +11,7 @@ from app.models.set_model import Set, SetStatus
 from app.services.workout_service import get_workout_details
 from app.llm.workout_revision.workout_revision_chain import revise_workout
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
+from app.db.trainingplan_db_access import get_training_plan_for_user
 
 
 def workout_to_dict(workout: Workout) -> Dict[str, Any]:
@@ -174,7 +176,7 @@ async def save_revised_workout(
 async def run_workout_revision_chain(
     workout_id: int,
     user_feedback: str,
-    user_id: Optional[str] = None,
+    user_id: Optional[UUID] = None,
     training_plan: Optional[str] = None,
     training_history: Optional[str] = None,
     db: Optional[AsyncSession] = None
@@ -185,8 +187,8 @@ async def run_workout_revision_chain(
     Args:
         workout_id: ID des zu überarbeitenden Workouts
         user_feedback: Feedback/Kommentar des Users
-        user_id: Optional - User ID für zusätzlichen Kontext
-        training_plan: Optional - Trainingsplan als String
+        user_id: Optional - User ID für zusätzlichen Kontext und Laden der Trainingsprinzipien
+        training_plan: Optional - Trainingsplan als String (wird automatisch geladen wenn user_id gegeben)
         training_history: Optional - Trainingshistorie als JSON-String
         db: Database Session
         
@@ -197,20 +199,31 @@ async def run_workout_revision_chain(
         raise ValueError("Database session is required")
     
     try:
-        # 1. Lade das bestehende Workout aus der Datenbank
+        # 1. Lade Trainingsprinzipien aus der DB wenn user_id gegeben ist
+        training_principles_text = training_plan
+        
+        if user_id is not None:
+            # Get training principles from the user's training plan
+            training_plan_db_obj = await get_training_plan_for_user(user_id, db)
+            if training_plan_db_obj and hasattr(
+                training_plan_db_obj, "training_principles"
+            ):
+                training_principles_text = training_plan_db_obj.training_principles
+        
+        # 2. Lade das bestehende Workout aus der Datenbank
         existing_workout_obj = await get_workout_details(
             workout_id=workout_id,
             db=db
         )
         
-        # 2. Konvertiere das Workout in ein Dictionary für das LLM
+        # 3. Konvertiere das Workout in ein Dictionary für das LLM
         existing_workout_dict = workout_to_dict(existing_workout_obj)
         
-        # 3. Führe die Revision Chain aus
+        # 4. Führe die Revision Chain aus
         revised_workout_schema = await revise_workout(
             existing_workout=existing_workout_dict,
             user_feedback=user_feedback,
-            training_plan=training_plan,
+            training_plan=training_principles_text,
             training_history=training_history
         )
         

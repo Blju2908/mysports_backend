@@ -858,6 +858,7 @@ async def change_workout_endpoint(
             revised_workout_schema = await run_workout_revision_chain(
                 workout_id=workout_id,
                 user_feedback=request_data.user_feedback,
+                user_id=UUID(current_user.id),
                 training_plan=request_data.training_plan,
                 training_history=request_data.training_history,
                 db=db

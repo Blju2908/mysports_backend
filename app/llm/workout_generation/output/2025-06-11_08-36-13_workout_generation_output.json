@@ -1,0 +1,285 @@
+{
+  "name": "Ganzkörper Kraft & Klimmzug-Progression",
+  "description": "45-minütiges Workout zur Grundkraftstärkung und exzentrischen Klimmzug-Entwicklung (Phase 1)",
+  "duration": 45,
+  "focus": "Ganzkörper, Klimmzug, Stabilität",
+  "blocks": [
+    {
+      "name": "Aufwärmen",
+      "description": null,
+      "exercises": [
+        {
+          "name": "Leichtes Joggen auf dem Laufband",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                300,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Theraband Overhead Dislocations",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                30
+              ]
+            },
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Hüftkreisen (stehend, je Seite)",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                20,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Hauptteil",
+      "description": null,
+      "exercises": [
+        {
+          "name": "Negativer Klimmzug",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                0,
+                5,
+                null,
+                null,
+                90
+              ]
+            },
+            {
+              "values": [
+                0,
+                5,
+                null,
+                null,
+                90
+              ]
+            },
+            {
+              "values": [
+                0,
+                5,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Kniebeuge (Langhantel, frei)",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                85,
+                8,
+                null,
+                null,
+                90
+              ]
+            },
+            {
+              "values": [
+                85,
+                8,
+                null,
+                null,
+                90
+              ]
+            },
+            {
+              "values": [
+                85,
+                8,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Rumänisches Kreuzheben (Langhantel)",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                80,
+                8,
+                null,
+                null,
+                90
+              ]
+            },
+            {
+              "values": [
+                80,
+                8,
+                null,
+                null,
+                90
+              ]
+            },
+            {
+              "values": [
+                80,
+                8,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Kurzhantel Bankdrücken",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                26,
+                10,
+                null,
+                null,
+                90
+              ]
+            },
+            {
+              "values": [
+                26,
+                10,
+                null,
+                null,
+                90
+              ]
+            },
+            {
+              "values": [
+                26,
+                10,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Pallof Press (Kabel)",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                15,
+                12,
+                null,
+                null,
+                60
+              ]
+            },
+            {
+              "values": [
+                15,
+                12,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Cooldown",
+      "description": null,
+      "exercises": [
+        {
+          "name": "Latissimusdehnung (stehend)",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                30
+              ]
+            },
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Child's Pose",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    }
+  ]
+}

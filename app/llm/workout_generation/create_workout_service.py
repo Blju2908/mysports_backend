@@ -94,6 +94,7 @@ def format_training_history_for_llm(
     Formats the training history into a structured JSON string suitable for the LLM.
     Focuses on when the user trained, their notes, and actual executed exercises.
     Only includes workouts that have at least one completed set.
+    Optimized for information density: removes null/zero values, compresses identical sets, removes rest times.
     Returns None if no workouts are provided.
     """
     if not training_history_workouts:
@@ -155,24 +156,56 @@ def format_training_history_for_llm(
                 if exercise.superset_id:
                     exercise_obj["superset_id"] = exercise.superset_id
                 
-                # Add sets
+                # Collect and compress sets
+                raw_sets = []
                 for s in exercise.sets:
                     set_obj = {}
-                    if s.weight is not None:
+                    if s.weight is not None and s.weight != 0.0:
                         set_obj["weight"] = s.weight
-                    if s.reps is not None:
+                    if s.reps is not None and s.reps != 0:
                         set_obj["reps"] = s.reps
-                    if s.duration is not None:
+                    if s.duration is not None and s.duration != 0:
                         set_obj["duration"] = s.duration
-                    if s.distance is not None:
+                    if s.distance is not None and s.distance != 0.0:
                         set_obj["distance"] = s.distance
-                    if s.rest_time is not None:
-                        set_obj["rest"] = s.rest_time
+                    # Note: rest_time completely removed as requested
                     
-                    if set_obj:  # Only add if there's at least one value
-                        exercise_obj["sets"].append(set_obj)
+                    if set_obj:  # Only add if there's at least one non-zero value
+                        raw_sets.append(set_obj)
                 
-                if exercise_obj["sets"]:  # Only add if there's at least one set
+                # Compress identical sets (simple approach)
+                if raw_sets:
+                    compressed_sets = []
+                    current_set = raw_sets[0]
+                    count = 1
+                    
+                    for i in range(1, len(raw_sets)):
+                        if raw_sets[i] == current_set:
+                            count += 1
+                        else:
+                            # Add the compressed set
+                            if count == 1:
+                                compressed_sets.append(current_set)
+                            else:
+                                compressed_set = current_set.copy()
+                                compressed_set["count"] = count
+                                compressed_sets.append(compressed_set)
+                            
+                            # Start new group
+                            current_set = raw_sets[i]
+                            count = 1
+                    
+                    # Add the last group
+                    if count == 1:
+                        compressed_sets.append(current_set)
+                    else:
+                        compressed_set = current_set.copy()
+                        compressed_set["count"] = count
+                        compressed_sets.append(compressed_set)
+                    
+                    exercise_obj["sets"] = compressed_sets
+                
+                if exercise_obj.get("sets"):  # Only add if there's at least one set
                     block_obj["exercises"].append(exercise_obj)
             
             if block_obj["exercises"]:  # Only add if there's at least one exercise

@@ -8,7 +8,7 @@ It connects the database layer with the LLM chain and handles the business logic
 import json
 import logging
 from datetime import datetime, date
-from typing import Optional, Dict, Any, Tuple
+from typing import Optional, Dict, Any
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import select
@@ -18,7 +18,6 @@ from app.models.user_model import UserModel
 from app.llm.training_plan_generation.training_plan_generation_schemas import TrainingPlanGenerationSchema
 from app.llm.training_plan_revision.training_plan_revision_chain import revise_training_plan
 from app.llm.training_plan_revision.training_plan_revision_schemas import (
-    TrainingPlanRevisionRequestSchema,
     TrainingPlanRevisionResponseSchema,
     TrainingPlanRevisionPreviewSchema
 )

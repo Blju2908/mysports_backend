@@ -1,10 +1,9 @@
 from langchain_openai import ChatOpenAI
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
-import json
+from app.llm.utils.llm_documentation import document_llm_input, document_llm_output
 from app.core.config import get_config
 from datetime import datetime
 from typing import Optional
-import os
 from pathlib import Path
 PROMPT_FILE = "workout_generation_prompt.md"
 
@@ -42,7 +41,7 @@ async def generate_workout(
         OPENAI_API_KEY = config.OPENAI_API_KEY2
 
         reasoning = {
-            "effort": "low",
+            "effort": "medium",
             "summary": None
         }
         
@@ -56,16 +55,15 @@ async def generate_workout(
         
         should_document_input = False
         if should_document_input:
-            await document_input(formatted_prompt)
+            await document_llm_input(formatted_prompt, "workout_generation")
         
         print("Sending request to OpenAI API...")
         workout_schema_instance = await chain.ainvoke(formatted_prompt)
         print("Received response from OpenAI API")
 
-
         should_document_output = False
         if should_document_output:
-            await document_output(workout_schema_instance)
+            await document_llm_output(workout_schema_instance, "workout_generation")
 
         return workout_schema_instance
 
@@ -73,51 +71,5 @@ async def generate_workout(
         print(f"Error in generate_workout: {e}")
         import traceback
 
-        traceback.print_exc()
-        raise
-
-async def document_output(workout_schema: WorkoutSchema) -> None:
-    """
-    Document the output of the workout generation chain.
-    """
-    try:
-        # Get the directory of the current file
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        output_dir = os.path.join(current_dir, "output")
-        # check if folder "output" exists, if not create it
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-        
-        # create a file with the name of the user_prompt and the current date
-        file_name = f"{datetime.now().strftime('%Y-%m-%d')}_workout_generation_output.json"
-        file_path = os.path.join(output_dir, file_name)
-        with open(file_path, "w") as f:
-            f.write(workout_schema.model_dump_json())
-    except Exception as e:
-        print(f"Error in document_output: {e}")
-        import traceback
-        traceback.print_exc()
-        raise
-    
-async def document_input(formatted_prompt: str) -> None:
-    """
-    Document the input of the workout generation chain.
-    """
-    try:
-        # Get the directory of the current file
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        output_dir = os.path.join(current_dir, "output")
-        # check if folder "output" exists, if not create it
-        if not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-            
-        # create a file with the name of the user_prompt and the current date
-        file_name = f"{datetime.now().strftime('%Y-%m-%d')}_workout_generation_input.md"
-        file_path = os.path.join(output_dir, file_name)
-        with open(file_path, "w") as f:
-            f.write(formatted_prompt)
-    except Exception as e:
-        print(f"Error in document_input: {e}")
-        import traceback
         traceback.print_exc()
         raise
