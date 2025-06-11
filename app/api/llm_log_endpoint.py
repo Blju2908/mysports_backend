@@ -277,25 +277,19 @@ async def get_my_llm_summary(
 
 @router.get("/workout-usage", response_model=Dict[str, Any])
 async def get_workout_usage_stats(
-    period_start: Optional[datetime] = Query(None, description="Start of the billing period"),
-    period_end: Optional[datetime] = Query(None, description="End of the billing period"),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session),
 ):
     """
     Get workout-related API usage statistics for the current user.
-    Returns successful calls to llm/create-workout and workout/revise endpoints in the last 30 days.
+    Uses a rolling 30-day window - older calls automatically drop out as time progresses.
+    Returns successful calls to llm/create-workout and workout/revise endpoints.
     """
     try:
-        # Use provided period or default to last 30 days
-        if period_start and period_end:
-            # Convert timezone-aware datetimes to naive UTC for database compatibility
-            start_date = period_start.replace(tzinfo=None) if period_start.tzinfo else period_start
-            end_date = period_end.replace(tzinfo=None) if period_end.tzinfo else period_end
-        else:
-            # Fallback to 30 days if no subscription period provided
-            end_date = datetime.utcnow()
-            start_date = end_date - timedelta(days=30)
+        # Rolling 30-day window: from exactly 30 days ago until now
+        # This means the count changes every day as old calls drop out
+        end_date = datetime.utcnow()
+        start_date = end_date - timedelta(days=30)
         
         # Query for successful workout-related API calls
         workout_endpoints = ['llm/create-workout', 'workout/revise']
@@ -317,7 +311,7 @@ async def get_workout_usage_stats(
         remaining_calls = max(0, max_calls - total_calls)
         usage_percentage = (total_calls / max_calls * 100) if max_calls > 0 else 0
         
-        # Determine usage status based on percentage (renamed to avoid conflict)
+        # Determine usage status based on percentage
         if usage_percentage >= 75:
             usage_status = "critical"
         elif usage_percentage >= 25:
