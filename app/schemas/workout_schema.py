@@ -4,6 +4,9 @@ from datetime import datetime
 from app.models.set_model import SetStatus # For SetResponseSchema
 # No BlockStatus as it was removed from block_model
 
+# ✅ ADD: Import WorkoutStatusEnum for enhanced list API
+from app.llm.schemas.workout_schema import WorkoutStatusEnum
+
 # Base Schemas for individual models - ensuring consistency with DB models
 
 class SetBaseSchema(BaseModel):
@@ -64,11 +67,14 @@ class WorkoutResponseSchema(WorkoutBaseSchema):
     id: int
     training_plan_id: Optional[int] = None # from workout_model
     date_created: datetime # from workout_model
+    # ✅ ADD: Status field for optimized list API - no more frontend status calculation needed!
+    status: WorkoutStatusEnum
+    
     class Config:
         from_attributes = True
 
 # Schema for workout details including blocks, exercises, and sets
-class WorkoutSchemaWithBlocks(WorkoutResponseSchema): # Inherits from WorkoutResponseSchema
+class WorkoutSchemaWithBlocks(WorkoutResponseSchema): # Inherits from WorkoutResponseSchema (now including status!)
     blocks: List[BlockResponseSchema] = []
     
     class Config:

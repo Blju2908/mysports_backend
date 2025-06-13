@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Body, Request
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, join, update, delete
+from sqlalchemy import select, join, update, delete, func, case, and_
 from typing import List, Optional, Union, Dict, Any
 from sqlalchemy.orm import selectinload
 from datetime import datetime
@@ -24,6 +24,7 @@ from app.llm.schemas.workout_schema import (
     WorkoutStatusEnum,
     BlockSchema
 )
+from app.schemas.workout_schema import WorkoutResponseSchema as OptimizedWorkoutResponseSchema
 from app.llm.workout_revision.workout_revision_schemas import (
     WorkoutRevisionRequestSchema,
     WorkoutRevisionResponseSchema
@@ -90,13 +91,81 @@ def calculate_workout_status(workout_orm: Workout) -> WorkoutStatusEnum:
     return WorkoutStatusEnum.NOT_STARTED # Default/fallback if no sets or unexpected state
 
 
-@router.get("/", response_model=List[WorkoutResponseSchema])
+async def calculate_workout_statuses_optimized(
+    workout_ids: List[int], 
+    db: AsyncSession
+) -> Dict[int, WorkoutStatusEnum]:
+    """
+    ✅ OPTIMIZED: Calculate workout status for multiple workouts with single SQL query
+    
+    This replaces multiple individual status calculations with one efficient query.
+    React Query V5 Best Practice: Minimize database round trips.
+    """
+    if not workout_ids:
+        return {}
+    
+    # ✅ SINGLE SQL QUERY: Calculate status for all workouts at once
+    status_query = (
+        select(
+            Workout.id.label('workout_id'),
+            func.count(Set.id).label('total_sets'),
+            func.sum(
+                case(
+                    (Set.status == SetStatus.done, 1), 
+                    else_=0
+                )
+            ).label('completed_sets')
+        )
+        .select_from(Workout)
+        .outerjoin(Block, Block.workout_id == Workout.id)
+        .outerjoin(Exercise, Exercise.block_id == Block.id)
+        .outerjoin(Set, Set.exercise_id == Exercise.id)
+        .where(Workout.id.in_(workout_ids))
+        .group_by(Workout.id)
+    )
+    
+    result = await db.execute(status_query)
+    status_data = result.all()
+    
+    # ✅ EFFICIENT: Convert to status enum in Python
+    workout_statuses = {}
+    for row in status_data:
+        workout_id = row.workout_id
+        total_sets = row.total_sets or 0
+        completed_sets = row.completed_sets or 0
+        
+        if total_sets == 0:
+            status = WorkoutStatusEnum.NOT_STARTED
+        elif completed_sets == total_sets:
+            status = WorkoutStatusEnum.DONE
+        elif completed_sets > 0:
+            status = WorkoutStatusEnum.STARTED
+        else:
+            status = WorkoutStatusEnum.NOT_STARTED
+            
+        workout_statuses[workout_id] = status
+    
+    # ✅ HANDLE: Workouts not in result (no sets) - default to NOT_STARTED
+    for workout_id in workout_ids:
+        if workout_id not in workout_statuses:
+            workout_statuses[workout_id] = WorkoutStatusEnum.NOT_STARTED
+    
+    return workout_statuses
+
+
+@router.get("/", response_model=List[OptimizedWorkoutResponseSchema])
 async def get_user_workouts(
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
     """
-    Get all workouts for the current user.
+    ✅ OPTIMIZED: Get all workouts with computed status in a single efficient call.
+    
+    Performance improvements:
+    - Single SQL query for status calculation
+    - No more 4x duplicate calls from frontend
+    - Status included directly in response
+    - Supports React Query V5 cache invalidation patterns
     """
     user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
     result = await db.execute(user_query)
@@ -105,24 +174,28 @@ async def get_user_workouts(
     if not user or not user.training_plan_id:
         return []
 
+    # ✅ LIGHTWEIGHT: Get workout metadata only (no joins)
     workout_query = (
         select(Workout)
         .where(Workout.training_plan_id == user.training_plan_id)
-        .options(
-            selectinload(Workout.blocks)
-            .selectinload(Block.exercises)
-            .selectinload(Exercise.sets)
-        )
         .order_by(Workout.date_created.desc())
     )
 
     result = await db.execute(workout_query)
     workouts_orm = result.scalars().all()
+    
+    if not workouts_orm:
+        return []
 
+    # ✅ BATCH STATUS CALCULATION: Single query for all workout statuses
+    workout_ids = [w.id for w in workouts_orm]
+    workout_statuses = await calculate_workout_statuses_optimized(workout_ids, db)
+
+    # ✅ EFFICIENT: Build response with pre-calculated statuses
     response_workouts = []
     for workout_orm_item in workouts_orm:
-        status = calculate_workout_status(workout_orm_item)
-        response_workout = WorkoutResponseSchema(
+        status = workout_statuses.get(workout_orm_item.id, WorkoutStatusEnum.NOT_STARTED)
+        response_workout = OptimizedWorkoutResponseSchema(
             id=workout_orm_item.id,
             training_plan_id=workout_orm_item.training_plan_id,
             name=workout_orm_item.name,
@@ -131,7 +204,7 @@ async def get_user_workouts(
             duration=workout_orm_item.duration,
             focus=workout_orm_item.focus,
             notes=workout_orm_item.notes,
-            status=status,
+            status=status,  # ✅ STATUS INCLUDED: No frontend computation needed!
         )
         response_workouts.append(response_workout)
 
@@ -145,8 +218,9 @@ async def get_workout_detail(
     current_user: User = Depends(get_current_user),
 ):
     """
-    Get detailed information about a specific workout including all blocks and exercises.
-    Calculates and includes workout status.
+    ✅ OPTIMIZED: Get detailed workout information with efficient status calculation.
+    
+    Uses the same optimized status calculation as the list endpoint for consistency.
     """
     workout_orm = await get_workout_details(workout_id=workout_id, db=db)
     
@@ -161,7 +235,9 @@ async def get_workout_detail(
             detail="Keine Berechtigung für den Zugriff auf dieses Workout"
         )
     
-    calculated_status = calculate_workout_status(workout_orm)
+    # ✅ CONSISTENT: Use same optimized status calculation as list endpoint
+    workout_statuses = await calculate_workout_statuses_optimized([workout_id], db)
+    calculated_status = workout_statuses.get(workout_id, WorkoutStatusEnum.NOT_STARTED)
 
     # Explicitly construct the response data if direct ORM to Pydantic conversion is problematic
     # or if sub-models need specific handling.
