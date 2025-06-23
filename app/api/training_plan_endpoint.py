@@ -45,7 +45,7 @@ async def get_or_create_training_plan(db: AsyncSession, user: UserModel) -> Trai
     
     # Create new empty plan with defaults
     new_plan = TrainingPlan(
-        equipment="",
+        equipment=[],  # Changed from empty string to empty array
         session_duration=45,
         training_frequency=3,
         fitness_level=3,

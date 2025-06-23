@@ -34,6 +34,7 @@ class ExerciseBaseSchema(BaseModel):
     description: Optional[str] = None
     notes: Optional[str] = None
     superset_id: Optional[str] = None
+    is_amrap: bool = Field(default=False)
 
 class ExerciseResponseSchema(ExerciseBaseSchema):
     id: int
@@ -47,6 +48,8 @@ class BlockBaseSchema(BaseModel):
     name: str
     description: Optional[str] = None
     notes: Optional[str] = None
+    is_amrap: bool = Field(default=False)
+    amrap_duration_minutes: Optional[int] = None
 
 class BlockResponseSchema(BlockBaseSchema):
     id: int
@@ -86,7 +89,7 @@ class NewSetInputSchema(SetBaseSchema): # Inherits planned values, status, etc.
     local_id: str # Frontend temporary ID
     # exercise_id will be determined by the context (new exercise or existing exercise)
 
-class NewExerciseInputSchema(ExerciseBaseSchema): # Inherits name, description, notes
+class NewExerciseInputSchema(ExerciseBaseSchema): # Inherits name, description, notes, is_amrap
     local_id: str # Frontend temporary ID
     sets: List[NewSetInputSchema] = Field(default_factory=list)
     # block_id will be taken from the endpoint's path parameter

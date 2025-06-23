@@ -4,7 +4,6 @@ from app.db.trainingplan_db_access import get_training_plan_for_user
 from app.llm.training_plan_generation.training_plan_generation_chain import generate_training_plan_generation
 from app.llm.training_plan_generation.training_plan_generation_schemas import TrainingPlanGenerationSchema
 from app.models.training_plan_model import TrainingPlan
-from sqlmodel import select, update
 import json
 from datetime import date
 

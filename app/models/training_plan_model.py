@@ -20,10 +20,10 @@ class TrainingPlan(SQLModel, table=True):
     weight: Optional[float] = Field(default=None)
     
     # Trainingsziele - Anpassung, um Frontend-Format direkt zu unterstützen
-    goal_types: Optional[List[str]] = Field(
+    goal_details: Optional[str] = Field(default=None)
+    workout_styles: Optional[List[str]] = Field(
         sa_column=Column(ARRAY(String)), default=None
     )
-    goal_details: Optional[str] = Field(default=None)
     
     # Erfahrungslevel
     fitness_level: Optional[int] = Field(default=None)
@@ -32,27 +32,20 @@ class TrainingPlan(SQLModel, table=True):
     # Trainingsplan
     training_frequency: Optional[int] = Field(default=None)
     session_duration: Optional[int] = Field(default=None)
+    other_regular_activities: Optional[str] = Field(default=None)
     
     # Equipment und Umgebung - Anpassung, um Frontend-Format direkt zu unterstützen
     equipment: Optional[List[str]] = Field(
         sa_column=Column(ARRAY(String)), default=None
     )
     equipment_details: Optional[str] = Field(default=None)
-    include_cardio: Optional[bool] = Field(default=None)  # 'yes' oder 'no' statt boolean
     
     # Einschränkungen
     restrictions: Optional[str] = Field(default=None)
     mobility_restrictions: Optional[str] = Field(default=None)
     
-    # Trainingsprinzipien (KI-generiert)
-    training_principles: Optional[str] = Field(default=None)
-    
-    # Structured training principles as JSON
-    training_principles_json: Optional[Dict[str, Any]] = Field(
-        sa_column=Column(JSON), 
-        default=None,
-        description="Structured training principles in JSON format"
-    )
+    # Comments
+    comments: Optional[str] = Field(default=None)
 
     # Direkte Beziehung zum User (One-to-One)
     user: Optional["UserModel"] = Relationship(back_populates="training_plan")

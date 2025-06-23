@@ -16,11 +16,11 @@ async def generate_workout(
     user_prompt: Optional[str] = None
 ) -> WorkoutSchema:
     """
-    Generiert ein Workout mit LLM. Akzeptiert Trainingsprinzipien als String, 
+    Generiert ein Workout mit LLM. Akzeptiert strukturierte Trainingsplandaten als String, 
     optionale Trainingshistorie als JSON-String und optionalen User Prompt.
     """
     try:
-        # Trainingsplan (jetzt trainings_principles als String) wird direkt verwendet.
+        # Trainingsplan (strukturierte Daten als String) wird direkt verwendet.
 
         # Load the Prompt File        
         prompt_path = Path(__file__).parent / PROMPT_FILE
@@ -46,6 +46,7 @@ async def generate_workout(
         }
         
 
+        # llm = ChatOpenAI(model="o3", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
         llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
         # llm = ChatOpenAI(model="gpt-4.1", api_key=OPENAI_API_KEY) 
 
@@ -53,7 +54,7 @@ async def generate_workout(
         # The prompt itself is now already formatted and contains all instructions.
         chain = llm.with_structured_output(WorkoutSchema) 
         
-        should_document_input = False
+        should_document_input = True
         if should_document_input:
             await document_llm_input(formatted_prompt, "workout_generation")
         
@@ -61,7 +62,7 @@ async def generate_workout(
         workout_schema_instance = await chain.ainvoke(formatted_prompt)
         print("Received response from OpenAI API")
 
-        should_document_output = False
+        should_document_output = True
         if should_document_output:
             await document_llm_output(workout_schema_instance, "workout_generation")
 

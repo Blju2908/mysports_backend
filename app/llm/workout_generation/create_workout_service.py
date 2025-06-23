@@ -34,21 +34,16 @@ async def run_workout_chain(
         Abhängig von `save_to_db`: das gespeicherte Workout-DB-Modell oder ein Dictionary des generierten Workouts.
     """
 
-    training_principles_text = None
+    formatted_training_plan = None
     training_plan_id_for_saving = None
     formatted_history = None
 
     if user_id is not None:
-        # Get training principles from the user's training plan
+        # Get training plan from the user
         training_plan_db_obj = await get_training_plan_for_user(user_id, db)
-        if training_plan_db_obj and hasattr(
-            training_plan_db_obj, "training_principles"
-        ):
-            training_principles_text = training_plan_db_obj.training_principles
         if training_plan_db_obj:
             training_plan_id_for_saving = training_plan_db_obj.id
-            
-            
+            formatted_training_plan = format_training_plan_for_llm(training_plan_db_obj)
 
         # Get and format training history (last 10 workouts)
         raw_training_history: List[Workout] = (
@@ -60,12 +55,9 @@ async def run_workout_chain(
                 raw_training_history
             )
         
-        
-        
     # LLM-Call durchführen
-    # generate_workout signature will be (training_plan_text, training_history_json, user_prompt)
     llm_output_schema = await generate_workout(
-        training_plan=training_principles_text,
+        training_plan=formatted_training_plan,
         training_history=formatted_history,
         user_prompt=user_prompt,
     )
@@ -86,6 +78,109 @@ async def run_workout_chain(
     else:
         # Return the raw Pydantic model output as a dict
         return llm_output_schema.model_dump()
+
+def format_training_plan_for_llm(training_plan) -> str:
+    """
+    Formats the training plan data into a structured text format for the LLM.
+    Converts all training plan attributes into readable sections.
+    """
+    sections = []
+    
+    # Personal Information
+    personal_info = []
+    if training_plan.gender:
+        personal_info.append(f"Geschlecht: {training_plan.gender}")
+    if training_plan.birthdate:
+        from datetime import date
+        age = date.today().year - training_plan.birthdate.year
+        personal_info.append(f"Alter: {age} Jahre")
+    if training_plan.height:
+        personal_info.append(f"Körpergröße: {training_plan.height} cm")
+    if training_plan.weight:
+        personal_info.append(f"Gewicht: {training_plan.weight} kg")
+    
+    if personal_info:
+        sections.append("## Persönliche Informationen\n" + "\n".join(personal_info))
+    
+    # Training Goals
+    goals_info = []
+    if training_plan.workout_styles:
+        goals_info.append(f"Bevorzugter Workout Style: {', '.join(training_plan.workout_styles)}")
+    if training_plan.goal_details:
+        goals_info.append(f"Beschreibung: {training_plan.goal_details}")
+    
+    if goals_info:
+        sections.append("## Trainingsziele\n" + "\n".join(goals_info))
+    
+    # Experience Level
+    experience_info = []
+    if training_plan.fitness_level is not None:
+        fitness_labels = {
+            1: "Sehr unfit", 
+            2: "Unfit", 
+            3: "Durchschnittlich", 
+            4: "Fit", 
+            5: "Sehr fit", 
+            6: "Athletisch", 
+            7: "Elite"
+        }
+        experience_info.append(f"Fitnesslevel: {fitness_labels.get(training_plan.fitness_level, training_plan.fitness_level)} ({training_plan.fitness_level}/7)")
+    if training_plan.experience_level is not None:
+        exp_labels = {
+            1: "Anfänger", 
+            2: "Wenig Erfahrung", 
+            3: "Grundkenntnisse", 
+            4: "Etwas Erfahrung", 
+            5: "Erfahren", 
+            6: "Sehr erfahren", 
+            7: "Experte"
+        }
+        experience_info.append(f"Trainingserfahrung: {exp_labels.get(training_plan.experience_level, training_plan.experience_level)} ({training_plan.experience_level}/7)")
+    
+    if experience_info:
+        sections.append("## Erfahrungslevel\n" + "\n".join(experience_info))
+    
+    # Training Schedule
+    schedule_info = []
+    if training_plan.training_frequency:
+        schedule_info.append(f"Trainingsfrequenz: {training_plan.training_frequency}x pro Woche")
+    if training_plan.session_duration:
+        schedule_info.append(f"Trainingsdauer: {training_plan.session_duration} Minuten")
+    if training_plan.other_regular_activities:
+        schedule_info.append(f"Andere regelmäßige Aktivitäten: {training_plan.other_regular_activities}")
+    
+    if schedule_info:
+        sections.append("## Trainingsplan\n" + "\n".join(schedule_info))
+    
+    # Equipment & Environment
+    equipment_info = []
+    if training_plan.equipment:
+        # Directly use equipment values from database without separate mapping logic
+        equipment_info.append(f"Standard Ausrüstung: {', '.join(training_plan.equipment)}")
+    if training_plan.equipment_details:
+        equipment_info.append(f"Zusätzliche Informationen: {training_plan.equipment_details}")
+    
+    if equipment_info:
+        sections.append("## Equipment & Umgebung\n" + "\n".join(equipment_info))
+    
+    # Restrictions
+    restrictions_info = []
+    if training_plan.restrictions:
+        restrictions_info.append(f"Verletzungen/Einschränkungen: {training_plan.restrictions}")
+    if training_plan.mobility_restrictions:
+        restrictions_info.append(f"Mobilitätseinschränkungen: {training_plan.mobility_restrictions}")
+    
+    if restrictions_info:
+        sections.append("## Einschränkungen\n" + "\n".join(restrictions_info))
+    
+    # Comments
+    if training_plan.comments:
+        sections.append(f"## Zusätzliche Kommentare\n{training_plan.comments}")
+    
+    if not sections:
+        return "Keine Trainingsplandaten verfügbar."
+    
+    return "\n\n".join(sections)
 
 def format_training_history_for_llm(
     training_history_workouts: List[Workout],

@@ -31,6 +31,7 @@ class ExerciseResponseSchema(BaseModel):
     description: Optional[str] = None
     notes: Optional[str] = None
     superset_id: Optional[str] = None
+    is_amrap: bool = False
     block_id: int
     sets: List[SetResponseSchema]
 
@@ -93,6 +94,7 @@ class NewExerciseInputSchema(BaseModel):
     description: Optional[str] = None
     notes: Optional[str] = None
     superset_id: Optional[str] = None
+    is_amrap: bool = False
     sets: List[NewSetInputSchema]
 
 class SetUpdateInputSchema(BaseModel): # No longer inherits from NewSetInputSchema
@@ -141,6 +143,7 @@ class ExerciseSchema(BaseModel):
     description: Optional[str]
     notes: Optional[str]
     superset_id: Optional[str] = None
+    is_amrap: bool = False
     sets: List[SetSchema]
 
 class BlockSchema(BaseModel):

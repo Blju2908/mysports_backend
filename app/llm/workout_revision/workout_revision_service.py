@@ -37,6 +37,8 @@ def workout_to_dict(workout: Workout) -> Dict[str, Any]:
                 "name": block.name,
                 "description": block.description,
                 "notes": block.notes,
+                "is_amrap": getattr(block, "is_amrap", False),
+                "amrap_duration_minutes": getattr(block, "amrap_duration_minutes", None),
                 "exercises": []
             }
             
@@ -122,7 +124,9 @@ async def save_revised_workout(
             new_block = Block(
                 workout_id=existing_workout.id,
                 name=block_schema.name,
-                description=block_schema.description
+                description=block_schema.description,
+                is_amrap=getattr(block_schema, "is_amrap", False),
+                amrap_duration_minutes=getattr(block_schema, "amrap_duration_minutes", None)
             )
             db.add(new_block)
             await db.flush()  # Get block ID
