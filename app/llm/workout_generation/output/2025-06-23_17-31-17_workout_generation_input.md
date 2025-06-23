@@ -93,27 +93,27 @@ Du bist ein erfahrener Personal Trainer. Erstelle ein einzelnes, hocheffektives 
 
 ## Superset-Beispiel (AMRAP Block) mit korrekten Pausen:
 ```json
-{{
+{
   "name": "Hauptteil - AMRAP Oberkörper",
   "is_amrap": true,
   "amrap_duration_minutes": 15
   "exercises": [
-    {{
+    {
       "name": "Kurzhantel Bankdrücken",
       "superset_id": "A",
       "sets": [
-        {{"values": [20, 12, null, null, 30]}}
+        {"values": [20, 12, null, null, 30]}
       ]
-    }},
-    {{
+    },
+    {
       "name": "Kurzhantel Rudern",
       "superset_id": "A",
       "sets": [
-        {{"values": [20, 12, null, null, 0]}}
+        {"values": [20, 12, null, null, 0]}
       ]
-    }}
+    }
   ]
-}}
+}
 ```
 
 # Input-Verarbeitung
@@ -134,16 +134,34 @@ Du bist ein erfahrener Personal Trainer. Erstelle ein einzelnes, hocheffektives 
 
 # Input
 Aktuelles Datum:
-{current_date}
+23.06.2025
 
 User Prompt (optional, wenn vorhanden unbedingt berücksichtigen!!!):
-{user_prompt}
+
 
 Strukturierte Trainingsplandaten:
-{training_plan}
+## Persönliche Informationen
+Geschlecht: male
+Alter: 31 Jahre
+Körpergröße: 186.0 cm
+Gewicht: 94.0 kg
+
+## Trainingsziele
+Bevorzugter Workout Style: Ausdauer-Wettkampftraining im Hyrox-Stil mit funktionalen Elementen
+
+## Erfahrungslevel
+Fitnesslevel: Fit (4/7)
+Trainingserfahrung: Etwas Erfahrung (4/7)
+
+## Trainingsplan
+Trainingsfrequenz: 4x pro Woche
+Trainingsdauer: 45 Minuten
+
+## Equipment & Umgebung
+Standard Ausrüstung: fitnessstudio
 
 Trainingshistorie (optional):
-{training_history}
+
 
 # Output
 Generiere ausschließlich ein JSON-Objekt ohne zusätzliche Erklärungen oder Markdown-Formatierung.

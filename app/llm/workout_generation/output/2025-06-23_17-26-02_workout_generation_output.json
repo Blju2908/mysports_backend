@@ -1,0 +1,343 @@
+{
+  "name": "Functional Endurance Workout",
+  "description": "Ausdauer-Wettkampftraining im Hyrox-Stil mit funktionalen Elementen",
+  "duration": 45,
+  "focus": "Ausdauer, Functional",
+  "blocks": [
+    {
+      "name": "Aufwärmen",
+      "description": "5 Min Rudern + Mobilität",
+      "exercises": [
+        {
+          "name": "Rudermaschine leicht",
+          "description": "leichtes Tempo",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                300,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Beinpendel vor/zurück",
+          "description": "dynamisch",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Armkreisen",
+          "description": "jeweils vorwärts und rückwärts",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Inchworm",
+          "description": "Ganzkörpermobilität",
+          "sets": [
+            {
+              "values": [
+                null,
+                5,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ],
+      "is_amrap": false,
+      "amrap_duration_minutes": null
+    },
+    {
+      "name": "Hauptteil - Circuit Functional Endurance",
+      "description": "4 Runden, minimaler Pause zwischen Übungen",
+      "exercises": [
+        {
+          "name": "Rudern (Ergometer)",
+          "description": "stationär, mittleres Tempo",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                500,
+                30
+              ]
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                500,
+                30
+              ]
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                500,
+                30
+              ]
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                500,
+                30
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Schlitten schieben",
+          "description": "kontrolliertes Push-Tempo",
+          "sets": [
+            {
+              "values": [
+                80,
+                null,
+                null,
+                20,
+                30
+              ]
+            },
+            {
+              "values": [
+                80,
+                null,
+                null,
+                20,
+                30
+              ]
+            },
+            {
+              "values": [
+                80,
+                null,
+                null,
+                20,
+                30
+              ]
+            },
+            {
+              "values": [
+                80,
+                null,
+                null,
+                20,
+                30
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Burpee Broad Jump",
+          "description": "voller Strecksprung",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ]
+            },
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ]
+            },
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ]
+            },
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Wall Ball",
+          "description": "zielsicher werfen",
+          "sets": [
+            {
+              "values": [
+                9,
+                15,
+                null,
+                null,
+                30
+              ]
+            },
+            {
+              "values": [
+                9,
+                15,
+                null,
+                null,
+                30
+              ]
+            },
+            {
+              "values": [
+                9,
+                15,
+                null,
+                null,
+                30
+              ]
+            },
+            {
+              "values": [
+                9,
+                15,
+                null,
+                null,
+                30
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Farmers Carry",
+          "description": "außenbelastung, aufrechter Oberkörper",
+          "sets": [
+            {
+              "values": [
+                24,
+                null,
+                null,
+                40,
+                90
+              ]
+            },
+            {
+              "values": [
+                24,
+                null,
+                null,
+                40,
+                90
+              ]
+            },
+            {
+              "values": [
+                24,
+                null,
+                null,
+                40,
+                90
+              ]
+            },
+            {
+              "values": [
+                24,
+                null,
+                null,
+                40,
+                90
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ],
+      "is_amrap": false,
+      "amrap_duration_minutes": null
+    },
+    {
+      "name": "Cooldown",
+      "description": "Leichtes Auslaufen & Dehnen",
+      "exercises": [
+        {
+          "name": "Laufband gemütlich",
+          "description": "langsames Gehen oder Joggen",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                180,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Ganzkörper-Stretching",
+          "description": "je Übung 30s halten",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                120,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ],
+      "is_amrap": false,
+      "amrap_duration_minutes": null
+    }
+  ]
+}
