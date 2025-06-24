@@ -1,0 +1,430 @@
+{
+  "name": "Home Strength & Hyrox Prep – nur mit Langhantel",
+  "description": "Ganzkörper-Kraft mit equipment-schonender Barbell-Only-Variante. Alle Übungen im Hauptteil wurden auf Langhantel-Varianten umgestellt, ursprüngliche Struktur, Satz- und Wiederholungszahlen sowie Pausenzeiten wurden beibehalten.",
+  "duration": 30,
+  "focus": "Ganzkörper-Kraft",
+  "blocks": [
+    {
+      "name": "Warm-Up (Mobilität & Aktivierung)",
+      "description": "Mobilitäts- und Aktivierungsübungen zum Aufwärmen.",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Arm Circles (vorwärts/rückwärts)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Leg Swings Front-to-Back",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                null
+              ],
+              "description": "pro Bein"
+            },
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                null
+              ],
+              "description": "pro Bein"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "World’s Greatest Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "wechselnd jede Seite"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Hauptteil (Kraft & Muskelaufbau, Barbell-Only)",
+      "description": "Kraft- und Muskelaufbau mit Langhantel-Varianten. Satz- und Wiederholungszahlen sowie Pausenzeiten wie vorgegeben.",
+      "exercises": [
+        {
+          "name": "Barbell Bulgarian Split Squat",
+          "sets": [
+            {
+              "values": [
+                48,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": "pro Bein"
+            },
+            {
+              "values": [
+                48,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": "pro Bein"
+            },
+            {
+              "values": [
+                48,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": "pro Bein"
+            },
+            {
+              "values": [
+                48,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": "pro Bein"
+            },
+            {
+              "values": [
+                48,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": "pro Bein"
+            },
+            {
+              "values": [
+                48,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": "pro Bein"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Romanian Deadlift",
+          "sets": [
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Floor Press",
+          "sets": [
+            {
+              "values": [
+                40,
+                15,
+                null,
+                null,
+                30
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                40,
+                15,
+                null,
+                null,
+                30
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                40,
+                15,
+                null,
+                null,
+                30
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Hip Thrust",
+          "sets": [
+            {
+              "values": [
+                60,
+                15,
+                null,
+                null,
+                30
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                15,
+                null,
+                null,
+                30
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                15,
+                null,
+                null,
+                30
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Roll-Out",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down (Dehnung)",
+      "description": "Dehnübungen zum Cool-Down.",
+      "exercises": [
+        {
+          "name": "Hamstring Stretch (Seated Forward Fold)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Pigeon Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "je Seite"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "je Seite"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Child’s Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Thread the Needle",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "description": "je Seite"
+            },
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "description": "je Seite"
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    }
+  ]
+}

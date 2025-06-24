@@ -11,7 +11,7 @@ from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set, SetStatus
-from app.models.workout_feedback_model import WorkoutFeedback
+
 from app.models.user_model import UserModel
 from app.services.workout_service import get_workout_details
 from app.services.llm_logging_service import log_workout_revision, log_workout_revision_accept
@@ -29,7 +29,7 @@ from app.llm.workout_revision.workout_revision_schemas import (
 )
 from app.llm.workout_revision.workout_revision_service import run_workout_revision_chain, save_revised_workout
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
-from app.schemas.workout_feedback_schema import WorkoutFeedbackSchema, WorkoutFeedbackResponseSchema
+
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
 
@@ -302,102 +302,7 @@ async def delete_workout(
         await db.rollback()
         raise HTTPException(status_code=500, detail=f"Error deleting workout: {str(e)}")
 
-@router.post("/feedback", status_code=status.HTTP_201_CREATED, response_model=WorkoutFeedbackResponseSchema)
-async def submit_workout_feedback(
-    feedback: WorkoutFeedbackSchema,
-    db: AsyncSession = Depends(get_session),
-    current_user: User = Depends(get_current_user),
-):
-    """
-    ✅ BEST PRACTICE: Minimal CRUD mit automatischer Serialisierung
-    """
-    # 🔥 OPTIMIERT: Kombinierte Check für Duplicate + Workout Existenz!
-    existing_query = (
-        select(WorkoutFeedback)
-        .join(Workout, WorkoutFeedback.workout_id == Workout.id)  # Prüft Workout Existenz
-        .where(
-            WorkoutFeedback.workout_id == feedback.workout_id,
-            WorkoutFeedback.user_id == current_user.id
-        )
-    )
-    result = await db.execute(existing_query)
-    if result.scalar_one_or_none():
-        raise HTTPException(status_code=400, detail="Feedback already exists")
-    
-    # Einfach erstellen + committen
-    new_feedback = WorkoutFeedback(**feedback.model_dump(), user_id=current_user.id)
-    db.add(new_feedback)
-    
-    try:
-        await db.commit()
-        await db.refresh(new_feedback)
-        return WorkoutFeedbackResponseSchema.model_validate(new_feedback)  # ✅ Auto-Serialization!
-    except Exception as e:
-        await db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error saving feedback: {str(e)}")
 
-
-@router.get("/feedback/{workout_id}", response_model=Optional[WorkoutFeedbackResponseSchema])
-async def get_workout_feedback(
-    workout_id: int,
-    db: AsyncSession = Depends(get_session),
-    current_user: User = Depends(get_current_user),
-):
-    """
-    ✅ SUPER EINFACH: Eine Query + Auto-Serialization!
-    """
-    # 🔥 OPTIMIERT: Eine Query für Feedback + Workout Existenz Check!
-    feedback_query = (
-        select(WorkoutFeedback)
-        .join(Workout, WorkoutFeedback.workout_id == Workout.id)  # Prüft Workout Existenz
-        .where(
-            WorkoutFeedback.workout_id == workout_id,
-            WorkoutFeedback.user_id == current_user.id
-        )
-    )
-    result = await db.execute(feedback_query)
-    feedback = result.scalar_one_or_none()
-    
-    return WorkoutFeedbackResponseSchema.model_validate(feedback) if feedback else None
-
-
-@router.put("/feedback/{feedback_id}", response_model=WorkoutFeedbackResponseSchema)
-async def update_workout_feedback(
-    feedback_id: int,
-    updated_feedback: WorkoutFeedbackSchema,
-    db: AsyncSession = Depends(get_session),
-    current_user: User = Depends(get_current_user),
-):
-    """
-    ✅ CLEAN UPDATE: Security + Auto-Serialization!
-    """
-    # 🔥 OPTIMIERT: Eine Query für Feedback + Security + Workout Existenz!
-    feedback_query = (
-        select(WorkoutFeedback)
-        .join(Workout, WorkoutFeedback.workout_id == Workout.id)  # Prüft Workout Existenz
-        .where(
-            WorkoutFeedback.id == feedback_id,
-            WorkoutFeedback.user_id == current_user.id,  # Security
-            Workout.id == updated_feedback.workout_id  # Workout muss existieren
-        )
-    )
-    result = await db.execute(feedback_query)
-    feedback = result.scalar_one_or_none()
-    
-    if not feedback:
-        raise HTTPException(status_code=404, detail="Feedback not found or access denied")
-    
-    # Update fields
-    for field, value in updated_feedback.model_dump(exclude_unset=True).items():
-        setattr(feedback, field, value)
-    
-    try:
-        await db.commit()
-        await db.refresh(feedback)
-        return WorkoutFeedbackResponseSchema.model_validate(feedback)  # ✅ Auto-Serialization!
-    except Exception as e:
-        await db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error updating feedback: {str(e)}")
 
 
 @router.put("/sets/{set_id}/status", response_model=SetRead)

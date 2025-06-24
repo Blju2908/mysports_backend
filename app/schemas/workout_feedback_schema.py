@@ -11,16 +11,12 @@ class WorkoutFeedbackSchema(BaseModel):
     comment: Optional[str] = None
     
 class WorkoutFeedbackResponseSchema(WorkoutFeedbackSchema):
-    id: int
-    user_id: str  # Explizit als String definiert (nicht UUID), damit FastAPI die UUID automatisch konvertiert
+    """
+    ✅ CLEAN RESPONSE SCHEMA: Nur workout_id als Identifier - keine interne feedback ID!
+    Das Frontend braucht nur die workout_id, um das Feedback zu identifizieren.
+    """
+    user_id: UUID  # ✅ UUID Type matching the database model
     created_at: datetime
     
     class Config:
-        from_attributes = True
-        
-        # Modell-Validierungsfunktion für UUID-Konvertierung
-        @classmethod
-        def model_validate(cls, obj, *args, **kwargs):
-            if hasattr(obj, "user_id") and isinstance(obj.user_id, UUID):
-                obj.user_id = str(obj.user_id)
-            return super().model_validate(obj, *args, **kwargs) 
+        from_attributes = True  # ✅ SQLModel Auto-Serialization! 

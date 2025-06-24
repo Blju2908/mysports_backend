@@ -9,7 +9,7 @@ from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set, SetStatus
 from app.services.workout_service import get_workout_details
-from app.llm.workout_revision.workout_revision_chain import revise_workout
+from app.llm.workout_revision.workout_revision_chain import revise_workout_two_step
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 from app.db.trainingplan_db_access import get_training_plan_for_user
 
@@ -223,8 +223,8 @@ async def run_workout_revision_chain(
         # 3. Konvertiere das Workout in ein Dictionary für das LLM
         existing_workout_dict = workout_to_dict(existing_workout_obj)
         
-        # 4. Führe die Revision Chain aus
-        revised_workout_schema = await revise_workout(
+        # 4. Führe die Revision Chain aus (2-Stufen)
+        revised_workout_schema = await revise_workout_two_step(
             existing_workout=existing_workout_dict,
             user_feedback=user_feedback,
             training_plan=training_principles_text,

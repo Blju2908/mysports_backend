@@ -19,7 +19,7 @@ load_dotenv(dotenv_path=dotenv_path)
 import asyncio
 import json
 from datetime import datetime
-from app.llm.workout_revision.workout_revision_chain import revise_workout
+from app.llm.workout_revision.workout_revision_chain import revise_workout_two_step
 
 
 async def main():
@@ -86,8 +86,8 @@ async def main():
     print("-" * 80)
     
     try:
-        # Direkter LLM-Call für Revision
-        revised_workout_schema = await revise_workout(
+        # Direkter LLM-Call für Revision (2-Stufen)
+        revised_workout_schema = await revise_workout_two_step(
             existing_workout=existing_workout,
             user_feedback=user_feedback,
             training_plan=None,
