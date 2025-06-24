@@ -133,6 +133,9 @@ async def revise_workout_freeform(
         
         llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
 
+        # Add reasoning to the prompt
+        await document_llm_input(formatted_prompt, "workout_revision_prompt_freeform.md")
+
         print("Sending request to OpenAI API (freeform revision)…")
         response = await llm.ainvoke(formatted_prompt)
         print("Received response from OpenAI API (freeform revision)")

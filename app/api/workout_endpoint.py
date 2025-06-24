@@ -13,21 +13,19 @@ from app.models.exercise_model import Exercise
 from app.models.set_model import Set, SetStatus
 
 from app.models.user_model import UserModel
-from app.services.workout_service import get_workout_details
 from app.services.llm_logging_service import log_workout_revision, log_workout_revision_accept
 from app.schemas.workout_schema import (
     WorkoutRead,
     WorkoutWithBlocksRead,
     BlockRead,
     BlockInput,
-    ExerciseRead,
     SetRead
 )
 from app.llm.workout_revision.workout_revision_schemas import (
     WorkoutRevisionRequestSchema,
     WorkoutRevisionResponseSchema
 )
-from app.llm.workout_revision.workout_revision_service import run_workout_revision_chain, save_revised_workout
+from app.llm.workout_revision.workout_revision_service import run_workout_revision_chain
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 
 from app.core.auth import get_current_user, User
@@ -461,23 +459,33 @@ async def change_workout_endpoint(
         request_data=request_log_data
     ) as call_logger:
         try:
-            # Verify user has access to this workout
-            workout_orm = await get_workout_details(workout_id=workout_id, db=db)
+            # ✅ OPTIMIZED: Combined Security Query (wie im accept endpoint!)
+            workout_query = (
+                select(Workout)
+                .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
+                .where(
+                    Workout.id == workout_id,
+                    UserModel.id == UUID(current_user.id),
+                    UserModel.training_plan_id.is_not(None)
+                )
+            )
+            result = await db.execute(workout_query)
+            workout_orm = result.scalar_one_or_none()
             
-            user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-            result = await db.execute(user_query)
-            user = result.scalar_one_or_none()
-            
-            if (not user or not user.training_plan_id or 
-                workout_orm.training_plan_id != user.training_plan_id):
+            if not workout_orm:
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="Keine Berechtigung für den Zugriff auf dieses Workout"
                 )
             
+            # Get user training_plan_id for logging
+            user_query = select(UserModel.training_plan_id).where(UserModel.id == UUID(current_user.id))
+            result = await db.execute(user_query)
+            training_plan_id = result.scalar_one_or_none()
+            
             # Update training_plan_id für Logging
-            if call_logger.log_entry:
-                call_logger.log_entry.training_plan_id = user.training_plan_id
+            if call_logger.log_entry and training_plan_id:
+                call_logger.log_entry.training_plan_id = training_plan_id
             
             # Run the workout revision chain
             revised_workout_schema = await run_workout_revision_chain(
@@ -546,72 +554,107 @@ async def accept_revised_workout_endpoint(
         request_data=request_log_data
     ) as call_logger:
         try:
-            # Verify user has access to this workout
-            workout_orm = await get_workout_details(workout_id=workout_id, db=db)
+            # ✅ OPTIMIZED: Combined Security + Workout Load Query (wie in anderen Endpoints!)
+            workout_query = (
+                select(Workout)
+                .options(
+                    selectinload(Workout.blocks)
+                    .selectinload(Block.exercises)
+                    .selectinload(Exercise.sets)
+                )
+                .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
+                .where(
+                    Workout.id == workout_id,
+                    UserModel.id == UUID(current_user.id),
+                    UserModel.training_plan_id.is_not(None)
+                )
+            )
+            result = await db.execute(workout_query)
+            workout_orm = result.scalar_one_or_none()
             
-            user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-            result = await db.execute(user_query)
-            user = result.scalar_one_or_none()
-            
-            if (not user or not user.training_plan_id or 
-                workout_orm.training_plan_id != user.training_plan_id):
+            if not workout_orm:
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
                     detail="Keine Berechtigung für den Zugriff auf dieses Workout"
                 )
             
+            # Get user training_plan_id for logging
+            user_query = select(UserModel.training_plan_id).where(UserModel.id == UUID(current_user.id))
+            result = await db.execute(user_query)
+            training_plan_id = result.scalar_one_or_none()
+            
             # Update training_plan_id für Logging
-            if call_logger.log_entry:
-                call_logger.log_entry.training_plan_id = user.training_plan_id
+            if call_logger.log_entry and training_plan_id:
+                call_logger.log_entry.training_plan_id = training_plan_id
             
-            # Save the revised workout to the database
-            updated_workout = await save_revised_workout(
-                workout_id=workout_id,
-                revised_workout_schema=revised_workout,
-                db=db
-            )
+            # ✅ SIMPLIFIED: Save revised workout directly using SQLModel Best Practices
+            # 1. Delete existing blocks (CASCADE deletes exercises + sets automatically)
+            for block in workout_orm.blocks:
+                await db.delete(block)
+            await db.flush()
             
+            # 2. Update workout details
+            workout_orm.name = revised_workout.name
+            workout_orm.description = revised_workout.description
+            workout_orm.duration = revised_workout.duration
+            workout_orm.focus = revised_workout.focus
             
-            # Build response data
-            response_blocks_data = []
-            for block_orm in updated_workout.blocks:
-                response_exercises_data = []
-                for exercise_orm in block_orm.exercises:
-                    response_sets_data = [SetRead.model_validate(s) for s in exercise_orm.sets]
-                    response_exercises_data.append(
-                        ExerciseRead(
-                            id=exercise_orm.id,
-                            name=exercise_orm.name,
-                            description=exercise_orm.description,
-                            notes=exercise_orm.notes,
-                            superset_id=exercise_orm.superset_id,
-                            block_id=exercise_orm.block_id,
-                            sets=response_sets_data
-                        )
-                    )
-                response_blocks_data.append(
-                    BlockRead(
-                        id=block_orm.id,
-                        name=block_orm.name,
-                        description=block_orm.description,
-                        notes=block_orm.notes,
-                        workout_id=block_orm.workout_id,
-                        exercises=response_exercises_data
-                    )
+            # 3. Create new blocks, exercises, sets (simple loops like in save_block!)
+            for block_schema in revised_workout.blocks:
+                new_block = Block(
+                    workout_id=workout_orm.id,
+                    name=block_schema.name,
+                    description=block_schema.description,
+                    notes=getattr(block_schema, "notes", None),
+                    is_amrap=getattr(block_schema, "is_amrap", False),
+                    amrap_duration_minutes=getattr(block_schema, "amrap_duration_minutes", None)
                 )
+                db.add(new_block)
+                await db.flush()  # Get block ID
+                
+                for exercise_schema in block_schema.exercises:
+                    new_exercise = Exercise(
+                        block_id=new_block.id,
+                        name=exercise_schema.name,
+                        notes=getattr(exercise_schema, "notes", None),
+                        superset_id=exercise_schema.superset_id
+                    )
+                    db.add(new_exercise)
+                    await db.flush()  # Get exercise ID
+                    
+                    for set_schema in exercise_schema.sets:
+                        # ✅ SIMPLIFIED: Parse values array [weight, reps, duration, distance, rest_time]
+                        values = getattr(set_schema, 'values', [])
+                        weight, reps, duration, distance, rest_time = (values + [None] * 5)[:5]  
+                        
+                        new_set = Set(
+                            exercise_id=new_exercise.id,
+                            weight=weight if isinstance(weight, (int, float)) else None,
+                            reps=int(reps) if isinstance(reps, (int, float)) else None,
+                            duration=int(duration) if isinstance(duration, (int, float)) else None,
+                            distance=distance if isinstance(distance, (int, float)) else None,
+                            rest_time=int(rest_time) if isinstance(rest_time, (int, float)) else None,
+                            status=SetStatus.open  # All sets start as open
+                        )
+                        db.add(new_set)
             
-            result = WorkoutWithBlocksRead(
-                id=updated_workout.id,
-                training_plan_id=updated_workout.training_plan_id,
-                name=updated_workout.name,
-                date_created=updated_workout.date_created,
-                description=updated_workout.description,
-                duration=updated_workout.duration,
-                focus=updated_workout.focus,
-                notes=updated_workout.notes,
-                status=updated_workout.status,
-                blocks=response_blocks_data
+            await db.commit()
+            
+            # ✅ FIXED: Re-load the workout with all relationships after commit
+            workout_query_reload = (
+                select(Workout)
+                .options(
+                    selectinload(Workout.blocks)
+                    .selectinload(Block.exercises)
+                    .selectinload(Exercise.sets)
+                )
+                .where(Workout.id == workout_id)
             )
+            result = await db.execute(workout_query_reload)
+            updated_workout = result.scalar_one()
+            
+            # ✅ SQLModel Magic: Auto-Serialization with properly loaded relationships
+            result = WorkoutWithBlocksRead.model_validate(updated_workout)
             
             # Log success
             await call_logger.log_success(

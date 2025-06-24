@@ -1,0 +1,284 @@
+{
+  "name": "Kompaktes Lower Body Strength & Hyrox Conditioning",
+  "description": "Kompaktes Workout mit Fokus auf hyrox-relevante Bewegungen (Squat, Deadlift, Lunge, Row). Warm-Up und Cool-Down jeweils ca. 5 Minuten, Hauptteil ca. 23 Minuten mit reduziertem Volumen und Fokus auf Kraft & Kondition.",
+  "duration": 35,
+  "focus": "Lower Body, Kraft, Hyrox",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Aufwärmen mit dynamischen Übungen zur Vorbereitung auf das Training.",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "High Knees",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Leg Swings (front-to-back)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "description": "pro Bein"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "World’s Greatest Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "description": "pro Seite"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Shoulder Pass-Through (mit Band)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Hauptteil – Kraft & Kondition",
+      "description": "Kraft- und Konditionstraining mit Fokus auf hyrox-relevante Bewegungen.",
+      "exercises": [
+        {
+          "name": "Back Squat",
+          "sets": [
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Deadlift",
+          "sets": [
+            {
+              "values": [
+                110,
+                5,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                110,
+                5,
+                null,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Lunge (alternierend)",
+          "sets": [
+            {
+              "values": [
+                50,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": "5 pro Bein"
+            },
+            {
+              "values": [
+                50,
+                10,
+                null,
+                null,
+                null
+              ],
+              "description": "5 pro Bein"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Row Sprint",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehn- und Mobilisationsübungen zur Regeneration nach dem Training.",
+      "exercises": [
+        {
+          "name": "Hamstring Stretch (Seated Forward Fold)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Hip Flexor Stretch (knieend)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "description": "pro Seite"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Child’s Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    }
+  ]
+}

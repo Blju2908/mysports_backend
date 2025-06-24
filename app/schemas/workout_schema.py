@@ -62,6 +62,8 @@ class BlockInput(BaseModel):
 
 # Set Schema - einfach und direkt
 class SetRead(BaseModel):
+    model_config = {"from_attributes": True}  # ✅ SQLModel Best Practice!
+    
     id: int
     exercise_id: int
     weight: Optional[float] = None
@@ -71,12 +73,11 @@ class SetRead(BaseModel):
     rest_time: Optional[int] = None
     status: SetStatus = SetStatus.open
     completed_at: Optional[datetime] = None
-    
-    class Config:
-        from_attributes = True
 
 # Exercise Schema - ohne komplexe Unions
 class ExerciseRead(BaseModel):
+    model_config = {"from_attributes": True}  # ✅ SQLModel Best Practice!
+    
     id: int
     block_id: int
     name: str
@@ -84,24 +85,22 @@ class ExerciseRead(BaseModel):
     notes: Optional[str] = None
     superset_id: Optional[str] = None
     sets: List[SetRead] = []
-    
-    class Config:
-        from_attributes = True
 
 # Block Schema - sauber und einfach
 class BlockRead(BaseModel):
+    model_config = {"from_attributes": True}  # ✅ SQLModel Best Practice!
+    
     id: int
     workout_id: int
     name: str
     description: Optional[str] = None
     notes: Optional[str] = None
     exercises: List[ExerciseRead] = []
-    
-    class Config:
-        from_attributes = True
 
 # Workout Schema - mit computed status
 class WorkoutRead(BaseModel):
+    model_config = {"from_attributes": True}  # ✅ SQLModel Best Practice!
+    
     id: int
     training_plan_id: Optional[int] = None
     name: str
@@ -110,9 +109,6 @@ class WorkoutRead(BaseModel):
     duration: Optional[int] = None
     focus: Optional[str] = None
     notes: Optional[str] = None
-    
-    class Config:
-        from_attributes = True
     
     @computed_field
     @property

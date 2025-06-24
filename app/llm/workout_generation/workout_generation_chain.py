@@ -144,6 +144,9 @@ async def generate_workout(
         
         llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
 
+        # Add reasoning to the prompt
+        await document_llm_input(formatted_prompt, "workout_generation_prompt_freeform.md")
+
         print("Sending request to OpenAI API (free-form)…")
         response = await llm.ainvoke(formatted_prompt)
         print("Received response from OpenAI API (free-form)")

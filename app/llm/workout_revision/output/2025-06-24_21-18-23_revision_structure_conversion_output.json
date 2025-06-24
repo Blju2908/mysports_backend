@@ -1,0 +1,478 @@
+{
+  "name": "Lower Body Strength & Conditioning (Beine, Kraft & Kondition)",
+  "description": "Ein 60-minütiges Workout zur Stärkung und Konditionierung der unteren Körperhälfte mit Fokus auf Kraft und Intervalltraining.",
+  "duration": 60,
+  "focus": "Beine, Kraft, Kondition",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Aufwärmübungen zur Vorbereitung auf das Training, ca. 8 Minuten.",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                120,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "High Knees",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                120,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Leg Swings Front-to-Back",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "links"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "rechts"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "World’s Greatest Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "links"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "rechts"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Shoulder Pass-Through (mit Band)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Hauptteil (Kraft & Intervall)",
+      "description": "Kraft- und Intervalltraining für die Beine, ca. 45 Minuten.",
+      "exercises": [
+        {
+          "name": "Back Squat",
+          "sets": [
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Deadlift",
+          "sets": [
+            {
+              "values": [
+                110,
+                6,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                110,
+                6,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                110,
+                6,
+                null,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Hip Thrust",
+          "sets": [
+            {
+              "values": [
+                80,
+                10,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                80,
+                10,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                80,
+                10,
+                null,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Lunge (alternierend)",
+          "sets": [
+            {
+              "values": [
+                50,
+                12,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                50,
+                12,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                50,
+                12,
+                null,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Leg Curl Machine",
+          "sets": [
+            {
+              "values": [
+                45,
+                12,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                45,
+                12,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                45,
+                12,
+                null,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Standing Calf Raise Machine",
+          "sets": [
+            {
+              "values": [
+                60,
+                15,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                15,
+                null,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Row Sprint",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehn- und Mobilisationsübungen zur Regeneration, ca. 7 Minuten.",
+      "exercises": [
+        {
+          "name": "Hamstring Stretch (Seated Forward Fold)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Hip Flexor Stretch (knieend)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "links"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "rechts"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Child’s Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Thoracic Spine Rotation (Quadruped)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "description": "links"
+            },
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "description": "rechts"
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    }
+  ]
+}
