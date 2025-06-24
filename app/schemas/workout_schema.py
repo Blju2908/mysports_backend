@@ -1,127 +1,160 @@
-from pydantic import BaseModel, Field
-from typing import Optional, List
+from pydantic import BaseModel, Field, computed_field, field_validator
+from typing import Optional, List, Union
 from datetime import datetime
-from app.models.set_model import SetStatus # For SetResponseSchema
-# No BlockStatus as it was removed from block_model
+from enum import Enum
+from app.models.set_model import SetStatus
 
-# ✅ ADD: Import WorkoutStatusEnum for enhanced list API
-from app.llm.schemas.workout_schema import WorkoutStatusEnum
+# ==========================================
+# SIMPLE SCHEMAS - Nutzt SQLModel's automatische Serialisierung
+# ==========================================
 
-# Base Schemas for individual models - ensuring consistency with DB models
+class WorkoutStatusEnum(str, Enum):
+    NOT_STARTED = "not_started"
+    STARTED = "started"
+    DONE = "done"
 
-class SetBaseSchema(BaseModel):
+# ==========================================
+# INPUT SCHEMAS - Flexible für Frontend (String/Int IDs)
+# ==========================================
+
+class SetInput(BaseModel):
+    """Schema für Set Input - flexible IDs für Frontend"""
+    id: Optional[Union[int, str]] = None  # Frontend kann temp IDs senden
+    exercise_id: Optional[Union[int, str]] = None  # Wird zur Laufzeit gesetzt
     weight: Optional[float] = None
     reps: Optional[int] = None
-    duration: Optional[int] = None  # in seconds
+    duration: Optional[int] = None
     distance: Optional[float] = None
-    
-    # Common values
-    rest_time: Optional[int] = None  # in seconds
-    
-    # Status tracking
-    status: SetStatus = Field(default=SetStatus.open)
+    rest_time: Optional[int] = None
+    status: SetStatus = SetStatus.open
     completed_at: Optional[datetime] = None
-
-class SetResponseSchema(SetBaseSchema):
-    id: int
-    exercise_id: int
     
-    class Config:
-        from_attributes = True
+    @field_validator('completed_at')
+    @classmethod
+    def make_datetime_naive(cls, v: Optional[datetime]) -> Optional[datetime]:
+        """✅ Automatisch timezone-aware datetimes zu naive konvertieren"""
+        if v is not None and v.tzinfo is not None:
+            return v.replace(tzinfo=None)
+        return v
 
-class ExerciseBaseSchema(BaseModel):
+class ExerciseInput(BaseModel):
+    """Schema für Exercise Input - flexible IDs für Frontend"""
+    id: Optional[Union[int, str]] = None  # Frontend kann temp IDs senden
+    block_id: Optional[Union[int, str]] = None  # Wird zur Laufzeit gesetzt
     name: str
     description: Optional[str] = None
     notes: Optional[str] = None
     superset_id: Optional[str] = None
+    sets: List[SetInput] = []
 
-class ExerciseResponseSchema(ExerciseBaseSchema):
+class BlockInput(BaseModel):
+    """Schema für Block Input - flexible IDs für Frontend"""
+    id: Optional[Union[int, str]] = None  # Frontend kann temp IDs senden
+    workout_id: Optional[Union[int, str]] = None  # Wird zur Laufzeit gesetzt
+    name: str
+    description: Optional[str] = None
+    notes: Optional[str] = None
+    exercises: List[ExerciseInput] = []
+
+# ==========================================
+# OUTPUT SCHEMAS - Strikte Integer IDs für Response
+# ==========================================
+
+# Set Schema - einfach und direkt
+class SetRead(BaseModel):
+    id: int
+    exercise_id: int
+    weight: Optional[float] = None
+    reps: Optional[int] = None
+    duration: Optional[int] = None
+    distance: Optional[float] = None
+    rest_time: Optional[int] = None
+    status: SetStatus = SetStatus.open
+    completed_at: Optional[datetime] = None
+    
+    class Config:
+        from_attributes = True
+
+# Exercise Schema - ohne komplexe Unions
+class ExerciseRead(BaseModel):
     id: int
     block_id: int
-    sets: List[SetResponseSchema] = []
+    name: str
+    description: Optional[str] = None
+    notes: Optional[str] = None
+    superset_id: Optional[str] = None
+    sets: List[SetRead] = []
     
     class Config:
         from_attributes = True
 
-class BlockBaseSchema(BaseModel):
-    name: str
-    description: Optional[str] = None
-    notes: Optional[str] = None
-
-class BlockResponseSchema(BlockBaseSchema):
+# Block Schema - sauber und einfach
+class BlockRead(BaseModel):
     id: int
     workout_id: int
-    exercises: List[ExerciseResponseSchema] = []
-    
-    class Config:
-        from_attributes = True
-
-class WorkoutBaseSchema(BaseModel):
     name: str
     description: Optional[str] = None
-    duration: Optional[int] = None 
-    focus: Optional[str] = None 
     notes: Optional[str] = None
+    exercises: List[ExerciseRead] = []
+    
+    class Config:
+        from_attributes = True
 
-class WorkoutResponseSchema(WorkoutBaseSchema):
+# Workout Schema - mit computed status
+class WorkoutRead(BaseModel):
     id: int
-    training_plan_id: Optional[int] = None # from workout_model
-    date_created: datetime # from workout_model
-    # ✅ ADD: Status field for optimized list API - no more frontend status calculation needed!
-    status: WorkoutStatusEnum
+    training_plan_id: Optional[int] = None
+    name: str
+    date_created: datetime
+    description: Optional[str] = None
+    duration: Optional[int] = None
+    focus: Optional[str] = None
+    notes: Optional[str] = None
     
     class Config:
         from_attributes = True
-
-# Schema for workout details including blocks, exercises, and sets
-class WorkoutSchemaWithBlocks(WorkoutResponseSchema): # Inherits from WorkoutResponseSchema (now including status!)
-    blocks: List[BlockResponseSchema] = []
     
-    class Config:
-        from_attributes = True
+    @computed_field
+    @property
+    def status(self) -> WorkoutStatusEnum:
+        """Berechnet Status automatisch - keine separate DB Query nötig!"""
+        if not hasattr(self, 'blocks') or not self.blocks:
+            return WorkoutStatusEnum.NOT_STARTED
+        
+        all_sets = [s for block in self.blocks for ex in block.exercises for s in ex.sets]
+        if not all_sets:
+            return WorkoutStatusEnum.NOT_STARTED
+        
+        done_sets = [s for s in all_sets if s.status == SetStatus.done]
+        
+        if len(done_sets) == len(all_sets):
+            return WorkoutStatusEnum.DONE
+        elif len(done_sets) > 0:
+            return WorkoutStatusEnum.STARTED
+        return WorkoutStatusEnum.NOT_STARTED
 
-# --- Schemas for Extended Block Activity Saving ---
+# Detailed Workout - erweitert WorkoutRead
+class WorkoutWithBlocksRead(WorkoutRead):
+    blocks: List[BlockRead] = []
 
-class NewSetInputSchema(SetBaseSchema): # Inherits planned values, status, etc.
-    local_id: str # Frontend temporary ID
-    # exercise_id will be determined by the context (new exercise or existing exercise)
+# ==========================================
+# UPDATE SCHEMAS - Nur wenn nötig
+# ==========================================
 
-class NewExerciseInputSchema(ExerciseBaseSchema): # Inherits name, description, notes, is_amrap
-    local_id: str # Frontend temporary ID
-    sets: List[NewSetInputSchema] = Field(default_factory=list)
-    # block_id will be taken from the endpoint's path parameter
+class SetUpdate(BaseModel):
+    status: SetStatus
+    completed_at: Optional[datetime] = None
+    weight: Optional[float] = None
+    reps: Optional[int] = None
+    duration: Optional[int] = None
+    distance: Optional[float] = None
 
-class AddedSetsToExistingExerciseInputSchema(BaseModel):
-    existing_exercise_id: int
-    new_sets: List[NewSetInputSchema] = Field(default_factory=list)
 
-class SetUpdateInputSchema(SetBaseSchema): # For updating existing sets
-    set_id: int # Backend ID of the set to update
-    # Inherits status, completed_at, weight, reps, duration, distance, notes from SetBaseSchema
-    # It's crucial this matches the structure used in the frontend's UserWorkoutSetExecutionData, adapted for Pydantic
-    # Specifically, ensure fields like execution_weight map to weight, etc. if needed.
-    # For now, assuming direct mapping from SetBaseSchema is sufficient.
 
-class ExtendedBlockActivityPayloadSchema(BaseModel):
-    # workout_id and block_id will come from path parameters, not in payload body
-    # to align with how save_block_activity_endpoint currently gets them.
-    # If you prefer them in payload, we can add:
-    # workout_id: int
-    # block_id: int
-    
-    added_exercises: List[NewExerciseInputSchema] = Field(default_factory=list)
-    deleted_exercise_ids: List[int] = Field(default_factory=list) # Backend IDs of exercises to delete
-    
-    added_sets_to_existing_exercises: List[AddedSetsToExistingExerciseInputSchema] = Field(default_factory=list)
-    deleted_set_ids: List[int] = Field(default_factory=list) # Backend IDs of sets to delete
-    
-    updated_sets: List[SetUpdateInputSchema] = Field(default_factory=list) # For existing sets that are modified
 
-class IdMappingSchema(BaseModel):
-    local_id: str
-    db_id: int
-    entity_type: str # "exercise" or "set"
 
-class SaveBlockResponseSchema(BaseModel):
-    message: str
-    id_mappings: List[IdMappingSchema] = Field(default_factory=list)
+
+
+
+
+

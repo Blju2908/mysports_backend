@@ -6,7 +6,7 @@ from sqlalchemy.orm import selectinload
 from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise 
-from app.llm.schemas.workout_schema import WorkoutSchemaWithBlocks, BlockResponseSchema, ExerciseResponseSchema, SetResponseSchema
+from app.schemas.workout_schema import WorkoutWithBlocksRead
 from app.models.set_model import Set, SetStatus
 from datetime import datetime
 
@@ -45,15 +45,11 @@ async def get_workout_details(
             detail="Workout not found"
         )
 
-    # 2. Explicitly sort blocks after loading (important for consistent frontend display)
-    if workout.blocks:
-        workout.blocks.sort(key=lambda block: block.id if block.id is not None else 0)
-
     return workout 
 
 async def save_workout_to_db_async(
     *,
-    workout_schema: WorkoutSchemaWithBlocks,
+    workout_schema: WorkoutWithBlocksRead,
     training_plan_id: int,
     db: AsyncSession
 ) -> Workout:
@@ -87,7 +83,7 @@ async def save_workout_to_db_async(
             # await db.refresh(block_db)
 
             if block_schema.exercises:
-                for exercise_schema in block_schema.exercises: # exercise_schema is ExerciseResponseSchema
+                for exercise_schema in block_schema.exercises: # exercise_schema is ExerciseBaseSchema
                     exercise_db = Exercise(
                         block_id=block_db.id, # Ensure block_db.id is available
                         name=exercise_schema.name,
@@ -100,10 +96,10 @@ async def save_workout_to_db_async(
                     # await db.refresh(exercise_db)
 
                     if exercise_schema.sets:
-                        for set_schema in exercise_schema.sets: # set_schema is SetResponseSchema
+                        for set_schema in exercise_schema.sets: # set_schema is SetBaseSchemaFull
                             set_db = Set(
                                 exercise_id=exercise_db.id, # Ensure exercise_db.id is available
-                                plan_weight=set_schema.plan_weight, # SetResponseSchema now has plan_*
+                                plan_weight=set_schema.plan_weight, # SetBaseSchemaFull now has plan_*
                                 plan_reps=set_schema.plan_reps,
                                 plan_duration=set_schema.plan_duration,
                                 plan_distance=set_schema.plan_distance,

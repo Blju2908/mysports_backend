@@ -93,7 +93,7 @@ async def convert_freeform_to_schema(freeform_text: str) -> WorkoutSchema:
             
             # Output dokumentieren
             output_path = out_dir / f"{ts}_structure_conversion_output.json"
-            output_path.write_text(structured_workout.model_dump_json(indent=2), encoding="utf-8")
+            output_path.write_text(structured_workout.model_dump_json(indent=2, ensure_ascii=False), encoding="utf-8")
             
             print(f"[LLM_DOCS] Structure conversion documented: {input_path} -> {output_path}")
         except Exception as e:  # noqa: BLE001

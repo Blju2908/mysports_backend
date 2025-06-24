@@ -6,6 +6,11 @@ if TYPE_CHECKING:
     from .training_plan_model import TrainingPlan
     from .block_model import Block
 
+class WorkoutStatusEnum(str, Enum):
+    NOT_STARTED = "not_started"
+    STARTED = "started"
+    DONE = "done"
+
 class Workout(SQLModel, table=True):
     __tablename__ = "workouts"
 
@@ -20,3 +25,28 @@ class Workout(SQLModel, table=True):
 
     plan: Optional["TrainingPlan"] = Relationship(back_populates="workouts")
     blocks: List["Block"] = Relationship(back_populates="workout", cascade_delete=True)
+
+    def get_sorted_blocks(self) -> List["Block"]:
+        """Gibt automatisch sortierte Blocks zurück - keine manuelle Sortierung nötig!"""
+        return sorted(self.blocks, key=lambda b: b.id if b.id else 0)
+
+    @property
+    def status(self) -> WorkoutStatusEnum:
+        """Berechnet Status direkt am Model - keine separate Funktion nötig!"""
+        sorted_blocks = self.get_sorted_blocks()
+        if not sorted_blocks:
+            return WorkoutStatusEnum.NOT_STARTED
+        
+        from .set_model import SetStatus  # Import hier um Circular Import zu vermeiden
+        all_sets = [s for block in sorted_blocks for ex in block.exercises for s in ex.sets]
+        
+        if not all_sets:
+            return WorkoutStatusEnum.NOT_STARTED
+        
+        done_sets = [s for s in all_sets if s.status == SetStatus.done]
+        
+        if len(done_sets) == len(all_sets):
+            return WorkoutStatusEnum.DONE
+        elif len(done_sets) > 0:
+            return WorkoutStatusEnum.STARTED
+        return WorkoutStatusEnum.NOT_STARTED

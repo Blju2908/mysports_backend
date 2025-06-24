@@ -147,110 +147,110 @@ async def login_form(form_data: OAuth2PasswordRequestForm = Depends(), db: Sessi
         )
 
 
-@router.post("/request-otp", status_code=status.HTTP_200_OK)
-async def request_otp(otp_request: OtpRequest):
-    """
-    Request an OTP for a new or existing user using Supabase's OTP functionality.
-    This will send a "magic link" OTP email to the user regardless of whether they exist or not.
-    """
-    logger.info(f"[RequestOTP] Requesting OTP for: {otp_request.email}")
-    try:
-        # First, check if the user exists by trying to get their profile
-        supabase = await get_supabase_client()
+# @router.post("/request-otp", status_code=status.HTTP_200_OK)
+# async def request_otp(otp_request: OtpRequest):
+#     """
+#     Request an OTP for a new or existing user using Supabase's OTP functionality.
+#     This will send a "magic link" OTP email to the user regardless of whether they exist or not.
+#     """
+#     logger.info(f"[RequestOTP] Requesting OTP for: {otp_request.email}")
+#     try:
+#         # First, check if the user exists by trying to get their profile
+#         supabase = await get_supabase_client()
         
-        # Send the OTP
-        response = await supabase.auth.sign_in_with_otp(
-            {
-                "email": otp_request.email,
-            }
-        )
-        logger.info(f"[RequestOTP] OTP sent to: {otp_request.email}")
-        return {"message": "OTP sent to your email"}
-    except HTTPException:
-        # Re-raise HTTP exceptions
-        raise
-    except Exception as e:
-        logger.exception(f"[RequestOTP][Exception] {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
-        )
+#         # Send the OTP
+#         response = await supabase.auth.sign_in_with_otp(
+#             {
+#                 "email": otp_request.email,
+#             }
+#         )
+#         logger.info(f"[RequestOTP] OTP sent to: {otp_request.email}")
+#         return {"message": "OTP sent to your email"}
+#     except HTTPException:
+#         # Re-raise HTTP exceptions
+#         raise
+#     except Exception as e:
+#         logger.exception(f"[RequestOTP][Exception] {e}")
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+#         )
 
 
-@router.post("/verify-otp", response_model=TokenResponse)
-async def verify_otp(
-    verify_request: OtpVerifyRequest, db: Session = Depends(get_session)
-):
-    """Verify OTP and return session tokens for automatic login"""
-    logger.info(f"[VerifyOTP] Verifying OTP for: {verify_request.email}")
-    config = get_config()
-    try:
-        supabase = await get_supabase_client()
-        response = await supabase.auth.verify_otp(
-            {
-                "email": verify_request.email,
-                "token": verify_request.otp,
-                "type": "email",
-            }
-        )
+# @router.post("/verify-otp", response_model=TokenResponse)
+# async def verify_otp(
+#     verify_request: OtpVerifyRequest, db: Session = Depends(get_session)
+# ):
+#     """Verify OTP and return session tokens for automatic login"""
+#     logger.info(f"[VerifyOTP] Verifying OTP for: {verify_request.email}")
+#     config = get_config()
+#     try:
+#         supabase = await get_supabase_client()
+#         response = await supabase.auth.verify_otp(
+#             {
+#                 "email": verify_request.email,
+#                 "token": verify_request.otp,
+#                 "type": "email",
+#             }
+#         )
 
-        # Handle the response from Supabase
-        session = getattr(response, "session", None)
-        user = getattr(session, "user", None) if session else None
-        access_token = getattr(session, "access_token", None) if session else None
-        refresh_token = getattr(session, "refresh_token", None) if session else None
+#         # Handle the response from Supabase
+#         session = getattr(response, "session", None)
+#         user = getattr(session, "user", None) if session else None
+#         access_token = getattr(session, "access_token", None) if session else None
+#         refresh_token = getattr(session, "refresh_token", None) if session else None
 
-        if not session or not user or not access_token or not refresh_token:
-            logger.error(f"[VerifyOTP] Invalid response from Supabase: {response}")
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid OTP or session could not be created",
-            )
+#         if not session or not user or not access_token or not refresh_token:
+#             logger.error(f"[VerifyOTP] Invalid response from Supabase: {response}")
+#             raise HTTPException(
+#                 status_code=status.HTTP_401_UNAUTHORIZED,
+#                 detail="Invalid OTP or session could not be created",
+#             )
 
-        # Create the user in the database
-        user_query = select(UserModel).where(UserModel.id == UUID(user.id))
-        db_user = (await db.exec(user_query)).first()
+#         # Create the user in the database
+#         user_query = select(UserModel).where(UserModel.id == UUID(user.id))
+#         db_user = (await db.exec(user_query)).first()
         
-        if not db_user:
-            db_user = UserModel(
-                id=UUID(user.id),
-                onboarding_completed=False,
-                created_at=datetime.utcnow()
-            )
-            db.add(db_user)
-            await db.commit()
-            await db.refresh(db_user)
-            logger.info(f"[VerifyOTP] Created user in database: {user.id}")
-        else:
-            logger.info(f"[VerifyOTP] User already exists in database: {user.id}")
-            db.refresh(db_user)
-            logger.info(f"[VerifyOTP] Refreshed user in database: {user.id}")
+#         if not db_user:
+#             db_user = UserModel(
+#                 id=UUID(user.id),
+#                 onboarding_completed=False,
+#                 created_at=datetime.utcnow()
+#             )
+#             db.add(db_user)
+#             await db.commit()
+#             await db.refresh(db_user)
+#             logger.info(f"[VerifyOTP] Created user in database: {user.id}")
+#         else:
+#             logger.info(f"[VerifyOTP] User already exists in database: {user.id}")
+#             db.refresh(db_user)
+#             logger.info(f"[VerifyOTP] Refreshed user in database: {user.id}")
 
-        # Get user profile data including onboarding status
-        profile_data = await get_user_profile_data(db_user.id, db)
+#         # Get user profile data including onboarding status
+#         profile_data = await get_user_profile_data(db_user.id, db)
         
-        return TokenResponse(
-            access_token=access_token,
-            refresh_token=refresh_token,
-            user=UserResponse(
-                email=user.email, 
-                id=user.id,
-                onboarding_completed=profile_data["onboarding_completed"],
-                is_new_user=profile_data["is_new_user"]
-            ),
-        )
+#         return TokenResponse(
+#             access_token=access_token,
+#             refresh_token=refresh_token,
+#             user=UserResponse(
+#                 email=user.email, 
+#                 id=user.id,
+#                 onboarding_completed=profile_data["onboarding_completed"],
+#                 is_new_user=profile_data["is_new_user"]
+#             ),
+#         )
 
-    except Exception as e:
-        logger.exception(f"[VerifyOTP][Exception] {e}")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"OTP verification failed: {e}",
-        )
+#     except Exception as e:
+#         logger.exception(f"[VerifyOTP][Exception] {e}")
+#         raise HTTPException(
+#             status_code=status.HTTP_401_UNAUTHORIZED,
+#             detail=f"OTP verification failed: {e}",
+#         )
 
 
-@router.post("/logout")
-async def logout(token: str = Depends(oauth2_scheme)):
-    logger.info("[Logout] User logged out (token invalidated on client side only)")
-    return {"message": "Successfully logged out"}
+# @router.post("/logout")
+# async def logout(token: str = Depends(oauth2_scheme)):
+#     logger.info("[Logout] User logged out (token invalidated on client side only)")
+#     return {"message": "Successfully logged out"}
 
 
 @router.get("/me", response_model=User)
@@ -259,140 +259,35 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-@router.post("/refresh", response_model=RefreshTokenResponse)
-async def refresh_token(data: RefreshTokenRequest, db: Session = Depends(get_session)):
-    try:
-        supabase = await get_supabase_client()
-        result = await supabase.auth.refresh_session(data.refresh_token)
-        session = result.session
-        if not session or not session.user:
-            raise HTTPException(status_code=401, detail="Could not refresh token")
+# @router.post("/refresh", response_model=RefreshTokenResponse)
+# async def refresh_token(data: RefreshTokenRequest, db: Session = Depends(get_session)):
+#     try:
+#         supabase = await get_supabase_client()
+#         result = await supabase.auth.refresh_session(data.refresh_token)
+#         session = result.session
+#         if not session or not session.user:
+#             raise HTTPException(status_code=401, detail="Could not refresh token")
         
-        # Get user profile data including onboarding status
-        profile_data = await get_user_profile_data(session.user.id, db)
+#         # Get user profile data including onboarding status
+#         profile_data = await get_user_profile_data(session.user.id, db)
         
-        return RefreshTokenResponse(
-            access_token=session.access_token,
-            refresh_token=session.refresh_token,
-            user=UserResponse(
-                email=session.user.email, 
-                id=session.user.id,
-                onboarding_completed=profile_data["onboarding_completed"],
-                is_new_user=profile_data["is_new_user"]
-            ),
-        )
-    except Exception as e:
-        logger.exception(f"[Refresh][Exception] {e}")
-        raise HTTPException(status_code=401, detail=f"Could not refresh token: {e}")
+#         return RefreshTokenResponse(
+#             access_token=session.access_token,
+#             refresh_token=session.refresh_token,
+#             user=UserResponse(
+#                 email=session.user.email, 
+#                 id=session.user.id,
+#                 onboarding_completed=profile_data["onboarding_completed"],
+#                 is_new_user=profile_data["is_new_user"]
+#             ),
+#         )
+#     except Exception as e:
+#         logger.exception(f"[Refresh][Exception] {e}")
+#         raise HTTPException(status_code=401, detail=f"Could not refresh token: {e}")
 
 
-@router.post("/set-password", response_model=TokenResponse)
-async def set_password(
-    password_data: SetPasswordRequest,
-    current_user: User = Depends(get_current_user),
-    token: str = Depends(oauth2_scheme),
-    db: Session = Depends(get_session),
-):
-    logger.info(f"[SetPassword] Setting password for user: {current_user.email}")
-    try:
-        supabase = await get_supabase_client()
-        
-        # Check current password if required
-        if password_data.check_current_password:
-            if not password_data.current_password:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Current password is required",
-                )
-                
-            try:
-                verify = await supabase.auth.sign_in_with_password(
-                    {"email": current_user.email, "password": password_data.current_password}
-                )
-                if not verify.user:
-                    raise HTTPException(
-                        status_code=status.HTTP_400_BAD_REQUEST,
-                        detail="Current password is incorrect",
-                    )
-            except Exception:
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Current password is incorrect",
-                )
-        
-        # Set the session for the current user
-        await supabase.auth.set_session(access_token=token, refresh_token=password_data.refresh_token)
-        
-        # Update user without passing token as separate argument
-        update = await supabase.auth.update_user({"password": password_data.password})
-        
-        # Get new session/tokens
-        user = await supabase.auth.get_user()
-        session = await supabase.auth.get_session()
-        
-        if not session or not user:
-            raise Exception("Failed to get new session after password update")
-        
-        # Get user profile data including onboarding status
-        profile_data = await get_user_profile_data(session.user.id, db)
-            
-        return TokenResponse(
-            access_token=session.access_token,
-            refresh_token=session.refresh_token,
-            user=UserResponse(
-                email=session.user.email, 
-                id=session.user.id,
-                onboarding_completed=profile_data["onboarding_completed"],
-                is_new_user=profile_data["is_new_user"]
-            ),
-        )
-    except HTTPException:
-        # Re-raise HTTP exceptions to preserve the status code
-        raise
-    except Exception as e:
-        logger.exception(f"[SetPassword][Exception] {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to set password: {str(e)}",
-        )
 
 
-@router.post("/complete-onboarding", status_code=status.HTTP_200_OK)
-async def complete_onboarding(
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_session),
-):
-    """Mark user's onboarding as completed"""
-    logger.info(f"[CompleteOnboarding] Marking onboarding complete for user: {current_user.email}")
-    try:
-        # Get or create user in our database
-        user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-        db_user = (await db.exec(user_query)).first()
-        
-        if not db_user:
-            # Create user if not exists
-            db_user = UserModel(
-                id=UUID(current_user.id),
-                onboarding_completed=True,
-                created_at=datetime.utcnow()
-            )
-            db.add(db_user)
-        else:
-            # Update existing user
-            db_user.onboarding_completed = True
-            db_user.updated_at = datetime.utcnow()
-        
-        await db.commit()
-        await db.refresh(db_user)
-        
-        return {"message": "Onboarding completed successfully"}
-    except Exception as e:
-        await db.rollback()
-        logger.exception(f"[CompleteOnboarding][Exception] {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to complete onboarding: {str(e)}",
-        )
 
 
 async def get_user_profile_data(user_id: str, db: Session) -> dict:

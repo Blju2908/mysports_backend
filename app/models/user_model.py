@@ -5,7 +5,6 @@ from uuid import UUID
 
 if TYPE_CHECKING:
     from .training_plan_model import TrainingPlan
-    from .set_model import Set
     from .app_feedback_model import AppFeedbackModel
 
 class UserModel(SQLModel, table=True):
@@ -16,7 +15,7 @@ class UserModel(SQLModel, table=True):
     """
     
     __tablename__ = "users"
-    id: UUID = Field(primary_key=True)
+    id: UUID = Field(primary_key=True) # type: ignore
     created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
     updated_at: Optional[datetime] = None
     

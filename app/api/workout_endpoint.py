@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Body, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, join, update, delete, func, case, and_
-from typing import List, Optional, Union, Dict, Any
+from sqlalchemy import select 
+from typing import List, Optional
 from sqlalchemy.orm import selectinload
 from datetime import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from uuid import UUID
 
 from app.models.workout_model import Workout
@@ -15,16 +15,14 @@ from app.models.workout_feedback_model import WorkoutFeedback
 from app.models.user_model import UserModel
 from app.services.workout_service import get_workout_details
 from app.services.llm_logging_service import log_workout_revision, log_workout_revision_accept
-from app.llm.schemas.workout_schema import (
-    WorkoutResponseSchema,
-    WorkoutSchemaWithBlocks,
-    BlockResponseSchema,
-    ExerciseResponseSchema,
-    SetResponseSchema,
-    WorkoutStatusEnum,
-    BlockSchema
+from app.schemas.workout_schema import (
+    WorkoutRead,
+    WorkoutWithBlocksRead,
+    BlockRead,
+    BlockInput,
+    ExerciseRead,
+    SetRead
 )
-from app.schemas.workout_schema import WorkoutResponseSchema as OptimizedWorkoutResponseSchema
 from app.llm.workout_revision.workout_revision_schemas import (
     WorkoutRevisionRequestSchema,
     WorkoutRevisionResponseSchema
@@ -47,126 +45,25 @@ class SetStatusUpdatePayload(BaseModel):
     duration: Optional[int] = None
     distance: Optional[float] = None
     notes: Optional[str] = None
-
-# Schema for individual set data when saving block activity (includes set_id)
-class SetExecutionInputSchema(SetStatusUpdatePayload): # Inherits fields from SetStatusUpdatePayload
-    set_id: int
-
-# Payload for saving activity for multiple sets within a block
-class BlockActivityPayload(BaseModel):
-    block_id: int 
-    workout_id: int 
-    sets: List[SetExecutionInputSchema] # Uses SetExecutionInputSchema which includes set_id
-
-class ResetBlocksPayload(BaseModel): # Moved from inline for clarity
-    block_ids: list[int]
+    
+    @field_validator('completed_at')
+    @classmethod
+    def make_datetime_naive(cls, v: Optional[datetime]) -> Optional[datetime]:
+        """✅ Automatisch timezone-aware datetimes zu naive konvertieren"""
+        if v is not None and v.tzinfo is not None:
+            return v.replace(tzinfo=None)
+        return v
 
 router = APIRouter(tags=["workouts"])
 
-def calculate_workout_status(workout_orm: Workout) -> WorkoutStatusEnum:
-    if not workout_orm.blocks:
-        return WorkoutStatusEnum.NOT_STARTED
-
-    all_sets = []
-    for block in workout_orm.blocks:
-        for exercise in block.exercises:
-            all_sets.extend(exercise.sets)
-
-    if not all_sets:
-        return WorkoutStatusEnum.NOT_STARTED
-
-    num_done_sets = sum(1 for s in all_sets if s.status == SetStatus.done)
-
-    if num_done_sets == len(all_sets):
-        return WorkoutStatusEnum.DONE
-    elif num_done_sets > 0 or any(s.status == SetStatus.open for s in all_sets): # Simplified: if any progress or any open sets (and not all done)
-        # More precise: if num_done_sets > 0, it's definitely STARTED.
-        # If num_done_sets == 0 but there are sets (implicitly all OPEN), it's NOT_STARTED.
-        # Let's refine: if any set is 'done', it's 'started'. If no sets are 'done' but sets exist (all 'open'), it's 'not_started'.
-        if num_done_sets > 0:
-             return WorkoutStatusEnum.STARTED
-        else: # No sets are 'done', all existing sets must be 'open'
-             return WorkoutStatusEnum.NOT_STARTED
-    
-    return WorkoutStatusEnum.NOT_STARTED # Default/fallback if no sets or unexpected state
 
 
-async def calculate_workout_statuses_optimized(
-    workout_ids: List[int], 
-    db: AsyncSession
-) -> Dict[int, WorkoutStatusEnum]:
-    """
-    ✅ OPTIMIZED: Calculate workout status for multiple workouts with single SQL query
-    
-    This replaces multiple individual status calculations with one efficient query.
-    React Query V5 Best Practice: Minimize database round trips.
-    """
-    if not workout_ids:
-        return {}
-    
-    # ✅ SINGLE SQL QUERY: Calculate status for all workouts at once
-    status_query = (
-        select(
-            Workout.id.label('workout_id'),
-            func.count(Set.id).label('total_sets'),
-            func.sum(
-                case(
-                    (Set.status == SetStatus.done, 1), 
-                    else_=0
-                )
-            ).label('completed_sets')
-        )
-        .select_from(Workout)
-        .outerjoin(Block, Block.workout_id == Workout.id)
-        .outerjoin(Exercise, Exercise.block_id == Block.id)
-        .outerjoin(Set, Set.exercise_id == Exercise.id)
-        .where(Workout.id.in_(workout_ids))
-        .group_by(Workout.id)
-    )
-    
-    result = await db.execute(status_query)
-    status_data = result.all()
-    
-    # ✅ EFFICIENT: Convert to status enum in Python
-    workout_statuses = {}
-    for row in status_data:
-        workout_id = row.workout_id
-        total_sets = row.total_sets or 0
-        completed_sets = row.completed_sets or 0
-        
-        if total_sets == 0:
-            status = WorkoutStatusEnum.NOT_STARTED
-        elif completed_sets == total_sets:
-            status = WorkoutStatusEnum.DONE
-        elif completed_sets > 0:
-            status = WorkoutStatusEnum.STARTED
-        else:
-            status = WorkoutStatusEnum.NOT_STARTED
-            
-        workout_statuses[workout_id] = status
-    
-    # ✅ HANDLE: Workouts not in result (no sets) - default to NOT_STARTED
-    for workout_id in workout_ids:
-        if workout_id not in workout_statuses:
-            workout_statuses[workout_id] = WorkoutStatusEnum.NOT_STARTED
-    
-    return workout_statuses
-
-
-@router.get("/", response_model=List[OptimizedWorkoutResponseSchema])
+@router.get("/", response_model=List[WorkoutRead])
 async def get_user_workouts(
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
-    """
-    ✅ OPTIMIZED: Get all workouts with computed status in a single efficient call.
-    
-    Performance improvements:
-    - Single SQL query for status calculation
-    - No more 4x duplicate calls from frontend
-    - Status included directly in response
-    - Supports React Query V5 cache invalidation patterns
-    """
+
     user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
     result = await db.execute(user_query)
     user = result.scalar_one_or_none()
@@ -174,116 +71,70 @@ async def get_user_workouts(
     if not user or not user.training_plan_id:
         return []
 
-    # ✅ LIGHTWEIGHT: Get workout metadata only (no joins)
+    # Einfache Query mit Relations laden
     workout_query = (
         select(Workout)
+        .options(
+            selectinload(Workout.blocks)
+            .selectinload(Block.exercises)
+            .selectinload(Exercise.sets)
+        )
         .where(Workout.training_plan_id == user.training_plan_id)
         .order_by(Workout.date_created.desc())
     )
 
     result = await db.execute(workout_query)
-    workouts_orm = result.scalars().all()
-    
-    if not workouts_orm:
-        return []
+    workouts = result.scalars().all()
 
-    # ✅ BATCH STATUS CALCULATION: Single query for all workout statuses
-    workout_ids = [w.id for w in workouts_orm]
-    workout_statuses = await calculate_workout_statuses_optimized(workout_ids, db)
-
-    # ✅ EFFICIENT: Build response with pre-calculated statuses
-    response_workouts = []
-    for workout_orm_item in workouts_orm:
-        status = workout_statuses.get(workout_orm_item.id, WorkoutStatusEnum.NOT_STARTED)
-        response_workout = OptimizedWorkoutResponseSchema(
-            id=workout_orm_item.id,
-            training_plan_id=workout_orm_item.training_plan_id,
-            name=workout_orm_item.name,
-            date_created=workout_orm_item.date_created,
-            description=workout_orm_item.description,
-            duration=workout_orm_item.duration,
-            focus=workout_orm_item.focus,
-            notes=workout_orm_item.notes,
-            status=status,  # ✅ STATUS INCLUDED: No frontend computation needed!
-        )
-        response_workouts.append(response_workout)
-
-    return response_workouts
+    return [WorkoutRead.model_validate(w) for w in workouts]
 
 
-@router.get("/{workout_id}", response_model=WorkoutSchemaWithBlocks)
+@router.get("/{workout_id}", response_model=WorkoutWithBlocksRead)
 async def get_workout_detail(
     workout_id: int,
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
     """
-    ✅ OPTIMIZED: Get detailed workout information with efficient status calculation.
-    
-    Uses the same optimized status calculation as the list endpoint for consistency.
+    ✅ BEST PRACTICE: Direkte DB-Query im Endpoint + automatische Sortierung im Model
     """
-    workout_orm = await get_workout_details(workout_id=workout_id, db=db)
     
+    # User-Check
     user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
     result = await db.execute(user_query)
     user = result.scalar_one_or_none()
     
-    if (not user or not user.training_plan_id or 
-        workout_orm.training_plan_id != user.training_plan_id):
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Keine Berechtigung für den Zugriff auf dieses Workout"
-        )
+    if not user or not user.training_plan_id:
+        raise HTTPException(status_code=403, detail="User has no training plan")
     
-    # ✅ CONSISTENT: Use same optimized status calculation as list endpoint
-    workout_statuses = await calculate_workout_statuses_optimized([workout_id], db)
-    calculated_status = workout_statuses.get(workout_id, WorkoutStatusEnum.NOT_STARTED)
-
-    # Explicitly construct the response data if direct ORM to Pydantic conversion is problematic
-    # or if sub-models need specific handling.
-    response_blocks_data = []
-    for block_orm in workout_orm.blocks:
-        response_exercises_data = []
-        for exercise_orm in block_orm.exercises:
-            response_sets_data = [SetResponseSchema.from_orm(s) for s in exercise_orm.sets]
-            response_exercises_data.append(
-                ExerciseResponseSchema(
-                    id=exercise_orm.id,
-                    name=exercise_orm.name,
-                    description=exercise_orm.description,
-                    notes=exercise_orm.notes,
-                    superset_id=exercise_orm.superset_id,
-                    block_id=exercise_orm.block_id,
-                    sets=response_sets_data
-                )
-            )
-        response_blocks_data.append(
-            BlockResponseSchema(
-                id=block_orm.id,
-                name=block_orm.name,
-                description=block_orm.description,
-                notes=block_orm.notes,
-                workout_id=block_orm.workout_id,
-                exercises=response_exercises_data
-            )
+    # Workout laden - direkt mit Security-Check in der Query!
+    workout_query = (
+        select(Workout)
+        .options(
+            selectinload(Workout.blocks)
+            .selectinload(Block.exercises)
+            .selectinload(Exercise.sets)
         )
-
-    # Construct the final response using the Pydantic model
-    return WorkoutSchemaWithBlocks(
-        id=workout_orm.id,
-        training_plan_id=workout_orm.training_plan_id,
-        name=workout_orm.name,
-        date_created=workout_orm.date_created,
-        description=workout_orm.description,
-        duration=workout_orm.duration,
-        focus=workout_orm.focus,
-        notes=workout_orm.notes,
-        status=calculated_status,
-        blocks=response_blocks_data
+        .where(
+            Workout.id == workout_id,
+            Workout.training_plan_id == user.training_plan_id  # 🔒 Security direkt in Query!
+        )
     )
+    
+    result = await db.execute(workout_query)
+    workout = result.scalar_one_or_none()
+    
+    if not workout:
+        raise HTTPException(status_code=404, detail="Workout not found")
+    
+    # ✅ WICHTIG: Nutze die sortierte get_sorted_blocks() Methode!
+    if hasattr(workout, 'get_sorted_blocks'):
+        workout.blocks = workout.get_sorted_blocks()
+    
+    return WorkoutWithBlocksRead.model_validate(workout)
 
 
-@router.get("/{workout_id}/blocks/{block_id}", response_model=BlockResponseSchema)
+@router.get("/{workout_id}/blocks/{block_id}", response_model=BlockRead)
 async def get_block_detail(
     workout_id: int,
     block_id: int,
@@ -291,22 +142,17 @@ async def get_block_detail(
     current_user: User = Depends(get_current_user),
 ):
     """
-    Get detailed information about a specific block including all exercises and sets.
-    Ensures the block belongs to a workout the user has access to.
+    ✅ SUPER EINFACH: SQLModel Best Practice - Security + Auto-Serialization!
     """
-    # 1. Prüfen, ob der User Zugriff auf das Workout hat
+    # User-Check
     user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
     result = await db.execute(user_query)
     user = result.scalar_one_or_none()
 
     if not user or not user.training_plan_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="User has no training plan",
-        )
+        raise HTTPException(status_code=403, detail="User has no training plan")
 
-    # 2. Den spezifischen Block holen und sicherstellen, dass er zum richtigen Workout gehört,
-    #    auf das der User Zugriff hat. Lade Übungen und Sets.
+    # Block laden mit Security direkt in Query! 🔒
     block_query = (
         select(Block)
         .options(selectinload(Block.exercises).selectinload(Exercise.sets))
@@ -314,7 +160,7 @@ async def get_block_detail(
         .where(
             Block.id == block_id,
             Block.workout_id == workout_id,
-            Workout.training_plan_id == user.training_plan_id,
+            Workout.training_plan_id == user.training_plan_id,  # Security!
         )
     )
 
@@ -322,183 +168,104 @@ async def get_block_detail(
     block = result.scalar_one_or_none()
 
     if not block:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Block not found or user does not have access to the parent workout",
-        )
+        raise HTTPException(status_code=404, detail="Block not found")
 
-    # Build response using BlockResponseSchema
-    response_exercises_data = []
-    for exercise_orm in block.exercises:
-        response_sets_data = [SetResponseSchema.from_orm(s) for s in exercise_orm.sets]
-        response_exercises_data.append(
-            ExerciseResponseSchema(
-                id=exercise_orm.id,
-                name=exercise_orm.name,
-                description=exercise_orm.description,
-                notes=exercise_orm.notes,
-                superset_id=exercise_orm.superset_id,
-                block_id=exercise_orm.block_id,
-                sets=response_sets_data
-            )
-        )
-    return BlockResponseSchema(
-        id=block.id,
-        name=block.name,
-        description=block.description,
-        notes=block.notes,
-        workout_id=block.workout_id,
-        exercises=response_exercises_data
-    )
+    return BlockRead.model_validate(block)
 
 
 @router.post(
     "/{workout_id}/blocks/{block_id}",
-    response_model=BlockSchema
+    response_model=BlockRead
 )
 async def save_block(
     workout_id: int,
     block_id: int,
-    block: BlockSchema,
+    block: BlockInput,
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
     """
-    Speichert einen kompletten Block (inkl. Exercises und Sets) und übernimmt das Diffing.
+    ✅ BEST PRACTICE: Kombinierte Security + Validation Query
     """
-    # 1. Lade aktuellen Block inkl. Exercises & Sets
-    db_block_query = (
+    # 🔥 OPTIMIERT: Eine Query für User + Block + Security Check!
+    block_query = (
         select(Block)
-        .options(selectinload(Block.exercises).selectinload(Exercise.sets))
         .join(Workout, Block.workout_id == Workout.id)
-        .where(Block.id == block_id, Workout.id == workout_id)
+        .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
+        .where(
+            Block.id == block_id,
+            Block.workout_id == workout_id,
+            UserModel.id == UUID(current_user.id),
+            UserModel.training_plan_id.is_not(None)  # User muss training plan haben
+        )
     )
-    db_block_result = await db.execute(db_block_query)
-    db_block = db_block_result.scalar_one_or_none()
-    if not db_block:
-        raise HTTPException(status_code=404, detail="Block nicht gefunden")
+    result = await db.execute(block_query)
+    existing_block = result.scalar_one_or_none()
+    
+    if not existing_block:
+        raise HTTPException(status_code=404, detail="Block not found or access denied")
 
-    # Hilfsfunktionen für schnellen Zugriff
-    def get_exercise_map(exercises):
-        return {ex.id: ex for ex in exercises}
-    def get_set_map(sets):
-        return {s.id: s for s in sets}
-
-    # 2. Diffing: Exercises
-    db_exercise_map = get_exercise_map(db_block.exercises)
-    payload_exercise_map = get_exercise_map(block.exercises)
-
-    # 2a. Delete Exercises (in DB, aber nicht mehr im Payload)
-    for db_ex in db_block.exercises:
-        if db_ex.id not in payload_exercise_map:
-            await db.delete(db_ex)
-
-    # 2b. Add/Update Exercises
-    for ex in block.exercises:
-        if isinstance(ex.id, str) or ex.id is None:
-            # Neu: Exercise anlegen
-            new_ex = Exercise(
-                name=ex.name,
-                description=ex.description,
-                notes=ex.notes,
-                superset_id=ex.superset_id,
-                block_id=block_id
+    try:
+        # 🎉 EXTREM EINFACH: Delete + Create statt komplexer Diffing!
+        # SQLAlchemy löscht automatisch alle Exercises + Sets (CASCADE!)
+        await db.delete(existing_block)
+        await db.flush()  # Stelle sicher dass gelöscht wurde
+        
+        # Neuen Block erstellen (behält die gleiche ID)
+        new_block = Block(
+            id=block_id,  # Gleiche ID wiederverwenden
+            workout_id=workout_id,
+            name=block.name,
+            description=block.description,
+            notes=block.notes
+        )
+        db.add(new_block)
+        await db.flush()  # ID für Relations
+        
+        # Exercises + Sets erstellen (einfache Loops statt Diffing!)
+        for ex_data in block.exercises:
+            new_exercise = Exercise(
+                block_id=new_block.id,
+                name=ex_data.name,
+                description=ex_data.description,
+                notes=ex_data.notes,
+                superset_id=ex_data.superset_id
             )
-            db.add(new_ex)
+            db.add(new_exercise)
             await db.flush()  # ID für Sets
-            db_ex_id = new_ex.id
-        else:
-            # Update: Exercise updaten
-            db_ex = db_exercise_map.get(ex.id)
-            if db_ex:
-                db_ex.name = ex.name
-                db_ex.description = ex.description
-                db_ex.notes = ex.notes
-                db_ex.superset_id = ex.superset_id
-                db.add(db_ex)
-                db_ex_id = db_ex.id
-            else:
-                continue  # Sollte nicht passieren
-
-        # 3. Diffing: Sets für diese Exercise
-        # Hole aktuelle Sets aus DB (nach dem Anlegen ggf. leer)
-        if isinstance(ex.id, str) or ex.id is None:
-            db_sets = []
-        else:
-            db_sets = db_exercise_map[ex.id].sets if ex.id in db_exercise_map else []
-        db_set_map = get_set_map(db_sets)
-        payload_set_map = get_set_map(ex.sets)
-
-        # 3a. Delete Sets
-        for db_set in db_sets:
-            if db_set.id not in payload_set_map:
-                await db.delete(db_set)
-
-        # 3b. Add/Update Sets
-        for s in ex.sets:
-            if isinstance(s.id, str) or s.id is None:
-                # Neu: Set anlegen
+            
+            for set_data in ex_data.sets:
                 new_set = Set(
-                    exercise_id=db_ex_id,
-                    reps=s.reps,
-                    weight=s.weight,
-                    duration=s.duration,
-                    distance=s.distance,
-                    rest_time=s.rest_time,
-                    status=s.status,
-                    completed_at=make_naive(s.completed_at) if s.completed_at else None,
+                    exercise_id=new_exercise.id,
+                    weight=set_data.weight,
+                    reps=set_data.reps,
+                    duration=set_data.duration,
+                    distance=set_data.distance,
+                    rest_time=set_data.rest_time,
+                    status=set_data.status,
+                    completed_at=set_data.completed_at
                 )
                 db.add(new_set)
-            else:
-                # Update: Set updaten
-                db_set = db_set_map.get(s.id)
-                if db_set:
-                    db_set.reps = s.reps
-                    db_set.weight = s.weight
-                    db_set.duration = s.duration
-                    db_set.distance = s.distance
-                    db_set.rest_time = s.rest_time
-                    db_set.status = s.status
-                    db_set.completed_at = make_naive(s.completed_at) if s.completed_at else None
-                    db.add(db_set)
-
-    await db.commit()
-
-    # Lade den aktualisierten Block erneut
-    db_block_result = await db.execute(db_block_query)
-    db_block = db_block_result.scalar_one_or_none()
-
-    # Baue das Response-Objekt
-    def orm_to_schema_block(db_block):
-        return BlockSchema(
-            id=db_block.id,
-            workout_id=db_block.workout_id,
-            name=db_block.name,
-            description=db_block.description,
-            notes=db_block.notes,
-            exercises=[
-                dict(
-                    id=ex.id,
-                    name=ex.name,
-                    description=ex.description,
-                    notes=ex.notes,
-                    superset_id=ex.superset_id,
-                    sets=[
-                        dict(
-                            id=s.id,
-                            reps=s.reps,
-                            weight=s.weight,
-                            duration=s.duration,
-                            distance=s.distance,
-                            rest_time=s.rest_time,
-                            status=s.status,
-                            completed_at=s.completed_at
-                        ) for s in ex.sets
-                    ]
-                ) for ex in db_block.exercises
-            ]
+        
+        await db.commit()
+        
+        # 🎉 Frisch erstellten Block laden und automatisch serialisieren!
+        result_query = (
+            select(Block)
+            .options(selectinload(Block.exercises).selectinload(Exercise.sets))
+            .where(Block.id == block_id)
         )
-    return orm_to_schema_block(db_block)
+        result = await db.execute(result_query)
+        saved_block = result.scalar_one()
+        
+        return BlockRead.model_validate(saved_block)
+        
+    except Exception as e:
+        await db.rollback()
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Error saving block: {str(e)}"
+        )
 
 
 @router.delete("/{workout_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -508,42 +275,32 @@ async def delete_workout(
     current_user: User = Depends(get_current_user),
 ):
     """
+    ✅ BEST PRACTICE: Kombinierte Security + Delete Query
     Löscht ein Workout samt aller abhängigen Objekte (Blocks, Exercises, Sets).
-    Die Trainingshistorie bleibt erhalten, nur die set_id wird automatisch auf NULL gesetzt.
     """
     
-    # Prüfe, ob das Workout existiert und zum User gehört
-    user_db_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-    user_res = await db.execute(user_db_query)
-    user_db = user_res.scalar_one_or_none()
-
-    if not user_db or not user_db.training_plan_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="User has no training plan."
+    # 🔥 OPTIMIERT: Eine Query für User + Workout + Security Check!
+    workout_query = (
+        select(Workout)
+        .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
+        .where(
+            Workout.id == workout_id,
+            UserModel.id == UUID(current_user.id),
+            UserModel.training_plan_id.is_not(None)  # User muss training plan haben
         )
-
-    workout_query = select(Workout).where(
-        Workout.id == workout_id, Workout.training_plan_id == user_db.training_plan_id
     )
     result = await db.execute(workout_query)
     workout = result.scalar_one_or_none()
 
     if not workout:
-        raise HTTPException(
-            status_code=404, detail="Workout nicht gefunden oder kein Zugriff."
-        )
+        raise HTTPException(status_code=404, detail="Workout not found or access denied")
         
     try:
         await db.delete(workout)
         await db.commit()
-        return None
     except Exception as e:
         await db.rollback()
-        print(f"Error deleting workout: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Fehler beim Löschen des Workouts."
-        )
+        raise HTTPException(status_code=500, detail=f"Error deleting workout: {str(e)}")
 
 @router.post("/feedback", status_code=status.HTTP_201_CREATED, response_model=WorkoutFeedbackResponseSchema)
 async def submit_workout_feedback(
@@ -552,60 +309,32 @@ async def submit_workout_feedback(
     current_user: User = Depends(get_current_user),
 ):
     """
-    Speichert neues Feedback zu einem Workout
+    ✅ BEST PRACTICE: Minimal CRUD mit automatischer Serialisierung
     """
-    # Prüfen ob das Workout existiert und User Zugriff hat
-    workout_query = select(Workout).where(Workout.id == feedback.workout_id)
-    result = await db.execute(workout_query)
-    workout = result.scalar_one_or_none()
-    
-    if not workout:
-        raise HTTPException(status_code=404, detail="Workout nicht gefunden")
-    
-    # Prüfen ob User bereits Feedback abgegeben hat (optional)
-    existing_feedback_query = select(WorkoutFeedback).where(
-        WorkoutFeedback.workout_id == feedback.workout_id,
-        WorkoutFeedback.user_id == current_user.id
+    # 🔥 OPTIMIERT: Kombinierte Check für Duplicate + Workout Existenz!
+    existing_query = (
+        select(WorkoutFeedback)
+        .join(Workout, WorkoutFeedback.workout_id == Workout.id)  # Prüft Workout Existenz
+        .where(
+            WorkoutFeedback.workout_id == feedback.workout_id,
+            WorkoutFeedback.user_id == current_user.id
+        )
     )
-    result = await db.execute(existing_feedback_query)
-    existing = result.scalar_one_or_none()
+    result = await db.execute(existing_query)
+    if result.scalar_one_or_none():
+        raise HTTPException(status_code=400, detail="Feedback already exists")
     
-    if existing:
-        raise HTTPException(status_code=400, detail="Du hast bereits Feedback zu diesem Workout abgegeben")
-    
-    # Feedback erstellen
-    new_feedback = WorkoutFeedback(
-        workout_id=feedback.workout_id,
-        user_id=current_user.id,
-        rating=feedback.rating,
-        duration_rating=feedback.duration_rating,
-        intensity_rating=feedback.intensity_rating,
-        comment=feedback.comment
-    )
-    
+    # Einfach erstellen + committen
+    new_feedback = WorkoutFeedback(**feedback.model_dump(), user_id=current_user.id)
     db.add(new_feedback)
     
     try:
         await db.commit()
         await db.refresh(new_feedback)
-        
-        # UUID zu String konvertieren, um Serialisierungsfehler zu vermeiden
-        response_data = {
-            "id": new_feedback.id,
-            "workout_id": new_feedback.workout_id,
-            "user_id": str(new_feedback.user_id),  # UUID zu String konvertieren
-            "rating": new_feedback.rating,
-            "duration_rating": new_feedback.duration_rating,
-            "intensity_rating": new_feedback.intensity_rating,
-            "comment": new_feedback.comment,
-            "created_at": new_feedback.created_at
-        }
-        
-        return response_data
+        return WorkoutFeedbackResponseSchema.model_validate(new_feedback)  # ✅ Auto-Serialization!
     except Exception as e:
         await db.rollback()
-        print(f"Error submitting feedback: {e}")
-        raise HTTPException(status_code=500, detail="Fehler beim Speichern des Feedbacks")
+        raise HTTPException(status_code=500, detail=f"Error saving feedback: {str(e)}")
 
 
 @router.get("/feedback/{workout_id}", response_model=Optional[WorkoutFeedbackResponseSchema])
@@ -615,42 +344,21 @@ async def get_workout_feedback(
     current_user: User = Depends(get_current_user),
 ):
     """
-    Holt das Feedback eines Users zu einem bestimmten Workout.
-    Gibt null zurück wenn kein Feedback vorhanden ist (normales Verhalten).
+    ✅ SUPER EINFACH: Eine Query + Auto-Serialization!
     """
-    # Prüfen ob das Workout existiert
-    workout_query = select(Workout).where(Workout.id == workout_id)
-    result = await db.execute(workout_query)
-    workout = result.scalar_one_or_none()
-    
-    if not workout:
-        raise HTTPException(status_code=404, detail="Workout nicht gefunden")
-    
-    # Feedback des Users abrufen
-    feedback_query = select(WorkoutFeedback).where(
-        WorkoutFeedback.workout_id == workout_id,
-        WorkoutFeedback.user_id == current_user.id
+    # 🔥 OPTIMIERT: Eine Query für Feedback + Workout Existenz Check!
+    feedback_query = (
+        select(WorkoutFeedback)
+        .join(Workout, WorkoutFeedback.workout_id == Workout.id)  # Prüft Workout Existenz
+        .where(
+            WorkoutFeedback.workout_id == workout_id,
+            WorkoutFeedback.user_id == current_user.id
+        )
     )
     result = await db.execute(feedback_query)
     feedback = result.scalar_one_or_none()
     
-    # Kein Feedback ist normales Verhalten - return null instead of 404
-    if not feedback:
-        return None
-    
-    # UUID zu String konvertieren
-    response_data = {
-        "id": feedback.id,
-        "workout_id": feedback.workout_id,
-        "user_id": str(feedback.user_id),
-        "rating": feedback.rating,
-        "duration_rating": feedback.duration_rating,
-        "intensity_rating": feedback.intensity_rating,
-        "comment": feedback.comment,
-        "created_at": feedback.created_at
-    }
-    
-    return response_data
+    return WorkoutFeedbackResponseSchema.model_validate(feedback) if feedback else None
 
 
 @router.put("/feedback/{feedback_id}", response_model=WorkoutFeedbackResponseSchema)
@@ -661,59 +369,38 @@ async def update_workout_feedback(
     current_user: User = Depends(get_current_user),
 ):
     """
-    Aktualisiert ein bestehendes Feedback
+    ✅ CLEAN UPDATE: Security + Auto-Serialization!
     """
-    # Prüfen ob das Feedback existiert und dem User gehört
-    feedback_query = select(WorkoutFeedback).where(
-        WorkoutFeedback.id == feedback_id,
-        WorkoutFeedback.user_id == current_user.id
+    # 🔥 OPTIMIERT: Eine Query für Feedback + Security + Workout Existenz!
+    feedback_query = (
+        select(WorkoutFeedback)
+        .join(Workout, WorkoutFeedback.workout_id == Workout.id)  # Prüft Workout Existenz
+        .where(
+            WorkoutFeedback.id == feedback_id,
+            WorkoutFeedback.user_id == current_user.id,  # Security
+            Workout.id == updated_feedback.workout_id  # Workout muss existieren
+        )
     )
     result = await db.execute(feedback_query)
     feedback = result.scalar_one_or_none()
     
     if not feedback:
-        raise HTTPException(status_code=404, detail="Feedback nicht gefunden oder keine Berechtigung")
+        raise HTTPException(status_code=404, detail="Feedback not found or access denied")
     
-    # Prüfen ob das Workout existiert
-    workout_query = select(Workout).where(Workout.id == updated_feedback.workout_id)
-    result = await db.execute(workout_query)
-    workout = result.scalar_one_or_none()
-    
-    if not workout:
-        raise HTTPException(status_code=404, detail="Workout nicht gefunden")
-    
-    # Feedback aktualisieren
-    feedback.rating = updated_feedback.rating
-    feedback.duration_rating = updated_feedback.duration_rating
-    feedback.intensity_rating = updated_feedback.intensity_rating
-    feedback.comment = updated_feedback.comment
-    
-    db.add(feedback)
+    # Update fields
+    for field, value in updated_feedback.model_dump(exclude_unset=True).items():
+        setattr(feedback, field, value)
     
     try:
         await db.commit()
         await db.refresh(feedback)
-        
-        # UUID zu String konvertieren
-        response_data = {
-            "id": feedback.id,
-            "workout_id": feedback.workout_id,
-            "user_id": str(feedback.user_id),
-            "rating": feedback.rating,
-            "duration_rating": feedback.duration_rating,
-            "intensity_rating": feedback.intensity_rating,
-            "comment": feedback.comment,
-            "created_at": feedback.created_at
-        }
-        
-        return response_data
+        return WorkoutFeedbackResponseSchema.model_validate(feedback)  # ✅ Auto-Serialization!
     except Exception as e:
         await db.rollback()
-        print(f"Error updating feedback: {e}")
-        raise HTTPException(status_code=500, detail="Fehler beim Aktualisieren des Feedbacks")
+        raise HTTPException(status_code=500, detail=f"Error updating feedback: {str(e)}")
 
 
-@router.put("/sets/{set_id}/status", response_model=SetResponseSchema)
+@router.put("/sets/{set_id}/status", response_model=SetRead)
 async def update_set_status_endpoint(
     set_id: int,
     payload: SetStatusUpdatePayload,
@@ -721,68 +408,43 @@ async def update_set_status_endpoint(
     current_user: User = Depends(get_current_user),
 ):
     """
-    Updates the status and execution details of a specific set.
-    Ensures the set belongs to the current user's training plan.
+    ✅ BEST PRACTICE: Kombinierte Security Query + Smart Field Updates
     """
-    user_db_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-    user_res = await db.execute(user_db_query)
-    user_db = user_res.scalar_one_or_none()
-
-    if not user_db or not user_db.training_plan_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="User has no training plan."
-        )
-
-    # Fetch the set and verify ownership via training plan
     set_query = (
         select(Set)
         .join(Exercise, Set.exercise_id == Exercise.id)
         .join(Block, Exercise.block_id == Block.id)
         .join(Workout, Block.workout_id == Workout.id)
+        .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
         .where(
             Set.id == set_id,
-            Workout.training_plan_id == user_db.training_plan_id
+            UserModel.id == UUID(current_user.id),
+            UserModel.training_plan_id.is_not(None)  # User muss training plan haben
         )
     )
-    set_result = await db.execute(set_query)
-    db_set = set_result.scalar_one_or_none()
+    result = await db.execute(set_query)
+    db_set = result.scalar_one_or_none()
 
     if not db_set:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Set not found or user does not have access.",
-        )
+        raise HTTPException(status_code=404, detail="Set not found or access denied")
 
-    # Update fields from payload
-    db_set.status = payload.status
-    if payload.status == SetStatus.done:
-        db_set.completed_at = make_naive(payload.completed_at) if payload.completed_at else datetime.utcnow()
-    else:
-        db_set.completed_at = None # Clear if not 'done'
+    # ✅ Smart Field Updates - Pydantic validator macht datetime naive automatisch!
+    for field, value in payload.model_dump(exclude_unset=True).items():
+        setattr(db_set, field, value)
+    
+    # Special logic for done status
+    if payload.status == SetStatus.done and not db_set.completed_at:
+        db_set.completed_at = datetime.utcnow()
+    elif payload.status != SetStatus.done:
+        db_set.completed_at = None
 
-    if payload.weight is not None:
-        db_set.weight = payload.weight
-    if payload.reps is not None:
-        db_set.reps = payload.reps
-    if payload.duration is not None:
-        db_set.duration = payload.duration
-    if payload.distance is not None:
-        db_set.distance = payload.distance
-    if payload.notes is not None: # Allow updating notes
-        db_set.notes = payload.notes
-
-    db.add(db_set)
     try:
         await db.commit()
         await db.refresh(db_set)
+        return SetRead.model_validate(db_set)  # ✅ Auto-Serialization!
     except Exception as e:
         await db.rollback()
-        print(f"Error updating set status for set_id {set_id}: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update status for set {set_id}.",
-        )
-    return db_set
+        raise HTTPException(status_code=500, detail=f"Error updating set: {str(e)}")
 
 
 # Schema for manual activity entry
@@ -790,99 +452,81 @@ class ManualActivitySchema(BaseModel):
     name: str
     description: str
     timestamp: Optional[datetime] = None
+    
+    @field_validator('timestamp')
+    @classmethod
+    def make_datetime_naive(cls, v: Optional[datetime]) -> Optional[datetime]:
+        """✅ Automatisch timezone-aware datetimes zu naive konvertieren"""
+        if v is not None and v.tzinfo is not None:
+            return v.replace(tzinfo=None)
+        return v
 
 
-@router.post("/manual-activity", response_model=WorkoutResponseSchema)
+@router.post("/manual-activity", response_model=WorkoutRead)
 async def create_manual_activity(
     activity: ManualActivitySchema,
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
     """
-    Creates a simple workout from a manual activity entry.
-    Creates one block, one exercise, and one completed set with the activity information.
+    ✅ BEST PRACTICE: Einfache Workout-Erstellung mit Auto-Serialization
     """
-    # Validate user and get training plan
-    user_db_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-    user_res = await db.execute(user_db_query)
-    user_db = user_res.scalar_one_or_none()
+    # User validation - könnte auch in Combined Query, aber hier ist separate OK da wir training_plan_id brauchen
+    user_query = select(UserModel).where(
+        UserModel.id == UUID(current_user.id),
+        UserModel.training_plan_id.is_not(None)
+    )
+    result = await db.execute(user_query)
+    user = result.scalar_one_or_none()
 
-    if not user_db or not user_db.training_plan_id:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, 
-            detail="User has no training plan"
-        )
+    if not user:
+        raise HTTPException(status_code=403, detail="User has no training plan")
     
-    # Use provided timestamp or current time
     activity_time = activity.timestamp or datetime.utcnow()
     
     try:
-        # 1. Create the workout
-        new_workout = Workout(
-            training_plan_id=user_db.training_plan_id,
+        # ✅ Simplified: Create all objects in sequence
+        workout = Workout(
+            training_plan_id=user.training_plan_id,
             name=activity.name,
             description=activity.description,
             date_created=activity_time,
         )
-        db.add(new_workout)
-        await db.flush()  # Get ID for relationships
+        db.add(workout)
+        await db.flush()
         
-        # 2. Create the block
-        new_block = Block(
-            workout_id=new_workout.id,
-            name="Block 1",
-            description="Manuell dokumentierte Aktivität",
+        block = Block(
+            workout_id=workout.id,
+            name="Manual Activity",
+            description="Manually logged activity",
         )
-        db.add(new_block)
-        await db.flush()  # Get ID for relationships
+        db.add(block)
+        await db.flush()
         
-        # 3. Create the exercise
-        new_exercise = Exercise(
-            block_id=new_block.id,
+        exercise = Exercise(
+            block_id=block.id,
             name=activity.name,
             notes=activity.description,
         )
-        db.add(new_exercise)
-        await db.flush()  # Get ID for relationships
+        db.add(exercise)
+        await db.flush()
         
-        # 4. Create the set
-        new_set = Set(
-            exercise_id=new_exercise.id,
+        # ✅ Minimal set - only required fields
+        workout_set = Set(
+            exercise_id=exercise.id,
             status=SetStatus.done,
             completed_at=activity_time,
-            reps=0,
-            weight=0,
-            duration=0,
-            distance=0,
         )
-        db.add(new_set)
+        db.add(workout_set)
         
         await db.commit()
-        await db.refresh(new_workout)
-        
-        # Return the created workout
-        return WorkoutResponseSchema(
-            id=new_workout.id,
-            training_plan_id=new_workout.training_plan_id,
-            name=new_workout.name,
-            date_created=new_workout.date_created,
-            description=new_workout.description,
-            status=WorkoutStatusEnum.DONE,  # It's done since the single set is marked as done
-        )
+        await db.refresh(workout)
+        return WorkoutRead.model_validate(workout)  # ✅ Auto-Serialization!
         
     except Exception as e:
         await db.rollback()
-        print(f"Error creating manual activity workout: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail="Failed to create workout from manual activity"
-        )
+        raise HTTPException(status_code=500, detail=f"Error creating manual activity: {str(e)}")
 
-
-def make_naive(dt: datetime) -> datetime:
-    if dt is not None and dt.tzinfo is not None:
-        return dt.replace(tzinfo=None)
-    return dt
 
 
 @router.post("/{workout_id}/revise", response_model=WorkoutRevisionResponseSchema)
@@ -970,7 +614,7 @@ async def change_workout_endpoint(
             )
 
 
-@router.post("/{workout_id}/revise/accept", response_model=WorkoutSchemaWithBlocks)
+@router.post("/{workout_id}/revise/accept", response_model=WorkoutWithBlocksRead)
 async def accept_revised_workout_endpoint(
     workout_id: int,
     revised_workout: WorkoutSchema,
@@ -1022,17 +666,15 @@ async def accept_revised_workout_endpoint(
                 db=db
             )
             
-            # Calculate status for the updated workout
-            calculated_status = calculate_workout_status(updated_workout)
             
             # Build response data
             response_blocks_data = []
             for block_orm in updated_workout.blocks:
                 response_exercises_data = []
                 for exercise_orm in block_orm.exercises:
-                    response_sets_data = [SetResponseSchema.from_orm(s) for s in exercise_orm.sets]
+                    response_sets_data = [SetRead.model_validate(s) for s in exercise_orm.sets]
                     response_exercises_data.append(
-                        ExerciseResponseSchema(
+                        ExerciseRead(
                             id=exercise_orm.id,
                             name=exercise_orm.name,
                             description=exercise_orm.description,
@@ -1043,7 +685,7 @@ async def accept_revised_workout_endpoint(
                         )
                     )
                 response_blocks_data.append(
-                    BlockResponseSchema(
+                    BlockRead(
                         id=block_orm.id,
                         name=block_orm.name,
                         description=block_orm.description,
@@ -1053,7 +695,7 @@ async def accept_revised_workout_endpoint(
                     )
                 )
             
-            result = WorkoutSchemaWithBlocks(
+            result = WorkoutWithBlocksRead(
                 id=updated_workout.id,
                 training_plan_id=updated_workout.training_plan_id,
                 name=updated_workout.name,
@@ -1062,7 +704,7 @@ async def accept_revised_workout_endpoint(
                 duration=updated_workout.duration,
                 focus=updated_workout.focus,
                 notes=updated_workout.notes,
-                status=calculated_status,
+                status=updated_workout.status,
                 blocks=response_blocks_data
             )
             
