@@ -47,8 +47,8 @@ async def generate_workout(
         
 
         # llm = ChatOpenAI(model="o3", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
-        llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
-        # llm = ChatOpenAI(model="gpt-4.1", api_key=OPENAI_API_KEY) 
+        # llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
+        llm = ChatOpenAI(model="gpt-4.1", api_key=OPENAI_API_KEY) 
 
         # Nutze with_structured_output mit async=True
         # The prompt itself is now already formatted and contains all instructions.
