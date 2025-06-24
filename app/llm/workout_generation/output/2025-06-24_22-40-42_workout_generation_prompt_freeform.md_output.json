@@ -1,0 +1,37 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "Workout: Functional Ausdauer Circuit (≈45 min | Fokus: Ausdauer, Functional)\n\nWarm-Up | 8 min | Dynamic Mobility & Cardio\n- Jumping Jacks\n    - 60 s | –\n- High Knees\n    - 30 s | –\n- Butt Kicks\n    - 30 s | –\n- World’s Greatest Stretch\n    - 60 s | –\n- Inchworm Walkout\n    - 6 reps | –\n- Shoulder Pass-Through\n    - 15 reps | –\n\nMain | 30 min | 3 Runden Circuit\n- Sled Push Heavy\n    - 20 m / P: 120 s | –\n    - 20 m / P: 120 s | –\n    - 20 m / P: 120 s | –\n- Wall Ball Shot\n    - 15 reps / P: 60 s | –\n    - 15 reps / P: 60 s | –\n    - 15 reps / P: 60 s | –\n- Farmer’s Carry (Dumbbell)\n    - 40 m / P: 60 s | –\n    - 40 m / P: 60 s | –\n    - 40 m / P: 60 s | –\n- Burpee Broad Jump\n    - 10 reps / P: 60 s | –\n    - 10 reps / P: 60 s | –\n    - 10 reps / P: 60 s | –\n- Row Sprint 250 m\n    - 250 m / P: 90 s | –\n    - 250 m / P: 90 s | –\n    - 250 m / P: 90 s | –\n- Broad Jump\n    - 10 reps / P: 60 s | –\n    - 10 reps / P: 60 s | –\n    - 10 reps / P: 60 s | –\n\nCool-Down | 7 min | Mobility & Stretching\n- Hip Flexor Stretch (Kneeling)\n    - 60 s | –\n- Pigeon Pose (Forward)\n    - 45 s | –\n- Supine Twist\n    - 60 s | –\n- Child’s Pose\n    - 60 s | –",
+      "annotations": []
+    }
+  ],
+  "additional_kwargs": {
+    "reasoning": {
+      "id": "rs_685b0d37f9f88198babfe144faf35aad0df8b0f31ebe4b2c",
+      "summary": [],
+      "type": "reasoning"
+    }
+  },
+  "response_metadata": {
+    "id": "resp_685b0d375e188198affbd86f60c397030df8b0f31ebe4b2c",
+    "created_at": 1750797623.0,
+    "metadata": {},
+    "model": "o4-mini-2025-04-16",
+    "object": "response",
+    "status": "completed",
+    "model_name": "o4-mini-2025-04-16"
+  },
+  "type": "ai",
+  "name": null,
+  "id": "msg_685b0d463a0c8198b2701e3deac1fbb50df8b0f31ebe4b2c",
+  "example": false,
+  "tool_calls": [],
+  "invalid_tool_calls": [],
+  "usage_metadata": {
+    "input_tokens": 6874,
+    "output_tokens": 2705,
+    "total_tokens": 9579,
+    "output_token_details": {}
+  }
+}

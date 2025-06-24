@@ -6,7 +6,6 @@ class SetSchema(BaseModel):
         default_factory=list, 
         description="Geplante Werte in der Reihenfolge: [Gewicht (immer in kg nicht 1RM oder BW, PFLICHT bei Kraftübungen), Wdh, Dauer (sekunden), Distanz (m/km), Pause (sekunden)]. Für Zahlenwerte Null oder den Wert eintragen."
     )
-    description: Optional[str] = Field(default=None, description="Super prägnanter optionaler Hinweise, wie z.B. `links` oder `rechts`")
 
 class ExerciseSchema(BaseModel):
     name: str = Field(..., description="Name der Übung.")

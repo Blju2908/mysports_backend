@@ -183,11 +183,12 @@ async def save_block(
     current_user: User = Depends(get_current_user),
 ):
     """
-    ✅ BEST PRACTICE: Kombinierte Security + Validation Query
+    ✅ OPTIMIZED: ID-preserving save_block to maintain frontend references
     """
-    # 🔥 OPTIMIERT: Eine Query für User + Block + Security Check!
+    # 🔥 OPTIMIERT: Eine Query für User + Block + Security Check mit eager loading!
     block_query = (
         select(Block)
+        .options(selectinload(Block.exercises).selectinload(Exercise.sets))
         .join(Workout, Block.workout_id == Workout.id)
         .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
         .where(
@@ -204,50 +205,97 @@ async def save_block(
         raise HTTPException(status_code=404, detail="Block not found or access denied")
 
     try:
-        # 🎉 EXTREM EINFACH: Delete + Create statt komplexer Diffing!
-        # SQLAlchemy löscht automatisch alle Exercises + Sets (CASCADE!)
-        await db.delete(existing_block)
-        await db.flush()  # Stelle sicher dass gelöscht wurde
+        # ✅ UPDATE: Block-Details aktualisieren (behält die gleiche ID)
+        existing_block.name = block.name
+        existing_block.description = block.description
+        existing_block.notes = block.notes
         
-        # Neuen Block erstellen (behält die gleiche ID)
-        new_block = Block(
-            id=block_id,  # Gleiche ID wiederverwenden
-            workout_id=workout_id,
-            name=block.name,
-            description=block.description,
-            notes=block.notes
-        )
-        db.add(new_block)
-        await db.flush()  # ID für Relations
+        # ✅ SMART ID-PRESERVING APPROACH: Update/Create/Delete based on comparison
+        existing_exercises = {str(ex.id): ex for ex in existing_block.exercises}
+        incoming_exercise_ids = set()
         
-        # Exercises + Sets erstellen (einfache Loops statt Diffing!)
+        # Process each incoming exercise
         for ex_data in block.exercises:
-            new_exercise = Exercise(
-                block_id=new_block.id,
-                name=ex_data.name,
-                description=ex_data.description,
-                notes=ex_data.notes,
-                superset_id=ex_data.superset_id
-            )
-            db.add(new_exercise)
-            await db.flush()  # ID für Sets
-            
-            for set_data in ex_data.sets:
-                new_set = Set(
-                    exercise_id=new_exercise.id,
-                    weight=set_data.weight,
-                    reps=set_data.reps,
-                    duration=set_data.duration,
-                    distance=set_data.distance,
-                    rest_time=set_data.rest_time,
-                    status=set_data.status,
-                    completed_at=set_data.completed_at
+            if hasattr(ex_data, 'id') and ex_data.id and str(ex_data.id) in existing_exercises:
+                # ✅ UPDATE existing exercise (preserves ID!)
+                existing_exercise = existing_exercises[str(ex_data.id)]
+                existing_exercise.name = ex_data.name
+                existing_exercise.description = ex_data.description
+                existing_exercise.notes = ex_data.notes
+                existing_exercise.superset_id = ex_data.superset_id
+                
+                incoming_exercise_ids.add(str(ex_data.id))
+                
+                # ✅ SMART SET HANDLING: Update/Create/Delete sets
+                existing_sets = {str(s.id): s for s in existing_exercise.sets}
+                incoming_set_ids = set()
+                
+                for set_data in ex_data.sets:
+                    if hasattr(set_data, 'id') and set_data.id and str(set_data.id) in existing_sets:
+                        # ✅ UPDATE existing set (preserves ID!)
+                        existing_set = existing_sets[str(set_data.id)]
+                        existing_set.weight = set_data.weight
+                        existing_set.reps = set_data.reps
+                        existing_set.duration = set_data.duration
+                        existing_set.distance = set_data.distance
+                        existing_set.rest_time = set_data.rest_time
+                        existing_set.status = set_data.status
+                        existing_set.completed_at = set_data.completed_at
+                        
+                        incoming_set_ids.add(str(set_data.id))
+                    else:
+                        # ✅ CREATE new set (only if no valid ID or ID not found)
+                        new_set = Set(
+                            exercise_id=existing_exercise.id,
+                            weight=set_data.weight,
+                            reps=set_data.reps,
+                            duration=set_data.duration,
+                            distance=set_data.distance,
+                            rest_time=set_data.rest_time,
+                            status=set_data.status,
+                            completed_at=set_data.completed_at
+                        )
+                        db.add(new_set)
+                
+                # ✅ DELETE sets that are no longer present
+                for set_id, existing_set in existing_sets.items():
+                    if set_id not in incoming_set_ids:
+                        await db.delete(existing_set)
+                        
+            else:
+                # ✅ CREATE new exercise (only if no valid ID or ID not found)
+                new_exercise = Exercise(
+                    block_id=existing_block.id,
+                    name=ex_data.name,
+                    description=ex_data.description,
+                    notes=ex_data.notes,
+                    superset_id=ex_data.superset_id
                 )
-                db.add(new_set)
+                db.add(new_exercise)
+                await db.flush()  # Get ID for sets
+                
+                # Create all sets for new exercise
+                for set_data in ex_data.sets:
+                    new_set = Set(
+                        exercise_id=new_exercise.id,
+                        weight=set_data.weight,
+                        reps=set_data.reps,
+                        duration=set_data.duration,
+                        distance=set_data.distance,
+                        rest_time=set_data.rest_time,
+                        status=set_data.status,
+                        completed_at=set_data.completed_at
+                    )
+                    db.add(new_set)
+        
+        # ✅ DELETE exercises that are no longer present
+        for ex_id, existing_exercise in existing_exercises.items():
+            if ex_id not in incoming_exercise_ids:
+                await db.delete(existing_exercise)
         
         await db.commit()
         
-        # 🎉 Frisch erstellten Block laden und automatisch serialisieren!
+        # 🎉 Frisch gespeicherten Block laden und serialisieren!
         result_query = (
             select(Block)
             .options(selectinload(Block.exercises).selectinload(Exercise.sets))

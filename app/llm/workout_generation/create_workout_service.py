@@ -314,6 +314,17 @@ def format_training_history_for_llm(
     # Convert to JSON string
     return json.dumps(history_data, ensure_ascii=False)
 
+def clean_text_data(text: str | None) -> str | None:
+    """
+    Entfernt problematische Zeichen wie Null-Bytes aus Textdaten.
+    """
+    if text is None:
+        return None
+    
+    # Entferne Null-Bytes und andere problematische Zeichen
+    cleaned = text.replace('\x00', '').replace('\r', '').strip()
+    return cleaned if cleaned else None
+
 def convert_llm_output_to_db_models(
     workout_dict: Dict[str, Any],  # Expecting dict from WorkoutSchema.model_dump()
     training_plan_id: Optional[int] = None,
@@ -332,12 +343,12 @@ def convert_llm_output_to_db_models(
     Returns:
         Ein Workout-Modell mit allen Beziehungen.
     """
-    # Erstelle das Workout-Modell
+    # Erstelle das Workout-Modell mit bereinigten Textdaten
     workout_model = Workout(
         training_plan_id=training_plan_id,
-        name=workout_dict.get("name", "Unbenanntes Workout"),
-        description=workout_dict.get("description"),
-        focus=workout_dict.get("focus"),
+        name=clean_text_data(workout_dict.get("name", "Unbenanntes Workout")),
+        description=clean_text_data(workout_dict.get("description")),
+        focus=clean_text_data(workout_dict.get("focus")),
         duration=workout_dict.get("duration"),
         date_created=datetime.utcnow(),
         blocks=[],
@@ -345,15 +356,15 @@ def convert_llm_output_to_db_models(
 
     for block_data in workout_dict.get("blocks", []):
         block_model = Block(
-            name=block_data.get("name", "Unbenannter Block"),
-            description=block_data.get("description"),
+            name=clean_text_data(block_data.get("name", "Unbenannter Block")),
+            description=clean_text_data(block_data.get("description")),
             exercises=[],
         )
 
         for exercise_data in block_data.get("exercises", []):
             exercise_model = Exercise(
-                name=exercise_data.get("name", "Unbenannte Übung"),
-                superset_id=exercise_data.get("superset_id"),
+                name=clean_text_data(exercise_data.get("name", "Unbenannte Übung")),
+                superset_id=clean_text_data(exercise_data.get("superset_id")),
                 sets=[],
             )
 

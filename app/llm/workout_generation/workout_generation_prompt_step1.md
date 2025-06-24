@@ -220,19 +220,16 @@ Gym-Übungen
 
 Hyrox & Functional
 	•	Wall Ball Shot
-	•	Sled Push Heavy
-	•	Sled Pull Heavy
-	•	Row Ergometer 1000 m
-	•	Ski Ergometer 1000 m
-	•	AirBike 50 cal
+	•	Sled Push
+	•	Sled Pull
+	•	Row Ergometer
+	•	Ski Ergometer
+	•	Assault Bike
 	•	Burpee Broad Jump
 	•	Sandbag Front Carry
 	•	Sandbag Walking Lunge
 	•	Sandbag Shouldered Carry
-	•	Sandbag Clean
 	•	Farmers Carry (Kettlebell)
-	•	Yoke Carry
-	•	Prowler Push
 	•	Battle Rope Slam
 	•	Battle Rope Wave
 	•	Box Jump Over
@@ -333,8 +330,9 @@ Du bist hochmotiviert dem Nutzer die perfekte Trainingserfahrung zu bieten.
 
 # Formatierungsregeln.
 - Gruppiere Übungen bei Bedarf als Superset mit `A`, `B`, `C` … (Wichtig für HIIT und Circuits)
+- Um einen Circuit oder ein HIIT zu machen, müssen alle Übungen in einem Superset zusammengefasst werden.
+- Bitte keine Extra Übungen für Pausen einfügen. Wenn nach einer Übung eine Pause gemacht werden soll, bitte einfach in der definierten Notation machen.
 - Bitte benutzte Supersets nur, wenn die gleichen Übungen mehrfach hintereinander ausgeführt werden sollen. z.B. 1. Liegstütze, 2. Squat, 3. Liegestütze, 4. Squat, ...
-- Bitte gehe im Gym bei Equipment-Intensiven Übungen restriktiv mit Supersets um, damit das Workouts auch umsetzbar ist.
 - Beschreibe **jede Satzzeile einzeln**: Pro Satz eine Zeile mit denselben Spalten (NICHT 4x 12 @ 80 kg).
 - Verwende nur **relevante Parameter** pro Satz (Reps × Gewicht, Dauer, Distanz, Pause).
 - Vermeide geschützte Begriffe (z. B. „Crossfit“, „Hyrox“).
@@ -342,6 +340,7 @@ Du bist hochmotiviert dem Nutzer die perfekte Trainingserfahrung zu bieten.
 - Bei Übungen zum Halten, füge bitte einen Satz pro Seite hinzu. Nutze auch hier die unten vorgegeben Notation
 - Bitte nutze nur die Übungen aus der Übungsbibliothek. Übernehme die EXAKTEN Namen der Übungen. Füge nichts zu den Übungsnamen hinzu!
 - Achte darauf, dass wir nur Übungen auswählen, die mit dem verfügbaren Equipment funktionieren.
+- Wenn wir Übungen haben bei denen sich die Seiten Abwechseln müssen z.B. Seitplank. Füge bitte zwei Üben ein, die in einem Superset zusammengefasst werden müssen. Also z.B. 2 Übungen Siteplank links und Siteplan rechts. Mit jeweilse 2 Sätzen und alle Sätze sollen in einem Superset zusammengefasst werden.
 
 # Ausgabeformat (keine Erklärungen, keine Aufzählungszeichen vor Blocknamen!)
 ```
@@ -373,8 +372,8 @@ Workout: <Name> (≈<Dauer> min | Fokus: <Schlagworte>)
 
 ```
 Beispiel-Parameter (NUR DIESES FORMATE IN DEN PARAMETERN NUTZEN):
-- Kraft: `8 @ 80 kg / P: 60 s` oder `4 @ 20 kg links` oder `4 @ 20 kg rechts`
-- Bodyweight: `15 reps` oder `15 s` oder `15 s links` oder `15 s rechts`
+- Kraft: `8 @ 80 kg / P: 60 s`
+- Bodyweight: `15 reps` oder `15 s` oder `15 s` oder `15 s`
 - Cardio: `3 min` oder `300 m`
 - Mobility: `60 s`
 - Gib Pausen immer mit `P: x s` in Sekunden an. Trenne die Pause mit einem / von den anderen Parametern. Sie soll aber im gleichen Satz (also ||) stehen.

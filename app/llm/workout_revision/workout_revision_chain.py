@@ -69,23 +69,23 @@ async def convert_revision_to_schema(freeform_revision_text: str) -> WorkoutSche
         structured_workout = await structured_llm.ainvoke(formatted_prompt)
         print("Successfully converted revision to structured schema")
         
-        # Dokumentiere Input/Output für Step 2
-        try:
-            ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            out_dir = Path(__file__).parent / "output"
-            out_dir.mkdir(exist_ok=True)
-            
-            # Input dokumentieren
-            input_path = out_dir / f"{ts}_revision_structure_conversion_input.md"
-            input_path.write_text(freeform_revision_text, encoding="utf-8")
-            
-            # Output dokumentieren
-            output_path = out_dir / f"{ts}_revision_structure_conversion_output.json"
-            output_path.write_text(structured_workout.model_dump_json(indent=2), encoding="utf-8")
-            
-            print(f"[LLM_DOCS] Revision structure conversion documented: {input_path} -> {output_path}")
-        except Exception as e:  # noqa: BLE001
-            print(f"[LLM_DOCS] Could not document revision structure conversion: {e}")
+        # NOTE: File output disabled for production deployment
+        # try:
+        #     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        #     out_dir = Path(__file__).parent / "output"
+        #     out_dir.mkdir(exist_ok=True)
+        #     
+        #     # Input dokumentieren
+        #     input_path = out_dir / f"{ts}_revision_structure_conversion_input.md"
+        #     input_path.write_text(freeform_revision_text, encoding="utf-8")
+        #     
+        #     # Output dokumentieren
+        #     output_path = out_dir / f"{ts}_revision_structure_conversion_output.json"
+        #     output_path.write_text(structured_workout.model_dump_json(indent=2), encoding="utf-8")
+        #     
+        #     print(f"[LLM_DOCS] Revision structure conversion documented: {input_path} -> {output_path}")
+        # except Exception as e:  # noqa: BLE001
+        #     print(f"[LLM_DOCS] Could not document revision structure conversion: {e}")
         
         return structured_workout
 
@@ -134,7 +134,7 @@ async def revise_workout_freeform(
         llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
 
         # Add reasoning to the prompt
-        await document_llm_input(formatted_prompt, "workout_revision_prompt_freeform.md")
+        # await document_llm_input(formatted_prompt, "workout_revision_prompt_freeform.md")
 
         print("Sending request to OpenAI API (freeform revision)…")
         response = await llm.ainvoke(formatted_prompt)
@@ -157,16 +157,16 @@ async def revise_workout_freeform(
         else:
             freeform_text = str(response)
 
-        # Dokumentiere Output (Markdown)
-        try:
-            ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            out_dir = Path(__file__).parent / "output"
-            out_dir.mkdir(exist_ok=True)
-            out_path = out_dir / f"{ts}_workout_revision_freeform_output.md"
-            out_path.write_text(freeform_text, encoding="utf-8")
-            print(f"[LLM_DOCS] Free-form revision output documented: {out_path}")
-        except Exception as e:  # noqa: BLE001
-            print(f"[LLM_DOCS] Could not document free-form revision output: {e}")
+        # NOTE: File output disabled for production deployment
+        # try:
+        #     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        #     out_dir = Path(__file__).parent / "output"
+        #     out_dir.mkdir(exist_ok=True)
+        #     out_path = out_dir / f"{ts}_workout_revision_freeform_output.md"
+        #     out_path.write_text(freeform_text, encoding="utf-8")
+        #     print(f"[LLM_DOCS] Free-form revision output documented: {out_path}")
+        # except Exception as e:  # noqa: BLE001
+        #     print(f"[LLM_DOCS] Could not document free-form revision output: {e}")
 
         return freeform_text
 

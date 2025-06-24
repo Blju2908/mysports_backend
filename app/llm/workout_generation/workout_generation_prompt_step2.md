@@ -7,11 +7,77 @@ Konvertiere den folgenden freien Workout-Text in das exakte JSON-Schema-Format. 
 3. **Set-Parameter**: Pro Satz: [Gewicht_kg, Wiederholungen, Dauer_sek, Distanz_m, Pause_sek] - nutze `null` für nicht relevante Werte. Achte darauf, dass die Parameter an den richtigen Stellen eingesetzt werden!!!
 4. **Superset-IDs**: Übernehme gleiche IDs (A, B, C) für gruppierte Übungen
 5. **Realistische Werte**: Behalte alle Gewichte, Zeiten und Wiederholungen bei
+6. **Keine Null-Bytes**: Verwende niemals Null-Bytes oder andere ungültige Zeichen
+
+# Vollständiges Workout-Beispiel
+Für ein Workout mit Warm-Up, Hauptteil und Cooldown:
+```json
+{
+  "name": "Krafttraining Oberkörper",
+  "description": "Vollständiges Krafttraining für den Oberkörper mit Warm-Up und Cooldown",
+  "duration": 60,
+  "focus": "Kraft, Oberkörper",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmung",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {"values": [null, null, 60, null, null]}
+          ]
+        },
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {"values": [null, 10, null, null, null]}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hauptteil",
+      "description": "Krafttraining Superset",
+      "exercises": [
+        {
+          "name": "Kurzhantel Bankdrücken",
+          "superset_id": "A",
+          "sets": [
+            {"values": [20, 12, null, null, 60]},
+            {"values": [20, 10, null, null, 60]},
+            {"values": [20, 8, null, null, 60]}
+          ]
+        },
+        {
+          "name": "Kurzhantel Rudern",
+          "superset_id": "A",
+          "sets": [
+            {"values": [20, 12, null, null, 0]},
+            {"values": [20, 10, null, null, 0]},
+            {"values": [20, 8, null, null, 0]}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cooldown",
+      "description": "Dehnung und Entspannung",
+      "exercises": [
+        {
+          "name": "Brustdehnung",
+          "sets": [
+            {"values": [null, null, 30, null, null]}
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
 
 # Input
-```
-{freeform_workout}
-```
+FREEFORM_WORKOUT_PLACEHOLDER
 
 # Ausgabe
 Ausschließlich korrektes JSON ohne Markdown oder zusätzliche Erklärungen. 

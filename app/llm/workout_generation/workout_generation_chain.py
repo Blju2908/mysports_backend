@@ -1,5 +1,5 @@
 from langchain_openai import ChatOpenAI
-from app.llm.utils.llm_documentation import document_llm_input
+from app.llm.utils.llm_documentation import document_llm_input, document_llm_output
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 from app.core.config import get_config
 from datetime import datetime
@@ -8,6 +8,22 @@ from pathlib import Path
 PROMPT_FILE = "workout_generation_prompt.md"
 PROMPT_FILE_FREEFORM = "workout_generation_prompt_step1.md"  # New prompt for the creative/free-form step-1 generation
 PROMPT_FILE_STRUCTURE = "workout_generation_prompt_step2.md"  # New prompt for structure conversion
+
+def clean_text_for_prompt(text: str | None) -> str:
+    """
+    Bereinigt Text für die Verwendung in Prompts.
+    Entfernt problematische Zeichen wie Null-Bytes, Steuerzeichen etc.
+    """
+    if text is None:
+        return ""
+    
+    # Entferne Null-Bytes und andere problematische Zeichen
+    cleaned = text.replace('\x00', '').replace('\r', '').strip()
+    
+    # Entferne andere Steuerzeichen (außer normalen Zeilenumbrüchen und Tabs)
+    cleaned = ''.join(char for char in cleaned if ord(char) >= 32 or char in ['\n', '\t'])
+    
+    return cleaned
 
 # ============================================================
 # Free-form workout draft (einziger Generator)
@@ -43,7 +59,7 @@ async def generate_workout_two_step(
     # Step 1: Freie Workout-Generierung
     freeform_text = await generate_workout(training_plan, training_history, user_prompt)
     
-    # Step 2: Strukturierung des freien Texts
+    # Step 2: Strukturierung des freien Texts (mit Bereinigung)
     structured_workout = await convert_freeform_to_schema(freeform_text)
     
     return structured_workout
@@ -54,13 +70,18 @@ async def convert_freeform_to_schema(freeform_text: str) -> WorkoutSchema:
     Nutzt ein kleines, schnelles LLM für die Strukturierung.
     """
     try:
+        # Bereinige den Input-Text vor der Verarbeitung
+        cleaned_freeform_text = clean_text_for_prompt(freeform_text)
+        
         # Load structure conversion prompt
         prompt_path = Path(__file__).parent / PROMPT_FILE_STRUCTURE
         with open(prompt_path, "r", encoding="utf-8") as f:
             prompt_template_content = f.read()
         
-        formatted_prompt = prompt_template_content.format(
-            freeform_workout=freeform_text
+        # Replace placeholder instead of using format() to avoid KeyError with curly braces
+        formatted_prompt = prompt_template_content.replace(
+            "FREEFORM_WORKOUT_PLACEHOLDER", 
+            cleaned_freeform_text
         )
         
         # API key aus der config holen
@@ -69,7 +90,7 @@ async def convert_freeform_to_schema(freeform_text: str) -> WorkoutSchema:
         
         # Nutze kleines, schnelles Modell für Strukturierung
         llm = ChatOpenAI(
-            model="gpt-4.1-mini", 
+            model="gpt-4.1-nano", 
             api_key=OPENAI_API_KEY,
             temperature=0.1  # Niedrige Temperatur für konsistente Strukturierung
         )
@@ -81,23 +102,23 @@ async def convert_freeform_to_schema(freeform_text: str) -> WorkoutSchema:
         structured_workout = await structured_llm.ainvoke(formatted_prompt)
         print("Successfully converted to structured schema")
         
-        # Dokumentiere Input/Output für Step 2
-        try:
-            ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            out_dir = Path(__file__).parent / "output"
-            out_dir.mkdir(exist_ok=True)
-            
-            # Input dokumentieren
-            input_path = out_dir / f"{ts}_structure_conversion_input.md"
-            input_path.write_text(freeform_text, encoding="utf-8")
-            
-            # Output dokumentieren
-            output_path = out_dir / f"{ts}_structure_conversion_output.json"
-            output_path.write_text(structured_workout.model_dump_json(indent=2, ensure_ascii=False), encoding="utf-8")
-            
-            print(f"[LLM_DOCS] Structure conversion documented: {input_path} -> {output_path}")
-        except Exception as e:  # noqa: BLE001
-            print(f"[LLM_DOCS] Could not document structure conversion: {e}")
+        # NOTE: File output disabled for production deployment
+        # try:
+        #     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        #     out_dir = Path(__file__).parent / "output"
+        #     out_dir.mkdir(exist_ok=True)
+        #     
+        #     # Input dokumentieren
+        #     input_path = out_dir / f"{ts}_structure_conversion_input.md"
+        #     input_path.write_text(cleaned_freeform_text, encoding="utf-8")
+        #     
+        #     # Output dokumentieren
+        #     output_path = out_dir / f"{ts}_structure_conversion_output.json"
+        #     output_path.write_text(structured_workout.model_dump_json(indent=2, ensure_ascii=False), encoding="utf-8")
+        #     
+        #     print(f"[LLM_DOCS] Structure conversion documented: {input_path} -> {output_path}")
+        # except Exception as e:  # noqa: BLE001
+        #     print(f"[LLM_DOCS] Could not document structure conversion: {e}")
         
         return structured_workout
 
@@ -138,18 +159,21 @@ async def generate_workout(
         OPENAI_API_KEY = config.OPENAI_API_KEY2
 
         reasoning = {
-            "effort": "medium",
+            "effort": "low",
             "summary": None
         }
         
         llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
 
         # Add reasoning to the prompt
-        await document_llm_input(formatted_prompt, "workout_generation_prompt_freeform.md")
+        # await document_llm_input(formatted_prompt, "workout_generation_prompt_freeform.md")
 
         print("Sending request to OpenAI API (free-form)…")
         response = await llm.ainvoke(formatted_prompt)
         print("Received response from OpenAI API (free-form)")
+
+        # await document_llm_output(response.content.text, "workout_generation_prompt_freeform.md")
+
 
         # Extract actual text content from LangChain response
         if hasattr(response, 'content'):
@@ -168,7 +192,10 @@ async def generate_workout(
         else:
             freeform_text = str(response)
 
-        # Dokumentiere Output (Markdown)
+        # Bereinige den Response-Text
+        freeform_text = clean_text_for_prompt(freeform_text)
+
+        # NOTE: File output disabled for production deployment
         try:
             from datetime import datetime as _dt
             ts = _dt.now().strftime("%Y-%m-%d_%H-%M-%S")

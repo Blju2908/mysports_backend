@@ -14,7 +14,6 @@ class Set(SQLModel, table=True):
     __tablename__ = "sets"
     id: Optional[int] = Field(default=None, primary_key=True)
     exercise_id: int = Field(foreign_key="exercises.id", ondelete="CASCADE")
-    description: Optional[str] = None
     
     # Planned values
     weight: Optional[float] = None
