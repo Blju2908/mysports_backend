@@ -14,6 +14,7 @@ class WorkoutStatusEnum(str, Enum):
 class SetResponseSchema(BaseModel):
     id: int
     exercise_id: int
+    description: Optional[str] = None
     weight: Optional[float] = None
     reps: Optional[int] = None
     duration: Optional[int] = None
@@ -28,10 +29,8 @@ class SetResponseSchema(BaseModel):
 class ExerciseResponseSchema(BaseModel):
     id: int
     name: str
-    description: Optional[str] = None
     notes: Optional[str] = None
     superset_id: Optional[str] = None
-    is_amrap: bool = False
     block_id: int
     sets: List[SetResponseSchema]
 

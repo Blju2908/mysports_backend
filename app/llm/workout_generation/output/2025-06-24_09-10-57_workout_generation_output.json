@@ -1,0 +1,192 @@
+{
+  "name": "Gym HY Functional Conditioning",
+  "description": "45 Minuten ausdauerbetontes Ganzkörper-Workout im HY-Funktionalstil. Hohe Trainingsdichte, Fokus: Cardio, Kraftausdauer, funktionale Bewegungsmuster. Perfekt für athletische Zielsetzung und optimale Körperzusammensetzung. Speziell mit Blick auf Meniskus-OP: gelenkschonende Übungsauswahl, Mobilität für Hüfte integriert.",
+  "duration": 45,
+  "focus": "Ganzkörper, Kraftausdauer, Conditioning",
+  "blocks": [
+    {
+      "name": "Warm-Up & Prehab",
+      "description": "Steigert Puls, mobilisiert Hüfte und bereitet auf das intensive Hauptprogramm vor.",
+      "exercises": [
+        {
+          "name": "Rudergerät",
+          "description": "Rhythmisches, moderates Rudern zur Aktivierung des Herz-Kreislauf-Systems.",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                180,
+                null,
+                30
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "90-90 Hip Mobility",
+          "description": "Langsame Rotationsbewegungen zur Verbesserung der Hüftmobilität (je Seite insgesamt ausführen).",
+          "sets": [
+            {
+              "values": [
+                null,
+                16,
+                null,
+                null,
+                30
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Reverse Lunge to Overhead Reach",
+          "description": "Dynamische Ausfallschritte mit Überkopf-Stretch (abwechselnd Seiten, kontrolliert).",
+          "sets": [
+            {
+              "values": [
+                null,
+                16,
+                null,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ],
+      "is_amrap": false,
+      "amrap_duration_minutes": null
+    },
+    {
+      "name": "Hauptteil - AMRAP 18min HY Functional Circuit",
+      "description": "AMRAP: 18 Minuten - Maximiere die Anzahl der Durchgänge. Fokus: Functional, metabolische Belastung, Alltagsbewegungen. Pausen zwischen Übungen: minimal, zwischen Runden 90 Sekunden bei Bedarf.",
+      "exercises": [
+        {
+          "name": "Schlitten schieben (push, mittleres Gewicht)",
+          "description": "Arme durchstrecken, Rücken stabil, Tempo zügig, aber kontrolliert. 20 Meter pro Runde. Alternative bei fehlendem Schlitten: Walken am Laufband kräftig mit Neigung und Zusatzgewicht im Rucksack.",
+          "sets": [
+            {
+              "values": [
+                60,
+                null,
+                null,
+                20,
+                30
+              ]
+            }
+          ],
+          "superset_id": "A"
+        },
+        {
+          "name": "Kettlebell Goblet Squat",
+          "description": "Tiefer, bewegungskontrollierter Squat, Kettlebell auf Brusthöhe halten. Knie stabil, Hüfte mobil.",
+          "sets": [
+            {
+              "values": [
+                24,
+                16,
+                null,
+                null,
+                30
+              ]
+            }
+          ],
+          "superset_id": "A"
+        },
+        {
+          "name": "Burpee Over Rower",
+          "description": "Explosiver Burpee, dann über das Rudergerät springen (Alternativ: Medizinball, Barriere). Schnelle Ausführung, nur leichte Abdämpfung.",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ]
+            }
+          ],
+          "superset_id": "A"
+        },
+        {
+          "name": "Klimmzüge (neutral, unterstützend bei Bedarf)",
+          "description": "Strikte Ausführung, Fokus auf Volumen und Range of Motion.",
+          "sets": [
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                30
+              ]
+            }
+          ],
+          "superset_id": "A"
+        },
+        {
+          "name": "Kurzhantel Farmer's Walk",
+          "description": "Schwere Kurzhanteln, aufrechte Haltung, 20 Meter gehen. Griffkraft und Core stabil.",
+          "sets": [
+            {
+              "values": [
+                24,
+                null,
+                null,
+                20,
+                0
+              ]
+            }
+          ],
+          "superset_id": "A"
+        }
+      ],
+      "is_amrap": true,
+      "amrap_duration_minutes": 18
+    },
+    {
+      "name": "Cooldown & Mobility",
+      "description": "Runterfahren, Regeneration anregen, Fokus auf Hüft- und Beinmobilität.",
+      "exercises": [
+        {
+          "name": "Pigeon Pose (wechselnd)",
+          "description": "Tiefe Dehnung Außenseite/Hüfte, angenehme Intensität pro Seite.",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                15
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Hamstring Stretch (stehend/liegend)",
+          "description": "Dehnung Beinrückseite, beide Seiten abwechselnd.",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                0
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ],
+      "is_amrap": false,
+      "amrap_duration_minutes": null
+    }
+  ]
+}

@@ -1,0 +1,410 @@
+{
+  "name": "Upper Body Push/Pull",
+  "description": "Workout bestehend aus Aufw\u0000e4rmen, schweren Grund\u0000fcbungen und Hypertrophie sowie Cool-Down mit Fokus auf Kraft und Hypertrophie.",
+  "duration": 60,
+  "focus": "Kraft, Hypertrophie",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Allgemeine Mobilit\u0000e4t",
+      "exercises": [
+        {
+          "name": "Rowing Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                300,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Torso Twists",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Shoulder Pass-Through",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Main",
+      "description": "Schwere Grund\u0000fcbungen + Hypertrophie",
+      "exercises": [
+        {
+          "name": "Bench Press",
+          "sets": [
+            {
+              "values": [
+                80,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                80,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                85,
+                6,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                85,
+                6,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Bent-over Row",
+          "sets": [
+            {
+              "values": [
+                65,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                65,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                65,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                70,
+                6,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Incline Dumbbell Press",
+          "sets": [
+            {
+              "values": [
+                24,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                24,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                24,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Lat Pulldown",
+          "sets": [
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Seated Dumbbell Shoulder Press",
+          "sets": [
+            {
+              "values": [
+                16,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                16,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                18,
+                8,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Face Pull",
+          "sets": [
+            {
+              "values": [
+                20,
+                15,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                20,
+                15,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Mobilit\u0000e4t & Dehnung",
+      "exercises": [
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "links"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "rechts"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Cross-Body Shoulder Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "links"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "rechts"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Thoracic Spine Rotation (Quadruped)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "links"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "rechts"
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    }
+  ]
+}

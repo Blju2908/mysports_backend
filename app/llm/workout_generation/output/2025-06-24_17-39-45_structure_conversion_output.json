@@ -1,0 +1,394 @@
+{
+  "name": "Upper Body A",
+  "description": "Oberkörper Kraft & Hypertrophie Workout mit Warm-Up, Hauptteil und Cool-Down.",
+  "duration": 60,
+  "focus": "Oberkörper, Kraft, Hypertrophie",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Gelenkmobilisierung & Aktivierung",
+      "exercises": [
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Shoulder Pass-Through",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Main",
+      "description": "Krafttraining Oberkörper",
+      "exercises": [
+        {
+          "name": "Bench Press",
+          "sets": [
+            {
+              "values": [
+                90,
+                8,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                90,
+                8,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                90,
+                8,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                90,
+                8,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                65,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                65,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                65,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                65,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Incline Bench Press",
+          "sets": [
+            {
+              "values": [
+                70,
+                10,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                70,
+                10,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                70,
+                10,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Seated Dumbbell Shoulder Press",
+          "sets": [
+            {
+              "values": [
+                22.5,
+                10,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                22.5,
+                10,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                22.5,
+                10,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Pull-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Face Pull",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung & Relaxation",
+      "exercises": [
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Cross-Body Shoulder Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "description": "links"
+            },
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "description": "rechts"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Thoracic Extension over Foam Roller",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    }
+  ]
+}

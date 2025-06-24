@@ -1,0 +1,420 @@
+{
+  "name": "Oberkörper Kraft",
+  "description": "Workout bestehend aus Warm-Up, Hauptteil und Cool-Down mit Fokus auf Brust, Rücken, Schultern und Arme.",
+  "duration": 60,
+  "focus": "Brust, Rücken, Schultern, Arme",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilität & Aktivierung",
+      "exercises": [
+        {
+          "name": "Rowing Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                300,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Shoulder Pass-Through",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Torso Twists",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Bird Dog Reach",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Main",
+      "description": "Kraft & Muskelaufbau",
+      "exercises": [
+        {
+          "name": "Bench Press",
+          "sets": [
+            {
+              "values": [
+                80,
+                5,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                80,
+                5,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                80,
+                5,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                80,
+                5,
+                null,
+                null,
+                120
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Barbell Bent-over Row",
+          "sets": [
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Strict Overhead Press",
+          "sets": [
+            {
+              "values": [
+                45,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                45,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                45,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                45,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Lat Pulldown",
+          "sets": [
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Skullcrusher",
+          "sets": [
+            {
+              "values": [
+                20,
+                12,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                20,
+                12,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                20,
+                12,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Dumbbell Curl",
+          "sets": [
+            {
+              "values": [
+                12,
+                12,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                12,
+                12,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                12,
+                12,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung & Mobilität",
+      "exercises": [
+        {
+          "name": "Child’s Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Cross-Body Shoulder Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "rechts"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "links"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "rechts"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "links"
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    }
+  ]
+}

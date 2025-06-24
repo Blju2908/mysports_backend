@@ -7,7 +7,7 @@ from datetime import datetime
 
 from app.db.trainingplan_db_access import get_training_plan_for_user
 from app.db.workout_db_access import get_training_history_for_user_from_db
-from app.llm.workout_generation.workout_generation_chain import generate_workout
+from app.llm.workout_generation.workout_generation_chain import generate_workout_two_step
 from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise
@@ -56,28 +56,27 @@ async def run_workout_chain(
             )
         
     # LLM-Call durchführen
-    llm_output_schema = await generate_workout(
+    workout_schema = await generate_workout_two_step(
         training_plan=formatted_training_plan,
         training_history=formatted_history,
         user_prompt=user_prompt,
     )
 
-    workout_model = convert_llm_output_to_db_models(
-        llm_output_schema.model_dump(),
-        training_plan_id=training_plan_id_for_saving,
-    )
-
+    # Konvertiere zu DB-Models falls gewünscht
     if save_to_db:
+        workout_model = convert_llm_output_to_db_models(
+            workout_schema.model_dump(),
+            training_plan_id=training_plan_id_for_saving,
+        )
+        
         db.add(workout_model)
         await db.commit()
         await db.refresh(workout_model)
-        print(
-            f"Workout erfolgreich in Datenbank gespeichert mit ID: {workout_model.id}"
-        )
+        print(f"Workout erfolgreich in Datenbank gespeichert mit ID: {workout_model.id}")
         return workout_model
     else:
-        # Return the raw Pydantic model output as a dict
-        return llm_output_schema.model_dump()
+        # Return the structured schema
+        return workout_schema
 
 def format_training_plan_for_llm(training_plan) -> str:
     """
@@ -354,46 +353,22 @@ def convert_llm_output_to_db_models(
         for exercise_data in block_data.get("exercises", []):
             exercise_model = Exercise(
                 name=exercise_data.get("name", "Unbenannte Übung"),
-                description=exercise_data.get("description"),
                 superset_id=exercise_data.get("superset_id"),
                 sets=[],
             )
 
             for set_data_from_llm in exercise_data.get("sets", []):
-                set_obj = None
+                # Verwende die neue Set.from_values_list Methode
                 if isinstance(set_data_from_llm, dict) and "values" in set_data_from_llm:
                     values = set_data_from_llm.get("values", [])
-                    if not isinstance(values, list):
-                        print(f"Skipping set data as 'values' is not a list: {values}")
-                        continue
-
-                    # Ensure values list has at least 5 elements, padding with None if shorter
-                    padded_values = (values + [None] * 5)[:5]
+                    set_obj = Set.from_values_list(values)
                     
-                    v_weight, v_reps, v_duration, v_distance, v_rest_time = padded_values
-
-                    # Check if any numerical value is present or if notes are present
-                    has_numerical_value = any(
-                        val is not None for val in [v_weight, v_reps, v_duration, v_distance, v_rest_time]
-                    )
-
-                    if has_numerical_value:
-                        set_obj = Set(
-                            weight=float(v_weight) if v_weight is not None else None,
-                            reps=int(v_reps) if v_reps is not None else None,
-                            duration=int(v_duration) if v_duration is not None else None,
-                            distance=float(v_distance) if v_distance is not None else None,
-                            rest_time=int(v_rest_time) if v_rest_time is not None else None,
-                        )
+                    if set_obj:
+                        exercise_model.sets.append(set_obj)
                     else:
-                        print(f"Skipping set data as all values are None and no notes provided: {values}")
-                        continue
+                        print(f"Skipping set data - no valid values: {values}")
                 else:
                     print(f"Skipping set data due to unexpected format or missing 'values' key: {set_data_from_llm}")
-                    continue
-                
-                if set_obj:
-                    exercise_model.sets.append(set_obj)
 
             if exercise_model.sets:
                 block_model.exercises.append(exercise_model)

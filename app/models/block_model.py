@@ -13,8 +13,6 @@ class Block(SQLModel, table=True):
     name: str
     description: Optional[str] = None
     notes: Optional[str] = Field(default=None)
-    is_amrap: bool = Field(default=False, description="True, wenn der Block ein AMRAP Block ist.")
-    amrap_duration_minutes: Optional[int] = Field(default=None, description="Gesamtdauer des AMRAP-Blocks in Minuten. Nur setzen, wenn is_amrap True ist.")
 
     workout: "Workout" = Relationship(back_populates="blocks")
     exercises: List["Exercise"] = Relationship(back_populates="block", cascade_delete=True)

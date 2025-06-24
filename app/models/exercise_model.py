@@ -9,7 +9,7 @@ class Exercise(SQLModel, table=True):
     __tablename__ = "exercises"
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
-    description: Optional[str] = None
+    description: Optional[str] = Field(default=None)
     notes: Optional[str] = Field(default=None)
     superset_id: Optional[str] = Field(default=None, description="Eindeutige ID für Supersets. Übungen mit derselben superset_id werden abwechselnd ausgeführt.")
     block_id: int = Field(foreign_key="blocks.id", ondelete="CASCADE")

@@ -9,7 +9,6 @@ from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set, SetStatus
 from app.models.training_plan_model import TrainingPlan
-from app.models.user_model import UserModel # Added import for UserModel
 
 
 async def load_workouts_for_user(
@@ -139,7 +138,6 @@ async def get_user_workout_history(user_id: UUID, db: AsyncSession, limit: int =
                     filtered_exercise = Exercise(
                         id=exercise.id,
                         name=exercise.name,
-                        description=exercise.description,
                         notes=exercise.notes,
                         block_id=exercise.block_id,
                         sets=completed_sets

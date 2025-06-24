@@ -1,0 +1,400 @@
+{
+  "name": "Push Day",
+  "description": "Workout mit Fokus auf Brust, Schultern und Trizeps, ca. 60 Minuten Dauer.",
+  "duration": 60,
+  "focus": "Brust, Schultern, Trizeps",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilität & allgemeine Erwärmung",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                120,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Torso Twists",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Shoulder Pass-Through",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                5,
+                null,
+                null,
+                30
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Main",
+      "description": "Kraftfokus Brust, Schultern, Trizeps",
+      "exercises": [
+        {
+          "name": "Bench Press",
+          "sets": [
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                90
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Incline Dumbbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                24,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                24,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                24,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Dumbbell Shoulder Press",
+          "sets": [
+            {
+              "values": [
+                16,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                16,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                16,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Lateral Raise",
+          "sets": [
+            {
+              "values": [
+                8,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                8,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                8,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Close-Grip Bench Press",
+          "sets": [
+            {
+              "values": [
+                50,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                50,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                50,
+                10,
+                null,
+                null,
+                60
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Dumbbell Overhead Triceps Extension",
+          "sets": [
+            {
+              "values": [
+                14,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                14,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            },
+            {
+              "values": [
+                14,
+                12,
+                null,
+                null,
+                45
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnen & Flexibilität",
+      "exercises": [
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "links"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "rechts"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Triceps Overhead Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "links"
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": "rechts"
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Child’s Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                null
+              ],
+              "description": null
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    }
+  ]
+}

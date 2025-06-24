@@ -1,0 +1,392 @@
+{
+  "name": "Push-Tag",
+  "description": "Workout: Push-Tag (≈60 min | Fokus: Brust, Schulter, Trizeps)",
+  "duration": 60,
+  "focus": "Brust, Schulter, Trizeps",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilität & Activation",
+      "exercises": [
+        {
+          "name": "Arm Circles",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                60,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Shoulder Pass-Through",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                60,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Inchworm Walkout",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                5,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "World’s Greatest Stretch",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                6,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Push-up",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Main",
+      "description": "Hypertrophie & Kraft",
+      "exercises": [
+        {
+          "name": "Bench Press",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                60,
+                8,
+                90,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                60,
+                8,
+                90,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                60,
+                8,
+                90,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                60,
+                8,
+                90,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Incline Bench Press",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                40,
+                10,
+                90,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                40,
+                10,
+                90,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                40,
+                10,
+                90,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Strict Overhead Press",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                40,
+                6,
+                90,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                40,
+                6,
+                90,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                40,
+                6,
+                90,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                40,
+                6,
+                90,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Lateral Raise",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                8,
+                15,
+                60,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                8,
+                15,
+                60,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                8,
+                15,
+                60,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Skullcrusher",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                30,
+                12,
+                60,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                30,
+                12,
+                60,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                30,
+                12,
+                60,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Overhead Triceps Extension",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                12,
+                12,
+                60,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                12,
+                12,
+                60,
+                null,
+                null
+              ]
+            },
+            {
+              "values": [
+                12,
+                12,
+                60,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung & Mobilität",
+      "exercises": [
+        {
+          "name": "Doorway Pec Stretch",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                60,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Triceps Overhead Stretch",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                60,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Child’s Pose",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                60,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        },
+        {
+          "name": "Thread the Needle",
+          "description": null,
+          "sets": [
+            {
+              "values": [
+                null,
+                60,
+                null,
+                null,
+                null
+              ]
+            }
+          ],
+          "superset_id": null
+        }
+      ]
+    }
+  ]
+}

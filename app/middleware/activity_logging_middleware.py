@@ -9,7 +9,7 @@ from app.models.user_activity_log_model import ActivityActionType
 from app.core.auth import get_current_user_optional
 import logging
 
-
+logger = logging.getLogger(__name__)
 
 class ActivityLoggingMiddleware(BaseHTTPMiddleware):
     """

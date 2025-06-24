@@ -34,7 +34,6 @@ class ExerciseBaseSchema(BaseModel):
     description: Optional[str] = None
     notes: Optional[str] = None
     superset_id: Optional[str] = None
-    is_amrap: bool = Field(default=False)
 
 class ExerciseResponseSchema(ExerciseBaseSchema):
     id: int
@@ -48,8 +47,6 @@ class BlockBaseSchema(BaseModel):
     name: str
     description: Optional[str] = None
     notes: Optional[str] = None
-    is_amrap: bool = Field(default=False)
-    amrap_duration_minutes: Optional[int] = None
 
 class BlockResponseSchema(BlockBaseSchema):
     id: int
