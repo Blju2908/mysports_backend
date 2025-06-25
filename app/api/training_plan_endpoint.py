@@ -89,26 +89,38 @@ async def update_my_training_plan(
     current_user: User = Depends(get_current_user)
 ):
     """
-    ✅ BEST PRACTICE: Kombinierte Query + Smart Field Updates
+    ✅ UPSERT: Erstellt oder updated TrainingPlan
     """
-    # 🔥 OPTIMIERT: Eine Query für User + TrainingPlan + Security Check!
+    # 🔥 UPSERT: OuterJoin um sowohl existierende als auch neue Pläne zu handhaben
     query = (
         select(UserModel, TrainingPlan)
-        .join(TrainingPlan, UserModel.training_plan_id == TrainingPlan.id)
-        .where(
-            UserModel.id == UUID(current_user.id),
-            UserModel.training_plan_id.is_not(None)  # User muss Plan haben
-        )
+        .outerjoin(TrainingPlan, UserModel.training_plan_id == TrainingPlan.id)
+        .where(UserModel.id == UUID(current_user.id))
     )
     result = await db.execute(query)
     user_plan_tuple = result.first()
     
     if not user_plan_tuple:
-        raise HTTPException(status_code=404, detail="Training plan not found")
+        # User existiert nicht - erstellen mit Plan
+        user = UserModel(id=UUID(current_user.id))
+        plan = TrainingPlan()
+        db.add(plan)
+        await db.flush()  # Plan ID bekommen
+        
+        user.training_plan_id = plan.id
+        db.add(user)
+    else:
+        user, plan = user_plan_tuple
+        
+        if not plan:
+            # User existiert, aber kein Plan - Plan erstellen
+            plan = TrainingPlan()
+            db.add(plan)
+            await db.flush()
+            
+            user.training_plan_id = plan.id
     
-    user, plan = user_plan_tuple
-    
-    # ✅ Smart Field Updates - exclude_unset nur gesetzte Felder!
+    # ✅ Update alle Felder aus dem Request
     update_data = plan_update.model_dump(exclude_unset=True, exclude={"id"})
     for field, value in update_data.items():
         setattr(plan, field, value)
@@ -119,4 +131,4 @@ async def update_my_training_plan(
         return TrainingPlanSchema.model_validate(plan)  # ✅ Auto-Serialization!
     except Exception as e:
         await db.rollback()
-        raise HTTPException(status_code=500, detail=f"Error updating training plan: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error upserting training plan: {str(e)}")

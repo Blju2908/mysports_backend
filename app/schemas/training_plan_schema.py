@@ -11,37 +11,37 @@ class TrainingPlanSchema(BaseModel):
     """
     ✅ CLEAN SCHEMA: Direkte SQLModel Serialisierung ohne komplexe Konvertierungen
     """
-    id: Optional[int]
+    id: Optional[int] = None
     
     # Personal Info
-    gender: Optional[str]
-    birthdate: Optional[date]
-    height: Optional[float]
-    weight: Optional[float]
+    gender: Optional[str] = None
+    birthdate: Optional[date] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
     
     # Training Goals
-    goal_details: Optional[str]
+    goal_details: Optional[str] = None
     workout_styles: Optional[List[str]] = Field(default_factory=list)
     
     # Experience & Fitness
-    fitness_level: Optional[int]
-    experience_level: Optional[int]
+    fitness_level: Optional[int] = None
+    experience_level: Optional[int] = None
     
     # Training Schedule
-    training_frequency: Optional[int]
-    session_duration: Optional[int]
-    other_regular_activities: Optional[str]
+    training_frequency: Optional[int] = None
+    session_duration: Optional[int] = None
+    other_regular_activities: Optional[str] = None
     
     # Equipment & Environment
     equipment: Optional[List[str]] = Field(default_factory=list)
-    equipment_details: Optional[str]
+    equipment_details: Optional[str] = None
     
     # Restrictions & Limitations
-    restrictions: Optional[str]
-    mobility_restrictions: Optional[str]
+    restrictions: Optional[str] = None
+    mobility_restrictions: Optional[str] = None
     
     # Comments
-    comments: Optional[str]
+    comments: Optional[str] = None
     
     # ✅ MINIMAL VALIDATORS - Nur wo wirklich nötig!
     @field_validator('equipment', 'workout_styles', mode='before')
