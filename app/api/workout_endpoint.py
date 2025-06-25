@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select 
+from sqlalchemy import select, func, case
 from typing import List, Optional
 from sqlalchemy.orm import selectinload
 from datetime import datetime
@@ -15,11 +15,14 @@ from app.models.set_model import Set, SetStatus
 from app.models.user_model import UserModel
 from app.services.llm_logging_service import log_workout_revision, log_workout_revision_accept
 from app.schemas.workout_schema import (
+    WorkoutListRead,
     WorkoutRead,
     WorkoutWithBlocksRead,
     BlockRead,
     BlockInput,
-    SetRead
+    SetRead,
+    SetUpdate,
+    WorkoutStatusEnum
 )
 from app.llm.workout_revision.workout_revision_schemas import (
     WorkoutRevisionRequestSchema,
@@ -56,11 +59,15 @@ router = APIRouter(tags=["workouts"])
 
 
 
-@router.get("/", response_model=List[WorkoutRead])
+@router.get("/", response_model=List[WorkoutListRead])
 async def get_user_workouts(
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
+    """
+    ✅ OPTIMIZED: Effiziente Workout-Liste mit DB-Level Status-Berechnung
+    Lädt keine Relations - minimaler Traffic, maximale Performance
+    """
 
     user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
     result = await db.execute(user_query)
@@ -69,22 +76,61 @@ async def get_user_workouts(
     if not user or not user.training_plan_id:
         return []
 
-    # Einfache Query mit Relations laden
-    workout_query = (
-        select(Workout)
-        .options(
-            selectinload(Workout.blocks)
-            .selectinload(Block.exercises)
-            .selectinload(Exercise.sets)
+    # ✅ Subqueries für effiziente Status-Berechnung ohne Relations zu laden
+    total_sets_subquery = (
+        select(func.count(Set.id))
+        .select_from(Set)
+        .join(Exercise, Set.exercise_id == Exercise.id)
+        .join(Block, Exercise.block_id == Block.id)
+        .where(Block.workout_id == Workout.id)
+    ).scalar_subquery()
+
+    done_sets_subquery = (
+        select(func.count(Set.id))
+        .select_from(Set)
+        .join(Exercise, Set.exercise_id == Exercise.id)
+        .join(Block, Exercise.block_id == Block.id)
+        .where(
+            Block.workout_id == Workout.id,
+            Set.status == SetStatus.done
         )
+    ).scalar_subquery()
+
+    # ✅ Status direkt in der Datenbank berechnen
+    status_case = case(
+        (total_sets_subquery == 0, "not_started"),
+        (done_sets_subquery == total_sets_subquery, "done"),
+        (done_sets_subquery > 0, "started"),
+        else_="not_started"
+    ).label("computed_status")
+
+    # ✅ Schlanke Query ohne Relations - nur Basic Workout-Daten + Status
+    workout_query = (
+        select(Workout, status_case)
         .where(Workout.training_plan_id == user.training_plan_id)
         .order_by(Workout.date_created.desc())
     )
 
     result = await db.execute(workout_query)
-    workouts = result.scalars().all()
+    workout_tuples = result.all()
 
-    return [WorkoutRead.model_validate(w) for w in workouts]
+    # ✅ Manual mapping mit computed status
+    workouts = []
+    for workout_obj, computed_status in workout_tuples:
+        workout_dict = {
+            "id": workout_obj.id,
+            "training_plan_id": workout_obj.training_plan_id,
+            "name": workout_obj.name,
+            "date_created": workout_obj.date_created,
+            "description": workout_obj.description,
+            "duration": workout_obj.duration,
+            "focus": workout_obj.focus,
+            "notes": workout_obj.notes,
+            "status": computed_status  # ✅ Direkt von DB berechnet!
+        }
+        workouts.append(WorkoutListRead(**workout_dict))
+
+    return workouts
 
 
 @router.get("/{workout_id}", response_model=WorkoutWithBlocksRead)

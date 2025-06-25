@@ -97,8 +97,28 @@ class BlockRead(BaseModel):
     notes: Optional[str] = None
     exercises: List[ExerciseRead] = []
 
-# Workout Schema - mit computed status
+# ==========================================
+# WORKOUT SCHEMAS - Optimiert für verschiedene Use Cases
+# ==========================================
+
+# Schlankes Schema für Workout-Listen (ohne Relations)
+class WorkoutListRead(BaseModel):
+    """Effizientes Schema für Workout-Listen ohne Relations - minimaler Traffic"""
+    model_config = {"from_attributes": True}
+    
+    id: int
+    training_plan_id: Optional[int] = None
+    name: str
+    date_created: datetime
+    description: Optional[str] = None
+    duration: Optional[int] = None
+    focus: Optional[str] = None
+    notes: Optional[str] = None
+    status: WorkoutStatusEnum  # ✅ Wird direkt von der DB gesetzt
+
+# Vollständiges Schema für Workout-Details (mit Relations)
 class WorkoutRead(BaseModel):
+    """Vollständiges Schema mit Relations für Detail-Ansichten"""
     model_config = {"from_attributes": True}  # ✅ SQLModel Best Practice!
     
     id: int
@@ -109,12 +129,13 @@ class WorkoutRead(BaseModel):
     duration: Optional[int] = None
     focus: Optional[str] = None
     notes: Optional[str] = None
+    blocks: List[BlockRead] = []
     
     @computed_field
     @property
     def status(self) -> WorkoutStatusEnum:
-        """Berechnet Status automatisch - keine separate DB Query nötig!"""
-        if not hasattr(self, 'blocks') or not self.blocks:
+        """Berechnet Status aus geladenen Relations"""
+        if not self.blocks:
             return WorkoutStatusEnum.NOT_STARTED
         
         all_sets = [s for block in self.blocks for ex in block.exercises for s in ex.sets]
@@ -129,7 +150,7 @@ class WorkoutRead(BaseModel):
             return WorkoutStatusEnum.STARTED
         return WorkoutStatusEnum.NOT_STARTED
 
-# Detailed Workout - erweitert WorkoutRead
+# Detailed Workout - erweitert WorkoutRead (für Backward Compatibility)
 class WorkoutWithBlocksRead(WorkoutRead):
     blocks: List[BlockRead] = []
 

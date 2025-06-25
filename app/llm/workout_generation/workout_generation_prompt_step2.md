@@ -8,6 +8,16 @@ Konvertiere den folgenden freien Workout-Text in das exakte JSON-Schema-Format. 
 4. **Superset-IDs**: Übernehme gleiche IDs (A, B, C) für gruppierte Übungen
 5. **Realistische Werte**: Behalte alle Gewichte, Zeiten und Wiederholungen bei
 6. **Keine Null-Bytes**: Verwende niemals Null-Bytes oder andere ungültige Zeichen
+7. **Vollständigkeit**: Gib immer das gesamte Workout aus!
+
+Parameternotation des Inputs:
+- Gewicht + Wiederholungen: `8 @ 80 kg / P: 60 s`
+- Wiederholungen: `15 reps`
+- Dauer: `60 s`
+- Dauer und Gewicht: `60 s @ 80 kg`
+- Distanz: `300 m`
+- Pause: `... / P: 60 s` --> Pause in Sekunden
+
 
 # Vollständiges Workout-Beispiel
 Für ein Workout mit Warm-Up, Hauptteil und Cooldown:

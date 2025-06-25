@@ -90,7 +90,7 @@ async def convert_freeform_to_schema(freeform_text: str) -> WorkoutSchema:
         
         # Nutze kleines, schnelles Modell für Strukturierung
         llm = ChatOpenAI(
-            model="gpt-4.1-nano", 
+            model="gpt-4.1-mini", 
             api_key=OPENAI_API_KEY,
             temperature=0.1  # Niedrige Temperatur für konsistente Strukturierung
         )
@@ -159,7 +159,7 @@ async def generate_workout(
         OPENAI_API_KEY = config.OPENAI_API_KEY2
 
         reasoning = {
-            "effort": "low",
+            "effort": "medium",
             "summary": None
         }
         
