@@ -47,8 +47,8 @@ async def convert_revision_to_schema(freeform_revision_text: str) -> WorkoutSche
         with open(prompt_path, "r", encoding="utf-8") as f:
             prompt_template_content = f.read()
         
-        formatted_prompt = prompt_template_content.format(
-            freeform_revision=freeform_revision_text
+        formatted_prompt = prompt_template_content.replace(
+            "{freeform_revision}", freeform_revision_text
         )
         
         # API key aus der config holen
@@ -127,7 +127,7 @@ async def revise_workout_freeform(
         OPENAI_API_KEY = config.OPENAI_API_KEY2
 
         reasoning = {
-            "effort": "medium",
+            "effort": "low",
             "summary": None
         }
         

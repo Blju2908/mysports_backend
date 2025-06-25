@@ -7,7 +7,94 @@ Konvertiere den folgenden freien Workout-Revisions-Text in das exakte JSON-Schem
 3. **Set-Parameter**: Pro Satz: [Gewicht_kg, Wiederholungen, Dauer_sek, Distanz_m, Pause_sek] - nutze `null` für nicht relevante Werte. Achte darauf, dass die Parameter an den richtigen Stellen eingesetzt werden!!!
 4. **Superset-IDs**: Übernehme gleiche IDs (A, B, C) für gruppierte Übungen
 5. **Realistische Werte**: Behalte alle Gewichte, Zeiten und Wiederholungen bei
-6. **Änderungen berücksichtigen**: Integriere alle beschriebenen Änderungen aus der Revision
+6. **Keine Null-Bytes**: Verwende niemals Null-Bytes oder andere ungültige Zeichen
+7. **Vollständigkeit**: Gib immer das gesamte Workout aus!
+8. **Änderungen berücksichtigen**: Integriere alle beschriebenen Änderungen aus der Revision
+
+Parameternotation des Inputs:
+- Gewicht + Wiederholungen: `8 @ 80 kg / P: 60 s`
+- Wiederholungen: `15 reps`
+- Dauer: `60 s`
+- Dauer und Gewicht: `60 s @ 80 kg`
+- Distanz: `300 m`
+- Pause: `... / P: 60 s` --> Pause in Sekunden
+
+
+# Vollständiges Workout-Beispiel
+(Beispiel für Warm-Up, Hauptteil und Cool-Down)
+```json
+{
+  "name": "Krafttraining Oberkörper (Revision)",
+  "description": "Überarbeitetes Krafttraining für den Oberkörper einschließlich Warm-Up und Cool-Down",
+  "duration": 60,
+  "focus": "Kraft, Oberkörper",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmung",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {"values": [null, null, 60, null, null]}
+          ]
+        },
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {"values": [null, 10, null, null, null]}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hauptteil",
+      "description": "Krafttraining Superset",
+      "exercises": [
+        {
+          "name": "Kurzhantel Bankdrücken",
+          "superset_id": "A",
+          "sets": [
+            {"values": [20, 12, null, null, 60]},
+            {"values": [20, 10, null, null, 60]},
+            {"values": [20, 8, null, null, 60]}
+          ]
+        },
+        {
+          "name": "Kurzhantel Rudern links",
+          "superset_id": "A",
+          "sets": [
+            {"values": [20, 12, null, null, 0]},
+            {"values": [20, 10, null, null, 0]},
+            {"values": [20, 8, null, null, 0]}
+          ]
+        },
+        {
+          "name": "Kurzhantel Rudern rechts",
+          "superset_id": "A",
+          "sets": [
+            {"values": [20, 12, null, null, 0]},
+            {"values": [20, 10, null, null, 0]},
+            {"values": [20, 8, null, null, 0]}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cooldown",
+      "description": "Dehnung und Entspannung",
+      "exercises": [
+        {
+          "name": "Brustdehnung",
+          "sets": [
+            {"values": [null, null, 30, null, null]}
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
 
 # Input
 ```

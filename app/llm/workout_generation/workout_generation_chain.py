@@ -26,23 +26,6 @@ def clean_text_for_prompt(text: str | None) -> str:
     return cleaned
 
 # ============================================================
-# Free-form workout draft (einziger Generator)
-
-
-# NOTE:  The second step can later be implemented roughly like this:
-#   1.  Design a parser that reads the free-form text and extracts
-#       – workout-level metadata (name, duration, focus ...)
-#       – blocks with exercises, parameters and optional `superset_id`.
-#   2.  Use LangChain's `StructuredOutputParser` or a small custom parser
-#       (e.g. based on regex or simple string splits) to transform the text
-#       into a Python dict.
-#   3.  Feed that dict into `WorkoutSchema(**dict_obj)` to get full typing
-#       and validation for downstream code.
-#   4.  Expose a helper like `convert_freeform_to_schema()` that wraps the
-#       whole process so that existing services can swap in the new pipeline
-#       with minimal changes.
-
-# ============================================================
 # Two-step workout generation: Step 1 (Free-form) + Step 2 (Structured)
 # ============================================================
 
@@ -159,7 +142,7 @@ async def generate_workout(
         OPENAI_API_KEY = config.OPENAI_API_KEY2
 
         reasoning = {
-            "effort": "medium",
+            "effort": "low",
             "summary": None
         }
         
