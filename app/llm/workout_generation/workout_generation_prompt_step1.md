@@ -177,7 +177,6 @@ Gym-Übungen
 - Reverse Pec Deck
 - Face Pull
 - Barbell Row
-- Pendlay Row
 - Seal Row
 - T-Bar Row
 - Chest-Supported Row

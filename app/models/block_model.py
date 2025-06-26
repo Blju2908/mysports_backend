@@ -13,6 +13,9 @@ class Block(SQLModel, table=True):
     name: str
     description: Optional[str] = None
     notes: Optional[str] = Field(default=None)
+    
+    # Ordering
+    position: Optional[int] = Field(default=0, description="Position for stable sorting of blocks within a workout")
 
     workout: "Workout" = Relationship(back_populates="blocks")
-    exercises: List["Exercise"] = Relationship(back_populates="block", cascade_delete=True)
+    exercises: List["Exercise"] = Relationship(back_populates="block", cascade_delete=True, sa_relationship_kwargs={"order_by": "Exercise.position"})

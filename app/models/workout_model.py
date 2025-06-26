@@ -24,11 +24,11 @@ class Workout(SQLModel, table=True):
     notes: Optional[str] = Field(default=None)
 
     plan: Optional["TrainingPlan"] = Relationship(back_populates="workouts")
-    blocks: List["Block"] = Relationship(back_populates="workout", cascade_delete=True)
+    blocks: List["Block"] = Relationship(back_populates="workout", cascade_delete=True, sa_relationship_kwargs={"order_by": "Block.position"})
 
     def get_sorted_blocks(self) -> List["Block"]:
-        """Gibt automatisch sortierte Blocks zurück - keine manuelle Sortierung nötig!"""
-        return sorted(self.blocks, key=lambda b: b.id if b.id else 0)
+        """Gibt automatisch sortierte Blocks zurück basierend auf position field"""
+        return sorted(self.blocks, key=lambda b: b.position)
 
     @property
     def status(self) -> WorkoutStatusEnum:

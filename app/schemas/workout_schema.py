@@ -26,6 +26,7 @@ class SetInput(BaseModel):
     duration: Optional[int] = None
     distance: Optional[float] = None
     rest_time: Optional[int] = None
+    position: Optional[int] = Field(default=None, description="Position for stable sorting - auto-assigned if None")
     status: SetStatus = SetStatus.open
     completed_at: Optional[datetime] = None
     
@@ -45,6 +46,7 @@ class ExerciseInput(BaseModel):
     description: Optional[str] = None
     notes: Optional[str] = None
     superset_id: Optional[str] = None
+    position: Optional[int] = Field(default=None, description="Position for stable sorting - auto-assigned if None")
     sets: List[SetInput] = []
 
 class BlockInput(BaseModel):
@@ -54,6 +56,7 @@ class BlockInput(BaseModel):
     name: str
     description: Optional[str] = None
     notes: Optional[str] = None
+    position: Optional[int] = Field(default=None, description="Position for stable sorting - auto-assigned if None")
     exercises: List[ExerciseInput] = []
 
 # ==========================================
@@ -71,6 +74,7 @@ class SetRead(BaseModel):
     duration: Optional[int] = None
     distance: Optional[float] = None
     rest_time: Optional[int] = None
+    position: Optional[int] = None
     status: SetStatus = SetStatus.open
     completed_at: Optional[datetime] = None
 
@@ -84,6 +88,7 @@ class ExerciseRead(BaseModel):
     description: Optional[str] = None
     notes: Optional[str] = None
     superset_id: Optional[str] = None
+    position: Optional[int] = None
     sets: List[SetRead] = []
 
 # Block Schema - sauber und einfach
@@ -95,6 +100,7 @@ class BlockRead(BaseModel):
     name: str
     description: Optional[str] = None
     notes: Optional[str] = None
+    position: Optional[int] = None
     exercises: List[ExerciseRead] = []
 
 # ==========================================

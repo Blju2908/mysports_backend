@@ -33,6 +33,7 @@ def workout_to_dict(workout: Workout) -> Dict[str, Any]:
                 "name": block.name,
                 "description": block.description,
                 "notes": block.notes,
+                "position": getattr(block, "position", 0),
                 "is_amrap": getattr(block, "is_amrap", False),
                 "amrap_duration_minutes": getattr(block, "amrap_duration_minutes", None),
                 "exercises": []
@@ -47,6 +48,7 @@ def workout_to_dict(workout: Workout) -> Dict[str, Any]:
                         "description": exercise.description,
                         "notes": exercise.notes,
                         "superset_id": exercise.superset_id,
+                        "position": getattr(exercise, "position", 0),
                         "sets": []
                     }
                     
@@ -60,6 +62,7 @@ def workout_to_dict(workout: Workout) -> Dict[str, Any]:
                                 "duration": set_obj.duration,
                                 "distance": set_obj.distance,
                                 "rest_time": set_obj.rest_time,
+                                "position": getattr(set_obj, "position", 0),
                                 "status": set_obj.status.value if hasattr(set_obj.status, 'value') else str(set_obj.status),
                                 "completed_at": set_obj.completed_at.isoformat() if set_obj.completed_at else None
                             }

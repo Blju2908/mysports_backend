@@ -32,50 +32,59 @@ Parameternotation des Inputs:
     {
       "name": "Warm-Up",
       "description": "Dynamische Aufwärmung",
+      "position": 0,
       "exercises": [
         {
           "name": "Jumping Jacks",
+          "position": 0,
           "sets": [
-            {"values": [null, null, 60, null, null]}
-          ]
+            {"values": [null, null, 60, null, null], "position": 0}
+          ],
+          "superset_id": null
         },
         {
           "name": "Armkreisen",
+          "position": 1,
           "sets": [
-            {"values": [null, 10, null, null, null]}
-          ]
+            {"values": [null, 10, null, null, null], "position": 0}
+          ],
+          "superset_id": null
         }
       ]
     },
     {
       "name": "Hauptteil",
       "description": "Krafttraining Superset",
+      "position": 1,
       "exercises": [
         {
           "name": "Kurzhantel Bankdrücken",
           "superset_id": "A",
+          "position": 0,
           "sets": [
-            {"values": [20, 12, null, null, 60]},
-            {"values": [20, 10, null, null, 60]},
-            {"values": [20, 8, null, null, 60]}
+            {"values": [20, 12, null, null, 60], "position": 0},
+            {"values": [20, 10, null, null, 60], "position": 1},
+            {"values": [20, 8, null, null, 60], "position": 2}
           ]
         },
         {
           "name": "Kurzhantel Rudern links",
           "superset_id": "A",
+          "position": 1,
           "sets": [
-            {"values": [20, 12, null, null, 0]},
-            {"values": [20, 10, null, null, 0]},
-            {"values": [20, 8, null, null, 0]}
+            {"values": [20, 12, null, null, 0], "position": 0},
+            {"values": [20, 10, null, null, 0], "position": 1},
+            {"values": [20, 8, null, null, 0], "position": 2}
           ]
         },
         {
           "name": "Kurzhantel Rudern rechts",
           "superset_id": "A",
+          "position": 2,
           "sets": [
-            {"values": [20, 12, null, null, 0]},
-            {"values": [20, 10, null, null, 0]},
-            {"values": [20, 8, null, null, 0]}
+            {"values": [20, 12, null, null, 0], "position": 0},
+            {"values": [20, 10, null, null, 0], "position": 1},
+            {"values": [20, 8, null, null, 0], "position": 2}
           ]
         }
       ]
@@ -83,12 +92,15 @@ Parameternotation des Inputs:
     {
       "name": "Cooldown",
       "description": "Dehnung und Entspannung",
+      "position": 2,
       "exercises": [
         {
           "name": "Brustdehnung",
+          "position": 0,
           "sets": [
-            {"values": [null, null, 30, null, null]}
-          ]
+            {"values": [null, null, 30, null, null], "position": 0}
+          ],
+          "superset_id": null
         }
       ]
     }

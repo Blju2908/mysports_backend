@@ -24,6 +24,8 @@ class Set(SQLModel, table=True):
     # Common values
     rest_time: Optional[int] = None  # in seconds
 
+    # Ordering
+    position: Optional[int] = Field(default=0, description="Position for stable sorting of sets within an exercise")
     
     # Status tracking
     status: SetStatus = Field(default=SetStatus.open)

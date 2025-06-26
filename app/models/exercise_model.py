@@ -14,6 +14,9 @@ class Exercise(SQLModel, table=True):
     superset_id: Optional[str] = Field(default=None, description="Eindeutige ID für Supersets. Übungen mit derselben superset_id werden abwechselnd ausgeführt.")
     block_id: int = Field(foreign_key="blocks.id", ondelete="CASCADE")
     
+    # Ordering
+    position: Optional[int] = Field(default=0, description="Position for stable sorting of exercises within a block")
+
     block: "Block" = Relationship(back_populates="exercises")
-    sets: List["Set"] = Relationship(back_populates="exercise", cascade_delete=True)
+    sets: List["Set"] = Relationship(back_populates="exercise", cascade_delete=True, sa_relationship_kwargs={"order_by": "Set.position"})
     

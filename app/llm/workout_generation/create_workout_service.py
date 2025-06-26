@@ -354,27 +354,31 @@ def convert_llm_output_to_db_models(
         blocks=[],
     )
 
-    for block_data in workout_dict.get("blocks", []):
+    for block_index, block_data in enumerate(workout_dict.get("blocks", [])):
         block_model = Block(
             name=clean_text_data(block_data.get("name", "Unbenannter Block")),
             description=clean_text_data(block_data.get("description")),
+            position=block_data.get("position", block_index),  # Use LLM position or fallback to index
             exercises=[],
         )
 
-        for exercise_data in block_data.get("exercises", []):
+        for exercise_index, exercise_data in enumerate(block_data.get("exercises", [])):
             exercise_model = Exercise(
                 name=clean_text_data(exercise_data.get("name", "Unbenannte Übung")),
                 superset_id=clean_text_data(exercise_data.get("superset_id")),
+                position=exercise_data.get("position", exercise_index),  # Use LLM position or fallback to index
                 sets=[],
             )
 
-            for set_data_from_llm in exercise_data.get("sets", []):
+            for set_index, set_data_from_llm in enumerate(exercise_data.get("sets", [])):
                 # Verwende die neue Set.from_values_list Methode
                 if isinstance(set_data_from_llm, dict) and "values" in set_data_from_llm:
                     values = set_data_from_llm.get("values", [])
                     set_obj = Set.from_values_list(values)
                     
                     if set_obj:
+                        # Add position to the set
+                        set_obj.position = set_data_from_llm.get("position", set_index)
                         exercise_model.sets.append(set_obj)
                     else:
                         print(f"Skipping set data - no valid values: {values}")
