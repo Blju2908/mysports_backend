@@ -370,7 +370,7 @@ Beispiel-Parameter (NUR DIESES FORMATE IN DEN PARAMETERN NUTZEN):
 - Dauer: `60 s`
 - Dauer und Gewicht: `60 s @ 80 kg`
 - Distanz: `300 m`
-- Gib Pausen immer mit `P: x s` in Sekunden an. Trenne die Pause mit einem / von den anderen Parametern. Sie soll aber im gleichen Satz (also ||) stehen.
+- Gib Pausen immer mit `P: x s` in Sekunden an. Trenne die Pause mit einem / von den anderen Parametern. Sie soll aber im gleichen Satz (also ||) stehen. Bitte gib für jeden Satz die Pause individuell an.
 - Wenn Übungen in Seiten aufgeteilt werden, gib bitte pro Seite einen Satz an.
 
 

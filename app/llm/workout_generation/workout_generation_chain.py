@@ -149,13 +149,9 @@ async def generate_workout(
         llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
 
         # Add reasoning to the prompt
-        # await document_llm_input(formatted_prompt, "workout_generation_prompt_freeform.md")
-
         print("Sending request to OpenAI API (free-form)…")
         response = await llm.ainvoke(formatted_prompt)
         print("Received response from OpenAI API (free-form)")
-
-        # await document_llm_output(response.content.text, "workout_generation_prompt_freeform.md")
 
 
         # Extract actual text content from LangChain response
@@ -178,17 +174,17 @@ async def generate_workout(
         # Bereinige den Response-Text
         freeform_text = clean_text_for_prompt(freeform_text)
 
-        # NOTE: File output disabled for production deployment
-        try:
-            from datetime import datetime as _dt
-            ts = _dt.now().strftime("%Y-%m-%d_%H-%M-%S")
-            out_dir = Path(__file__).parent / "output"
-            out_dir.mkdir(exist_ok=True)
-            out_path = out_dir / f"{ts}_workout_generation_freeform_output.md"
-            out_path.write_text(freeform_text, encoding="utf-8")
-            print(f"[LLM_DOCS] Free-form output documented: {out_path}")
-        except Exception as e:  # noqa: BLE001
-            print(f"[LLM_DOCS] Could not document free-form output: {e}")
+        # # NOTE: File output disabled for production deployment
+        # try:
+        #     from datetime import datetime as _dt
+        #     ts = _dt.now().strftime("%Y-%m-%d_%H-%M-%S")
+        #     out_dir = Path(__file__).parent / "output"
+        #     out_dir.mkdir(exist_ok=True)
+        #     out_path = out_dir / f"{ts}_workout_generation_freeform_output.md"
+        #     out_path.write_text(freeform_text, encoding="utf-8")
+        #     print(f"[LLM_DOCS] Free-form output documented: {out_path}")
+        # except Exception as e:  # noqa: BLE001
+        #     print(f"[LLM_DOCS] Could not document free-form output: {e}")
 
         return freeform_text
 
