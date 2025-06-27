@@ -4,7 +4,7 @@ from sqlalchemy import select, func, case
 from typing import List, Optional
 from sqlalchemy.orm import selectinload
 from datetime import datetime
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 from uuid import UUID
 
 from app.models.workout_model import Workout
@@ -16,7 +16,6 @@ from app.models.user_model import UserModel
 from app.services.llm_logging_service import log_workout_revision, log_workout_revision_accept
 from app.schemas.workout_schema import (
     WorkoutListRead,
-    WorkoutRead,
     WorkoutWithBlocksRead,
     BlockRead,
     BlockInput,
@@ -461,9 +460,13 @@ async def update_set_status_endpoint(
 
 # Schema for manual activity entry
 class ManualActivitySchema(BaseModel):
-    name: str
-    description: str
-    timestamp: Optional[datetime] = None
+    """
+    Schema für manuelle Aktivitäts-Dokumentation
+    Entspricht dem Frontend-Payload: name, description, timestamp
+    """
+    name: str = Field(..., min_length=1, max_length=200, description="Name der Aktivität")
+    description: str = Field(..., min_length=1, max_length=1000, description="Beschreibung der Aktivität")
+    timestamp: Optional[datetime] = Field(default=None, description="Zeitpunkt der Aktivität (ISO string vom Frontend)")
     
     @field_validator('timestamp')
     @classmethod
@@ -471,6 +474,16 @@ class ManualActivitySchema(BaseModel):
         """✅ Automatisch timezone-aware datetimes zu naive konvertieren"""
         if v is not None and v.tzinfo is not None:
             return v.replace(tzinfo=None)
+        return v
+    
+    @field_validator('name', 'description')
+    @classmethod
+    def strip_whitespace(cls, v: str) -> str:
+        """✅ Whitespace entfernen und leere Strings abfangen"""
+        if isinstance(v, str):
+            v = v.strip()
+            if not v:
+                raise ValueError("Field cannot be empty")
         return v
 
 
@@ -497,46 +510,64 @@ async def create_manual_activity(
     activity_time = activity.timestamp or datetime.utcnow()
     
     try:
-        # ✅ Simplified: Create all objects in sequence
+        # ✅ COMPLETE WORKOUT: Create workout with full structure for consistency
         workout = Workout(
             training_plan_id=user.training_plan_id,
             name=activity.name,
             description=activity.description,
             date_created=activity_time,
+            duration=None,  # User didn't specify duration
+            focus="Manual Activity",  # ✅ Default focus for manual activities
+            notes=None  # No additional notes
         )
         db.add(workout)
-        await db.flush()
+        await db.flush()  # Get workout ID
         
+        # ✅ CREATE BLOCK: Every workout needs at least one block
         block = Block(
             workout_id=workout.id,
             name="Manual Activity",
-            description="Manually logged activity",
+            description="Manually documented training activity",
+            notes=None,
+            position=0  # First and only block
         )
         db.add(block)
-        await db.flush()
+        await db.flush()  # Get block ID
         
+        # ✅ CREATE EXERCISE: Block needs at least one exercise
         exercise = Exercise(
             block_id=block.id,
-            name=activity.name,
-            notes=activity.description,
+            name=activity.name,  # Use activity name as exercise name
+            description=None,
+            notes=activity.description,  # Put full description in notes
+            superset_id=None,
+            position=0  # First and only exercise
         )
         db.add(exercise)
-        await db.flush()
+        await db.flush()  # Get exercise ID
         
-        # ✅ Minimal set - only required fields
+        # ✅ CREATE SET: Exercise needs at least one set (mark as completed)
         workout_set = Set(
             exercise_id=exercise.id,
-            status=SetStatus.done,
-            completed_at=activity_time,
+            weight=None,  # No specific weight recorded
+            reps=None,    # No specific reps recorded
+            duration=None,  # No specific duration recorded
+            distance=None,  # No specific distance recorded
+            rest_time=None,  # No rest time for manual activity
+            position=0,   # First and only set
+            status=SetStatus.done,  # ✅ Mark as completed since it's historical
+            completed_at=activity_time  # When the activity was done
         )
         db.add(workout_set)
         
-        await db.commit()
+        # ✅ Safe: Get workout_id while object is still attached to session
+        workout_id = workout.id
         
-        # ✅ Einfache Success Response ohne Daten
+        await db.commit()  # ✅ Commit all changes
+        
         return {
             "success": True,
-            "workout_id": workout.id
+            "workout_id": workout_id
         }
         
     except Exception as e:
