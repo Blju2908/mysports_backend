@@ -188,17 +188,17 @@ async def generate_workout(
         # Bereinige den Response-Text
         freeform_text = clean_text_for_prompt(freeform_text)
 
-        # NOTE: File output disabled for production deployment
-        try:
-            from datetime import datetime as _dt
-            ts = _dt.now().strftime("%Y-%m-%d_%H-%M-%S")
-            out_dir = Path(__file__).parent / "output"
-            out_dir.mkdir(exist_ok=True)
-            out_path = out_dir / f"{ts}_workout_generation_freeform_output.md"
-            out_path.write_text(freeform_text, encoding="utf-8")
-            print(f"[LLM_DOCS] Free-form output documented: {out_path}")
-        except Exception as e:  # noqa: BLE001
-            print(f"[LLM_DOCS] Could not document free-form output: {e}")
+        # # NOTE: File output disabled for production deployment
+        # try:
+        #     from datetime import datetime as _dt
+        #     ts = _dt.now().strftime("%Y-%m-%d_%H-%M-%S")
+        #     out_dir = Path(__file__).parent / "output"
+        #     out_dir.mkdir(exist_ok=True)
+        #     out_path = out_dir / f"{ts}_workout_generation_freeform_output.md"
+        #     out_path.write_text(freeform_text, encoding="utf-8")
+        #     print(f"[LLM_DOCS] Free-form output documented: {out_path}")
+        # except Exception as e:  # noqa: BLE001
+        #     print(f"[LLM_DOCS] Could not document free-form output: {e}")
 
         return freeform_text
 
