@@ -1,4 +1,5 @@
 from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from app.llm.utils.llm_documentation import document_llm_input, document_llm_output
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 from app.core.config import get_config
@@ -24,6 +25,16 @@ def clean_text_for_prompt(text: str | None) -> str:
     cleaned = ''.join(char for char in cleaned if ord(char) >= 32 or char in ['\n', '\t'])
     
     return cleaned
+
+def create_anthropic_llm():
+    config = get_config()
+
+    llm = ChatAnthropic(
+        model="claude-sonnet-4-20250514",
+        api_key=config.ANTHROPIC_API_KEY,
+        max_retries=2
+    )
+    return llm
 
 # ============================================================
 # Two-step workout generation: Step 1 (Free-form) + Step 2 (Structured)
@@ -147,6 +158,9 @@ async def generate_workout(
         }
         
         llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
+        # llm = ChatOpenAI(model="gpt-4.1-mini", api_key=OPENAI_API_KEY, use_responses_api=True)
+
+        llm = create_anthropic_llm()
 
         # Add reasoning to the prompt
         print("Sending request to OpenAI API (free-form)…")
@@ -174,17 +188,17 @@ async def generate_workout(
         # Bereinige den Response-Text
         freeform_text = clean_text_for_prompt(freeform_text)
 
-        # # NOTE: File output disabled for production deployment
-        # try:
-        #     from datetime import datetime as _dt
-        #     ts = _dt.now().strftime("%Y-%m-%d_%H-%M-%S")
-        #     out_dir = Path(__file__).parent / "output"
-        #     out_dir.mkdir(exist_ok=True)
-        #     out_path = out_dir / f"{ts}_workout_generation_freeform_output.md"
-        #     out_path.write_text(freeform_text, encoding="utf-8")
-        #     print(f"[LLM_DOCS] Free-form output documented: {out_path}")
-        # except Exception as e:  # noqa: BLE001
-        #     print(f"[LLM_DOCS] Could not document free-form output: {e}")
+        # NOTE: File output disabled for production deployment
+        try:
+            from datetime import datetime as _dt
+            ts = _dt.now().strftime("%Y-%m-%d_%H-%M-%S")
+            out_dir = Path(__file__).parent / "output"
+            out_dir.mkdir(exist_ok=True)
+            out_path = out_dir / f"{ts}_workout_generation_freeform_output.md"
+            out_path.write_text(freeform_text, encoding="utf-8")
+            print(f"[LLM_DOCS] Free-form output documented: {out_path}")
+        except Exception as e:  # noqa: BLE001
+            print(f"[LLM_DOCS] Could not document free-form output: {e}")
 
         return freeform_text
 
