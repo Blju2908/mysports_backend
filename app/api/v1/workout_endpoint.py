@@ -474,7 +474,7 @@ class ManualActivitySchema(BaseModel):
         return v
 
 
-@router.post("/manual-activity", response_model=WorkoutRead)
+@router.post("/manual-activity")
 async def create_manual_activity(
     activity: ManualActivitySchema,
     db: AsyncSession = Depends(get_session),
@@ -532,8 +532,12 @@ async def create_manual_activity(
         db.add(workout_set)
         
         await db.commit()
-        await db.refresh(workout)
-        return WorkoutRead.model_validate(workout)  # ✅ Auto-Serialization!
+        
+        # ✅ Einfache Success Response ohne Daten
+        return {
+            "success": True,
+            "workout_id": workout.id
+        }
         
     except Exception as e:
         await db.rollback()

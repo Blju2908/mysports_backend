@@ -459,7 +459,7 @@ class ManualActivitySchema(BaseModel):
         return v
 
 
-@router.post("/manual-activity", response_model=WorkoutListRead)
+@router.post("/manual-activity")
 async def create_manual_activity(
     activity: ManualActivitySchema,
     db: AsyncSession = Depends(get_session),
@@ -489,6 +489,7 @@ async def create_manual_activity(
             description=activity.description,
             date_created=activity_time,
         )
+        
         db.add(workout)
         await db.flush()
         
@@ -518,18 +519,11 @@ async def create_manual_activity(
         
         await db.commit()
         
-        # ✅ Manual Response für WorkoutListRead ohne Relations - KEIN refresh nötig!
-        return WorkoutListRead(
-            id=workout.id,
-            training_plan_id=workout.training_plan_id,
-            name=workout.name,
-            date_created=workout.date_created,
-            description=workout.description,
-            duration=workout.duration,
-            focus=workout.focus,
-            notes=workout.notes,
-            status="done"  # Manual activities sind immer direkt abgeschlossen
-        )
+        # ✅ Einfache Success Response ohne Daten
+        return {
+            "success": True,
+            "workout_id": workout.id
+        }
         
     except Exception as e:
         await db.rollback()
@@ -538,7 +532,6 @@ async def create_manual_activity(
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Error creating manual activity: {str(e)}")
-
 
 
 @router.post("/{workout_id}/revise", response_model=WorkoutRevisionResponseSchema)
