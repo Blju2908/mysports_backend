@@ -160,7 +160,7 @@ async def get_workout_detail(
         )
         .where(
             Workout.id == workout_id,
-            Workout.training_plan_id == user.training_plan_id  # 🔒 Security direkt in Query!
+            Workout.training_plan_id == user.training_plan.id  # 🔒 Security direkt in Query!
         )
     )
     

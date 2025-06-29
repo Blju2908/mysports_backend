@@ -259,31 +259,67 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-# @router.post("/refresh", response_model=RefreshTokenResponse)
-# async def refresh_token(data: RefreshTokenRequest, db: Session = Depends(get_session)):
-#     try:
-#         supabase = await get_supabase_client()
-#         result = await supabase.auth.refresh_session(data.refresh_token)
-#         session = result.session
-#         if not session or not session.user:
-#             raise HTTPException(status_code=401, detail="Could not refresh token")
+@router.delete("/delete-account", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_account(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_session)
+):
+    """
+    Completely delete user account and all associated data.
+    
+    This endpoint will:
+    1. Delete all user data (training plans, workouts, feedback, etc.)
+    2. Delete the user model from database
+    3. Delete the user from Supabase Auth
+    
+    After deletion, the user will be completely removed from the system.
+    """
+    logger.info(f"[DeleteAccount] Starting account deletion for user: {current_user.email} (ID: {current_user.id})")
+    
+    try:
+        # Import the service function
+        from app.services.delete_user_data_service import delete_all_user_data
         
-#         # Get user profile data including onboarding status
-#         profile_data = await get_user_profile_data(session.user.id, db)
+        # Step 1: Delete all user data (training plans, workouts, feedback, etc.)
+        # This keeps the user model but clears all data
+        await delete_all_user_data(UUID(current_user.id), db)
+        logger.info(f"[DeleteAccount] Successfully deleted all user data for: {current_user.id}")
         
-#         return RefreshTokenResponse(
-#             access_token=session.access_token,
-#             refresh_token=session.refresh_token,
-#             user=UserResponse(
-#                 email=session.user.email, 
-#                 id=session.user.id,
-#                 onboarding_completed=profile_data["onboarding_completed"],
-#                 is_new_user=profile_data["is_new_user"]
-#             ),
-#         )
-#     except Exception as e:
-#         logger.exception(f"[Refresh][Exception] {e}")
-#         raise HTTPException(status_code=401, detail=f"Could not refresh token: {e}")
+        # Step 2: Delete the user model from database
+        from sqlalchemy import delete
+        user_delete_query = delete(UserModel).where(UserModel.id == UUID(current_user.id))
+        result = await db.execute(user_delete_query)
+        
+        if result.rowcount == 0:
+            logger.warning(f"[DeleteAccount] User model not found for deletion: {current_user.id}")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found in database"
+            )
+        
+        await db.commit()
+        logger.info(f"[DeleteAccount] Successfully deleted user model for: {current_user.id}")
+        
+        # Step 3: Delete user from Supabase Auth
+        supabase = await get_supabase_client(use_service_role=True)
+        auth_result = await supabase.auth.admin.delete_user(current_user.id)
+        logger.info(f"[DeleteAccount] Successfully deleted user from Supabase Auth: {current_user.id}")
+        
+        logger.info(f"[DeleteAccount] Account deletion completed successfully for: {current_user.email}")
+        
+        # Return 204 No Content (successful deletion)
+        return None
+        
+    except HTTPException:
+        # Re-raise HTTP exceptions from the service
+        raise
+    except Exception as e:
+        logger.error(f"[DeleteAccount] Error during account deletion for {current_user.id}: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete account: {str(e)}"
+        )
+
 
 
 

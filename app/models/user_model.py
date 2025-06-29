@@ -22,8 +22,7 @@ class UserModel(SQLModel, table=True):
     # Onboarding Status
     onboarding_completed: bool = Field(default=False)
     
-    # Direkte Beziehung zum Trainingsplan (One-to-One)
-    training_plan_id: Optional[int] = Field(default=None, foreign_key="training_plans.id")
+    # One-to-One Beziehung zum Trainingsplan
     training_plan: Optional["TrainingPlan"] = Relationship(back_populates="user")
     
     # Beziehung zu App-Feedback (One-to-Many)

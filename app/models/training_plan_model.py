@@ -13,6 +13,9 @@ class TrainingPlan(SQLModel, table=True):
     __tablename__ = "training_plans"
     id: Optional[int] = Field(default=None, primary_key=True)
     
+    # Foreign Key zum User (One-to-One Beziehung)
+    user_id: UUID = Field(foreign_key="users.id", unique=True)
+    
     # Persönliche Informationen
     gender: Optional[str] = Field(default=None)
     birthdate: Optional[date] = Field(default=None)
@@ -47,8 +50,8 @@ class TrainingPlan(SQLModel, table=True):
     # Comments
     comments: Optional[str] = Field(default=None)
 
-    # Direkte Beziehung zum User (One-to-One)
-    user: Optional["UserModel"] = Relationship(back_populates="training_plan")
+    # One-to-One Beziehung zum User
+    user: "UserModel" = Relationship(back_populates="training_plan")
     
     # Beziehung zu Workouts
     workouts: List["Workout"] = Relationship(back_populates="plan")

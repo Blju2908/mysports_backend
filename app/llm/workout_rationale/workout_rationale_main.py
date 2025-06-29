@@ -87,7 +87,7 @@ async def main():
         print()
         print("📁 Prompt und Analyse wurden im output-Ordner gespeichert:")
         print("   - Prompt: app/llm/workout_rationale/output/prompt_user_*_workout_*_*.md")
-        print("   - Analyse: app/llm/workout_rationale/output/rationale_user_*_workout_*_*.txt")
+        print("   - Analyse: app/llm/workout_rationale/output/rationale_user_*_workout_*_*.md")
         print(f"⏱️ Ausführungsdauer: {duration:.2f} Sekunden")
         print("=" * 80)
         

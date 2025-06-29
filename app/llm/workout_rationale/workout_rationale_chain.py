@@ -75,7 +75,7 @@ def save_prompt_to_output(prompt_content: str, user_id: str, workout_id: int) ->
 
 def save_rationale_to_output(rationale_text: str, user_id: str, workout_id: int) -> str:
     """
-    Speichert die generierte Rationale im output-Ordner.
+    Speichert die generierte Rationale im output-Ordner als Markdown-Datei.
     
     Args:
         rationale_text: Die generierte sportwissenschaftliche Begründung
@@ -89,13 +89,29 @@ def save_rationale_to_output(rationale_text: str, user_id: str, workout_id: int)
     output_dir = Path(__file__).parent / "output"
     output_dir.mkdir(exist_ok=True)
     
-    filename = f"rationale_user_{user_id}_workout_{workout_id}_{timestamp}.txt"
+    filename = f"rationale_user_{user_id}_workout_{workout_id}_{timestamp}.md"
     file_path = output_dir / filename
     
-    with open(file_path, "w", encoding="utf-8") as f:
-        f.write(rationale_text)
+    # Formatiere als Markdown mit Header
+    markdown_content = f"""# Sportwissenschaftliche Workout-Analyse
+
+**User ID:** {user_id}  
+**Workout ID:** {workout_id}  
+**Erstellt:** {datetime.now().strftime("%d.%m.%Y um %H:%M:%S")}
+
+---
+
+{rationale_text}
+
+---
+
+*Generiert mit OpenAI GPT-4o-mini*
+"""
     
-    print(f"📁 Rationale gespeichert: {file_path}")
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(markdown_content)
+    
+    print(f"📁 Rationale als Markdown gespeichert: {file_path}")
     return str(file_path)
 
 async def generate_workout_rationale_llm(
