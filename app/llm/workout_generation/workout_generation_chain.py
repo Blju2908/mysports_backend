@@ -160,7 +160,7 @@ async def generate_workout(
         llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
         # llm = ChatOpenAI(model="gpt-4.1-mini", api_key=OPENAI_API_KEY, use_responses_api=True)
 
-        llm = create_anthropic_llm()
+        # llm = create_anthropic_llm()
 
         # Add reasoning to the prompt
         print("Sending request to OpenAI API (free-form)…")
