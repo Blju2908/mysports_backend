@@ -2,10 +2,10 @@ from uuid import UUID
 from sqlmodel.ext.asyncio.session import AsyncSession
 from typing import Any, List, Dict, Optional
 import json
-from pathlib import Path
 from datetime import datetime
 
-from app.db.trainingplan_db_access import get_training_plan_for_user
+from app.models.training_plan_model import TrainingPlan
+from sqlmodel import select
 from app.db.workout_db_access import get_training_history_for_user_from_db
 from app.llm.workout_generation.workout_generation_chain import generate_workout_two_step
 from app.models.workout_model import Workout
@@ -20,8 +20,8 @@ async def run_workout_chain(
     save_to_db: bool = False,
 ) -> Any:
     """
-    Führt den Workout-Generierungs-Prozess mit dem LLM durch.
-    Lädt die letzten 10 Workouts des Users als Trainingshistorie.
+    ✅ OPTIMIZED: Führt den Workout-Generierungs-Prozess mit dem LLM durch.
+    Nutzt die neue direkte User-Workout Beziehung für bessere Performance.
 
     Args:
         user_id: Die ID des Benutzers.
@@ -39,13 +39,15 @@ async def run_workout_chain(
     formatted_history = None
 
     if user_id is not None:
-        # Get training plan from the user
-        training_plan_db_obj = await get_training_plan_for_user(user_id, db)
+        # ✅ SQLModel One-Liner: Direkt TrainingPlan über user_id laden
+        training_plan_db_obj = await db.scalar(
+            select(TrainingPlan).where(TrainingPlan.user_id == user_id)
+        )
         if training_plan_db_obj:
             training_plan_id_for_saving = training_plan_db_obj.id
             formatted_training_plan = format_training_plan_for_llm(training_plan_db_obj)
 
-        # Get and format training history (last 10 workouts)
+        # ✅ OPTIMIZED: Get training history using direct user_id relationship
         raw_training_history: List[Workout] = (
             await get_training_history_for_user_from_db(user_id, db, limit=10)
         )
@@ -62,17 +64,21 @@ async def run_workout_chain(
         user_prompt=user_prompt,
     )
 
-    # Konvertiere zu DB-Models falls gewünscht
+    # ✅ IMPROVED: Konvertiere zu DB-Models mit user_id
     if save_to_db:
+        if not user_id:
+            raise ValueError("user_id is required when save_to_db=True")
+            
         workout_model = convert_llm_output_to_db_models(
             workout_schema.model_dump(),
+            user_id=user_id,  # ✅ NEW: Pass user_id for direct relationship
             training_plan_id=training_plan_id_for_saving,
         )
         
         db.add(workout_model)
         await db.commit()
         await db.refresh(workout_model)
-        print(f"Workout erfolgreich in Datenbank gespeichert mit ID: {workout_model.id}")
+        print(f"✅ Workout erfolgreich in Datenbank gespeichert mit ID: {workout_model.id}")
         return workout_model
     else:
         # Return the structured schema
@@ -327,25 +333,27 @@ def clean_text_data(text: str | None) -> str | None:
 
 def convert_llm_output_to_db_models(
     workout_dict: Dict[str, Any],  # Expecting dict from WorkoutSchema.model_dump()
+    user_id: UUID,  # ✅ NEW: Required user_id for direct relationship
     training_plan_id: Optional[int] = None,
 ) -> Workout:
     """
-    Konvertiert das LLM-Output (Pydantic Schema dict) in ein Workout-DB-Modell
-    und zugehörige Block-, Exercise- und Set-Modelle.
-    Die 'values' Liste in SetSchema wird in die plan_* Felder des Set-Modells gemappt.
+    ✅ OPTIMIZED: Konvertiert das LLM-Output in ein Workout-DB-Modell mit direkter User-Beziehung.
+    Nutzt die neue user_id als primäre Beziehung und behält training_plan_id für Kontext.
+    Die 'values' Liste in SetSchema wird in die entsprechenden Felder des Set-Modells gemappt.
     [weight, reps, duration, distance, rest_time]
-    Akzeptiert auch explizite Felder (plan_weight, plan_reps, ...).
 
     Args:
         workout_dict: Das LLM-Output als Dict (von WorkoutSchema.model_dump()).
-        training_plan_id: Optional die ID des Trainingsplans.
+        user_id: Die User-ID für direkte Beziehung (REQUIRED).
+        training_plan_id: Optional die ID des Trainingsplans (für Kontext).
 
     Returns:
         Ein Workout-Modell mit allen Beziehungen.
     """
-    # Erstelle das Workout-Modell mit bereinigten Textdaten
+    # ✅ IMPROVED: Erstelle das Workout-Modell mit direkter user_id Beziehung
     workout_model = Workout(
-        training_plan_id=training_plan_id,
+        user_id=user_id,  # ✅ NEW: Direct user relationship!
+        training_plan_id=training_plan_id,  # Keep for context
         name=clean_text_data(workout_dict.get("name", "Unbenanntes Workout")),
         description=clean_text_data(workout_dict.get("description")),
         focus=clean_text_data(workout_dict.get("focus")),
@@ -371,7 +379,7 @@ def convert_llm_output_to_db_models(
             )
 
             for set_index, set_data_from_llm in enumerate(exercise_data.get("sets", [])):
-                # Verwende die neue Set.from_values_list Methode
+                # ✅ OPTIMIZED: Verwende die bewährte Set.from_values_list Methode
                 if isinstance(set_data_from_llm, dict) and "values" in set_data_from_llm:
                     values = set_data_from_llm.get("values", [])
                     set_obj = Set.from_values_list(values)
@@ -381,9 +389,9 @@ def convert_llm_output_to_db_models(
                         set_obj.position = set_data_from_llm.get("position", set_index)
                         exercise_model.sets.append(set_obj)
                     else:
-                        print(f"Skipping set data - no valid values: {values}")
+                        print(f"⚠️ Skipping set data - no valid values: {values}")
                 else:
-                    print(f"Skipping set data due to unexpected format or missing 'values' key: {set_data_from_llm}")
+                    print(f"⚠️ Skipping set data due to unexpected format or missing 'values' key: {set_data_from_llm}")
 
             if exercise_model.sets:
                 block_model.exercises.append(exercise_model)

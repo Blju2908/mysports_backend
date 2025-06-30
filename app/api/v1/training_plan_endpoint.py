@@ -1,4 +1,4 @@
-# backend/app/api/training_plan_endpoint.py - OPTIMIZED VERSION
+# backend/app/api/v1/training_plan_endpoint.py - UPDATED FOR NEW RELATIONSHIP
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import select
 from app.models.training_plan_model import TrainingPlan
@@ -7,6 +7,7 @@ from app.core.auth import get_current_user, User
 from app.db.session import get_session
 from app.schemas.training_plan_schema import TrainingPlanSchema
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from uuid import UUID
 from typing import Dict, Any
 
@@ -19,20 +20,29 @@ async def get_my_training_plan(
     current_user: User = Depends(get_current_user)
 ):
     """
-    ✅ BEST PRACTICE: Kombinierte Query + Auto-Creation falls nicht vorhanden
+    ✅ BEST PRACTICE: SQLModel One-Liner - Direct TrainingPlan query via user_id Foreign Key
     """
-    query = (
-        select(UserModel, TrainingPlan)
-        .outerjoin(TrainingPlan, UserModel.training_plan_id == TrainingPlan.id)
-        .where(UserModel.id == UUID(current_user.id))
+    # ✅ SQLModel One-Liner: Direkt TrainingPlan über user_id laden
+    training_plan = await db.scalar(
+        select(TrainingPlan).where(TrainingPlan.user_id == UUID(current_user.id))
     )
-    result = await db.execute(query)
-    user_plan_tuple = result.first()
     
-    if not user_plan_tuple:
-        # User existiert nicht - erstellen mit leerem Plan
-        user = UserModel(id=UUID(current_user.id))
-        plan = TrainingPlan(
+    if not training_plan:
+        # Kein TrainingPlan vorhanden - erstellen mit Defaults
+        # Stelle sicher, dass User existiert
+        user_result = await db.execute(
+            select(UserModel).where(UserModel.id == UUID(current_user.id))
+        )
+        user = user_result.scalar_one_or_none()
+        
+        if not user:
+            # User existiert auch nicht - erstellen
+            user = UserModel(id=UUID(current_user.id))
+            db.add(user)
+        
+        # TrainingPlan mit Defaults erstellen
+        training_plan = TrainingPlan(
+            user_id=UUID(current_user.id),
             equipment=[],
             workout_styles=[],
             session_duration=45,
@@ -40,46 +50,18 @@ async def get_my_training_plan(
             fitness_level=3,
             experience_level=3
         )
-        db.add(plan)
-        await db.flush()  # Plan ID bekommen
         
-        user.training_plan_id = plan.id
-        db.add(user)
+        db.add(training_plan)
         
         try:
             await db.commit()
-            await db.refresh(plan)  # 🔧 WICHTIG: Frisch erstelltes Objekt laden!
-            return TrainingPlanSchema.model_validate(plan)  # ✅ Auto-Serialization!
+            await db.refresh(training_plan)
+            return TrainingPlanSchema.model_validate(training_plan)
         except Exception as e:
             await db.rollback()
             raise HTTPException(status_code=500, detail=f"Error creating training plan: {str(e)}")
     
-    user, plan = user_plan_tuple
-    
-    if not plan:
-        # User existiert, aber kein Plan - Plan erstellen
-        plan = TrainingPlan(
-            equipment=[],
-            workout_styles=[],
-            session_duration=45,
-            training_frequency=3,
-            fitness_level=3,
-            experience_level=3
-        )
-        db.add(plan)
-        await db.flush()
-        
-        user.training_plan_id = plan.id
-        db.add(user)
-        
-        try:
-            await db.commit()
-            await db.refresh(plan)  # 🔧 WICHTIG: Plan nach DB-Erstellung laden!
-        except Exception as e:
-            await db.rollback()
-            raise HTTPException(status_code=500, detail=f"Error creating training plan: {str(e)}")
-    
-    return TrainingPlanSchema.model_validate(plan)  # ✅ Auto-Serialization!
+    return TrainingPlanSchema.model_validate(training_plan)
 
 
 @router.put("/mine", response_model=TrainingPlanSchema)
@@ -89,46 +71,39 @@ async def update_my_training_plan(
     current_user: User = Depends(get_current_user)
 ):
     """
-    ✅ UPSERT: Erstellt oder updated TrainingPlan
+    ✅ BEST PRACTICE: SQLModel One-Liner - Direct TrainingPlan query and upsert via user_id Foreign Key
     """
-    # 🔥 UPSERT: OuterJoin um sowohl existierende als auch neue Pläne zu handhaben
-    query = (
-        select(UserModel, TrainingPlan)
-        .outerjoin(TrainingPlan, UserModel.training_plan_id == TrainingPlan.id)
-        .where(UserModel.id == UUID(current_user.id))
+    # ✅ SQLModel One-Liner: Direkt TrainingPlan über user_id laden
+    training_plan = await db.scalar(
+        select(TrainingPlan).where(TrainingPlan.user_id == UUID(current_user.id))
     )
-    result = await db.execute(query)
-    user_plan_tuple = result.first()
     
-    if not user_plan_tuple:
-        # User existiert nicht - erstellen mit Plan
-        user = UserModel(id=UUID(current_user.id))
-        plan = TrainingPlan()
-        db.add(plan)
-        await db.flush()  # Plan ID bekommen
+    if not training_plan:
+        # Kein TrainingPlan vorhanden - erstellen
+        # Stelle sicher, dass User existiert
+        user_result = await db.execute(
+            select(UserModel).where(UserModel.id == UUID(current_user.id))
+        )
+        user = user_result.scalar_one_or_none()
         
-        user.training_plan_id = plan.id
-        db.add(user)
-    else:
-        user, plan = user_plan_tuple
+        if not user:
+            # User existiert auch nicht - erstellen
+            user = UserModel(id=UUID(current_user.id))
+            db.add(user)
         
-        if not plan:
-            # User existiert, aber kein Plan - Plan erstellen
-            plan = TrainingPlan()
-            db.add(plan)
-            await db.flush()
-            
-            user.training_plan_id = plan.id
+        # Neuen TrainingPlan erstellen
+        training_plan = TrainingPlan(user_id=UUID(current_user.id))
+        db.add(training_plan)
     
-    # ✅ Update alle Felder aus dem Request
-    update_data = plan_update.model_dump(exclude_unset=True, exclude={"id"})
+    # ✅ Update alle Felder aus dem Request (außer user_id)
+    update_data = plan_update.model_dump(exclude_unset=True, exclude={"id", "user_id"})
     for field, value in update_data.items():
-        setattr(plan, field, value)
+        setattr(training_plan, field, value)
     
     try:
         await db.commit()
-        await db.refresh(plan)  # 🔧 WICHTIG: Objekt vollständig aus DB laden!
-        return TrainingPlanSchema.model_validate(plan)  # ✅ Auto-Serialization!
+        await db.refresh(training_plan)
+        return TrainingPlanSchema.model_validate(training_plan)
     except Exception as e:
         await db.rollback()
         raise HTTPException(status_code=500, detail=f"Error upserting training plan: {str(e)}")

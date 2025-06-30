@@ -1,4 +1,3 @@
-
 from typing import Dict, Any, Optional
 from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -6,7 +5,8 @@ from app.models.workout_model import Workout
 from app.services.workout_service import get_workout_details
 from app.llm.workout_revision.workout_revision_chain import revise_workout_two_step
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
-from app.db.trainingplan_db_access import get_training_plan_for_user
+from app.models.training_plan_model import TrainingPlan
+from sqlmodel import select
 from app.llm.workout_generation.create_workout_service import format_training_plan_for_llm
 
 
@@ -109,7 +109,10 @@ async def run_workout_revision_chain(
         
         if user_id is not None:
             # Get training plan from the user
-            training_plan_db_obj = await get_training_plan_for_user(user_id, db)
+            # ✅ SQLModel One-Liner: Direkt TrainingPlan über user_id laden
+            training_plan_db_obj = await db.scalar(
+                select(TrainingPlan).where(TrainingPlan.user_id == user_id)
+            )
             if training_plan_db_obj:
                 formatted_training_plan = format_training_plan_for_llm(training_plan_db_obj)
         

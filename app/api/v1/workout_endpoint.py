@@ -13,6 +13,7 @@ from app.models.exercise_model import Exercise
 from app.models.set_model import Set, SetStatus
 
 from app.models.user_model import UserModel
+from app.models.training_plan_model import TrainingPlan
 from app.services.llm_logging_service import log_workout_revision, log_workout_revision_accept
 from app.schemas.workout_schema import (
     WorkoutListRead,
@@ -39,16 +40,16 @@ from app.db.session import get_session
 # Payload for updating a single set's status and execution data
 class SetStatusUpdatePayload(BaseModel):
     status: SetStatus
-    completed_at: Optional[datetime] = None
-    weight: Optional[float] = None
-    reps: Optional[int] = None
-    duration: Optional[int] = None
-    distance: Optional[float] = None
-    notes: Optional[str] = None
+    completed_at: datetime | None = None
+    weight: float | None = None
+    reps: int | None = None
+    duration: int | None = None
+    distance: float | None = None
+    notes: str | None = None
     
     @field_validator('completed_at')
     @classmethod
-    def make_datetime_naive(cls, v: Optional[datetime]) -> Optional[datetime]:
+    def make_datetime_naive(cls, v: datetime | None) -> datetime | None:
         """✅ Automatisch timezone-aware datetimes zu naive konvertieren"""
         if v is not None and v.tzinfo is not None:
             return v.replace(tzinfo=None)
@@ -57,25 +58,25 @@ class SetStatusUpdatePayload(BaseModel):
 router = APIRouter(tags=["workouts"])
 
 
-
 @router.get("/", response_model=List[WorkoutListRead])
 async def get_user_workouts(
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
     """
-    ✅ OPTIMIZED: Effiziente Workout-Liste mit DB-Level Status-Berechnung
-    Lädt keine Relations - minimaler Traffic, maximale Performance
+    ✅ SQLModel Best Practice: Direct user-workout relationship with efficient DB-level status calculation
     """
+    # ✅ SQLModel One-Liner: Direct user query
+    user = await db.scalar(
+        select(UserModel)
+        .options(selectinload(UserModel.training_plan))
+        .where(UserModel.id == UUID(current_user.id))
+    )
 
-    user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-    result = await db.execute(user_query)
-    user = result.scalar_one_or_none()
-
-    if not user or not user.training_plan_id:
+    if not user or not user.training_plan:
         return []
 
-    # ✅ Subqueries für effiziente Status-Berechnung ohne Relations zu laden
+    # ✅ Subqueries for efficient status calculation without loading relationships
     total_sets_subquery = (
         select(func.count(Set.id))
         .select_from(Set)
@@ -95,7 +96,7 @@ async def get_user_workouts(
         )
     ).scalar_subquery()
 
-    # ✅ Status direkt in der Datenbank berechnen
+    # ✅ Status calculation in database
     status_case = case(
         (total_sets_subquery == 0, "not_started"),
         (done_sets_subquery == total_sets_subquery, "done"),
@@ -103,17 +104,17 @@ async def get_user_workouts(
         else_="not_started"
     ).label("computed_status")
 
-    # ✅ Schlanke Query ohne Relations - nur Basic Workout-Daten + Status
+    # ✅ Direct user_id query instead of training_plan_id
     workout_query = (
         select(Workout, status_case)
-        .where(Workout.training_plan_id == user.training_plan_id)
+        .where(Workout.user_id == UUID(current_user.id))  # ✅ Direct user relationship!
         .order_by(Workout.date_created.desc())
     )
 
     result = await db.execute(workout_query)
     workout_tuples = result.all()
 
-    # ✅ Manual mapping mit computed status
+    # ✅ Manual mapping with computed status
     workouts = []
     for workout_obj, computed_status in workout_tuples:
         workout_dict = {
@@ -125,7 +126,7 @@ async def get_user_workouts(
             "duration": workout_obj.duration,
             "focus": workout_obj.focus,
             "notes": workout_obj.notes,
-            "status": computed_status  # ✅ Direkt von DB berechnet!
+            "status": computed_status  # ✅ Directly computed by DB!
         }
         workouts.append(WorkoutListRead(**workout_dict))
 
@@ -139,19 +140,10 @@ async def get_workout_detail(
     current_user: User = Depends(get_current_user),
 ):
     """
-    ✅ BEST PRACTICE: Direkte DB-Query im Endpoint + automatische Sortierung im Model
+    ✅ SQLModel Best Practice: Direct user-workout relationship with security check in query
     """
-    
-    # User-Check
-    user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-    result = await db.execute(user_query)
-    user = result.scalar_one_or_none()
-    
-    if not user or not user.training_plan_id:
-        raise HTTPException(status_code=403, detail="User has no training plan")
-    
-    # Workout laden - direkt mit Security-Check in der Query!
-    workout_query = (
+    # ✅ SQLModel One-Liner: Direct workout query with security check
+    workout = await db.scalar(
         select(Workout)
         .options(
             selectinload(Workout.blocks)
@@ -160,17 +152,14 @@ async def get_workout_detail(
         )
         .where(
             Workout.id == workout_id,
-            Workout.training_plan_id == user.training_plan.id  # 🔒 Security direkt in Query!
+            Workout.user_id == UUID(current_user.id)  # ✅ Direct user security check!
         )
     )
     
-    result = await db.execute(workout_query)
-    workout = result.scalar_one_or_none()
-    
     if not workout:
-        raise HTTPException(status_code=404, detail="Workout not found")
+        raise HTTPException(status_code=404, detail="Workout not found or access denied")
     
-    # ✅ WICHTIG: Nutze die sortierte get_sorted_blocks() Methode!
+    # ✅ Use sorted blocks method from model
     if hasattr(workout, 'get_sorted_blocks'):
         workout.blocks = workout.get_sorted_blocks()
     
@@ -185,33 +174,22 @@ async def get_block_detail(
     current_user: User = Depends(get_current_user),
 ):
     """
-    ✅ SUPER EINFACH: SQLModel Best Practice - Security + Auto-Serialization!
+    ✅ SQLModel Best Practice: Direct user-workout relationship with security in query
     """
-    # User-Check
-    user_query = select(UserModel).where(UserModel.id == UUID(current_user.id))
-    result = await db.execute(user_query)
-    user = result.scalar_one_or_none()
-
-    if not user or not user.training_plan_id:
-        raise HTTPException(status_code=403, detail="User has no training plan")
-
-    # Block laden mit Security direkt in Query! 🔒
-    block_query = (
+    # ✅ SQLModel One-Liner: Direct block query with security check
+    block = await db.scalar(
         select(Block)
         .options(selectinload(Block.exercises).selectinload(Exercise.sets))
         .join(Workout, Block.workout_id == Workout.id)
         .where(
             Block.id == block_id,
             Block.workout_id == workout_id,
-            Workout.training_plan_id == user.training_plan_id,  # Security!
+            Workout.user_id == UUID(current_user.id),  # ✅ Direct user security check!
         )
     )
 
-    result = await db.execute(block_query)
-    block = result.scalar_one_or_none()
-
     if not block:
-        raise HTTPException(status_code=404, detail="Block not found")
+        raise HTTPException(status_code=404, detail="Block not found or access denied")
 
     return BlockRead.model_validate(block)
 
@@ -230,21 +208,17 @@ async def save_block(
     """
     ✅ OPTIMIZED: ID-preserving save_block to maintain frontend references
     """
-    # 🔥 OPTIMIERT: Eine Query für User + Block + Security Check mit eager loading!
-    block_query = (
+    # ✅ SQLModel One-Liner: Direct block query with security check
+    existing_block = await db.scalar(
         select(Block)
         .options(selectinload(Block.exercises).selectinload(Exercise.sets))
         .join(Workout, Block.workout_id == Workout.id)
-        .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
         .where(
             Block.id == block_id,
             Block.workout_id == workout_id,
-            UserModel.id == UUID(current_user.id),
-            UserModel.training_plan_id.is_not(None)  # User muss training plan haben
+            Workout.user_id == UUID(current_user.id)  # ✅ Direct user security check!
         )
     )
-    result = await db.execute(block_query)
-    existing_block = result.scalar_one_or_none()
     
     if not existing_block:
         raise HTTPException(status_code=404, detail="Block not found or access denied")
@@ -385,18 +359,14 @@ async def delete_workout(
     Löscht ein Workout samt aller abhängigen Objekte (Blocks, Exercises, Sets).
     """
     
-    # 🔥 OPTIMIERT: Eine Query für User + Workout + Security Check!
-    workout_query = (
+    # ✅ SQLModel One-Liner: Direct workout query with security check
+    workout = await db.scalar(
         select(Workout)
-        .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
         .where(
             Workout.id == workout_id,
-            UserModel.id == UUID(current_user.id),
-            UserModel.training_plan_id.is_not(None)  # User muss training plan haben
+            Workout.user_id == UUID(current_user.id)  # ✅ Direct user security check!
         )
     )
-    result = await db.execute(workout_query)
-    workout = result.scalar_one_or_none()
 
     if not workout:
         raise HTTPException(status_code=404, detail="Workout not found or access denied")
@@ -421,20 +391,17 @@ async def update_set_status_endpoint(
     """
     ✅ BEST PRACTICE: Kombinierte Security Query + Smart Field Updates
     """
-    set_query = (
+    # ✅ SQLModel One-Liner: Direct set query with security check
+    db_set = await db.scalar(
         select(Set)
         .join(Exercise, Set.exercise_id == Exercise.id)
         .join(Block, Exercise.block_id == Block.id)
         .join(Workout, Block.workout_id == Workout.id)
-        .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
         .where(
             Set.id == set_id,
-            UserModel.id == UUID(current_user.id),
-            UserModel.training_plan_id.is_not(None)  # User muss training plan haben
+            Workout.user_id == UUID(current_user.id)  # ✅ Direct user security check!
         )
     )
-    result = await db.execute(set_query)
-    db_set = result.scalar_one_or_none()
 
     if not db_set:
         raise HTTPException(status_code=404, detail="Set not found or access denied")
@@ -466,11 +433,11 @@ class ManualActivitySchema(BaseModel):
     """
     name: str = Field(..., min_length=1, max_length=200, description="Name der Aktivität")
     description: str = Field(..., min_length=1, max_length=1000, description="Beschreibung der Aktivität")
-    timestamp: Optional[datetime] = Field(default=None, description="Zeitpunkt der Aktivität (ISO string vom Frontend)")
+    timestamp: datetime | None = Field(default=None, description="Zeitpunkt der Aktivität (ISO string vom Frontend)")
     
     @field_validator('timestamp')
     @classmethod
-    def make_datetime_naive(cls, v: Optional[datetime]) -> Optional[datetime]:
+    def make_datetime_naive(cls, v: datetime | None) -> datetime | None:
         """✅ Automatisch timezone-aware datetimes zu naive konvertieren"""
         if v is not None and v.tzinfo is not None:
             return v.replace(tzinfo=None)
@@ -496,23 +463,23 @@ async def create_manual_activity(
     """
     ✅ BEST PRACTICE: Einfache Workout-Erstellung mit Auto-Serialization
     """
-    # User validation - könnte auch in Combined Query, aber hier ist separate OK da wir training_plan_id brauchen
-    user_query = select(UserModel).where(
-        UserModel.id == UUID(current_user.id),
-        UserModel.training_plan_id.is_not(None)
+    # ✅ SQLModel One-Liner: Get user with training plan
+    user = await db.scalar(
+        select(UserModel)
+        .options(selectinload(UserModel.training_plan))
+        .where(UserModel.id == UUID(current_user.id))
     )
-    result = await db.execute(user_query)
-    user = result.scalar_one_or_none()
 
-    if not user:
+    if not user or not user.training_plan:
         raise HTTPException(status_code=403, detail="User has no training plan")
     
     activity_time = activity.timestamp or datetime.utcnow()
     
     try:
-        # ✅ COMPLETE WORKOUT: Create workout with full structure for consistency
+        # ✅ Create workout with direct user_id relationship
         workout = Workout(
-            training_plan_id=user.training_plan_id,
+            user_id=UUID(current_user.id),  # ✅ Direct user relationship!
+            training_plan_id=user.training_plan.id,  # Keep for context
             name=activity.name,
             description=activity.description,
             date_created=activity_time,
@@ -603,18 +570,14 @@ async def change_workout_endpoint(
         request_data=request_log_data
     ) as call_logger:
         try:
-            # ✅ OPTIMIZED: Combined Security Query (wie im accept endpoint!)
-            workout_query = (
+            # ✅ SQLModel One-Liner: Direct workout query with security check
+            workout_orm = await db.scalar(
                 select(Workout)
-                .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
                 .where(
                     Workout.id == workout_id,
-                    UserModel.id == UUID(current_user.id),
-                    UserModel.training_plan_id.is_not(None)
+                    Workout.user_id == UUID(current_user.id)  # ✅ Direct user security check!
                 )
             )
-            result = await db.execute(workout_query)
-            workout_orm = result.scalar_one_or_none()
             
             if not workout_orm:
                 raise HTTPException(
@@ -623,9 +586,10 @@ async def change_workout_endpoint(
                 )
             
             # Get user training_plan_id for logging
-            user_query = select(UserModel.training_plan_id).where(UserModel.id == UUID(current_user.id))
+            user_query = select(UserModel).options(selectinload(UserModel.training_plan)).where(UserModel.id == UUID(current_user.id))
             result = await db.execute(user_query)
-            training_plan_id = result.scalar_one_or_none()
+            user = result.scalar_one_or_none()
+            training_plan_id = user.training_plan.id if user and user.training_plan else None
             
             # Update training_plan_id für Logging
             if call_logger.log_entry and training_plan_id:
@@ -698,23 +662,19 @@ async def accept_revised_workout_endpoint(
         request_data=request_log_data
     ) as call_logger:
         try:
-            # ✅ OPTIMIZED: Combined Security + Workout Load Query (wie in anderen Endpoints!)
-            workout_query = (
+            # ✅ SQLModel One-Liner: Direct workout query with security check and eager loading
+            workout_orm = await db.scalar(
                 select(Workout)
                 .options(
                     selectinload(Workout.blocks)
                     .selectinload(Block.exercises)
                     .selectinload(Exercise.sets)
                 )
-                .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
                 .where(
                     Workout.id == workout_id,
-                    UserModel.id == UUID(current_user.id),
-                    UserModel.training_plan_id.is_not(None)
+                    Workout.user_id == UUID(current_user.id)  # ✅ Direct user security check!
                 )
             )
-            result = await db.execute(workout_query)
-            workout_orm = result.scalar_one_or_none()
             
             if not workout_orm:
                 raise HTTPException(
@@ -722,10 +682,11 @@ async def accept_revised_workout_endpoint(
                     detail="Keine Berechtigung für den Zugriff auf dieses Workout"
                 )
             
-            # Get user training_plan_id for logging
-            user_query = select(UserModel.training_plan_id).where(UserModel.id == UUID(current_user.id))
+            # Get user training_plan_id for logging via relationship
+            user_query = select(UserModel).options(selectinload(UserModel.training_plan)).where(UserModel.id == UUID(current_user.id))
             result = await db.execute(user_query)
-            training_plan_id = result.scalar_one_or_none()
+            user = result.scalar_one_or_none()
+            training_plan_id = user.training_plan.id if user and user.training_plan else None
             
             # Update training_plan_id für Logging
             if call_logger.log_entry and training_plan_id:

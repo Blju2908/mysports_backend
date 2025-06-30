@@ -2,9 +2,12 @@ from typing import Optional, List, TYPE_CHECKING
 from datetime import datetime
 from sqlmodel import SQLModel, Field, Relationship
 from enum import Enum
+from uuid import UUID
+
 if TYPE_CHECKING:
     from .training_plan_model import TrainingPlan
     from .block_model import Block
+    from .user_model import UserModel
 
 class WorkoutStatusEnum(str, Enum):
     NOT_STARTED = "not_started"
@@ -15,6 +18,7 @@ class Workout(SQLModel, table=True):
     __tablename__ = "workouts"
 
     id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: UUID = Field(foreign_key="users.id")
     training_plan_id: Optional[int] = Field(default=None, foreign_key="training_plans.id")
     name: str
     date_created: datetime = Field(default_factory=datetime.utcnow)
@@ -23,6 +27,7 @@ class Workout(SQLModel, table=True):
     focus: Optional[str] = Field(default=None)
     notes: Optional[str] = Field(default=None)
 
+    user: "UserModel" = Relationship(back_populates="workouts")
     plan: Optional["TrainingPlan"] = Relationship(back_populates="workouts")
     blocks: List["Block"] = Relationship(back_populates="workout", cascade_delete=True, sa_relationship_kwargs={"order_by": "Block.position"})
 

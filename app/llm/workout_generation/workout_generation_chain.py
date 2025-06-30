@@ -6,25 +6,10 @@ from app.core.config import get_config
 from datetime import datetime
 from typing import Optional
 from pathlib import Path
+
 PROMPT_FILE = "workout_generation_prompt.md"
 PROMPT_FILE_FREEFORM = "workout_generation_prompt_step1.md"  # New prompt for the creative/free-form step-1 generation
 PROMPT_FILE_STRUCTURE = "workout_generation_prompt_step2.md"  # New prompt for structure conversion
-
-def clean_text_for_prompt(text: str | None) -> str:
-    """
-    Bereinigt Text für die Verwendung in Prompts.
-    Entfernt problematische Zeichen wie Null-Bytes, Steuerzeichen etc.
-    """
-    if text is None:
-        return ""
-    
-    # Entferne Null-Bytes und andere problematische Zeichen
-    cleaned = text.replace('\x00', '').replace('\r', '').strip()
-    
-    # Entferne andere Steuerzeichen (außer normalen Zeilenumbrüchen und Tabs)
-    cleaned = ''.join(char for char in cleaned if ord(char) >= 32 or char in ['\n', '\t'])
-    
-    return cleaned
 
 def create_anthropic_llm():
     config = get_config()
@@ -53,29 +38,26 @@ async def generate_workout_two_step(
     # Step 1: Freie Workout-Generierung
     freeform_text = await generate_workout(training_plan, training_history, user_prompt)
     
-    # Step 2: Strukturierung des freien Texts (mit Bereinigung)
+    # Step 2: Strukturierung des freien Texts
     structured_workout = await convert_freeform_to_schema(freeform_text)
     
     return structured_workout
 
 async def convert_freeform_to_schema(freeform_text: str) -> WorkoutSchema:
     """
-    Konvertiert freien Workout-Text in strukturiertes WorkoutSchema.
-    Nutzt ein kleines, schnelles LLM für die Strukturierung.
+    ✅ OPTIMIZED: Konvertiert freien Workout-Text in strukturiertes WorkoutSchema.
+    Nutzt LangChain's structured output für automatische JSON-Konvertierung.
     """
     try:
-        # Bereinige den Input-Text vor der Verarbeitung
-        cleaned_freeform_text = clean_text_for_prompt(freeform_text)
-        
         # Load structure conversion prompt
         prompt_path = Path(__file__).parent / PROMPT_FILE_STRUCTURE
         with open(prompt_path, "r", encoding="utf-8") as f:
             prompt_template_content = f.read()
         
-        # Replace placeholder instead of using format() to avoid KeyError with curly braces
+        # Replace placeholder with freeform text (no cleaning needed)
         formatted_prompt = prompt_template_content.replace(
             "FREEFORM_WORKOUT_PLACEHOLDER", 
-            cleaned_freeform_text
+            freeform_text
         )
         
         # API key aus der config holen
@@ -89,30 +71,31 @@ async def convert_freeform_to_schema(freeform_text: str) -> WorkoutSchema:
             temperature=0.1  # Niedrige Temperatur für konsistente Strukturierung
         )
         
-        # LangChain's structured output für automatische Schema-Validierung
+        # ✅ LangChain's structured output für automatische JSON-Konvertierung
         structured_llm = llm.with_structured_output(WorkoutSchema)
         
         print("Converting freeform text to structured workout schema...")
         structured_workout = await structured_llm.ainvoke(formatted_prompt)
         print("Successfully converted to structured schema")
         
-        # NOTE: File output disabled for production deployment
-        # try:
-        #     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        #     out_dir = Path(__file__).parent / "output"
-        #     out_dir.mkdir(exist_ok=True)
-        #     
-        #     # Input dokumentieren
-        #     input_path = out_dir / f"{ts}_structure_conversion_input.md"
-        #     input_path.write_text(cleaned_freeform_text, encoding="utf-8")
-        #     
-        #     # Output dokumentieren
-        #     output_path = out_dir / f"{ts}_structure_conversion_output.json"
-        #     output_path.write_text(structured_workout.model_dump_json(indent=2, ensure_ascii=False), encoding="utf-8")
-        #     
-        #     print(f"[LLM_DOCS] Structure conversion documented: {input_path} -> {output_path}")
-        # except Exception as e:  # noqa: BLE001
-        #     print(f"[LLM_DOCS] Could not document structure conversion: {e}")
+        # ✅ FIXED: Document JSON output without ensure_ascii
+        try:
+            ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            out_dir = Path(__file__).parent / "output"
+            out_dir.mkdir(exist_ok=True)
+            
+            # ✅ Input dokumentieren (nur wenn anders als freeform_output)
+            input_path = out_dir / f"{ts}_structure_conversion_input.md"
+            input_path.write_text(freeform_text, encoding="utf-8")
+            
+            # ✅ FIXED: JSON Output ohne ensure_ascii Parameter
+            output_path = out_dir / f"{ts}_structure_conversion_output.json"
+            json_content = structured_workout.model_dump_json(indent=2)  # Removed ensure_ascii=False
+            output_path.write_text(json_content, encoding="utf-8")
+            
+            print(f"[LLM_DOCS] Structure conversion documented: {input_path} -> {output_path}")
+        except Exception as e:
+            print(f"[LLM_DOCS] Could not document structure conversion: {e}")
         
         return structured_workout
 
@@ -132,15 +115,12 @@ async def generate_workout(
     optionale Trainingshistorie als JSON-String und optionalen User Prompt.
     """
     try:
-        # Trainingsplan (strukturierte Daten als String) wird direkt verwendet.
-
         # Load the Prompt File        
         prompt_path = Path(__file__).parent / PROMPT_FILE_FREEFORM
         with open(prompt_path, "r", encoding="utf-8") as f:
             prompt_template_content = f.read()
 
         # Ensure default empty strings if None, to avoid issues with .format
-        # The prompt itself handles "optional" display logic.
         formatted_prompt = prompt_template_content.format(
             training_plan=training_plan if training_plan is not None else "",
             training_history=training_history if training_history is not None else "",
@@ -158,15 +138,10 @@ async def generate_workout(
         }
         
         llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
-        # llm = ChatOpenAI(model="gpt-4.1-mini", api_key=OPENAI_API_KEY, use_responses_api=True)
 
-        # llm = create_anthropic_llm()
-
-        # Add reasoning to the prompt
         print("Sending request to OpenAI API (free-form)…")
         response = await llm.ainvoke(formatted_prompt)
         print("Received response from OpenAI API (free-form)")
-
 
         # Extract actual text content from LangChain response
         if hasattr(response, 'content'):
@@ -185,26 +160,21 @@ async def generate_workout(
         else:
             freeform_text = str(response)
 
-        # Bereinige den Response-Text
-        freeform_text = clean_text_for_prompt(freeform_text)
-
-        # # NOTE: File output disabled for production deployment
-        # try:
-        #     from datetime import datetime as _dt
-        #     ts = _dt.now().strftime("%Y-%m-%d_%H-%M-%S")
-        #     out_dir = Path(__file__).parent / "output"
-        #     out_dir.mkdir(exist_ok=True)
-        #     out_path = out_dir / f"{ts}_workout_generation_freeform_output.md"
-        #     out_path.write_text(freeform_text, encoding="utf-8")
-        #     print(f"[LLM_DOCS] Free-form output documented: {out_path}")
-        # except Exception as e:  # noqa: BLE001
-        #     print(f"[LLM_DOCS] Could not document free-form output: {e}")
+        # ✅ Document freeform output
+        try:
+            ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            out_dir = Path(__file__).parent / "output"
+            out_dir.mkdir(exist_ok=True)
+            out_path = out_dir / f"{ts}_workout_generation_freeform_output.md"
+            out_path.write_text(freeform_text, encoding="utf-8")
+            print(f"[LLM_DOCS] Free-form output documented: {out_path}")
+        except Exception as e:
+            print(f"[LLM_DOCS] Could not document free-form output: {e}")
 
         return freeform_text
 
     except Exception as e:
         print(f"Error in generate_workout: {e}")
         import traceback
-
         traceback.print_exc()
         raise

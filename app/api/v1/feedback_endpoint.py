@@ -1,12 +1,14 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select 
+from sqlalchemy.orm import selectinload
 from typing import Optional
 from uuid import UUID
 
 from app.models.workout_model import Workout
 from app.models.workout_feedback_model import WorkoutFeedback
 from app.models.user_model import UserModel
+from app.models.training_plan_model import TrainingPlan
 from app.schemas.workout_feedback_schema import WorkoutFeedbackSchema, WorkoutFeedbackResponseSchema
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
@@ -21,18 +23,16 @@ async def submit_workout_feedback(
     current_user: User = Depends(get_current_user),
 ):
     """
-    ✅ SQLMODEL BEST PRACTICE: Kombinierte Security + UPSERT mit Auto-Serialization
+    ✅ BEST PRACTICE: Direct user-workout relationship with security check in query
     """
-    # 🔥 STEP 1: Combined Security + Existing Feedback Check
+    # ✅ STEP 1: Combined Security + Existing Feedback Check using direct user_id
     feedback_query = (
         select(WorkoutFeedback)
         .join(Workout, WorkoutFeedback.workout_id == Workout.id)
-        .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
         .where(
             WorkoutFeedback.workout_id == feedback.workout_id,
             WorkoutFeedback.user_id == UUID(current_user.id),
-            UserModel.id == UUID(current_user.id),
-            UserModel.training_plan_id.is_not(None)
+            Workout.user_id == UUID(current_user.id)  # ✅ Direct user security check!
         )
     )
     result = await db.execute(feedback_query)
@@ -47,18 +47,16 @@ async def submit_workout_feedback(
         await db.refresh(existing_feedback)
         return WorkoutFeedbackResponseSchema.model_validate(existing_feedback)
     
-    # 🔥 STEP 2: Verify workout exists for CREATE (wenn kein existing feedback)
-    workout_exists = await db.execute(
+    # ✅ STEP 2: Verify workout exists for CREATE (wenn kein existing feedback)
+    workout_exists = await db.scalar(
         select(Workout)
-        .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
         .where(
             Workout.id == feedback.workout_id,
-            UserModel.id == UUID(current_user.id),
-            UserModel.training_plan_id.is_not(None)
+            Workout.user_id == UUID(current_user.id)  # ✅ Direct user security check!
         )
     )
     
-    if not workout_exists.scalar_one_or_none():
+    if not workout_exists:
         raise HTTPException(status_code=404, detail="Workout not found or access denied")
     
     # ✅ CREATE: Simple object creation + Auto-Serialization
@@ -77,17 +75,15 @@ async def get_workout_feedback(
     current_user: User = Depends(get_current_user),
 ):
     """
-    ✅ SQLMODEL BEST PRACTICE: Kombinierte Security Query + Auto-Serialization
+    ✅ BEST PRACTICE: Direct user-workout relationship with security check in query
     """
     feedback_query = (
         select(WorkoutFeedback)
         .join(Workout, WorkoutFeedback.workout_id == Workout.id)
-        .join(UserModel, Workout.training_plan_id == UserModel.training_plan_id)
         .where(
             WorkoutFeedback.workout_id == workout_id,
             WorkoutFeedback.user_id == UUID(current_user.id),
-            UserModel.id == UUID(current_user.id),
-            UserModel.training_plan_id.is_not(None)
+            Workout.user_id == UUID(current_user.id)  # ✅ Direct user security check!
         )
     )
     

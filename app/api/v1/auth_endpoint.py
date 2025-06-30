@@ -5,7 +5,7 @@ from app.db.session import get_session
 from app.models.user_model import UserModel
 from app.core.auth import get_current_user, User
 from pydantic import BaseModel, EmailStr
-from sqlmodel import Session, select
+from sqlmodel import Session, select, delete
 import logging
 import random
 import string
@@ -265,65 +265,107 @@ async def delete_account(
     db: Session = Depends(get_session)
 ):
     """
-    Completely delete user account and all associated data.
+    ✅ COMPLETE: Delete user account and all associated data directly in endpoint.
     
     This endpoint will:
-    1. Delete all user data (training plans, workouts, feedback, etc.)
-    2. Delete the user model from database
+    1. Delete all user data (feedbacks, workouts, training_plan) 
+    2. Delete the user model from database  
     3. Delete the user from Supabase Auth
     
     After deletion, the user will be completely removed from the system.
     """
-    logger.info(f"[DeleteAccount] Starting account deletion for user: {current_user.email} (ID: {current_user.id})")
+    logger.info(f"[DeleteAccount] Starting COMPLETE account deletion for user: {current_user.email} (ID: {current_user.id})")
     
     try:
-        # Import the service function
-        from app.services.delete_user_data_service import delete_all_user_data
+        user_id = UUID(current_user.id)
         
-        # Step 1: Delete all user data (training plans, workouts, feedback, etc.)
-        # This keeps the user model but clears all data
-        await delete_all_user_data(UUID(current_user.id), db)
-        logger.info(f"[DeleteAccount] Successfully deleted all user data for: {current_user.id}")
-        
-        # Step 2: Delete the user model from database
-        from sqlalchemy import delete
-        user_delete_query = delete(UserModel).where(UserModel.id == UUID(current_user.id))
-        result = await db.execute(user_delete_query)
-        
-        if result.rowcount == 0:
-            logger.warning(f"[DeleteAccount] User model not found for deletion: {current_user.id}")
+        # ✅ STEP 1: Verify user exists
+        user = await db.scalar(select(UserModel).where(UserModel.id == user_id))
+        if not user:
+            logger.warning(f"[DeleteAccount] User not found in database: {user_id}")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="User not found in database"
             )
         
-        await db.commit()
-        logger.info(f"[DeleteAccount] Successfully deleted user model for: {current_user.id}")
+        logger.info(f"[DeleteAccount] User found, proceeding with deletion for: {user_id}")
         
-        # Step 3: Delete user from Supabase Auth
+        # ✅ STEP 2: Delete Workout Feedback
+        from app.models.workout_feedback_model import WorkoutFeedback
+        workout_feedback_result = await db.execute(
+            delete(WorkoutFeedback).where(WorkoutFeedback.user_id == user_id)
+        )
+        logger.info(f"[DeleteAccount] Deleted {workout_feedback_result.rowcount} workout feedback records")
+        
+        # ✅ STEP 3: Delete App Feedback
+        from app.models.app_feedback_model import AppFeedbackModel
+        app_feedback_result = await db.execute(
+            delete(AppFeedbackModel).where(AppFeedbackModel.user_id == user_id)
+        )
+        logger.info(f"[DeleteAccount] Deleted {app_feedback_result.rowcount} app feedback records")
+        
+        # ✅ STEP 4: Delete Workouts (triggers CASCADE: blocks → exercises → sets)
+        from app.models.workout_model import Workout
+        workouts_result = await db.execute(
+            delete(Workout).where(Workout.user_id == user_id)
+        )
+        logger.info(f"[DeleteAccount] Deleted {workouts_result.rowcount} workouts and all cascaded data")
+        
+        # ✅ STEP 5: Delete Training Plan
+        from app.models.training_plan_model import TrainingPlan
+        training_plan_result = await db.execute(
+            delete(TrainingPlan).where(TrainingPlan.user_id == user_id)
+        )
+        logger.info(f"[DeleteAccount] Deleted {training_plan_result.rowcount} training plan(s)")
+        
+        # ✅ STEP 6: Delete User Model
+        user_result = await db.execute(
+            delete(UserModel).where(UserModel.id == user_id)
+        )
+        
+        if user_result.rowcount == 0:
+            logger.error(f"[DeleteAccount] Failed to delete user model: {user_id}")
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to delete user model"
+            )
+        
+        logger.info(f"[DeleteAccount] Deleted user model successfully")
+        
+        # ✅ STEP 7: Commit all database changes
+        await db.commit()
+        logger.info(f"[DeleteAccount] Successfully committed all database deletions")
+        
+        # ✅ STEP 8: Delete user from Supabase Auth
         supabase = await get_supabase_client(use_service_role=True)
         auth_result = await supabase.auth.admin.delete_user(current_user.id)
         logger.info(f"[DeleteAccount] Successfully deleted user from Supabase Auth: {current_user.id}")
         
-        logger.info(f"[DeleteAccount] Account deletion completed successfully for: {current_user.email}")
+        # ✅ Summary
+        total_deleted = (
+            workout_feedback_result.rowcount + 
+            app_feedback_result.rowcount + 
+            workouts_result.rowcount + 
+            training_plan_result.rowcount +
+            user_result.rowcount
+        )
+        logger.info(f"[DeleteAccount] COMPLETED: Deleted {total_deleted} records for user {current_user.email} - USER COMPLETELY REMOVED")
         
         # Return 204 No Content (successful deletion)
         return None
         
     except HTTPException:
-        # Re-raise HTTP exceptions from the service
+        # Re-raise HTTP exceptions
+        await db.rollback()
         raise
     except Exception as e:
+        # Rollback on any error
+        await db.rollback()
         logger.error(f"[DeleteAccount] Error during account deletion for {current_user.id}: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to delete account: {str(e)}"
         )
-
-
-
-
-
 
 
 async def get_user_profile_data(user_id: str, db: Session) -> dict:

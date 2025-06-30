@@ -53,5 +53,5 @@ class TrainingPlan(SQLModel, table=True):
     # One-to-One Beziehung zum User
     user: "UserModel" = Relationship(back_populates="training_plan")
     
-    # Beziehung zu Workouts
+    # ✅ Beziehung zu Workouts (für Kontext - primäre Beziehung ist jetzt User->Workout)
     workouts: List["Workout"] = Relationship(back_populates="plan")

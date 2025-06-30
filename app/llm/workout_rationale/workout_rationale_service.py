@@ -6,13 +6,14 @@ from datetime import datetime
 
 from app.models.workout_model import Workout
 from app.db.workout_db_access import get_training_history_for_user_from_db
-from app.db.trainingplan_db_access import get_training_plan_for_user
+from app.models.training_plan_model import TrainingPlan
+from sqlmodel import select
 from app.llm.workout_rationale.workout_rationale_chain import generate_workout_rationale_llm
 
 
-async def get_user_id_from_workout_id(workout_id: int, db: AsyncSession) -> Optional[UUID]:
+async def get_user_id_from_workout_id(workout_id: int, db: AsyncSession) -> UUID | None:
     """
-    Ermittelt die User-ID über die Workout-ID durch Traversierung der Beziehungen.
+    ✅ SQLModel Best Practice: Direct query using db.scalar() one-liner.
     
     Args:
         workout_id: Die ID des Workouts
@@ -22,35 +23,18 @@ async def get_user_id_from_workout_id(workout_id: int, db: AsyncSession) -> Opti
         Die User-ID oder None, falls nicht gefunden
     """
     try:
-        from sqlmodel import select
-        
-        # Lade das Workout mit TrainingPlan-Beziehung
-        result = await db.execute(
-            select(Workout).where(Workout.id == workout_id)
+        # ✅ SQLModel One-Liner
+        return await db.scalar(
+            select(Workout.user_id).where(Workout.id == workout_id)
         )
-        workout = result.scalar_one_or_none()
-        
-        if workout and workout.training_plan_id:
-            # Lade den TrainingPlan um die User-ID zu bekommen
-            from app.models.training_plan_model import TrainingPlan
-            result = await db.execute(
-                select(TrainingPlan).where(TrainingPlan.id == workout.training_plan_id)
-            )
-            training_plan = result.scalar_one_or_none()
-            
-            if training_plan:
-                return training_plan.user_id
-        
-        return None
-        
     except Exception as e:
         print(f"Error getting user_id from workout_id {workout_id}: {e}")
         return None
 
 
-async def get_workout_with_details(workout_id: int, db: AsyncSession) -> Optional[Workout]:
+async def get_workout_with_details(workout_id: int, db: AsyncSession) -> Workout | None:
     """
-    Lädt ein Workout mit allen Details (Blocks, Exercises, Sets).
+    ✅ SQLModel Best Practice: Loads a workout with all details using eager loading.
     
     Args:
         workout_id: Die ID des Workouts
@@ -60,70 +44,32 @@ async def get_workout_with_details(workout_id: int, db: AsyncSession) -> Optiona
         Das vollständige Workout-Objekt oder None
     """
     try:
-        from sqlmodel import select, text
+        from sqlalchemy.orm import selectinload
+        from app.models.block_model import Block
+        from app.models.exercise_model import Exercise
         
-        # Erst mal prüfen, ob das Workout überhaupt existiert (mit roher SQL)
-        print(f"🔍 Suche Workout mit ID {workout_id}...")
-        result = await db.execute(text("SELECT id, name FROM workouts WHERE id = :workout_id"), {"workout_id": workout_id})
-        workout_row = result.first()
+        print(f"🔍 Loading workout {workout_id} with details...")
         
-        if not workout_row:
-            print(f"❌ Workout mit ID {workout_id} nicht in der Datenbank gefunden")
-            return None
-        
-        print(f"✅ Workout gefunden: {workout_row[1]}")
-        
-        # Jetzt das Workout mit SQLModel laden
-        try:
-            print("🔍 Lade Workout mit SQLModel...")
-            result = await db.execute(
-                select(Workout).where(Workout.id == workout_id)
+        # ✅ SQLModel One-Liner with eager loading
+        workout = await db.scalar(
+            select(Workout)
+            .options(
+                selectinload(Workout.blocks)
+                .selectinload(Block.exercises)
+                .selectinload(Exercise.sets)
             )
-            workout = result.scalar_one_or_none()
+            .where(Workout.id == workout_id)
+        )
+        
+        if workout:
+            print(f"✅ Workout loaded successfully: {workout.name}")
+        else:
+            print(f"❌ Workout {workout_id} not found")
             
-            if not workout:
-                print("❌ SQLModel konnte Workout nicht laden")
-                return None
-            
-            print(f"✅ Workout mit SQLModel geladen: {workout.name}")
-            
-            # Versuche Details zu laden (falls verfügbar)
-            try:
-                from sqlalchemy.orm import selectinload
-                from app.models.block_model import Block
-                from app.models.exercise_model import Exercise
-                from app.models.set_model import Set
-                
-                print("🔍 Lade Workout-Details (Blocks, Exercises, Sets)...")
-                result = await db.execute(
-                    select(Workout)
-                    .options(
-                        selectinload(Workout.blocks)
-                        .selectinload(Block.exercises)
-                        .selectinload(Exercise.sets)
-                    )
-                    .where(Workout.id == workout_id)
-                )
-                
-                detailed_workout = result.scalar_one_or_none()
-                if detailed_workout:
-                    print(f"✅ Workout-Details erfolgreich geladen")
-                    return detailed_workout
-                else:
-                    print("⚠️ Workout-Details konnten nicht geladen werden, verwende Basis-Workout")
-                    return workout
-                    
-            except Exception as detail_error:
-                print(f"⚠️ Fehler beim Laden der Details: {detail_error}")
-                print("🔄 Verwende Basis-Workout ohne Details")
-                return workout
-                
-        except Exception as sqlmodel_error:
-            print(f"❌ SQLModel-Fehler: {sqlmodel_error}")
-            return None
+        return workout
         
     except Exception as e:
-        print(f"❌ Allgemeiner Fehler beim Laden von Workout {workout_id}: {e}")
+        print(f"❌ Error loading workout {workout_id}: {e}")
         import traceback
         traceback.print_exc()
         return None
@@ -398,8 +344,7 @@ async def run_workout_rationale_chain(
     db: AsyncSession,
 ) -> str:
     """
-    Führt die Workout-Rationale-Generierung durch.
-    Ähnlich wie run_workout_chain in workout_generation.
+    ✅ SQLModel Best Practice: Workout-Rationale-Generierung mit direkten Queries.
     
     Args:
         user_id: Die ID des Benutzers
@@ -409,23 +354,26 @@ async def run_workout_rationale_chain(
     Returns:
         Eine sportwissenschaftliche Begründung als Text
     """
-    # Lade das spezifische Workout
+    # ✅ Load workout with details using optimized function
     workout = await get_workout_with_details(workout_id, db)
     if not workout:
         raise ValueError(f"Workout mit ID {workout_id} nicht gefunden")
     
-    # Lade Trainingsplan für Ziele und Kontext
-    training_plan = await get_training_plan_for_user(user_id, db)
-    formatted_training_plan = None
-    if training_plan:
-        formatted_training_plan = format_training_plan_for_llm(training_plan)
+    # ✅ SQLModel One-Liner: Direct TrainingPlan query
+    training_plan = await db.scalar(
+        select(TrainingPlan).where(TrainingPlan.user_id == user_id)
+    )
+    formatted_training_plan = format_training_plan_for_llm(training_plan) if training_plan else None
     
-    # Temporär: Trainingshistorie überspringen wegen exec() Problem
-    # TODO: Trainingshistorie-Funktion für SQLAlchemy AsyncSession anpassen
-    print("⚠️ Trainingshistorie temporär übersprungen (exec() Kompatibilitätsproblem)")
-    formatted_history = "Trainingshistorie temporär nicht verfügbar aufgrund technischer Anpassungen."
+    # ✅ Load training history using optimized function
+    try:
+        training_history = await get_training_history_for_user_from_db(user_id, db, limit=5)
+        formatted_history = format_training_history_for_llm(training_history)
+    except Exception as e:
+        print(f"⚠️ Could not load training history: {e}")
+        formatted_history = "Trainingshistorie temporär nicht verfügbar."
     
-    # Formatiere das aktuelle Workout
+    # Format current workout
     formatted_workout = format_workout_for_llm(workout)
     
     # LLM-Call für sportwissenschaftliche Begründung
