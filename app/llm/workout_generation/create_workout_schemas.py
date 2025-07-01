@@ -1,12 +1,18 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import List, Optional, Union
 
 class SetSchema(BaseModel):
-    values: List[Optional[Union[float, int, str]]] = Field(
-        default_factory=list, 
-        description="Geplante Werte in der Reihenfolge: [Gewicht_kg, Wiederholungen, Dauer_sek, Distanz_m, Pause_sek]. Für nicht relevante Werte null verwenden, für relevante Werte IMMER konkrete Zahlen eintragen."
+    values: List[Optional[Union[float, int]]] = Field(
+        description="EXAKT 5 Werte in fester Reihenfolge: [Gewicht_kg, Wiederholungen, Dauer_sek, Distanz_m, Pause_sek]. Für nicht relevante Werte null verwenden, für relevante Werte IMMER konkrete Zahlen eintragen."
     )
     position: int = Field(default=0, description="Position des Sets in der Exercise.")
+    
+    @field_validator('values')
+    @classmethod
+    def validate_values_length(cls, v):
+        if len(v) != 5:
+            raise ValueError('values array must contain exactly 5 elements: [Gewicht_kg, Wiederholungen, Dauer_sek, Distanz_m, Pause_sek]')
+        return v
 
 class ExerciseSchema(BaseModel):
     name: str = Field(..., description="Name der Übung.")
@@ -19,6 +25,7 @@ class BlockSchema(BaseModel):
     description: str = Field(..., description="Beschreibung des Blocks.")
     exercises: List[ExerciseSchema] = Field(..., description="Liste der Übungen in diesem Block.")
     position: int = Field(default=0, description="Position des Blocks in dem Workout.")
+    
 class WorkoutSchema(BaseModel):
     name: str = Field(..., description="Name des Workouts. z.B. 'Push-Training'")
     description: str = Field(..., description="Kurze Beschreibung des gesamten Workouts.")
