@@ -110,3 +110,4 @@ yarl==1.20.0
 zstandard==0.23.0
 
 langchain-anthropic
+langchain-google-genai

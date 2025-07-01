@@ -18,7 +18,8 @@ from app.models import (
     workout_feedback_model,
     app_feedback_model,
     llm_call_log_model,
-    landing_page_survey_model
+    landing_page_survey_model,
+    exercise_description_model
 )  
 
 # this is the Alembic Config object, which provides

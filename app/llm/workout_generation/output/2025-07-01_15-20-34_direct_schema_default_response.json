@@ -1,0 +1,540 @@
+{
+  "name": "Knackiges Kettlebell & Bodyweight Zirkel",
+  "description": "Ein intensives Homeworkout zur Steigerung von Kraft, Ausdauer und Ästhetik im Hyrox-Stil, mit Kettlebell, Klimmzugstange und Eigengewicht.",
+  "duration": 60,
+  "focus": "Kraft, Ausdauer, Ästhetik",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamisches Aufwärmen zur Vorbereitung auf das Workout.",
+      "exercises": [
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Hüftkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Dynamische Ausfallschritte",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Kraft & Ausdauer Zirkel",
+      "description": "Sechs Runden eines intensiven Zirkels zur Verbesserung von Kraft, Power und Kondition.",
+      "exercises": [
+        {
+          "name": "Kettlebell Swing (Russian)",
+          "sets": [
+            {
+              "values": [
+                "24",
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24",
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "24",
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                "24",
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                "24",
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 4
+            },
+            {
+              "values": [
+                "24",
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 5
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Pull-up an der Klimmzugstange",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 4
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 5
+            }
+          ],
+          "superset_id": "A",
+          "position": 1
+        },
+        {
+          "name": "Push-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 4
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "15"
+              ],
+              "position": 5
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "Burpee Broad Jump",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 4
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 5
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "90"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "90"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "90"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "90"
+              ],
+              "position": 4
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "90"
+              ],
+              "position": 5
+            }
+          ],
+          "superset_id": "A",
+          "position": 4
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Statische Dehnungen zur Förderung der Regeneration und Flexibilität.",
+      "exercises": [
+        {
+          "name": "Butterfly Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Stehende Vorwärtsbeuge",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Nacken-Seitdehnung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Nacken-Seitdehnung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 2
+    }
+  ]
+}

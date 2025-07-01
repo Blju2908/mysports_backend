@@ -1,0 +1,413 @@
+{
+  "name": "Hyrox-Style Kraft & Ausdauer Zirkel",
+  "description": "Ein intensives Hyrox-inspiriertes Ganzkörper-Workout zur Steigerung von Kraft und Ausdauer mit Fokus auf funktionelle Bewegungen.",
+  "duration": 60,
+  "focus": "Hyrox, Kraft, Ästhetik",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmung zur Vorbereitung des Körpers auf das Training.",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "_",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Dynamic Walking Lunges",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Torso Twists",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main Block - Hyrox Kraft & Ausdauer Zirkel",
+      "description": "Intensiver Hyrox-inspirierter Zirkel zur Steigerung von Kraft und Ausdauer. Führe jede Übung in Folge aus und mache eine Pause von 90-120 Sekunden nach jeder Runde. Insgesamt 4 Runden.",
+      "exercises": [
+        {
+          "name": "Barbell Lunge",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Bench Press",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": "A",
+          "position": 1
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "Ski Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "_",
+                "_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "_",
+                "_"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "_",
+                "_"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "_",
+                "_"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Sled Pull",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "_",
+                "_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "_",
+                "_"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "_",
+                "_"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "_",
+                "_"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": "A",
+          "position": 4
+        },
+        {
+          "name": "Wall Ball Shot",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "_",
+                null,
+                null,
+                "_"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": "A",
+          "position": 5
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Statische Dehnungen zur Förderung der Flexibilität und Erholung.",
+      "exercises": [
+        {
+          "name": "Hamstring Stretch (Seated Forward Fold)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "_",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Pigeon Pose (Forward)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "_",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "_",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 2
+    }
+  ]
+}

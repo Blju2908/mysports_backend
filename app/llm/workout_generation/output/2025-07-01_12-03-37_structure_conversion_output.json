@@ -1,0 +1,612 @@
+{
+  "name": "Home Power Boost",
+  "description": "Vollständiges Krafttraining für den ganzen Körper mit Warm-Up und Cooldown",
+  "duration": 45,
+  "focus": "Ganzkörperkraft",
+  "blocks": [
+    {
+      "name": "Warm-up",
+      "description": "Aktiviere deinen Körper und bereite dich auf das Training vor.",
+      "exercises": [
+        {
+          "name": "Dynamic Walking Lunges",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bird Dog Reach",
+          "sets": [
+            {
+              "values": [
+                null,
+                "6",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "6",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Torso Twists",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Kräftige deinen gesamten Körper mit effektiven Kurzhantel-Übungen.",
+      "exercises": [
+        {
+          "name": "Reverse Lunge (links)",
+          "sets": [
+            {
+              "values": [
+                "6",
+                "8",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Reverse Lunge (rechts)",
+          "sets": [
+            {
+              "values": [
+                "6",
+                "8",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Reverse Lunge (links)",
+          "sets": [
+            {
+              "values": [
+                "6",
+                "8",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Reverse Lunge (rechts)",
+          "sets": [
+            {
+              "values": [
+                "6",
+                "8",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Reverse Lunge (links)",
+          "sets": [
+            {
+              "values": [
+                "6",
+                "8",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Reverse Lunge (rechts)",
+          "sets": [
+            {
+              "values": [
+                "6",
+                "8",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Dumbbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                "8",
+                "10",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "8",
+                "10",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "8",
+                "10",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Single-Arm Dumbbell Row (links)",
+          "sets": [
+            {
+              "values": [
+                "8",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Single-Arm Dumbbell Row (rechts)",
+          "sets": [
+            {
+              "values": [
+                "8",
+                "10",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Single-Arm Dumbbell Row (links)",
+          "sets": [
+            {
+              "values": [
+                "8",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Single-Arm Dumbbell Row (rechts)",
+          "sets": [
+            {
+              "values": [
+                "8",
+                "10",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Single-Arm Dumbbell Row (links)",
+          "sets": [
+            {
+              "values": [
+                "8",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Single-Arm Dumbbell Row (rechts)",
+          "sets": [
+            {
+              "values": [
+                "8",
+                "10",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Glute Bridge",
+          "sets": [
+            {
+              "values": [
+                "10",
+                "12",
+                null,
+                null,
+                "45"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "10",
+                "12",
+                null,
+                null,
+                "45"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "10",
+                "12",
+                null,
+                null,
+                "45"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "45",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Russian Twist",
+          "sets": [
+            {
+              "values": [
+                "4",
+                "15",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "45",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Russian Twist",
+          "sets": [
+            {
+              "values": [
+                "4",
+                "15",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehne deine Muskeln und fördere die Regeneration.",
+      "exercises": [
+        {
+          "name": "Hamstring Stretch (Seated Forward Fold)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "45",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Kneeling Quad Stretch (links)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "D",
+          "position": 0
+        },
+        {
+          "name": "Kneeling Quad Stretch (rechts)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "D",
+          "position": 0
+        },
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Supine Twist (links)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "E",
+          "position": 0
+        },
+        {
+          "name": "Supine Twist (rechts)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "E",
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}

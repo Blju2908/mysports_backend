@@ -1,7 +1,6 @@
-# Beispiel-Übungsliste für Exercise Description Generator
-# Eine Übung pro Zeile, Kommentare mit # werden ignoriert
+# Übungsbibliothek
 
-# Warm-up & Mobilität
+Warm-up & Mobilität
 - Jumping Jacks
 - High Knees
 - Butt Kicks
@@ -20,7 +19,7 @@
 - Bird Dog Reach
 - Downward Dog to Cobra
 
-# Bodyweight Basics
+Bodyweight Basics
 - Air Squat
 - Jump Squat
 - Split Squat
@@ -91,7 +90,7 @@
 - Box Pike Push-up
 - Handstand Push-up (Wall)
 
-# Calisthenics Advanced
+Calisthenics Advanced
 - Pull-up
 - Chin-up
 - Neutral-Grip Pull-up
@@ -132,7 +131,7 @@
 - Single-Arm Pull-up
 - One-Arm Chin-up
 
-# Gym-Übungen
+Gym-Übungen
 - Back Squat
 - Front Squat
 - Safety Bar Squat
@@ -212,7 +211,7 @@
 - Landmine Rotational Press
 - Landmine Squat-to-Press
 
-# Hyrox & Functional
+Hyrox & Functional
 - Wall Ball Shot
 - Sled Push
 - Sled Pull
@@ -250,7 +249,7 @@
 - Row Sprint
 - Sprint
 
-# Stretching & Cool-down
+Stretching & Cool-down
 - Hamstring Stretch (Seated Forward Fold)
 - Hamstring Stretch (Standing)
 - Standing Quad Stretch

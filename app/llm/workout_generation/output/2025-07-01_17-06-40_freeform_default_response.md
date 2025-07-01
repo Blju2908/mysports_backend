@@ -1,0 +1,92 @@
+Workout: Hyrox-Hybrid: Oberkörper & Funktionale Ausdauer (≈60 min | Fokus: Kraft, Ästhetik, Hyrox-Stil)
+
+Warm-Up | 10 min | Dynamische Aktivierung & Mobilisation
+- Jumping Jacks | –
+    - 60 s / P: 30 s
+- Armkreisen | –
+    - 10 reps (vorwärts) / P: 15 s
+    - 10 reps (rückwärts) / P: 30 s
+- Hüftkreisen | –
+    - 5 reps (links) / P: 0 s
+    - 5 reps (rechts) / P: 30 s
+- World's Greatest Stretch | –
+    - 4 reps (links) / P: 0 s
+    - 4 reps (rechts) / P: 30 s
+- Cat-Cow Flow | –
+    - 8 reps / P: 30 s
+- Inchworm Walkout | –
+    - 6 reps / P: 0 s
+
+Main | 45 min | Kraftaufbau & Hyrox-Zirkel
+- Pull-up an der Klimmzugstange | –
+    - 8 reps / P: 90 s
+    - 7 reps / P: 90 s
+    - 6 reps / P: 90 s
+    - 6 reps / P: 90 s
+- Einarmiges Kurzhantelrudern | –
+    - 10 @ 30 kg (links) / P: 0 s
+    - 10 @ 30 kg (rechts) / P: 60 s
+    - 8 @ 32.5 kg (links) / P: 0 s
+    - 8 @ 32.5 kg (rechts) / P: 60 s
+    - 8 @ 32.5 kg (links) / P: 0 s
+    - 8 @ 32.5 kg (rechts) / P: 60 s
+- Schrägbankdrücken mit Kurzhantel | –
+    - 10 @ 25 kg / P: 75 s
+    - 8 @ 27.5 kg / P: 75 s
+    - 8 @ 27.5 kg / P: 75 s
+- Striktes Schulterdrücken mit Kurzhanteln | –
+    - 10 @ 20 kg / P: 75 s
+    - 8 @ 22.5 kg / P: 75 s
+    - 8 @ 22.5 kg / P: 75 s
+- Ski Ergometer | A
+    - 200 m / P: 15 s
+- Farmers Walk mit Kurzhanteln | A
+    - 20 m @ 25 kg / P: 15 s
+- Box Jump Step Down | A
+    - 6 reps / P: 15 s
+- Wall Ball Shot | A
+    - 10 reps / P: 15 s
+- Burpee | A
+    - 6 reps / P: 90 s
+- Ski Ergometer | A
+    - 200 m / P: 15 s
+- Farmers Walk mit Kurzhanteln | A
+    - 20 m @ 25 kg / P: 15 s
+- Box Jump Step Down | A
+    - 6 reps / P: 15 s
+- Wall Ball Shot | A
+    - 10 reps / P: 15 s
+- Burpee | A
+    - 6 reps / P: 90 s
+- Ski Ergometer | A
+    - 200 m / P: 15 s
+- Farmers Walk mit Kurzhanteln | A
+    - 20 m @ 25 kg / P: 15 s
+- Box Jump Step Down | A
+    - 6 reps / P: 15 s
+- Wall Ball Shot | A
+    - 10 reps / P: 15 s
+- Burpee | A
+    - 6 reps / P: 90 s
+- Leg Raise | –
+    - 15 reps / P: 45 s
+    - 15 reps / P: 45 s
+    - 15 reps / P: 45 s
+- Plank Up-Down | –
+    - 10 reps / P: 45 s
+    - 10 reps / P: 45 s
+    - 10 reps / P: 45 s
+
+Cool-Down | 5 min | Statisches Dehnen zur Regeneration
+- Hamstring Stretch im Stehen | –
+    - 30 s (links) / P: 0 s
+    - 30 s (rechts) / P: 30 s
+- Kniender Hüftbeuger-Stretch | –
+    - 30 s (links) / P: 0 s
+    - 30 s (rechts) / P: 30 s
+- Cross-Body Schulterdehnung | –
+    - 30 s (links) / P: 0 s
+    - 30 s (rechts) / P: 30 s
+- Liegende Wirbelsäulen-Drehung | –
+    - 30 s (links) / P: 0 s
+    - 30 s (rechts) / P: 0 s

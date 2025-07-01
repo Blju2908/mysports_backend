@@ -1,0 +1,541 @@
+{
+  "name": "Knackiges Kettlebell & Bodyweight Zirkel",
+  "description": "Ein intensives Homeworkout im Hyrox-Stil, das Kraft, Ausdauer und funktionale Bewegungen kombiniert, um dich stärker und ästhetischer zu machen.",
+  "duration": 60,
+  "focus": "Kraft, Ausdauer, Funktionalität",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmung zur Vorbereitung auf das intensive Zirkeltraining.",
+      "exercises": [
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Hüftkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Dynamische Ausfallschritte",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main Block - Kettlebell & Bodyweight Zirkel",
+      "description": "Intensiver Zirkel mit Kettlebell- und Bodyweight-Übungen zur Steigerung von Kraft und Ausdauer im Hyrox-Stil.",
+      "exercises": [
+        {
+          "name": "Pull-up an der Klimmzugstange",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Push-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Kettlebell Swing (Russian)",
+          "sets": [
+            {
+              "values": [
+                "24",
+                "20",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24",
+                "20",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24",
+                "20",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24",
+                "20",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Kettlebell Clean einarmig (links)",
+          "sets": [
+            {
+              "values": [
+                "24",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Kettlebell Clean einarmig (rechts)",
+          "sets": [
+            {
+              "values": [
+                "24",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24",
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Jump Squat",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Mountain Climber",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Plank Up-Down",
+          "sets": [
+            {
+              "values": [
+                null,
+                "12",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "12",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "12",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "12",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Statische Dehnungen zur Förderung der Regeneration und Flexibilität.",
+      "exercises": [
+        {
+          "name": "Butterfly Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "45",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Nacken-Seitdehnung (links)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Nacken-Seitdehnung (rechts)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Stehende Vorwärtsbeuge",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "45",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+Workout: Hyrox-Style Kraft & Hybrid (≈60 min | Fokus: Kraft, Ausdauer, Funktionalität)
+
+Warm-Up | 7 min | Aktivierung und Mobilität für den ganzen Körper
+- Jumping Jacks | –
+    - 60 s / P: 30 s
+- Dynamic Walking Lunges | –
+    - 10 reps / P: 30 s
+- Arm Circles | –
+    - 10 reps / P: 15 s
+    - 10 reps / P: 15 s
+- Thoracic Spine Rotation (Quadruped) | –
+    - 8 reps / P: 15 s
+    - 8 reps / P: 15 s
+- World's Greatest Stretch | –
+    - 4 reps / P: 30 s
+    - 4 reps / P: 30 s
+
+Main | 48 min | Kraftaufbau im Oberkörperzug und Beine, Hyrox-inspirierter Zirkel und Rumpfstabilität
+- Barbell Row | –
+    - 8 @ 70 kg / P: 90 s
+    - 6 @ 75 kg / P: 90 s
+    - 5 @ 80 kg / P: 90 s
+    - 5 @ 80 kg / P: 90 s
+- Single-Arm Dumbbell Row | –
+    - 8 @ 30 kg / P: 60 s
+    - 8 @ 30 kg / P: 60 s
+    - 8 @ 30 kg / P: 60 s
+    - 8 @ 30 kg / P: 60 s
+    - 8 @ 30 kg / P: 60 s
+    - 8 @ 30 kg / P: 60 s
+- Bulgarian Split Squat (Barbell) | –
+    - 8 @ 35 kg / P: 75 s
+    - 8 @ 35 kg / P: 75 s
+    - 8 @ 35 kg / P: 75 s
+    - 8 @ 35 kg / P: 75 s
+    - 8 @ 35 kg / P: 75 s
+    - 8 @ 35 kg / P: 75 s
+- Ski Ergometer | A
+    - 300 m / P: 15 s
+    - 300 m / P: 15 s
+    - 300 m / P: 15 s
+- Sled Pull | B
+    - 20 m / P: 15 s
+    - 20 m / P: 15 s
+    - 20 m / P: 15 s
+- Farmers Carry (Dumbbell) | C
+    - 40 m @ 30 kg / P: 15 s
+    - 40 m @ 30 kg / P: 15 s
+    - 40 m @ 30 kg / P: 15 s
+- Wall Ball Shot | D
+    - 15 reps / P: 15 s
+    - 15 reps / P: 15 s
+    - 15 reps / P: 15 s
+- Burpee to Target | E
+    - 10 reps / P: 90 s
+    - 10 reps / P: 90 s
+    - 10 reps / P: 90 s
+- Plank Up-Down | –
+    - 10 reps / P: 45 s
+    - 10 reps / P: 45 s
+    - 10 reps / P: 45 s
+- Hollow Body Hold | –
+    - 45 s / P: 45 s
+    - 45 s / P: 45 s
+    - 45 s / P: 45 s
+
+Cool-Down | 5 min | Dehnung und Entspannung
+- Hamstring Stretch (Seated Forward Fold) | –
+    - 45 s / P: 15 s
+- Couch Stretch | –
+    - 45 s / P: 15 s
+    - 45 s / P: 15 s
+- Pigeon Pose (Forward) | –
+    - 45 s / P: 15 s
+    - 45 s / P: 15 s
+- Child's Pose | –
+    - 60 s / P: 0 s

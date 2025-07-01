@@ -1,0 +1,381 @@
+{
+  "name": "Hyrox-Style Kraft & Ausdauer Challenge",
+  "description": "Ein intensives Hyrox-inspiriertes Workout zur Steigerung von Kraft, Ausdauer und funktionaler Leistungsfähigkeit mit Fokus auf Ganzkörperintegration.",
+  "duration": 60,
+  "focus": "Hyrox, Kraft, Ganzkörper",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmung zur Vorbereitung auf das Workout.",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Hüftkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "World's Greatest Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                "5",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main Block - Kraft",
+      "description": "Kraftblock zur Steigerung der Maximalkraft und Muskelmasse.",
+      "exercises": [
+        {
+          "name": "Trap Bar Kreuzheben",
+          "sets": [
+            {
+              "values": [
+                "80",
+                "8",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "100",
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "110",
+                "5",
+                null,
+                null,
+                "120"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                "120",
+                "3",
+                null,
+                null,
+                "120"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bankdrücken mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                "60",
+                "8",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "70",
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "75",
+                "5",
+                null,
+                null,
+                "120"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                "80",
+                "3",
+                null,
+                null,
+                "120"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Pull-up an der Klimmzugstange",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "60"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "7",
+                null,
+                null,
+                "90"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Hyrox-Style Circuit (3 Runden)",
+      "description": "Hyrox-inspirierter Zirkel zur Verbesserung von Ausdauer und funktionaler Fitness.",
+      "exercises": [
+        {
+          "name": "Ski Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "300",
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Sled Pull",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "20",
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 1
+        },
+        {
+          "name": "Wall Ball Shot",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "Burpee",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Farmers Walk mit Kurzhanteln",
+          "sets": [
+            {
+              "values": [
+                "40",
+                null,
+                null,
+                "20",
+                "120"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 4
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Entspannung zum Abschluss des Workouts.",
+      "exercises": [
+        {
+          "name": "Hamstring Stretch im Stehen",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bretzel Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Kindhaltung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 3
+    }
+  ]
+}

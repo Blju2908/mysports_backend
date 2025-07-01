@@ -8,3 +8,4 @@ from .app_feedback_model import AppFeedbackModel
 from .showcase_feedback_model import Waitlist
 from .user_activity_log_model import UserActivityLog, ActivityActionType, RiskLevel
 from .landing_page_survey_model import LandingPageSurvey
+from .exercise_description_model import ExerciseDescription

@@ -4,7 +4,7 @@ from typing import List, Optional, Union
 class SetSchema(BaseModel):
     values: List[Optional[Union[float, int, str]]] = Field(
         default_factory=list, 
-        description="Geplante Werte in der Reihenfolge: [Gewicht (immer in kg nicht 1RM oder BW, PFLICHT bei Kraftübungen), Wdh, Dauer (sekunden), Distanz (m/km), Pause (sekunden)]. Für Zahlenwerte Null oder den Wert eintragen."
+        description="Geplante Werte in der Reihenfolge: [Gewicht_kg, Wiederholungen, Dauer_sek, Distanz_m, Pause_sek]. Für nicht relevante Werte null verwenden, für relevante Werte IMMER konkrete Zahlen eintragen."
     )
     position: int = Field(default=0, description="Position des Sets in der Exercise.")
 

@@ -1,45 +1,49 @@
 from uuid import UUID
 from sqlmodel.ext.asyncio.session import AsyncSession
-from typing import Any, List, Dict, Optional
+from typing import Any, List, Dict, Optional, Literal
 import json
 from datetime import datetime
 
 from app.models.training_plan_model import TrainingPlan
 from sqlmodel import select
 from app.db.workout_db_access import get_training_history_for_user_from_db
-from app.llm.workout_generation.workout_generation_chain import generate_workout_two_step
+from app.llm.workout_generation.workout_generation_chain import (
+    execute_workout_generation_sequence,
+)
 from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set
 
+
 async def run_workout_chain(
     user_id: UUID | None,
     user_prompt: str | None,
     db: AsyncSession,
-    save_to_db: bool = False,
+    save_to_db: bool = True,
+    use_exercise_filtering: bool = False,
+    approach: Literal["one_step", "two_step"] = "one_step"
 ) -> Any:
     """
-    ✅ OPTIMIZED: Führt den Workout-Generierungs-Prozess mit dem LLM durch.
-    Nutzt die neue direkte User-Workout Beziehung für bessere Performance.
+    ✅ ENHANCED: Führt den Workout-Generierungs-Prozess mit dem LLM durch.
+    Kann optional Exercise Filtering verwenden.
 
     Args:
         user_id: Die ID des Benutzers.
         user_prompt: Ein optionaler Prompt des Benutzers.
         db: Die Datenbankverbindung.
-        save_to_db: Wenn True, wird das Workout in der DB gespeichert und das Model zurückgegeben.
-                    Wenn False, wird das generierte Workout als Dictionary (vom Pydantic Schema) zurückgegeben.
-
-    Returns:
-        Abhängig von `save_to_db`: das gespeicherte Workout-DB-Modell oder ein Dictionary des generierten Workouts.
+        save_to_db: Wenn True, wird das Workout in der DB gespeichert.
+        use_exercise_filtering: Wenn True, werden Übungen aus der DB gefiltert.
+        approach: "one_step" oder "two_step" für die Generierung.
     """
 
     formatted_training_plan = None
+    training_plan_db_obj = None
     training_plan_id_for_saving = None
     formatted_history = None
 
     if user_id is not None:
-        # ✅ SQLModel One-Liner: Direkt TrainingPlan über user_id laden
+        # Lade TrainingPlan-Objekt (wird für Filterung und Formatierung benötigt)
         training_plan_db_obj = await db.scalar(
             select(TrainingPlan).where(TrainingPlan.user_id == user_id)
         )
@@ -47,31 +51,32 @@ async def run_workout_chain(
             training_plan_id_for_saving = training_plan_db_obj.id
             formatted_training_plan = format_training_plan_for_llm(training_plan_db_obj)
 
-        # ✅ OPTIMIZED: Get training history using direct user_id relationship
+        # Lade Trainingshistorie
         raw_training_history: List[Workout] = (
             await get_training_history_for_user_from_db(user_id, db, limit=10)
         )
-        
         if raw_training_history:
-            formatted_history = format_training_history_for_llm(
-                raw_training_history
-            )
+            formatted_history = format_training_history_for_llm(raw_training_history)
         
-    # LLM-Call durchführen
-    workout_schema = await generate_workout_two_step(
-        training_plan=formatted_training_plan,
+    # LLM-Call durchführen mit der neuen, vereinheitlichten Funktion
+    workout_schema = await execute_workout_generation_sequence(
+        training_plan_obj=training_plan_db_obj,
+        training_plan_str=formatted_training_plan,
         training_history=formatted_history,
         user_prompt=user_prompt,
+        db=db,
+        use_exercise_filtering=use_exercise_filtering,
+        approach=approach
     )
 
-    # ✅ IMPROVED: Konvertiere zu DB-Models mit user_id
+    # Speichern des Workouts in der DB
     if save_to_db:
         if not user_id:
-            raise ValueError("user_id is required when save_to_db=True")
+            raise ValueError("user_id ist erforderlich, um das Workout zu speichern.")
             
         workout_model = convert_llm_output_to_db_models(
             workout_schema.model_dump(),
-            user_id=user_id,  # ✅ NEW: Pass user_id for direct relationship
+            user_id=user_id,
             training_plan_id=training_plan_id_for_saving,
         )
         
@@ -81,7 +86,7 @@ async def run_workout_chain(
         print(f"✅ Workout erfolgreich in Datenbank gespeichert mit ID: {workout_model.id}")
         return workout_model
     else:
-        # Return the structured schema
+        # Rückgabe des strukturierten Schemas
         return workout_schema
 
 def format_training_plan_for_llm(training_plan) -> str:

@@ -1,0 +1,394 @@
+{
+  "name": "Hyrox-Style Kraft & Ausdauer",
+  "description": "Ein vielseitiges Workout zur Steigerung von Kraft und Ausdauer mit Hyrox-Elementen.",
+  "duration": 60,
+  "focus": "Kraft, Ausdauer, Ganzkörper",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmung zur Vorbereitung auf das Training.",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Dynamic Walking Lunges",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Torso Twists",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Kraft Hauptteil",
+      "description": "Fokus auf grundlegende Kraftübungen für den Oberkörper.",
+      "exercises": [
+        {
+          "name": "Bench Press",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Hyrox-Ausdauer Zirkel",
+      "description": "Intensiver Zirkel zur Steigerung der Ausdauer im Hyrox-Stil.",
+      "exercises": [
+        {
+          "name": "Ski Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Sled Pull",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": "A",
+          "position": 1
+        },
+        {
+          "name": "Wall Ball Shot",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "Burpee",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Core & Cool-Down",
+      "description": "Stärkung der Rumpfmuskulatur und abschließendes Dehnen.",
+      "exercises": [
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Russian Twist",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Hamstring Stretch (Seated Forward Fold)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Cross-Body Shoulder Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 3
+    }
+  ]
+}

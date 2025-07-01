@@ -1,0 +1,490 @@
+{
+  "name": "Hyrox-Style Kraft & Ausdauer",
+  "description": "Ein intensives Workout zur Verbesserung von Kraft und Ausdauer im Hyrox-Stil, mit Fokus auf funktionelle Bewegungen.",
+  "duration": 60,
+  "focus": "Kraft, Ausdauer, Funktionalität",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmung zur Vorbereitung auf das Workout.",
+      "exercises": [
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Hüftkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                "5",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main Block - Kraft & Hyrox Hybrid",
+      "description": "Intensiver Zirkel aus Kraft- und Ausdauerübungen im Hyrox-Stil, 5 Runden.",
+      "exercises": [
+        {
+          "name": "Trap Bar Kreuzheben",
+          "sets": [
+            {
+              "values": [
+                "90.0",
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "90.0",
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "90.0",
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                "90.0",
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                "90.0",
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Schrägbankdrücken mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                "60.0",
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "60.0",
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "60.0",
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                "60.0",
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                "60.0",
+                "8",
+                null,
+                null,
+                "30"
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 1
+        },
+        {
+          "name": "Pull-up an der Klimmzugstange",
+          "sets": [
+            {
+              "values": [
+                null,
+                "7",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "7",
+                null,
+                null,
+                "30"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "7",
+                null,
+                null,
+                "30"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "7",
+                null,
+                null,
+                "30"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                "7",
+                null,
+                null,
+                "30"
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "Ski Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "30"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "30"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "30"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "30"
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Burpee to Target",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "30"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "30"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "30"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "30"
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 4
+        },
+        {
+          "name": "Plank Up-Down",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 5
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Statische Dehnungen zur Förderung der Flexibilität und Erholung.",
+      "exercises": [
+        {
+          "name": "Butterfly Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Liegende Wirbelsäulen-Drehung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Knie-zur-Brust-Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 2
+    }
+  ]
+}

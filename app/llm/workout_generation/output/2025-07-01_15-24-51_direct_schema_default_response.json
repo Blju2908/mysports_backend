@@ -1,0 +1,480 @@
+{
+  "name": "Hyrox-Style Kraft & Konditionierung",
+  "description": "Ein intensives Workout zur Steigerung von Kraft und Ausdauer im Hyrox-Stil, mit Fokus auf funktionelle Bewegungen und Ästhetik.",
+  "duration": 60,
+  "focus": "Kraft, Ausdauer, Ästhetik",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamisches Aufwärmen zur Vorbereitung des Körpers auf die Belastung.",
+      "exercises": [
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Hüftkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main Block - Kraftfokus",
+      "description": "Fokus auf grundlegende Kraftübungen zur Steigerung der Maximalkraft und Muskelhypertrophie.",
+      "exercises": [
+        {
+          "name": "Schrägbankdrücken mit Kurzhantel",
+          "sets": [
+            {
+              "values": [
+                "22.5",
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "25.0",
+                "8",
+                null,
+                null,
+                "90"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "27.5",
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                "27.5",
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Romanian Deadlift mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                "60.0",
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "70.0",
+                "8",
+                null,
+                null,
+                "90"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "80.0",
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                "80.0",
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Pull-up an der Klimmzugstange",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Main Block - Hyrox Konditionierungszirkel",
+      "description": "Ein intensiver Zirkel zur Verbesserung der Ausdauer und funktionalen Fitness im Hyrox-Stil.",
+      "exercises": [
+        {
+          "name": "Ski Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "0"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "0"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "0"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "90"
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Sled Push",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "20",
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "20",
+                "0"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "20",
+                "0"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "20",
+                "0"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "20",
+                "90"
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 1
+        },
+        {
+          "name": "Wall Ball Shot",
+          "sets": [
+            {
+              "values": [
+                "6.0",
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "6.0",
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "6.0",
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                "6.0",
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                "6.0",
+                "15",
+                null,
+                null,
+                "90"
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "Farmers Walk mit Kurzhanteln",
+          "sets": [
+            {
+              "values": [
+                "24.0",
+                null,
+                null,
+                "20",
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "24.0",
+                null,
+                null,
+                "20",
+                "0"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "24.0",
+                null,
+                null,
+                "20",
+                "0"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                "24.0",
+                null,
+                null,
+                "20",
+                "0"
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                "24.0",
+                null,
+                null,
+                "20",
+                "90"
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Statische Dehnungen zur Förderung der Flexibilität und Erholung.",
+      "exercises": [
+        {
+          "name": "Butterfly Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Knie-zur-Brust-Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        }
+      ],
+      "position": 3
+    }
+  ]
+}

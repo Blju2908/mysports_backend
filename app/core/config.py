@@ -8,6 +8,7 @@ def get_environment():
 class Settings(BaseSettings):
     OPENAI_API_KEY2: str
     ANTHROPIC_API_KEY: str
+    GOOGLE_API_KEY: str = ""
     
     # Supabase
     SUPABASE_URL: str

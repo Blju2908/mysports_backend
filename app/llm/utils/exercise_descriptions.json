@@ -1,0 +1,824 @@
+[
+  {
+    "name_german": "Knöchel-Federn mit Eigengewicht",
+    "name_english": "Ankle Bounces with Bodyweight",
+    "description_german": "Federnde Sprünge auf den Fußgelenken im Stehen.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Waden",
+      "Beweglichkeit"
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit hin, Knie leicht gebeugt.",
+      "Verlagere dein Gewicht auf die Fußballen.",
+      "Hebe die Fersen leicht vom Boden ab und lasse sie federn.",
+      "Halte den Oberkörper aufrecht, Blick nach vorne.",
+      "Spring kontrolliert und federn weiter für 20–30 Sekunden."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Isometric"
+  },
+  {
+    "name_german": "Armkreisen mit Eigengewicht",
+    "name_english": "Arm Circles with Bodyweight",
+    "description_german": "Kreisende Armbewegungen zur Schulterlockerung im Stehen.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Schultern",
+      "Beweglichkeit"
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit hin, Arme seitlich auf Schulterhöhe.",
+      "Kreise beide Arme langsam nach vorne (10–15 Wiederholungen).",
+      "Wechsel die Richtung und kreise nach hinten (10–15 Wiederholungen).",
+      "Achte auf gestreckte Arme, aber nicht durchgestreckte Ellbogen."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Rotation"
+  },
+  {
+    "name_german": "Vogel-Hund-Streckung mit Eigengewicht",
+    "name_english": "Bird Dog Reach with Bodyweight",
+    "description_german": "Statische Rumpf- und Rückenstabilisation im Vierfüßlerstand.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Rumpfstabilität",
+      "Unterer Rücken",
+      "Gesäß"
+    ],
+    "execution_steps": [
+      "Geh in den Vierfüßlerstand, Hände unter den Schultern.",
+      "Strecke gleichzeitig rechten Arm nach vorn und linkes Bein nach hinten.",
+      "Halte Rücken neutral, Bauch anspannen, 2–3 Sekunden halten.",
+      "Kehre kontrolliert in Ausgangsposition zurück.",
+      "Seiten wechseln, jede Seite 8–10 Wiederholungen."
+    ],
+    "is_unilateral": true,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Isometric"
+  },
+  {
+    "name_german": "Po-Kicks mit Eigengewicht",
+    "name_english": "Butt Kicks with Bodyweight",
+    "description_german": "Dynamisches Fersen-zum-Po-Training im Stehen.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Oberschenkel-Rückseite",
+      "Waden",
+      "Ausdauer"
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit hin, Arme locker an den Seiten.",
+      "Laufe auf der Stelle und ziehe abwechselnd die Fersen zum Po.",
+      "Balance auf einem Bein kurz halten, dann Fuß wechseln.",
+      "Halte Oberkörper aufrecht, Blick geradeaus.",
+      "30–45 Sekunden mit gleichmäßigem Tempo durchführen."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Squat"
+  },
+  {
+    "name_german": "Katze-Kuh-Flow mit Eigengewicht",
+    "name_english": "Cat-Cow Flow with Bodyweight",
+    "description_german": "Wirbelsäulenmobilisierung durch abwechselndes Runden und Senken.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Beweglichkeit",
+      "Unterer Rücken",
+      "Bauchmuskeln"
+    ],
+    "execution_steps": [
+      "Geh in den Vierfüßlerstand, Hände unter den Schultern, Knie unter Hüften.",
+      "Einatmen: Rücken durchhängen lassen, Blick nach oben (Cow).",
+      "Ausatmen: Rücken rund machen, Kinn zur Brust ziehen (Cat).",
+      "Führe die Bewegung fließend aus, 8–10 Zyklen."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Rotation"
+  },
+  {
+    "name_german": "Herabschauender Hund zu Cobra mit Eigengewicht",
+    "name_english": "Downward Dog to Cobra with Bodyweight",
+    "description_german": "Ganzkörperdehnung von Hüfte bis Schultern in zwei Positionen.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Beweglichkeit",
+      "Schultern",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Start im Vierfüßlerstand, Hände unter den Schultern.",
+      "Schiebe Hüfte nach oben und hinten, streck die Beine (Downward Dog).",
+      "Halte 2–3 Sekunden, dann senke Hüfte zum Boden, heb Brust (Cobra).",
+      "Blick folgt der Bewegung, Schultern weg von den Ohren.",
+      "6–8 Wiederholungen, fließend wechseln."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Rotation"
+  },
+  {
+    "name_german": "Dynamische Ausfallschritte mit Eigengewicht",
+    "name_english": "Dynamic Walking Lunges with Bodyweight",
+    "description_german": "Abwechselnde Ausfallschritte zur Aktivierung von Beinen und Rumpf.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Oberschenkel-Vorderseite",
+      "Gesäß",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit hin, Hände in Hüfthöhe.",
+      "Mache mit rechtem Bein großen Schritt nach vorne, Knie 90 ° beugen.",
+      "Drücke dich über den vorderen Fuß nach oben und bring linkes Bein nach vorn.",
+      "Wechsel kontrolliert die Beine, 10 Schritte pro Seite.",
+      "Achte auf aufrechten Oberkörper."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Squat"
+  },
+  {
+    "name_german": "Hohe Knie mit Eigengewicht",
+    "name_english": "High Knees with Bodyweight",
+    "description_german": "Kniehebelauf auf der Stelle zur Herzfrequenzsteigerung.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Oberschenkel-Vorderseite",
+      "Ausdauer",
+      "Bauchmuskeln"
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit hin, Rücken gerade.",
+      "Hebe abwechselnd die Knie so hoch wie möglich.",
+      "Arme pendeln im Gegentakt zur Kniebewegung.",
+      "Landung federnd auf den Fußballen.",
+      "30 Sekunden schnell durchführen."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Squat"
+  },
+  {
+    "name_german": "Hüftkreisen mit Eigengewicht",
+    "name_english": "Hip Circles with Bodyweight",
+    "description_german": "Kreisende Hüftbewegungen zur Mobilisierung.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Beweglichkeit",
+      "Beinaußenseite",
+      "Beininnenseite"
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit hin, Hände auf die Hüften.",
+      "Mach große Kreise mit der Hüfte im Uhrzeigersinn (8–10 Wiederholungen).",
+      "Wechsel die Richtung und wiederhole.",
+      "Knie leicht gebeugt halten, Oberkörper stabil."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Rotation"
+  },
+  {
+    "name_german": "Inchworm-Walkout mit Eigengewicht",
+    "name_english": "Inchworm Walkout with Bodyweight",
+    "description_german": "Ganzkörperdehnung und Stabilisierung durch nach vorne Abrollen.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Unterer Rücken",
+      "Oberschenkel-Rückseite",
+      "Schultern"
+    ],
+    "execution_steps": [
+      "Stell dich aufrecht, Füße hüftbreit.",
+      "Beuge dich vor, Hände zum Boden führen.",
+      "Laufe mit den Händen nach vorne in die Plank-Position.",
+      "Halte kurz, dann laufe mit den Füßen nach zu den Händen.",
+      "Wiederhole 6–8 Mal, die Beine möglichst gestreckt."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Hip Hinge"
+  },
+  {
+    "name_german": "Jumping Jacks",
+    "name_english": "Jumping Jacks",
+    "description_german": "Springt abwechselnd mit gespreizten Armen und Beinen ab.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Ganzkörper",
+      "Ausdauer",
+      "Schultern",
+      "Oberschenkel-Vorderseite"
+    ],
+    "execution_steps": [
+      "Steh aufrecht mit geschlossenen Füßen und Armen seitlich.",
+      "Spring leicht und öffne Beine hüftbreit.",
+      "Heb Arme über den Kopf, bis sich Handflächen berühren.",
+      "Spring zurück in die Ausgangsposition und wiederhole zügig."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Carry"
+  },
+  {
+    "name_german": "Lateral Shuffle",
+    "name_english": "Lateral Shuffle",
+    "description_german": "Bewegt dich seitlich in niedriger Haltung mit schnellen Schritten.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Ganzkörper",
+      "Ausdauer",
+      "Oberschenkel-Vorderseite",
+      "Beinaußenseite"
+    ],
+    "execution_steps": [
+      "Steh mit leicht gebeugten Knien und aufrechter Brust.",
+      "Mach einen seitlichen Schritt und schiebe das andere Bein nach.",
+      "Bleib tief, Hüfte stabil und Rücken gerade.",
+      "Wechsle nach 4–6 Schritten die Richtung."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Carry"
+  },
+  {
+    "name_german": "Leg Swings Front-to-Back",
+    "name_english": "Leg Swings Front-to-Back",
+    "description_german": "Schwingt ein Bein kontrolliert vor und zurück.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Oberschenkel-Rückseite",
+      "Gesäß",
+      "Beweglichkeit"
+    ],
+    "execution_steps": [
+      "Stell dich seitlich an eine Wand und halte dich fest.",
+      "Schwing ein Bein aus der Hüfte nach vorne hoch.",
+      "Lass es unter Hüfthöhe zurückschwingen.",
+      "Wiederhol 10–15 Mal, dann Bein wechseln."
+    ],
+    "is_unilateral": true,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Hip Hinge"
+  },
+  {
+    "name_german": "Leg Swings Side-to-Side",
+    "name_english": "Leg Swings Side-to-Side",
+    "description_german": "Schwingt ein Bein seitlich vor und zurück.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Beinaußenseite",
+      "Beininnenseite",
+      "Beweglichkeit"
+    ],
+    "execution_steps": [
+      "Stell dich seitlich an eine Wand zur Stabilisierung.",
+      "Schwing das obere Bein seitlich nach außen.",
+      "Führ es kontrolliert vor das Standbein zurück.",
+      "Wiederhol 10–15 Mal pro Seite."
+    ],
+    "is_unilateral": true,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Hip Hinge"
+  },
+  {
+    "name_german": "Shoulder Pass-Through mit Theraband",
+    "name_english": "Shoulder Pass-Through with Resistance Band",
+    "description_german": "Führt das Band über Kopf nach hinten und zurück.",
+    "equipment_options": [
+      "Theraband"
+    ],
+    "target_muscle_groups": [
+      "Vordere Schulter",
+      "Hintere Schulter",
+      "Beweglichkeit"
+    ],
+    "execution_steps": [
+      "Greif das Theraband mit weitem Obergriff.",
+      "Heb das Band vor dir auf Hüfthöhe.",
+      "Führ es langsam über den Kopf bis hinter den Rücken.",
+      "Achte auf gestreckte Arme und neutrale Handgelenke.",
+      "Bring das Band kontrolliert zurück."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Rotation"
+  },
+  {
+    "name_german": "Shoulder Pass-Through mit PVC-Stange",
+    "name_english": "Shoulder Pass-Through with PVC Pipe",
+    "description_german": "Führt die Stange über den Kopf hinter den Rücken und zurück.",
+    "equipment_options": [
+      "PVC-Stange"
+    ],
+    "target_muscle_groups": [
+      "Vordere Schulter",
+      "Hintere Schulter",
+      "Beweglichkeit"
+    ],
+    "execution_steps": [
+      "Greif die Stange mit weitem Obergriff.",
+      "Heb die Stange auf Hüfthöhe vor dir.",
+      "Führ sie langsam über den Kopf hinter den Rücken.",
+      "Halte Arme gestreckt und Handgelenke neutral.",
+      "Bring die Stange kontrolliert zurück."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Rotation"
+  },
+  {
+    "name_german": "Torso Twists",
+    "name_english": "Torso Twists",
+    "description_german": "Dreht den Oberkörper langsam nach rechts und links.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Rumpfstabilität",
+      "Bauchmuskeln",
+      "Beweglichkeit"
+    ],
+    "execution_steps": [
+      "Steh hüftbreit mit leicht gebeugten Knien.",
+      "Streck die Arme seitlich auf Schulterhöhe aus.",
+      "Dreh den Oberkörper kontrolliert nach rechts.",
+      "Komm zurück zur Mitte und dreh nach links.",
+      "Atme gleichmäßig und kontrolliert."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Rotation"
+  },
+  {
+    "name_german": "World's Greatest Stretch",
+    "name_english": "World's Greatest Stretch",
+    "description_german": "Verbindet Ausfallschritt mit Drehung und Oberkörperöffnung.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Gesäß",
+      "Unterer Rücken",
+      "Rumpfstabilität",
+      "Beweglichkeit"
+    ],
+    "execution_steps": [
+      "Geh in einen tiefen Ausfallschritt mit rechtem Bein vorn.",
+      "Stütz linke Hand am Boden neben dem Fuß.",
+      "Dreh den Oberkörper zur rechten Hand und öffne Brust.",
+      "Blick folgt der Hand, halte kurz.",
+      "Komm zurück, wechsel die Seite."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Rotation"
+  },
+  {
+    "name_german": "Air Squat",
+    "name_english": "Air Squat",
+    "description_german": "Senkt die Hüfte in Hocke und drückt über die Fersen hoch.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Oberschenkel-Vorderseite",
+      "Gesäß",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Steh schulterbreit, Zehen leicht nach außen.",
+      "Drück die Hüfte nach hinten und senk ab in die Hocke.",
+      "Knie folgen der Zehenrichtung, Rücken bleibt gerade.",
+      "Drück über die Fersen zurück in den Stand."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Squat"
+  },
+  {
+    "name_german": "Archer Push-up",
+    "name_english": "Archer Push-up",
+    "description_german": "Beugt einen Arm seitlich während der andere gestreckt bleibt.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Brust",
+      "Schultern",
+      "Trizeps",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Geh in breite Liegestützposition.",
+      "Stütz dich auf eine Hand, andere Arm zur Seite gestreckt.",
+      "Beug den gestützten Arm, bis die Brust nahe dem Boden ist.",
+      "Drück explosiv zurück und wechsel die Seite."
+    ],
+    "is_unilateral": true,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Push"
+  },
+  {
+    "name_german": "Bear Crawl",
+    "name_english": "Bear Crawl",
+    "description_german": "Krabbelt auf Händen und Füßen mit stabiler Hüftposition.",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Ganzkörper",
+      "Rumpfstabilität",
+      "Schultern",
+      "Ausdauer"
+    ],
+    "execution_steps": [
+      "Start auf Händen und Knien, heb Knie leicht an.",
+      "Hände unter den Schultern, Hüfte auf Schulterhöhe.",
+      "Krabbel vorwärts: rechter Arm, linkes Bein, dann umgekehrt.",
+      "Halte den Rücken neutral und Blick nach vorn."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Carry"
+  },
+  {
+    "name_german": "Bench Dip Feet Elevated mit Bank",
+    "name_english": "Bench Dip Feet Elevated with Bench",
+    "description_german": "Drückt Körperschwerpunkt mit Armen hoch und runter, Füße auf erhöhter Bank",
+    "equipment_options": [
+      "Bank"
+    ],
+    "target_muscle_groups": [
+      "Trizeps",
+      "Brust",
+      "Vordere Schulter"
+    ],
+    "execution_steps": [
+      "Setz dich an vordere Bankkante, Hände neben Hüfte auflegen.",
+      "Positioniere Füße hüftbreit auf zweiter Bank, Beine gestreckt.",
+      "Streck die Arme, hebe das Becken an.",
+      "Beuge Ellbogen, senke Körper bis 90° Ellenbogenwinkel.",
+      "Drück dich kontrolliert zurück in gestreckte Arme."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Push"
+  },
+  {
+    "name_german": "Bench Dip Feet Elevated mit Box",
+    "name_english": "Bench Dip Feet Elevated with Box",
+    "description_german": "Drückt Körperschwerpunkt mit Armen hoch und runter, Füße auf erhöhter Box",
+    "equipment_options": [
+      "Bank",
+      "Box"
+    ],
+    "target_muscle_groups": [
+      "Trizeps",
+      "Brust",
+      "Vordere Schulter"
+    ],
+    "execution_steps": [
+      "Setz dich an vordere Bankkante, Hände neben Hüfte auflegen.",
+      "Positioniere Füße hüftbreit auf Box, Beine gestreckt.",
+      "Streck die Arme, hebe das Becken an.",
+      "Beuge Ellbogen, senke Körper bis 90° Ellenbogenwinkel.",
+      "Drück dich kontrolliert zurück in gestreckte Arme."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Push"
+  },
+  {
+    "name_german": "Bicycle Crunch (Eigengewicht)",
+    "name_english": "Bicycle Crunch (Bodyweight)",
+    "description_german": "Wechselnde Ellbogen-Knie-Berührung, wechselseitige Rumpfrotation im Liegen",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Bauchmuskeln",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Leg dich flach auf den Rücken, Hände leicht hinter Kopf.",
+      "Heb Schultern und Beine an, Beine angewinkelt.",
+      "Dreh Oberkörper, führ rechten Ellbogen zum linken Knie.",
+      "Streck rechtes Bein, wechsle Seite im flüssigen Rhythmus.",
+      "Bleib kontrolliert, spann Rumpf während der Rotation."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Rotation"
+  },
+  {
+    "name_german": "Box Pike Push-up mit Box",
+    "name_english": "Box Pike Push-up with Box",
+    "description_german": "Aus Pike-Position auf Box, Körper senken und drücken wie Schulter-Presse",
+    "equipment_options": [
+      "Box"
+    ],
+    "target_muscle_groups": [
+      "Vordere Schulter",
+      "Trizeps",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Stell die Box vor dich, Hände schulterbreit unter Boxkante.",
+      "Geh in Pike-Position: Hüfte hoch, Beine gestreckt.",
+      "Beuge Ellbogen, senke Kopf zur Boxkante.",
+      "Streck die Arme, drück dich zurück in Pike-Position.",
+      "Spann Rumpf und Beine durchgängig an."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Experte",
+    "primary_movement_pattern": "Push"
+  },
+  {
+    "name_german": "Box Step-Up mit Box",
+    "name_english": "Box Step-Up with Box",
+    "description_german": "Stufe mit einem Bein hochdrücken, Körper aufrechthalten",
+    "equipment_options": [
+      "Box"
+    ],
+    "target_muscle_groups": [
+      "Oberschenkel-Vorderseite",
+      "Gesäß",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Stell dich dicht vor die Box, Oberkörper aufrecht.",
+      "Setz einen Fuß mittig auf die Box.",
+      "Drück durch die Ferse des vorderen Fußes hoch.",
+      "Streck Hüfte und Knie, steh vollständig auf.",
+      "Senke kontrolliert zurück, Bein gestreckt lassen."
+    ],
+    "is_unilateral": true,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Squat"
+  },
+  {
+    "name_german": "Broad Jump (Eigengewicht)",
+    "name_english": "Broad Jump (Bodyweight)",
+    "description_german": "Weitsprung mit beidbeinigem Absprung und gestreckten Beinen",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Ganzkörper",
+      "Oberschenkel-Vorderseite",
+      "Gesäß",
+      "Waden"
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit, leichte Kniebeuge.",
+      "Schwung mit Armen nach hinten nehmen.",
+      "Explosiv beidbeinig abspringen, Beine strecken.",
+      "Land weich mit gebeugten Knien.",
+      "Sammle dich, geh direkt für Wiederholungen in Startposition."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Squat"
+  },
+  {
+    "name_german": "Bulgarian Split Squat (Eigengewicht)",
+    "name_english": "Bulgarian Split Squat (Bodyweight)",
+    "description_german": "Einbeiniges Kniebeugen-Rückfuß erhöht, aufrechter Oberkörper",
+    "equipment_options": [
+      "Bank"
+    ],
+    "target_muscle_groups": [
+      "Oberschenkel-Vorderseite",
+      "Gesäß",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Stell dich eine Armlänge vor Bank, Rückfuß auf Bank.",
+      "Vorderes Bein hüftbreit, Oberkörper aufrecht.",
+      "Beuge vorderes Knie, senke Hüfte kontrolliert ab.",
+      "Drück durch vorderen Fuß zurück in Startposition.",
+      "Halte Körper stabil, wechsle nach festgelegten Wiederholungen."
+    ],
+    "is_unilateral": true,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Squat"
+  },
+  {
+    "name_german": "Bulgarian Split Squat mit Kurzhanteln",
+    "name_english": "Bulgarian Split Squat with Dumbbells",
+    "description_german": "Einbeiniges Kniebeugen mit Kurzhanteln, Rückfuß erhöht, aufrechter Oberkörper",
+    "equipment_options": [
+      "Bank",
+      "Kurzhanteln"
+    ],
+    "target_muscle_groups": [
+      "Oberschenkel-Vorderseite",
+      "Gesäß",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Halte in jeder Hand eine Kurzhantel, steh vor Bank.",
+      "Platziere Rückfuß mittig auf Bank, Oberkörper aufrecht.",
+      "Beuge vorderes Knie, senk Hüfte kontrolliert ab.",
+      "Drück durch vorderen Fuß, streck Knie und Hüfte.",
+      "Halte Rumpf stabil, wechsle nach Wiederholungen."
+    ],
+    "is_unilateral": true,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Squat"
+  },
+  {
+    "name_german": "Bulgarian Split Squat mit Langhantel",
+    "name_english": "Bulgarian Split Squat with Barbell",
+    "description_german": "Einbeiniges Kniebeugen mit Langhantel auf Schultern, Rückfuß erhöht",
+    "equipment_options": [
+      "Bank",
+      "Langhantel"
+    ],
+    "target_muscle_groups": [
+      "Oberschenkel-Vorderseite",
+      "Gesäß",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Leg die Langhantel mittig auf obere Rückenmuskulatur.",
+      "Stell dich vor Bank, Rückfuß auf Bankkante.",
+      "Beuge vorderes Knie, senk Hüfte kontrolliert ab.",
+      "Drück über Ferse zurück in Startposition.",
+      "Halte Oberkörper stabil, atme kontrolliert."
+    ],
+    "is_unilateral": true,
+    "difficulty_level": "Experte",
+    "primary_movement_pattern": "Squat"
+  },
+  {
+    "name_german": "Burpee (Eigengewicht)",
+    "name_english": "Burpee (Bodyweight)",
+    "description_german": "Ganzkörperübung mit Liegestütz und Strecksprung im Wechsel",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Ganzkörper",
+      "Brust",
+      "Oberschenkel-Vorderseite",
+      "Ausdauer"
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit, Hände am Körper.",
+      "Geh in Hocke, Hände auf Boden.",
+      "Spring in Liegestütz, führ einen Liegestütz aus.",
+      "Zieh Füße zurück zur Hocke.",
+      "Explosiv hochspringen, Arme nach oben reißen."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Squat"
+  },
+  {
+    "name_german": "Calf Raise an Treppenstufe (Eigengewicht)",
+    "name_english": "Calf Raise on Step (Bodyweight)",
+    "description_german": "Fersen senken und heben auf Stufe, ein- oder beidbeinig möglich",
+    "equipment_options": [
+      "Treppenstufe",
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Waden",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Stell Fußballen auf Stufenkante, Fersen frei.",
+      "Senke Fersen langsam unter Stufenkante ab.",
+      "Drück über Fußballen hoch, Waden maximal kontrahieren.",
+      "Kontrolliert absenken, Spannung nicht verlieren."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Isometric"
+  },
+  {
+    "name_german": "Calf Raise an der Wadenmaschine",
+    "name_english": "Calf Raise on Calf Machine",
+    "description_german": "Drückt Fersen gegen gepolsterte Wadenmaschine, kontrollierte Ab- und Aufwärtsbewegung",
+    "equipment_options": [
+      "Wadenmaschine"
+    ],
+    "target_muscle_groups": [
+      "Waden",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Positionier Schultern unter Polster, Füße schulterbreit auf Plattform.",
+      "Senke Fersen langsam ab, bis Dehnung spürbar.",
+      "Drück über Fußballen hoch, Waden kontrahieren.",
+      "Halte kurz oben, dann kontrolliert absenken."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Anfänger",
+    "primary_movement_pattern": "Isometric"
+  },
+  {
+    "name_german": "Calf Raise mit Kurzhanteln",
+    "name_english": "Calf Raise with Dumbbells",
+    "description_german": "Mit Kurzhanteln in Händen auf Fußballen aufheben, Fersen absenken und heben",
+    "equipment_options": [
+      "Kurzhanteln"
+    ],
+    "target_muscle_groups": [
+      "Waden",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Halte je eine Kurzhantel in den Händen, steh auf Fußballen.",
+      "Senke Fersen langsam ab, Dehnung spüren.",
+      "Drück über Fußballen hoch, Waden anspannen.",
+      "Kontrolliert absenken, Tempo konstant halten."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Isometric"
+  },
+  {
+    "name_german": "Chest-to-Wall Handstand (Eigengewicht)",
+    "name_english": "Chest-to-Wall Handstand (Bodyweight)",
+    "description_german": "Handstand nah an Wand, Brust berührt Wand, Körper gestreckt",
+    "equipment_options": [
+      "Wand",
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Vordere Schulter",
+      "Trizeps",
+      "Rumpfstabilität"
+    ],
+    "execution_steps": [
+      "Geh mit Gesicht zur Wand, Hände schulterbreit auf Boden.",
+      "Kick Beine hoch, setz Brust an Wand.",
+      "Streck Körper durch, spann Rumpf und Beine.",
+      "Halte Blick leicht nach vorn gerichtet.",
+      "Atme ruhig, halte Position so lange wie festgelegt."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Experte",
+    "primary_movement_pattern": "Isometric"
+  },
+  {
+    "name_german": "Crab Walk (Eigengewicht)",
+    "name_english": "Crab Walk (Bodyweight)",
+    "description_german": "In Rückenstütz gehen, Hände hinter Körper, vorwärts und rückwärts laufen",
+    "equipment_options": [
+      "Eigengewicht"
+    ],
+    "target_muscle_groups": [
+      "Schultern",
+      "Trizeps",
+      "Rumpfstabilität",
+      "Gesäß"
+    ],
+    "execution_steps": [
+      "Setz Hände hinter Hüfte, Füße vor Hüfte auf.",
+      "Heb Hüften an, Körper bildet Linie.",
+      "Beweg abwechselnd Hand und Fuß vorwärts.",
+      "Halte Hüfte auf Höhe der Schultern.",
+      "Wechsle Richtung für rückwärts Crab Walk."
+    ],
+    "is_unilateral": false,
+    "difficulty_level": "Fortgeschritten",
+    "primary_movement_pattern": "Carry"
+  }
+]

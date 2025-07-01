@@ -1,0 +1,413 @@
+{
+  "name": "Knackiges Home Workout",
+  "description": "Ein intensives Ganzkörper-Workout für zu Hause mit Fokus auf Kraft und Ausdauer im Hyrox-Stil.",
+  "duration": 60,
+  "focus": "Kraft, Ausdauer, Ganzkörper",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmung zur Vorbereitung auf das Workout.",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "_duration_",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Dynamic Walking Lunges",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main Block - Kraft & Ausdauer Zirkel",
+      "description": "4 Runden eines intensiven Zirkeltrainings mit Fokus auf Kraft und Ausdauer. Kurze Pausen zwischen den Übungen, längere Pause zwischen den Runden.",
+      "exercises": [
+        {
+          "name": "Kettlebell Swing",
+          "sets": [
+            {
+              "values": [
+                "_weight_",
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "_weight_",
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "_weight_",
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "_weight_",
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Push-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Hip Thrust",
+          "sets": [
+            {
+              "values": [
+                "_weight_",
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "_weight_",
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "_weight_",
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "_weight_",
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Pull-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Burpee",
+          "sets": [
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "_reps_",
+                null,
+                null,
+                "_pause_"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "_duration_",
+                null,
+                "_pause_long_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "_duration_",
+                null,
+                "_pause_long_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "_duration_",
+                null,
+                "_pause_long_"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "_duration_",
+                null,
+                "_pause_end_"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Entspannung zur Förderung der Regeneration.",
+      "exercises": [
+        {
+          "name": "Hamstring Stretch (Seated Forward Fold)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "_duration_",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Couch Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "_duration_",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "_duration_",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}

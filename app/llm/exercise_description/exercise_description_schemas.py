@@ -3,95 +3,116 @@ from typing import List
 from enum import Enum
 
 class MuscleGroup(str, Enum):
-    """Standardisierte Muskelgruppen für Personal Trainer - MECE optimiert"""
+    """Optimierte Muskelgruppen für Personal Trainer - Balance zwischen Spezifität und Praktikabilität"""
     
-    # === PRIMÄRE MUSKELGRUPPEN (Hauptkategorien) ===
-    
-    # Oberkörper
+    # === OBERKÖRPER ===
     BRUST = "Brust"
-    RUECKEN = "Rücken" 
+    RUECKEN = "Rücken"
     SCHULTERN = "Schultern"
     BIZEPS = "Bizeps"
     TRIZEPS = "Trizeps"
-    UNTERARME = "Unterarme"
     
-    # Unterkörper
+    # Rücken-Spezifizierung (wichtig für Trainingsplanung)
+    LATISSIMUS = "Latissimus"
+    TRAPEZMUSKEL = "Trapezmuskel"
+    
+    # Schulter-Spezifizierung (wichtig für Verletzungsprävention)
+    VORDERE_SCHULTER = "Vordere Schulter"
+    SEITLICHE_SCHULTER = "Seitliche Schulter"
+    HINTERE_SCHULTER = "Hintere Schulter"
+    
+    # === UNTERKÖRPER ===
     QUADRIZEPS = "Oberschenkel-Vorderseite"
     HAMSTRINGS = "Oberschenkel-Rückseite"
     GESAESS = "Gesäß"
     WADEN = "Waden"
-    SCHIENBEIN = "Schienbein"
     
-    # Rumpf
+    # Wichtige Spezifizierungen für Funktionalität
+    ADDUKTOREN = "Beininnenseite"
+    ABDUKTOREN = "Beinaußenseite"
+    
+    # === RUMPF ===
     BAUCHMUSKELN = "Bauchmuskeln"
     CORE = "Rumpfstabilität"
     UNTERER_RUECKEN = "Unterer Rücken"
     
-    # === SPEZIFISCHE BEREICHE (bei Bedarf für detailliertere Beschreibungen) ===
-    
-    # Brust-Spezifizierung
-    OBERE_BRUST = "Obere Brust"
-    UNTERE_BRUST = "Untere Brust"
-    
-    # Rücken-Spezifizierung  
-    LATISSIMUS = "Breiter Rückenmuskel"
-    TRAPEZMUSKEL = "Trapezmuskel"
-    RHOMBOIDEN = "Rhomboiden"
-    
-    # Schulter-Spezifizierung
-    VORDERE_SCHULTER = "Vordere Schulter"
-    SEITLICHE_SCHULTER = "Seitliche Schulter"  
-    HINTERE_SCHULTER = "Hintere Schulter"
-    ROTATORENMANSCHETTE = "Rotatorenmanschette"
-    
-    # Bauch-Spezifizierung
-    GERADE_BAUCHMUSKELN = "Gerade Bauchmuskeln"
-    SEITLICHE_BAUCHMUSKELN = "Seitliche Bauchmuskeln"
-    TIEFE_BAUCHMUSKELN = "Tiefe Bauchmuskeln"
-    
-    # Bein-Spezifizierung
-    ADDUKTOREN = "Beininnenseite"
-    ABDUKTOREN = "Beinaußenseite"
-    GESAESS_GROSS = "Großer Gesäßmuskel"
-    GESAESS_MITTEL = "Mittlerer Gesäßmuskel"
-    
     # === FUNKTIONELLE KATEGORIEN ===
-    
-    # Ganzkörper
     GANZKOERPER = "Ganzkörper"
-    MEHRERE_MUSKELGRUPPEN = "Mehrere Muskelgruppen"
-    
-    # Fitness-Komponenten
-    AUSDAUER = "Ausdauer"
-    KRAFT = "Kraft"
-    KOORDINATION = "Koordination"
-    GLEICHGEWICHT = "Gleichgewicht"
     BEWEGLICHKEIT = "Beweglichkeit"
-    STABILISATION = "Stabilisation"
+    AUSDAUER = "Ausdauer"
+
+class DifficultyLevel(str, Enum):
+    """Schwierigkeitsgrade für Übungen"""
+    ANFAENGER = "Anfänger"
+    FORTGESCHRITTEN = "Fortgeschritten"
+    EXPERTE = "Experte"
+
+class MovementPattern(str, Enum):
+    """Grundlegende Bewegungsmuster im Krafttraining"""
+    PUSH = "Push"
+    PULL = "Pull"
+    SQUAT = "Squat"
+    HIP_HINGE = "Hip Hinge"
+    CARRY = "Carry"
+    ROTATION = "Rotation"
+    ISOMETRIC = "Isometric"
+
+class Equipment(str, Enum):
+    """Trainingsgeräte und Equipment für Übungen - Matte wird als Standard angenommen"""
     
-    # === BEWEGLICHKEIT & MOBILITY ===
+    # === KEIN ZUSÄTZLICHES EQUIPMENT ===
+    BODYWEIGHT = "Eigengewicht"
     
-    # Körperregionen
-    NACKEN = "Nacken"
-    WIRBELSAEULE = "Wirbelsäule"
-    HUEFTE = "Hüfte"
-    SCHULTERGELENK = "Schultergelenk"
+    # === HOME EQUIPMENT ===
+    RESISTANCE_BAND = "Widerstandsband"
+    DUMBBELLS = "Kurzhanteln"
+    BARBELL = "Langhantel"
+    MEDICINE_BALL = "Medizinball"
     
-    # Spezifische Mobility-Bereiche
-    HUEFTE_FLEXOREN = "Hüftbeuger"
-    HUEFTE_EXTENSOREN = "Hüftstrecker"
-    HINTERE_KETTE = "Hintere Muskelkette"
-    VORDERE_KETTE = "Vordere Muskelkette"
+    # === ERHÖHUNGEN UND STÜTZEN ===
+    BENCH = "Bank"
+    BOX = "Box/Kasten"
+    STEP = "Stufe/Step"
+    WALL = "Wand"
     
-    # Regeneration
-    ENTSPANNUNG = "Entspannung"
-    REGENERATION = "Regeneration"
+    # === BASIC GYM EQUIPMENT ===
+    PULL_UP_BAR = "Klimmzugstange"
+    PARALLEL_BARS = "Parallelbarren"
+    RINGS = "Turnringe"
+    
+    # === GYM MASCHINEN (Hauptkategorien) ===
+    GYM_MACHINE = "Gym Maschine"
+    
+    # === SPEZIAL EQUIPMENT ===
+    TRX_BAND = "TRX Band"  # TRX etc.
+    BATTLE_ROPES = "Battle Ropes"
+    KETTLEBELL = "Kettlebell"
+
+    # === CARDIO EQUIPMENT ===
+    TREADMILL = "Laufband"
+    BIKE = "Fahrrad"
+    ROWING_MACHINE = "Rudergerät"
+    ASSAULT_BIKE = "Assault Bike"
+    STEPMILL = "Stepmill"
+    SKIERG = "Skierg"
+
 
 class ExerciseDescriptionSchema(BaseModel):
-    """Schema für eine detaillierte Übungsbeschreibung"""
-    name_german: str = Field(..., description="Name der Übung auf Deutsch")
-    name_english: str = Field(..., description="Name der Übung auf Englisch")
-    description_german: str = Field(..., description="Kurze sachliche Beschreibung der Übung in einem kurzen präzisen Halbsatz.")
-    equipment_options: List[str] = Field(..., description="Liste möglicher Equipment-Optionen")
-    target_muscle_groups: List[MuscleGroup] = Field(..., description="Liste der Hauptmuskelgruppen")
-    execution_steps: List[str] = Field(..., description="Nummerierte Ausführungsschritte") 
+    """Schema für die Generierung von Übungsbeschreibungen"""
+    
+    name_german: str = Field(description="Deutscher Name der Übung")
+    name_english: str = Field(description="Englischer Name der Übung")
+    description_german: str = Field(description="Kurze, präzise Beschreibung auf Deutsch")
+    
+    difficulty_level: DifficultyLevel = Field(description="Schwierigkeitsgrad der Übung")
+    primary_movement_pattern: MovementPattern = Field(description="Hauptbewegungsmuster")
+    is_unilateral: bool = Field(description="True wenn die Übung einseitig/asymmetrisch ausgeführt wird")
+    
+    equipment_options: List[str] = Field(description="Benötigte Ausrüstung")
+    target_muscle_groups: List[str] = Field(description="Zielmuskelgruppen")
+    execution_steps: List[str] = Field(description="Schritt-für-Schritt Ausführung")
+
+
+class ExerciseDescriptionListSchema(BaseModel):
+    """Schema für Listen von Übungsbeschreibungen"""
+    exercises: List[ExerciseDescriptionSchema]

@@ -3,7 +3,7 @@ from app.core.auth import get_current_user, User
 from app.db.session import get_session
 from app.llm.workout_generation.create_workout_service import run_workout_chain
 from app.services.llm_logging_service import log_workout_creation
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 from sqlalchemy.ext.asyncio import AsyncSession
 import logging
 
@@ -15,6 +15,14 @@ logger = logging.getLogger("llm_endpoint")
 # Define a Pydantic model for the request body
 class CreateWorkoutRequest(BaseModel):
     prompt: str | None = Field(None, description="Optional user prompt for workout generation")
+    use_exercise_filtering: bool = Field(False, description="Enable exercise filtering based on user equipment and experience")
+    approach: str = Field("two_step", description="Generation approach: 'one_step' or 'two_step'")
+    
+    @validator('approach')
+    def validate_approach(cls, v):
+        if v not in ["one_step", "two_step"]:
+            raise ValueError("approach must be either 'one_step' or 'two_step'")
+        return v
 
 
 @router.post("/llm/create-workout")
@@ -24,12 +32,15 @@ async def create_workout(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_session)
 ):
-    logger.info("[llm/create-workout] Start - User: %s", current_user.id)
+    logger.info("[llm/create-workout] Start - User: %s, Exercise Filtering: %s, Approach: %s", 
+                current_user.id, request_data.use_exercise_filtering, request_data.approach)
     
     # Prepare request data for logging
     request_log_data = {
         "prompt": request_data.prompt,
-        "user_id": current_user.id
+        "user_id": current_user.id,
+        "use_exercise_filtering": request_data.use_exercise_filtering,
+        "approach": request_data.approach
     }
     
     async with await log_workout_creation(
@@ -44,7 +55,9 @@ async def create_workout(
                 user_id=current_user.id,
                 user_prompt=request_data.prompt,
                 db=db,
-                save_to_db=True
+                save_to_db=True,
+                use_exercise_filtering=request_data.use_exercise_filtering,
+                approach="one_step"
             )
             
             # Store workout ID immediately to avoid lazy-loading issues

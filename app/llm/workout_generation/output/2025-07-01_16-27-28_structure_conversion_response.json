@@ -1,0 +1,444 @@
+{
+  "name": "Hyrox-Style Kraft & Ausdauer II",
+  "description": "Ein umfassendes Workout im Hyrox-Stil, das Kraft, Ausdauer und Funktionalität trainiert und zur Ästhetik beiträgt.",
+  "duration": 60,
+  "focus": "Kraft, Ausdauer, Funktionalität, Ästhetik",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Bereit für maximale Leistung",
+      "exercises": [
+        {
+          "name": "High Knees",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "15"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Butt Kicks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "15"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Dynamic Walking Lunges",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "15"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "World's Greatest Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "15"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Kraftaufbau & Hyrox-Zirkel",
+      "exercises": [
+        {
+          "name": "Conventional Deadlift",
+          "sets": [
+            {
+              "values": [
+                "100",
+                "5",
+                null,
+                null,
+                "120"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "115",
+                "5",
+                null,
+                null,
+                "120"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "120",
+                "4",
+                null,
+                null,
+                "120"
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                "125",
+                "3",
+                null,
+                null,
+                "120"
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Incline Bench Press",
+          "sets": [
+            {
+              "values": [
+                "50",
+                "8",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "60",
+                "8",
+                null,
+                null,
+                "90"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "65",
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                "50",
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "60",
+                "8",
+                null,
+                null,
+                "90"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "65",
+                "8",
+                null,
+                null,
+                "90"
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Ski Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "300",
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "300",
+                "30"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "300",
+                "30"
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Sled Pull",
+          "sets": [
+            {
+              "values": [
+                "60",
+                null,
+                null,
+                "20",
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "60",
+                null,
+                null,
+                "20",
+                "30"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                "60",
+                null,
+                null,
+                "20",
+                "30"
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "B",
+          "position": 4
+        },
+        {
+          "name": "Burpee",
+          "sets": [
+            {
+              "values": [
+                null,
+                "12",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "12",
+                null,
+                null,
+                "90"
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                "12",
+                null,
+                null,
+                "90"
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "C",
+          "position": 5
+        },
+        {
+          "name": "Hollow Body Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "45",
+                null,
+                "60"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "45",
+                null,
+                "60"
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 6
+        },
+        {
+          "name": "Leg Raise",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "60"
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 7
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Flexibilität & Erholung",
+      "exercises": [
+        {
+          "name": "Hamstring Stretch (Seated Forward Fold)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Couch Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 2
+    }
+  ]
+}

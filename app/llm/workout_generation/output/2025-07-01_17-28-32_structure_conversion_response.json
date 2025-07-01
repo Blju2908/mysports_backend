@@ -1,0 +1,538 @@
+{
+  "name": "Hyrox-Style Push & Core Power",
+  "description": "Hyrox-Style Push & Core Power Training mit Warm-Up, Hauptteil und Cool-Down.",
+  "duration": 60,
+  "focus": "Kraft, Ästhetik, Hyrox-Ausdauer",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Aktivierung und Mobilisierung",
+      "exercises": [
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "World's Greatest Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                "5",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Kraftentwicklung und Hyrox-spezifische Ausdauer",
+      "exercises": [
+        {
+          "name": "Schrägbankdrücken mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                "40",
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "55",
+                "8",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "65",
+                "6",
+                null,
+                null,
+                "120"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "65",
+                "6",
+                null,
+                null,
+                "120"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Striktes Schulterdrücken mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                "35",
+                "8",
+                null,
+                null,
+                "75"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "45",
+                "6",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "50",
+                "5",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Dips an den Ringen",
+          "sets": [
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "8",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "7",
+                null,
+                null,
+                "60"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Trizepsdrücken am Kabelzug mit Seil",
+          "sets": [
+            {
+              "values": [
+                "20",
+                "12",
+                null,
+                null,
+                "45"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "25",
+                "12",
+                null,
+                null,
+                "45"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "30",
+                "10",
+                null,
+                null,
+                "45"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Ski Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                "250",
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A1",
+          "position": 0
+        },
+        {
+          "name": "Wall Ball Shot",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A2",
+          "position": 0
+        },
+        {
+          "name": "Sled Push",
+          "sets": [
+            {
+              "values": [
+                "80",
+                null,
+                null,
+                "20",
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "80",
+                null,
+                null,
+                "20",
+                "30"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                "80",
+                null,
+                null,
+                "20",
+                "30"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A3",
+          "position": 0
+        },
+        {
+          "name": "Burpee",
+          "sets": [
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "10",
+                null,
+                null,
+                "90"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A4",
+          "position": 0
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "45"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "45"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "45"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Leg Raise",
+          "sets": [
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "45"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "45"
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                "15",
+                null,
+                null,
+                "45"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Regeneration",
+      "exercises": [
+        {
+          "name": "Cross-Body Schulterdehnung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "30",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Türrahmen-Brustdehnung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "45",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Kindhaltung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                "60",
+                null,
+                "0"
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+Workout: Kraft & Funktionale Ausdauer Zuhause (≈60 min | Fokus: Kraft, Hyrox-Stil, Funktionell)
+
+Warm-Up | 10 Minuten | Mobilisierung & Aktivierung
+- Cat-Cow Flow | –
+    - 60 s
+- Hüftkreisen | –
+    - 30 s (links) / P: 0 s
+    - 30 s (rechts) / P: 0 s
+- Armkreisen | –
+    - 10 reps vorwärts / P: 0 s
+    - 10 reps rückwärts / P: 0 s
+- Dynamische Ausfallschritte | –
+    - 8 reps pro Bein / P: 0 s
+
+Main | 48 Minuten | Kraft & Hyrox-inspirierter Zirkel
+- Kettlebell Swing (Russian) | –
+    - 15 reps @ 24 kg / P: 90 s
+    - 18 reps @ 24 kg / P: 90 s
+    - 20 reps @ 24 kg / P: 90 s
+    - 20 reps @ 24 kg / P: 90 s
+- Pull-up an der Klimmzugstange | –
+    - 8 reps / P: 90 s
+    - 8 reps / P: 90 s
+    - 7 reps / P: 90 s
+    - 6 reps / P: 90 s
+- Kettlebell Clean einarmig | –
+    - 8 reps @ 24 kg (links) / P: 60 s
+    - 8 reps @ 24 kg (rechts) / P: 60 s
+    - 8 reps @ 24 kg (links) / P: 60 s
+    - 8 reps @ 24 kg (rechts) / P: 60 s
+    - 8 reps @ 24 kg (links) / P: 60 s
+    - 8 reps @ 24 kg (rechts) / P: 60 s
+- Push-up | –
+    - 15 reps / P: 60 s
+    - 15 reps / P: 60 s
+    - 12 reps / P: 60 s
+- Einbeiniger Hip Thrust | –
+    - 12 reps (links) / P: 45 s
+    - 12 reps (rechts) / P: 45 s
+    - 12 reps (links) / P: 45 s
+    - 12 reps (rechts) / P: 45 s
+    - 10 reps (links) / P: 45 s
+    - 10 reps (rechts) / P: 45 s
+- Suitcase Carry (links) | A
+    - 30 s @ 24 kg / P: 0 s
+    - 30 s @ 24 kg / P: 0 s
+    - 30 s @ 24 kg / P: 0 s
+- Suitcase Carry (rechts) | A
+    - 30 s @ 24 kg / P: 0 s
+    - 30 s @ 24 kg / P: 0 s
+    - 30 s @ 24 kg / P: 0 s
+- Burpee Broad Jump | A
+    - 5 reps / P: 0 s
+    - 5 reps / P: 0 s
+    - 5 reps / P: 0 s
+- Mountain Climber | A
+    - 45 s / P: 0 s
+    - 45 s / P: 0 s
+    - 45 s / P: 0 s
+- Plank Hold | A
+    - 60 s / P: 120 s
+    - 60 s / P: 120 s
+    - 60 s / P: 0 s
+
+Cool-Down | 7 Minuten | Dehnung & Entspannung
+- Butterfly Stretch | –
+    - 60 s / P: 0 s
+- Stehende Vorwärtsbeuge | –
+    - 60 s / P: 0 s
+- Bretzel Stretch | –
+    - 60 s (links) / P: 0 s
+    - 60 s (rechts) / P: 0 s

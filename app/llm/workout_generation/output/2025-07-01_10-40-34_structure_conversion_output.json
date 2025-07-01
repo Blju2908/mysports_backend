@@ -1,0 +1,498 @@
+{
+  "name": "Hyrox-Flow: Kraft & Ausdauer Zirkel",
+  "description": "Hyrox-inspirierter Zirkel mit Fokus auf funktionale Kraft und Ausdauer, bestehend aus Warm-up, Hauptteil und Cooldown.",
+  "duration": 60,
+  "focus": "Hyrox, Funktionale Kraft, Ausdauer",
+  "blocks": [
+    {
+      "name": "Warm-up",
+      "description": "Dynamische Aktivierung und Gelenkmobilisierung",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                30
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Dynamic Walking Lunges",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Arm Circles vorwärts",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                15
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        },
+        {
+          "name": "Arm Circles rückwärts",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 5
+        },
+        {
+          "name": "World's Greatest Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                3,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 6
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Main",
+      "description": "Hyrox-inspirierter Zirkel für Kraftausdauer und funktionale Fitness (4 Runden)",
+      "exercises": [
+        {
+          "name": "Wall Ball Shot",
+          "sets": [
+            {
+              "values": [
+                9,
+                15,
+                null,
+                null,
+                30
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                9,
+                15,
+                null,
+                null,
+                30
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                9,
+                15,
+                null,
+                null,
+                30
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                9,
+                15,
+                null,
+                null,
+                30
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 1
+        },
+        {
+          "name": "Ski Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250,
+                30
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250,
+                30
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250,
+                30
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250,
+                30
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "Pull-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                30
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                30
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                30
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                30
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Sled Push",
+          "sets": [
+            {
+              "values": [
+                80,
+                null,
+                null,
+                25,
+                30
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                80,
+                null,
+                null,
+                25,
+                30
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                80,
+                null,
+                null,
+                25,
+                30
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                80,
+                null,
+                null,
+                25,
+                30
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 4
+        },
+        {
+          "name": "Alternating Dumbbell Clean & Jerk",
+          "sets": [
+            {
+              "values": [
+                20,
+                10,
+                null,
+                null,
+                30
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                20,
+                10,
+                null,
+                null,
+                30
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                20,
+                10,
+                null,
+                null,
+                30
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                20,
+                10,
+                null,
+                null,
+                30
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 5
+        },
+        {
+          "name": "Push-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                120
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                120
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                120
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                0
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": "A",
+          "position": 6
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Aktive Erholung und Dehnung",
+      "exercises": [
+        {
+          "name": "Hamstring Stretch (Seated Forward Fold)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                0
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Hip Flexor Stretch (Kneeling)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                0
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Pigeon Pose (Forward)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                0
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        },
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                0
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        },
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                0
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 5
+        }
+      ],
+      "position": 3
+    }
+  ]
+}
