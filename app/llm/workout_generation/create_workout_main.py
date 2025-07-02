@@ -27,7 +27,7 @@ from app.llm.workout_generation.workout_generation_chain import execute_workout_
 USER_ID = "df668bed-9092-4035-82fa-c68e6fa2a8ff"  # Ersetze mit deiner echten User-ID
 USE_PRODUCTION_DB = False # True für Produktionsdatenbank, False für lokale DB
 USE_EXERCISE_FILTERING = False  
-GENERATION_APPROACH = "one_step"
+GENERATION_APPROACH = "two_step"
 
 async def main():
     """Hauptfunktion für Workout-Generation Test mit DB-Verbindung"""

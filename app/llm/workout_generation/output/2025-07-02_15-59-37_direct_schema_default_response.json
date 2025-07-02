@@ -1,0 +1,404 @@
+{
+  "name": "Lower Body Strength & Stability",
+  "description": "Krafttraining für Unterkörper zur Steigerung der Stabilität und Muskelaufbau mit kniefreundlichen Übungen",
+  "duration": 60,
+  "focus": "Beine, Gesäß",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamisches Aufwärmen & Mobilität",
+      "exercises": [
+        {
+          "name": "Assault Bike",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                300,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Hüftkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Leg Swings Side-to-Side",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "90/90 Hip Switch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Hauptteil: Kraft & Stabilität",
+      "exercises": [
+        {
+          "name": "Beinpresse",
+          "sets": [
+            {
+              "values": [
+                140,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                140,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                140,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Romanian Deadlift mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                80,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                80,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Hip Thrust mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                80,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                80,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Einbeinige Glute Bridge links",
+          "sets": [
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                45
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                45
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Einbeinige Glute Bridge rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                45
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                45
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": "A",
+          "position": 4
+        },
+        {
+          "name": "Wadenheben an der Maschine",
+          "sets": [
+            {
+              "values": [
+                60,
+                15,
+                null,
+                null,
+                45
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                60,
+                15,
+                null,
+                null,
+                45
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                60,
+                15,
+                null,
+                null,
+                45
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 5
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                30
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                30
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                30
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 6
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Abkühlung & Dehnung",
+      "exercises": [
+        {
+          "name": "Kindhaltung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Couch-Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Butterfly Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Calf Stretch Against Wall",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 2
+    }
+  ]
+}

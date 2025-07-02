@@ -1,0 +1,245 @@
+{
+  "name": "Pull Day - Rücken & Bizeps",
+  "description": "Krafttraining für Rücken und Bizeps mit Fokus auf Muskelaufbau.",
+  "duration": 45,
+  "focus": "Kraft, Rücken & Bizeps",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Leichtes Aufwärmen für Rücken und Schultern",
+      "exercises": [
+        {
+          "name": "Ruderergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                180,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Hauptteil",
+      "description": "Kraftübungen für Rücken und Bizeps",
+      "exercises": [
+        {
+          "name": "Konventionelles Kreuzheben",
+          "sets": [
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Pull-up an der Klimmzugstange",
+          "sets": [
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                6,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Vorgebeugtes Langhantelrudern",
+          "sets": [
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                60,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "EZ-Stangen-Bizepscurls",
+          "sets": [
+            {
+              "values": [
+                30,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                30,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Mobilisation",
+      "exercises": [
+        {
+          "name": "Kindhaltung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Liegende Wirbelsäulen-Drehung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        }
+      ],
+      "position": 2
+    }
+  ]
+}

@@ -121,15 +121,24 @@ async def generate_workout_direct_to_schema_enhanced(
             Path(__file__).parent / "prompts" / "workout_generation_prompt_combined.md"
         )
 
+        # Load training principles
+        training_principles_path = (
+            Path(__file__).parent / "prompts" / "training_principles_base.md"
+        )
+
         with open(prompt_path, "r", encoding="utf-8") as f:
             prompt_template_content = f.read()
 
-        # Format prompt with the dynamic exercise library
+        with open(training_principles_path, "r", encoding="utf-8") as f:
+            training_principles_content = f.read()
+
+        # Format prompt with the dynamic exercise library and training principles
         formatted_prompt = prompt_template_content.format(
             training_plan=training_plan or "",
             training_history=training_history or "",
             user_prompt=user_prompt or "",
             exercise_library=exercise_library or "",
+            training_principles=training_principles_content,
             current_date=datetime.now().strftime("%d.%m.%Y"),
         )
 
@@ -179,16 +188,25 @@ async def generate_freeform_workout_enhanced(
         )
         if not prompt_path.exists():
             raise FileNotFoundError(f"Prompt file not found at {prompt_path}")
+            
+        # Load training principles
+        training_principles_path = (
+            Path(__file__).parent / "prompts" / "training_principles_base.md"
+        )
 
         with open(prompt_path, "r", encoding="utf-8") as f:
             prompt_template_content = f.read()
 
-        # Format prompt with the dynamic exercise library
+        with open(training_principles_path, "r", encoding="utf-8") as f:
+            training_principles_content = f.read()
+
+        # Format prompt with the dynamic exercise library and training principles
         formatted_prompt = prompt_template_content.format(
             training_plan=training_plan or "",
             training_history=training_history or "",
             user_prompt=user_prompt or "",
             exercise_library=exercise_library or "",
+            training_principles=training_principles_content,
             current_date=datetime.now().strftime("%d.%m.%Y"),
         )
 
@@ -242,14 +260,22 @@ async def generate_freeform_workout(
     try:
         # Load the Prompt File
         prompt_path = Path(__file__).parent / "prompts" / PROMPT_FILE_FREEFORM
+        training_principles_path = (
+            Path(__file__).parent / "prompts" / "training_principles_base.md"
+        )
+        
         with open(prompt_path, "r", encoding="utf-8") as f:
             prompt_template_content = f.read()
+            
+        with open(training_principles_path, "r", encoding="utf-8") as f:
+            training_principles_content = f.read()
 
         # Ensure default empty strings if None, to avoid issues with .format
         formatted_prompt = prompt_template_content.format(
             training_plan=training_plan if training_plan is not None else "",
             training_history=training_history if training_history is not None else "",
             user_prompt=user_prompt if user_prompt is not None else "",
+            training_principles=training_principles_content,
             current_date=datetime.now().strftime("%d.%m.%Y"),
         )
 

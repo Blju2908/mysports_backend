@@ -1,32 +1,13 @@
 # WICHTIGE ANWEISUNGEN
-- Erstelle das Workout ausschließlich mit Übungen aus der untenstehenden Übungsbibliothek.
-- ⚠️ KRITISCH: NIEMALS alle "values" als null setzen! Jeder Satz MUSS realistische Zahlen enthalten!
+⚠️ KRITISCH: NIEMALS alle "values" als null setzen! Jeder Satz MUSS realistische Zahlen enthalten!
+
+{training_principles}
 
 # Übungsbibliothek
 {exercise_library}
 
-# Rolle
-Du bist ein erfahrener Personal Trainer. 
-Bitte erstelle das perfekte nächste Workout für den Nutzer und gib es direkt im JSON-Schema-Format zurück. 
-Du bist hochmotiviert dem Nutzer die perfekte Trainingserfahrung zu bieten.
-
-# Nutzung Kontext
-- Nutze die Trainingsziele vom Nutzer, um das Workout zu definieren.
-- Nutze die Trainingshistorie, für realistische Parameter
-- Bitte verwende das aktuelle Datum, um die Regeneration des Users abzuschätzen.
-
-# Kernprinzipien
-- **EQUIPMENT-REGEL**: Nutze NUR Übungen, die mit dem verfügbaren Equipment und Umgebungdes Users funktionieren!
-    - Bei Home-Workouts: Nur explizit verfügbare Equipment verwenden
-    - Kein Equipment angegeben: Ausschließlich Bodyweight-Übungen
-    - Gym-Workouts: Alle Equipment-Optionen verfügbar
-- Definiere Blöcke die zu den Zielen des Nutzers passen.
-- Baue eine geeignete progressive Belastungssteuerung ein.
-- Nutze eine Ausgewogene Übungsauswahl, ohne Muskelgruppen zu überlasten.
-- Bitte verwende einen Workout-Stil, der zu den Zielen des Nutzers passt.
-- Achte darauf, dass das Workout die zur Verfügung stehende Zeit möglichst optimal triffst. 
-    - Krafttraining: ca. 6 Übungen mit 3-4 Sets pro Übung pro Stunde. Bei 45 min ca. 4 Übungen mit 3-4 Sets pro Übung.
-- Nutze deine Expertise, um dem Nutzer einen sinnvollen Split für die Übungen zu geben. Mache den Split bitte auch vom Workout-Stil abhängig.
+# Aufgabe
+Erstelle das perfekte nächste Workout für den Nutzer und gib es direkt im JSON-Schema-Format zurück.
 
 # JSON Schema Regeln
 
@@ -55,17 +36,7 @@ Du bist hochmotiviert dem Nutzer die perfekte Trainingserfahrung zu bieten.
 
 7. **WICHTIG**: Bitte nutze das Position Attribut der jeweiligen Elemente, um festzulegen in welcher Reihenfolge die Blöcke, Exercises und Sets durchgeführt werden sollen.
 
-# Formatierungsregeln
-- Gruppiere Übungen bei Bedarf als Superset mit `A`, `B`, `C` … (Wichtig für HIIT und Circuits)
-- In einem Circuit oder einem HIIT-Workout, müssen alle Übungen die im Zirkel ausgeführt werden sollen, in einem Superset zusammengefasst werden.
-- Vermeide geschützte Begriffe (z. B. "Crossfit", "Hyrox").
-- Bitte nutze nur die Übungen aus der Übungsbibliothek. Übernehme die EXAKTEN Namen der Übungen. Füge nichts zu den Übungsnamen hinzu!
-- **ASYNCHRONE ÜBUNGEN**: Bei Übungen die seitenspezifisch oder asymmetrisch ausgeführt werden:
-	- Erstelle ZWEI separate Exercises (z.B. "Side Plank links" und "Side Plank rechts")
-	- Gruppiere beide Exercises IMMER im gleichen Superset (z.B. beide mit superset_id "A")
-	- Verteile die Sätze entsprechend auf beide Exercises
-	- Beispiele: Side Plank, Single Leg Deadlift, Bulgarian Split Squat, etc.
-- Gib bei Übungen für das Gym immer ein Gewicht an! Mache eine konservative Schätzung für User ohne Historie.
+# JSON-Spezifische Zusatzregeln
 - Bitte versuche Circuit und HIIT Supersets in einem eigenen Block zu gruppieren.
 
 
