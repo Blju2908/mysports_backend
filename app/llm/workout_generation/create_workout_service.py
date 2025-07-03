@@ -22,7 +22,7 @@ async def run_workout_chain(
     db: AsyncSession,
     save_to_db: bool = True,
     use_exercise_filtering: bool = False,
-    approach: Literal["one_step", "two_step"] = "one_step"
+    approach: Literal["one_step", "two_step"] = "two_step"
 ) -> Any:
     """
     ✅ ENHANCED: Führt den Workout-Generierungs-Prozess mit dem LLM durch.

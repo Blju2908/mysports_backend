@@ -1,0 +1,495 @@
+{
+  "name": "Hyrox-Style Full-Body Strength & Endurance",
+  "description": "Ein Hyrox-inspiriertes Ganzkörpertraining mit Fokus auf Kraft, Ausdauer und Funktionalität.",
+  "duration": 60,
+  "focus": "Kraft, Ausdauer, Funktional",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilität & Erwärmung",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Air Squat",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                6.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Kraftaufbau & Hyrox Circuit",
+      "exercises": [
+        {
+          "name": "Front Squat mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                85.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                60.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bankdrücken mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                70.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                60.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                50.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Pull-up an der Klimmzugstange",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Romanian Deadlift mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                80.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                60.0,
+                12.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Ski Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                300.0,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                300.0,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                300.0,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Sled Push",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                20.0,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                20.0,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                20.0,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Wall Ball Shot",
+          "sets": [
+            {
+              "values": [
+                9.0,
+                15.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                9.0,
+                15.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                9.0,
+                15.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Kettlebell Swing (Russian)",
+          "sets": [
+            {
+              "values": [
+                24.0,
+                20.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                24.0,
+                20.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                24.0,
+                20.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Flexibilität & Erholung",
+      "exercises": [
+        {
+          "name": "Couch-Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Couch-Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Butterfly Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Downward Dog to Cobra",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Happy Baby Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Thorakale Extension über die Schaumstoffrolle",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                90.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}

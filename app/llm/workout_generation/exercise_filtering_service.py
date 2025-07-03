@@ -57,9 +57,10 @@ async def get_filtered_exercises_for_user(
         exercise_data = []
         for ex in filtered_exercises:
             exercise_data.append({
-                'name_german': ex.name_german,
+                'name_english': ex.name_english,
                 'difficulty_level': ex.difficulty_level,
-                'equipment_options': ex.equipment_options or []
+                'equipment_options': ex.equipment_options or [],
+                'is_unilateral': ex.is_unilateral
             })
         
         # 5. Format exercises using extracted data (no more DB object dependencies)
@@ -127,10 +128,16 @@ def format_exercise_data_for_prompt(exercise_data: List[dict]) -> str:
     
     formatted = []
     for data in exercise_data:
-        name = data.get('name_german', 'Unknown Exercise')
+        name = data.get('name_english', 'Unknown Exercise')
         difficulty = data.get('difficulty_level', 'Anfänger')
         equipment = data.get('equipment_options', [])
+        is_unilateral = data.get('is_unilateral', False)
+        
         equipment_str = ', '.join(equipment) if equipment else 'Eigengewicht'
+        
+        # Füge [unilateral] Tag hinzu wenn nötig
+        if is_unilateral:
+            name = f"{name} [unilateral]"
         
         formatted.append(f"- {name} ({difficulty}, {equipment_str})")
     
@@ -146,7 +153,7 @@ def format_exercises_for_prompt(exercises: List[ExerciseDescription]) -> str:
     for ex in exercises:
         # ✅ Defensive Programmierung: Handle potential None values and detached objects
         try:
-            name = getattr(ex, 'name_german', 'Unknown Exercise')
+            name = getattr(ex, 'name_english', 'Unknown Exercise')
             difficulty = getattr(ex, 'difficulty_level', 'Unknown')
             # Equipment options could be None or empty list
             equipment = getattr(ex, 'equipment_options', [])
@@ -154,9 +161,9 @@ def format_exercises_for_prompt(exercises: List[ExerciseDescription]) -> str:
             
             formatted.append(f"- {name} ({difficulty}, {equipment_str})")
         except Exception as e:
-            print(f"⚠️ Error formatting exercise {getattr(ex, 'name_german', 'Unknown')}: {e}")
+            print(f"⚠️ Error formatting exercise {getattr(ex, 'name_english', 'Unknown')}: {e}")
             # Fallback formatting
-            formatted.append(f"- {getattr(ex, 'name_german', 'Unknown Exercise')} (Anfänger, Eigengewicht)")
+            formatted.append(f"- {getattr(ex, 'name_english', 'Unknown Exercise')} (Anfänger, Eigengewicht)")
     
     return "\n".join(formatted) 
 
@@ -171,12 +178,17 @@ async def get_all_exercises_for_prompt(db: [AsyncSession] = None) -> str:
         # Lade alle Übungen aus DB
         all_exercises = await get_all_exercise_names(db)
         
-        # Nur die deutschen Namen extrahieren und formatieren
-        exercise_names = [ex.name_german for ex in all_exercises if ex.name_german]
-        exercise_names.sort()  # Alphabetisch sortieren
+        # Namen mit unilateral Tag extrahieren und formatieren
+        formatted_names = []
+        for ex in all_exercises:
+            if ex.name_english:
+                name = ex.name_english
+                # Füge [unilateral] Tag hinzu wenn nötig
+                if ex.is_unilateral:
+                    name = f"{name} [unilateral]"
+                formatted_names.append(f"- {name}")
         
-        # Einfache Formatierung für Prompt
-        formatted_names = [f"- {name}" for name in exercise_names]
+        formatted_names.sort()  # Alphabetisch sortieren
         
         return "# Verfügbare Übungen\n\n" + "\n".join(formatted_names)
         

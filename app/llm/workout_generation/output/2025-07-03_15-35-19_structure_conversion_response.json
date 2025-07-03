@@ -1,0 +1,485 @@
+{
+  "name": "Hyrox Hybrid Strength & Endurance",
+  "description": "Ein hybrides Kraft- und Ausdauertraining mit Hyrox-Fokus.",
+  "duration": 60,
+  "focus": "Hyrox, Kraft, Ausdauer",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilisierung & Aktivierung",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Butt Kicks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Air Squat",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                5.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Kraft & Hyrox Zirkel",
+      "exercises": [
+        {
+          "name": "Front Squat mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                60.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                85.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                90.0,
+                4.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Striktes Schulterdrücken mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                40.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                50.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                55.0,
+                5.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Ski Ergometer",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250.0,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250.0,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                250.0,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Wall Ball Shot",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Sled Push",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                null,
+                20.0,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                20.0,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                null,
+                20.0,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Farmers Walk mit Kurzhanteln",
+          "sets": [
+            {
+              "values": [
+                23.0,
+                null,
+                null,
+                50.0,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                23.0,
+                null,
+                null,
+                50.0,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                23.0,
+                null,
+                null,
+                50.0,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Burpee Broad Jump",
+          "sets": [
+            {
+              "values": [
+                null,
+                5.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                5.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                5.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung & Mobilität",
+      "exercises": [
+        {
+          "name": "Downward Dog to Cobra",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Butterfly Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Figure-4-Dehnung im Sitzen links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Figure-4-Dehnung im Sitzen rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Happy Baby Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}

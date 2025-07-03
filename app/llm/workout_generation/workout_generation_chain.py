@@ -211,7 +211,7 @@ async def generate_freeform_workout_enhanced(
         )
 
         # LLM Call
-        llm = get_llm_model(provider="google", model="gemini-2.5-flash")
+        llm = get_llm_model(provider="openai", model="o4-mini")
         _start = datetime.now()
         response = await llm.ainvoke(formatted_prompt)
         _duration = (datetime.now() - _start).total_seconds()
@@ -244,84 +244,6 @@ async def generate_freeform_workout_enhanced(
 
     except Exception as e:
         print(f"Error in enhanced freeform generation: {e}")
-        raise
-
-
-# Two-Step Approach - Step 1
-async def generate_freeform_workout(
-    training_plan: Optional[str] = None,
-    training_history: Optional[str] = None,
-    user_prompt: Optional[str] = None,
-) -> str:
-    """
-    Generiert ein Workout mit LLM. Akzeptiert strukturierte Trainingsplandaten als String,
-    optionale Trainingshistorie als JSON-String und optionalen User Prompt.
-    """
-    try:
-        # Load the Prompt File
-        prompt_path = Path(__file__).parent / "prompts" / PROMPT_FILE_FREEFORM
-        training_principles_path = (
-            Path(__file__).parent / "prompts" / "training_principles_base.md"
-        )
-        
-        with open(prompt_path, "r", encoding="utf-8") as f:
-            prompt_template_content = f.read()
-            
-        with open(training_principles_path, "r", encoding="utf-8") as f:
-            training_principles_content = f.read()
-
-        # Ensure default empty strings if None, to avoid issues with .format
-        formatted_prompt = prompt_template_content.format(
-            training_plan=training_plan if training_plan is not None else "",
-            training_history=training_history if training_history is not None else "",
-            user_prompt=user_prompt if user_prompt is not None else "",
-            training_principles=training_principles_content,
-            current_date=datetime.now().strftime("%d.%m.%Y"),
-        )
-
-        # Simple switch statement for LLM provider
-        PROVIDER = "google"
-        llm = get_llm_model(provider=PROVIDER, model="gemini-2.5-flash")
-
-        print(f"Sending request to {PROVIDER} API (free-form)…")
-        response = await llm.ainvoke(formatted_prompt)
-        print(f"Received response from {PROVIDER} API (free-form)")
-
-        # Extract actual text content from LangChain response
-        if hasattr(response, "content"):
-            if isinstance(response.content, list):
-                # Handle list content (e.g., from structured responses)
-                freeform_text = ""
-                for item in response.content:
-                    if hasattr(item, "text"):
-                        freeform_text += item.text
-                    elif isinstance(item, dict) and "text" in item:
-                        freeform_text += item["text"]
-                    else:
-                        freeform_text += str(item)
-            else:
-                freeform_text = response.content
-        else:
-            freeform_text = str(response)
-
-        # ✅ Document freeform output
-        try:
-            ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            out_dir = Path(__file__).parent / "output"
-            out_dir.mkdir(exist_ok=True)
-            out_path = out_dir / f"{ts}_workout_generation_freeform_output.md"
-            out_path.write_text(freeform_text, encoding="utf-8")
-            print(f"[LLM_DOCS] Free-form output documented: {out_path}")
-        except Exception as e:
-            print(f"[LLM_DOCS] Could not document free-form output: {e}")
-
-        return freeform_text
-
-    except Exception as e:
-        print(f"Error in generate_workout: {e}")
-        import traceback
-
-        traceback.print_exc()
         raise
 
 

@@ -1,0 +1,434 @@
+{
+  "name": "Push & Press Strength",
+  "description": "Workout focusing on push and press strength, designed for strength and muscle building.",
+  "duration": 60,
+  "focus": "Kraft, Muskelaufbau",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilität & Aktivierung",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Shoulder Pass-Through with Resistance Band",
+          "sets": [
+            {
+              "values": [
+                null,
+                12.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Push-Fokus",
+      "exercises": [
+        {
+          "name": "Barbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                60.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                75.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                75.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Strict Barbell Overhead Press",
+          "sets": [
+            {
+              "values": [
+                40.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                45.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                50.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                50.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bar Dip on Parallel Bars",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Dumbbell Lateral Raise",
+          "sets": [
+            {
+              "values": [
+                10.0,
+                12.0,
+                null,
+                null,
+                30.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                10.0,
+                12.0,
+                null,
+                null,
+                30.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                10.0,
+                12.0,
+                null,
+                null,
+                30.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                10.0,
+                12.0,
+                null,
+                null,
+                30.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Cable Triceps Push-down with Rope",
+          "sets": [
+            {
+              "values": [
+                30.0,
+                12.0,
+                null,
+                null,
+                30.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30.0,
+                12.0,
+                null,
+                null,
+                30.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30.0,
+                12.0,
+                null,
+                null,
+                30.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30.0,
+                12.0,
+                null,
+                null,
+                30.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung & Entspannung",
+      "exercises": [
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Triceps Overhead Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Triceps Overhead Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Downward Dog",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}

@@ -1,0 +1,434 @@
+{
+  "name": "Lower Body Strength & Aesthetics",
+  "description": "Full lower body workout focusing on strength and aesthetics.",
+  "duration": 60,
+  "focus": "Kraft, Hypertrophie, Unterkörper",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilisierung & Aktivierung",
+      "exercises": [
+        {
+          "name": "90/90 Hip Switch",
+          "sets": [
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Armkreisen",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Air Squat",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Kraft & Hypertrophie Fokus Unterkörper",
+      "exercises": [
+        {
+          "name": "Kniebeuge mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                90.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                90.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                90.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                90.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Romanian Deadlift mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                80.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bulgarischer Split Squat mit Kurzhanteln links",
+          "sets": [
+            {
+              "values": [
+                22.0,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                22.0,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                22.0,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Bulgarischer Split Squat mit Kurzhanteln rechts",
+          "sets": [
+            {
+              "values": [
+                22.0,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                22.0,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                22.0,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Beinpresse",
+          "sets": [
+            {
+              "values": [
+                150.0,
+                12.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                150.0,
+                12.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                150.0,
+                12.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Hip Thrust mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                80.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Wadenheben an der Maschine",
+          "sets": [
+            {
+              "values": [
+                80.0,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80.0,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80.0,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung & Regeneration",
+      "exercises": [
+        {
+          "name": "Couch-Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Couch-Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Liegende Wirbelsäulen-Drehung links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Liegende Wirbelsäulen-Drehung rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Kindhaltung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}

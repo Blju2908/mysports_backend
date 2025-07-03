@@ -1,0 +1,387 @@
+{
+  "name": "Ganzkörper Kraft & Muskelaufbau",
+  "description": "Vollständiges Ganzkörper-Krafttraining mit Fokus auf Kraft und Muskelaufbau, inklusive Warm-Up und Cool-Down.",
+  "duration": 60,
+  "focus": "Kraft, Hypertrophie",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Mobilisation & leichte Aktivierung",
+      "exercises": [
+        {
+          "name": "Assault Bike",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                300.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Schulterdislokation mit Widerstandsband",
+          "sets": [
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                30.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Air Squat",
+          "sets": [
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                5.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Hauptteil",
+      "description": "Fokus auf Kraft & Muskelaufbau",
+      "exercises": [
+        {
+          "name": "Back Squat",
+          "sets": [
+            {
+              "values": [
+                105.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                105.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                105.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bankdrücken mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                70.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                5.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Kreuzheben mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                120.0,
+                5.0,
+                null,
+                null,
+                150.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                120.0,
+                5.0,
+                null,
+                null,
+                150.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                120.0,
+                5.0,
+                null,
+                null,
+                150.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Vorgebeugtes Langhantelrudern",
+          "sets": [
+            {
+              "values": [
+                70.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Striktes Schulterdrücken mit Langhantel",
+          "sets": [
+            {
+              "values": [
+                45.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                45.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                45.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Mobilität & Flexibilität",
+      "exercises": [
+        {
+          "name": "Stehende Vorwärtsbeuge",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Türrahmen-Brustdehnung",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Couch-Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Couch-Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}

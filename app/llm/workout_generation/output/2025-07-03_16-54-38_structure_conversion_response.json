@@ -1,0 +1,485 @@
+{
+  "name": "Strength & Ästhetik",
+  "description": "Vollständiges Krafttraining für den ganzen Körper mit Warm-Up und Cooldown",
+  "duration": 60,
+  "focus": "Kraft, Hypertrophie",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilisation & Aktivierung",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Hip Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Gesamt-Körper: Kraft & Hypertrophie",
+      "exercises": [
+        {
+          "name": "Back Squat",
+          "sets": [
+            {
+              "values": [
+                80.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                90.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                95.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                100.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Barbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                70.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                75.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                75.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                80.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                85.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                85.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Strict Dumbbell Overhead Press",
+          "sets": [
+            {
+              "values": [
+                23.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                23.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                23.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Pull-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Bulgarian Split Squat with Dumbbells left",
+          "sets": [
+            {
+              "values": [
+                20.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Bulgarian Split Squat with Dumbbells right",
+          "sets": [
+            {
+              "values": [
+                20.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung & Mobilität",
+      "exercises": [
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Pigeon Pose left",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Pigeon Pose right",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Kneeling Quad Stretch left",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Kneeling Quad Stretch right",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Thoracic Extension over Foam Roller",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}
