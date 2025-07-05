@@ -1,0 +1,336 @@
+{
+  "name": "Push-Training – Kraft & Muskelaufbau",
+  "description": "Intensives Push-Workout für mehr Kraft und hypertrophe Reize in Brust, Schultern und Trizeps",
+  "duration": 60,
+  "focus": "Brust, Schultern, Trizeps",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Mobilisation",
+      "exercises": [
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Shoulder Pass-Through with Resistance Band",
+          "sets": [
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Kraft & Hypertrophie",
+      "exercises": [
+        {
+          "name": "Barbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                80,
+                6,
+                null,
+                null,
+                120
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80,
+                6,
+                null,
+                null,
+                120
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                80,
+                6,
+                null,
+                null,
+                120
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                80,
+                6,
+                null,
+                null,
+                120
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Dumbbell Incline Bench Press",
+          "sets": [
+            {
+              "values": [
+                30,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                30,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Strict Dumbbell Overhead Press",
+          "sets": [
+            {
+              "values": [
+                24,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                24,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                24,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                24,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Bench Dip Feet Elevated",
+          "sets": [
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Cable Triceps Push-down with Rope",
+          "sets": [
+            {
+              "values": [
+                25,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                25,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                25,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 4
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung & Entspannung",
+      "exercises": [
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Triceps Overhead Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Triceps Overhead Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 2
+    }
+  ]
+}

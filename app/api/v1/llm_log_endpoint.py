@@ -34,14 +34,14 @@ def calculate_current_billing_period(subscription_start: datetime, current_date:
     current_year = current_date.year
     current_month = current_date.month
     
-    # Calculate the billing date for current month
+    # Calculate the billing date for current month (at start of day, not current time)
     try:
-        current_billing_start = current_date.replace(day=billing_day)
+        current_billing_start = current_date.replace(day=billing_day, hour=0, minute=0, second=0, microsecond=0)
     except ValueError:
         # Handle case where billing day doesn't exist in current month (e.g., Jan 31 -> Feb 31)
         # Use the last day of the current month instead
         last_day = calendar.monthrange(current_year, current_month)[1]
-        current_billing_start = current_date.replace(day=last_day)
+        current_billing_start = current_date.replace(day=last_day, hour=0, minute=0, second=0, microsecond=0)
     
     # If we haven't reached the billing day this month, use previous month's billing period
     if current_date.day < billing_day:
@@ -54,10 +54,10 @@ def calculate_current_billing_period(subscription_start: datetime, current_date:
             prev_month = current_month - 1
             
         try:
-            period_start = current_date.replace(year=prev_year, month=prev_month, day=billing_day)
+            period_start = current_date.replace(year=prev_year, month=prev_month, day=billing_day, hour=0, minute=0, second=0, microsecond=0)
         except ValueError:
             last_day = calendar.monthrange(prev_year, prev_month)[1]
-            period_start = current_date.replace(year=prev_year, month=prev_month, day=last_day)
+            period_start = current_date.replace(year=prev_year, month=prev_month, day=last_day, hour=0, minute=0, second=0, microsecond=0)
             
         period_end = current_billing_start
     else:
@@ -73,10 +73,10 @@ def calculate_current_billing_period(subscription_start: datetime, current_date:
             next_month = current_month + 1
             
         try:
-            period_end = current_date.replace(year=next_year, month=next_month, day=billing_day)
+            period_end = current_date.replace(year=next_year, month=next_month, day=billing_day, hour=0, minute=0, second=0, microsecond=0)
         except ValueError:
             last_day = calendar.monthrange(next_year, next_month)[1]
-            period_end = current_date.replace(year=next_year, month=next_month, day=last_day)
+            period_end = current_date.replace(year=next_year, month=next_month, day=last_day, hour=0, minute=0, second=0, microsecond=0)
     
     return period_start, period_end
 
@@ -103,11 +103,16 @@ async def get_workout_usage_stats(
     try:
         # Use subscription-based billing or fallback to rolling window
         if subscription_start:
-            # Subscription-based billing: calculate current monthly billing period
+            # Subscription-based billing: simple monthly period from subscription start
             subscription_start_date = datetime.fromisoformat(subscription_start.replace('Z', '+00:00')).replace(tzinfo=None)
-            current_date = datetime.utcnow()
             
-            start_date, end_date = calculate_current_billing_period(subscription_start_date, current_date)
+            # Simple approach: subscription start + 1 month
+            start_date = subscription_start_date
+            # Add 1 month to get end date
+            if subscription_start_date.month == 12:
+                end_date = subscription_start_date.replace(year=subscription_start_date.year + 1, month=1)
+            else:
+                end_date = subscription_start_date.replace(month=subscription_start_date.month + 1)
             
             period_type = "subscription_billing"
         else:
@@ -116,16 +121,20 @@ async def get_workout_usage_stats(
             start_date = end_date - timedelta(days=30)
             period_type = "rolling_30_days"
         
+        # Ensure user ID is a string (database expects VARCHAR)
+        user_id_str = str(current_user.id)
+        
         # Query for successful workout-related API calls
         workout_endpoints = ['llm/create-workout', 'workout/revise']
         
+        # Query for successful workout-related API calls
         result = await db.execute(
             select(func.count(LlmCallLog.id)).where(
                 and_(
-                    LlmCallLog.user_id == current_user.id,
+                    LlmCallLog.user_id == user_id_str,
                     LlmCallLog.timestamp >= start_date,
-                    LlmCallLog.timestamp <= end_date,
-                    LlmCallLog.success,
+                    LlmCallLog.timestamp < end_date,  # Use < instead of <= for exclusive end date
+                    LlmCallLog.success == True,  # Explicit boolean comparison
                     LlmCallLog.endpoint_name.in_(workout_endpoints)
                 )
             )

@@ -1,0 +1,423 @@
+{
+  "name": "Pull Training – Kraft & Muskelaufbau",
+  "description": "Fokus auf Rücken, Bizeps und hintere Schulter",
+  "duration": 60,
+  "focus": "Rücken, Bizeps",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Mobilisation für oberen Rücken und Schultern",
+      "exercises": [
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                30
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                30
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Shoulder Pass-Through with Resistance Band",
+          "sets": [
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                30
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                30
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Thoracic Extension over Foam Roller",
+          "sets": [
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                10,
+                null,
+                null,
+                30
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Kraftübungen für Rücken und Bizeps",
+      "exercises": [
+        {
+          "name": "Pull-up",
+          "sets": [
+            {
+              "values": [
+                5,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                5,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                5,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                5,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                75,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                75,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                75,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                75,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Single-Arm Dumbbell Row links",
+          "sets": [
+            {
+              "values": [
+                32.5,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                32.5,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                32.5,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "Single-Arm Dumbbell Row rechts",
+          "sets": [
+            {
+              "values": [
+                32.5,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                32.5,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                32.5,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Face Pull",
+          "sets": [
+            {
+              "values": [
+                27.5,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                27.5,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                27.5,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        },
+        {
+          "name": "Barbell Curl",
+          "sets": [
+            {
+              "values": [
+                45,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                45,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                45,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "B",
+          "position": 5
+        },
+        {
+          "name": "Dumbbell Hammer Curl",
+          "sets": [
+            {
+              "values": [
+                14,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                14,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                14,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "B",
+          "position": 6
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Mobilisation",
+      "exercises": [
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        }
+      ],
+      "position": 2
+    }
+  ]
+}

@@ -1,0 +1,488 @@
+{
+  "name": "Full-Body Kraft & Muskelaufbau",
+  "description": "Ganzkörper-Workout zur Steigerung der Kraft und Verbesserung der Körperästhetik",
+  "duration": 60,
+  "focus": "Ganzkörper, Kraft",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Mobilisierung und Erhöhung der Herzfrequenz",
+      "exercises": [
+        {
+          "name": "Assault Bike",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                180,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Shoulder Pass-Through with Resistance Band",
+          "sets": [
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                5,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Hauptteil",
+      "description": "Schwere Grundübungen für Maximalkraft",
+      "exercises": [
+        {
+          "name": "Back Squat",
+          "sets": [
+            {
+              "values": [
+                105,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                105,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                105,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                105,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Barbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                80,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                80,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                80,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Strict Barbell Overhead Press",
+          "sets": [
+            {
+              "values": [
+                50,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                50,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                50,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                50,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Accessory & Core",
+      "description": "Isolationsübungen und Rumpfstabilität",
+      "exercises": [
+        {
+          "name": "Barbell Curl",
+          "sets": [
+            {
+              "values": [
+                40,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                40,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                40,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Cable Triceps Push-down with Straight Bar",
+          "sets": [
+            {
+              "values": [
+                40,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                40,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                40,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 1
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Lockerung",
+      "exercises": [
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Lying Glute Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 1
+        },
+        {
+          "name": "Lying Glute Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 2
+        },
+        {
+          "name": "Hip Flexor Stretch (Kneeling) links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 3
+        },
+        {
+          "name": "Hip Flexor Stretch (Kneeling) rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 4
+        }
+      ],
+      "position": 3
+    }
+  ]
+}

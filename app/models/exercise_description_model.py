@@ -88,10 +88,6 @@ class ExerciseDescription(SQLModel, table=True):
             'name_english'
         ),
     )
-    
-    # TODO: GIN-Indexes später hinzufügen wenn nötig:
-    # Index('ix_exercise_equipment_gin', 'equipment_options', postgresql_using='gin'),
-    # Index('ix_exercise_muscles_gin', 'target_muscle_groups', postgresql_using='gin'),
 
     def __repr__(self) -> str:
         return f"<ExerciseDescription(name='{self.name_german}', difficulty='{self.difficulty_level}')>" 

@@ -1,0 +1,417 @@
+{
+  "name": "Ganzkörper Kraft & Hypertrophie",
+  "description": "Effektives Ganzkörper-Workout mit Fokus auf Kraft und Muskelaufbau",
+  "duration": 45,
+  "focus": "Kraft, Muskelaufbau",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamisches Aufwärmen",
+      "exercises": [
+        {
+          "name": "Air Squat",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Hip Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Grundübungen",
+      "exercises": [
+        {
+          "name": "Back Squat",
+          "sets": [
+            {
+              "values": [
+                90,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                90,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                90,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                90,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Barbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                60,
+                10,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Strict Dumbbell Overhead Press",
+          "sets": [
+            {
+              "values": [
+                22.5,
+                10,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                22.5,
+                10,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                22.5,
+                10,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                22.5,
+                10,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Accessory",
+      "description": "Isolationssupersätze",
+      "exercises": [
+        {
+          "name": "Dumbbell Curl",
+          "sets": [
+            {
+              "values": [
+                12.5,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                12.5,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                12.5,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Cable Triceps Push-down with Rope",
+          "sets": [
+            {
+              "values": [
+                30,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                30,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 1
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Mobilisierung",
+      "exercises": [
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Pigeon Pose links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 1
+        },
+        {
+          "name": "Pigeon Pose rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 2
+        }
+      ],
+      "position": 3
+    }
+  ]
+}

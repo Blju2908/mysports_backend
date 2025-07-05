@@ -1,0 +1,471 @@
+{
+  "name": "Push Training – Kraft & Muskelaufbau",
+  "description": "Klassisches Push-Workout für Brust, Schultern und Trizeps",
+  "duration": 60,
+  "focus": "Brust, Schultern, Trizeps",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmung",
+      "exercises": [
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Shoulder Pass-Through with Resistance Band",
+          "sets": [
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Grundübungen für maximale Kraft",
+      "exercises": [
+        {
+          "name": "Barbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                80,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                75,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                75,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Strict Barbell Overhead Press",
+          "sets": [
+            {
+              "values": [
+                50,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                50,
+                6,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                45,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                45,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Accessory",
+      "description": "Isolationsübungen und Supersets",
+      "exercises": [
+        {
+          "name": "Dumbbell Incline Bench Press",
+          "sets": [
+            {
+              "values": [
+                22.5,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                22.5,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                22.5,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Arnold Press",
+          "sets": [
+            {
+              "values": [
+                16,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                16,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                16,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Cable Fly",
+          "sets": [
+            {
+              "values": [
+                20,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                20,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "Lateral Raise with Dumbbells",
+          "sets": [
+            {
+              "values": [
+                8,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                8,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                8,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Cable Triceps Push-down with Rope",
+          "sets": [
+            {
+              "values": [
+                30,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                30,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "B",
+          "position": 4
+        },
+        {
+          "name": "Bench Dip Feet Elevated",
+          "sets": [
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "B",
+          "position": 5
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Mobilisation",
+      "exercises": [
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Triceps Overhead Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Triceps Overhead Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                30
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 3
+    }
+  ]
+}

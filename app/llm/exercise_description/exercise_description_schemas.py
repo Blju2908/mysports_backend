@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 from enum import Enum
 
 class MuscleGroup(str, Enum):
@@ -111,6 +111,28 @@ class ExerciseDescriptionSchema(BaseModel):
     equipment_options: List[str] = Field(description="Benötigte Ausrüstung")
     target_muscle_groups: List[str] = Field(description="Zielmuskelgruppen")
     execution_steps: List[str] = Field(description="Schritt-für-Schritt Ausführung")
+    
+    # === TRAININGSATTRIBUTE ===
+    requires_repetitions: bool = Field(
+        default=False,
+        description="Benötigt Wiederholungsangabe"
+    )
+    requires_weight: bool = Field(
+        default=False,
+        description="Benötigt Gewichtsangabe in kg"
+    )
+    requires_duration: bool = Field(
+        default=False,
+        description="Benötigt Zeitangabe in Sekunden"
+    )
+    requires_distance: bool = Field(
+        default=False,
+        description="Benötigt Distanzangabe in Metern"
+    )
+    requires_rest: bool = Field(
+        default=False,
+        description="Benötigt Pausenangabe in Sekunden"
+    )
 
 
 class ExerciseDescriptionListSchema(BaseModel):

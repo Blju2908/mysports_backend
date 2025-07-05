@@ -1,4 +1,4 @@
-VENV_ACTIVATE = source venv/bin/activate
+VENV_ACTIVATE = source ./venv/bin/activate
 
 run-dev:
 	export APP_ENV=development && \

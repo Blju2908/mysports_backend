@@ -302,7 +302,7 @@ async def save_block(
                     description=ex_data.description,
                     notes=ex_data.notes,
                     superset_id=ex_data.superset_id,
-                    position=new_exercise_position  # ✅ Position support
+                    position=new_exercise_position,  # ✅ Position support
                 )
                 db.add(new_exercise)
                 await db.flush()  # Get ID for sets

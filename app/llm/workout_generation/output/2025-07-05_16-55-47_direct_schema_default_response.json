@@ -1,0 +1,400 @@
+{
+  "name": "Leg-Training – Kraft & Muskelaufbau",
+  "description": "Intensives Bein- und Core-Training zur Steigerung von Kraft und Ästhetik",
+  "duration": 60,
+  "focus": "Beine, Gesäß, Core",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmung Beine & Core",
+      "exercises": [
+        {
+          "name": "Air Squat",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Hip Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Kraft- und Hypertrophie-Fokus",
+      "exercises": [
+        {
+          "name": "Back Squat",
+          "sets": [
+            {
+              "values": [
+                95,
+                5,
+                null,
+                null,
+                120
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                100,
+                5,
+                null,
+                null,
+                120
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                105,
+                5,
+                null,
+                null,
+                120
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                105,
+                5,
+                null,
+                null,
+                120
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Barbell Romanian Deadlift",
+          "sets": [
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                75,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                80,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                80,
+                8,
+                null,
+                null,
+                90
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Bulgarian Split Squat with Dumbbells",
+          "sets": [
+            {
+              "values": [
+                20,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                20,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 2
+        },
+        {
+          "name": "Bulgarian Split Squat with Dumbbells",
+          "sets": [
+            {
+              "values": [
+                20,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                20,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Calf Raise with Dumbbells",
+          "sets": [
+            {
+              "values": [
+                20,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                20,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                20,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                45
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                45
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                45
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 5
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Mobilisation",
+      "exercises": [
+        {
+          "name": "Standing Quad Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Standing Quad Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Hamstring Stretch (Standing) links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Hamstring Stretch (Standing) rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 2
+    }
+  ]
+}
