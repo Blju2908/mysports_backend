@@ -46,11 +46,36 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
         finally:
             await session.close()
 
-# ✅ STANDARD: Background Task Context Manager
+# ✅ BACKGROUND TASKS: Separate Engine for Background Tasks
+background_engine = create_async_engine(
+    settings.SUPABASE_DB_URL,
+    # ✅ SEPARATE: Independent connection pool for background tasks
+    pool_size=3,        # Smaller pool for background tasks
+    max_overflow=5,     # = 8 connections per worker for background tasks
+    pool_pre_ping=True,
+    pool_recycle=3600,
+    echo=settings.DEBUG if hasattr(settings, 'DEBUG') else False,
+    connect_args={
+        "statement_cache_size": 0,
+        "prepared_statement_cache_size": 0
+    }
+)
+
+# ✅ BACKGROUND TASKS: Separate Session Factory
+background_session_maker = async_sessionmaker(
+    background_engine, 
+    class_=AsyncSession, 
+    expire_on_commit=False,
+    autoflush=False
+)
+
+logger.info("✅ Background database engine initialized")
+
+# ✅ BACKGROUND TASKS: Dedicated Context Manager
 @asynccontextmanager
 async def create_background_session():
-    """Context manager for background tasks"""
-    async with async_session_maker() as session:
+    """Context manager for background tasks with separate engine"""
+    async with background_session_maker() as session:
         try:
             yield session
         except Exception as e:
@@ -69,6 +94,7 @@ async def create_db_and_tables():
 
 # ✅ STANDARD: Engine Cleanup
 async def close_engine():
-    """Close database engine - for app shutdown"""
+    """Close database engines - for app shutdown"""
     await engine.dispose()
-    logger.info("✅ Database engine disposed")
+    await background_engine.dispose()
+    logger.info("✅ Database engines disposed")

@@ -1,0 +1,468 @@
+{
+  "name": "Pull Day - Rücken & Bizeps Kraft",
+  "description": "Ein umfassendes Pull-Training zum Muskelaufbau für Rücken, Bizeps und Core.",
+  "duration": 60,
+  "focus": "Rücken, Bizeps, Core, Muskelaufbau",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilisierung und Aktivierung des Oberkörpers und der Hüfte",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Thoracic Spine Rotation (Quadruped) links",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        },
+        {
+          "name": "Thoracic Spine Rotation (Quadruped) rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        },
+        {
+          "name": "World's Greatest Hip Opener links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 5
+        },
+        {
+          "name": "World's Greatest Hip Opener rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 6
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 7
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Hauptteil",
+      "description": "Kraft- und Muskelaufbau für Rücken, Bizeps und Core",
+      "exercises": [
+        {
+          "name": "Pull-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                7.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                60.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                65.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                65.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Lat Pulldown",
+          "sets": [
+            {
+              "values": [
+                65.0,
+                10.0,
+                null,
+                null,
+                75.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                65.0,
+                10.0,
+                null,
+                null,
+                75.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                8.0,
+                null,
+                null,
+                75.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        },
+        {
+          "name": "Face Pull",
+          "sets": [
+            {
+              "values": [
+                20.0,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20.0,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                23.0,
+                12.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        },
+        {
+          "name": "Cable Biceps Curl with Straight Bar",
+          "sets": [
+            {
+              "values": [
+                15.0,
+                12.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                18.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                18.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 5
+        },
+        {
+          "name": "Dragon Flag on Flat Bench",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                6.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                6.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 6
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Entspannung",
+      "exercises": [
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Cat Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Supine Twist links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        },
+        {
+          "name": "Supine Twist rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        }
+      ],
+      "position": 3
+    }
+  ]
+}
