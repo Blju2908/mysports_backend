@@ -400,8 +400,8 @@ async def generate_workout_background(
     log_id: int
 ):
     """
-    ✅ ROBUST: Background-Task mit verbesserter Session-Verwaltung.
-    Verwendet separate Engine für Background Tasks um Connection-Probleme zu vermeiden.
+    ✅ IMPROVED: Background-Task für die asynchrone Workout-Generierung.
+    Nutzt dedizierte Session-Erstellung für Background Tasks.
     """
     logger.info("[generate_workout_background] Start für workout_id: %s, log_id: %s", workout_id, log_id)
     
@@ -409,74 +409,53 @@ async def generate_workout_background(
     timer = OperationTimer()
     timer.start()
     
-    try:
-        # ✅ ROBUST: Nutze dedizierte Background Session mit separater Engine
-        from app.db.session import create_background_session
-        
-        async with create_background_session() as db:
-            try:
-                # ✅ Direkte Workout-Generierung mit sauberer Session-Verwaltung
-                updated_workout = await run_workout_chain(
-                    user_id=UUID(user_id),
-                    user_prompt=request_data.prompt,
-                    db=db,
-                    save_to_db=True,
-                    use_exercise_filtering=request_data.use_exercise_filtering,
-                    workout_id=workout_id
-                )
-                
-                logger.info("[generate_workout_background] Workout erfolgreich aktualisiert: %s", updated_workout.id)
-                
-                # ✅ Update bestehenden Log-Eintrag mit SUCCESS
-                await log_operation_success(
-                    db=db,
-                    log_id=log_id,
-                    duration_ms=timer.get_duration_ms()
-                )
-                    
-            except Exception as e:
-                logger.error("[generate_workout_background] Workout generation error: %s", str(e), exc_info=True)
-                
-                # ✅ Robuste Fehlerbehandlung für Background Tasks
-                try:
-                    # ✅ Update bestehenden Log-Eintrag mit FAILED
-                    await log_operation_failed(
-                        db=db,
-                        log_id=log_id,
-                        error_message=str(e),
-                        duration_ms=timer.get_duration_ms()
-                    )
-                except Exception as log_error:
-                    logger.error("[generate_workout_background] Log update failed: %s", str(log_error))
-                
-                # Bei Fehler: Placeholder-Workout löschen (mit Rollback-Sicherheit)
-                try:
-                    stmt = select(Workout).where(Workout.id == workout_id)
-                    result = await db.execute(stmt)
-                    workout = result.scalar_one_or_none()
-                    if workout:
-                        await db.delete(workout)
-                        await db.commit()
-                        logger.info("[generate_workout_background] Placeholder-Workout gelöscht")
-                except Exception as cleanup_error:
-                    logger.error("[generate_workout_background] Cleanup error: %s", str(cleanup_error))
-                    await db.rollback()
-                    
-    except Exception as outer_error:
-        logger.error("[generate_workout_background] Critical error: %s", str(outer_error), exc_info=True)
-        
-        # ✅ FALLBACK: Versuche Log-Update mit neuer Session
+    # ✅ IMPROVED: Nutze dedizierte Background Session (sauberer als async for + break)
+    from app.db.session import create_background_session
+    
+    async with create_background_session() as db:
         try:
-            from app.db.session import create_background_session
-            async with create_background_session() as fallback_db:
-                await log_operation_failed(
-                    db=fallback_db,
-                    log_id=log_id,
-                    error_message=f"Critical error: {str(outer_error)}",
-                    duration_ms=timer.get_duration_ms()
-                )
-        except Exception as fallback_error:
-            logger.error("[generate_workout_background] Fallback log update failed: %s", str(fallback_error))
+            # ✅ Direkte Workout-Generierung mit sauberer Session-Verwaltung
+            updated_workout = await run_workout_chain(
+                user_id=UUID(user_id),
+                user_prompt=request_data.prompt,
+                db=db,
+                save_to_db=True,
+                use_exercise_filtering=request_data.use_exercise_filtering,
+                workout_id=workout_id
+            )
+            
+            logger.info("[generate_workout_background] Workout erfolgreich aktualisiert: %s", updated_workout.id)
+            
+            # ✅ Update bestehenden Log-Eintrag mit SUCCESS
+            await log_operation_success(
+                db=db,
+                log_id=log_id,
+                duration_ms=timer.get_duration_ms()
+            )
+                
+        except Exception as e:
+            logger.error("[generate_workout_background] Exception: %s", str(e), exc_info=True)
+            
+            # ✅ Update bestehenden Log-Eintrag mit FAILED
+            await log_operation_failed(
+                db=db,
+                log_id=log_id,
+                error_message=str(e),
+                duration_ms=timer.get_duration_ms()
+            )
+            
+            # Bei Fehler: Placeholder-Workout löschen (mit Rollback-Sicherheit)
+            try:
+                stmt = select(Workout).where(Workout.id == workout_id)
+                result = await db.execute(stmt)
+                workout = result.scalar_one_or_none()
+                if workout:
+                    await db.delete(workout)
+                    await db.commit()
+                    logger.info("[generate_workout_background] Placeholder-Workout gelöscht")
+            except Exception as cleanup_error:
+                logger.error("[generate_workout_background] Cleanup error: %s", str(cleanup_error))
+                await db.rollback()  # ✅ IMPROVED: Explicit rollback bei Cleanup-Fehlern
 
 
 async def revise_workout_background(
@@ -486,8 +465,8 @@ async def revise_workout_background(
     log_id: int
 ):
     """
-    ✅ ROBUST: Background-Task für Workout-Revision mit verbesserter Session-Verwaltung.
-    Verwendet separate Engine für Background Tasks um Connection-Probleme zu vermeiden.
+    ✅ REFACTORED: Background-Task für die asynchrone Workout-Revision.
+    Nutzt den neuen Service mit atomischem DB-Update.
     """
     logger.info("[revise_workout_background] Start für workout_id: %s, log_id: %s", workout_id, log_id)
     
@@ -495,57 +474,35 @@ async def revise_workout_background(
     timer = OperationTimer()
     timer.start()
     
-    try:
-        # ✅ ROBUST: Nutze dedizierte Background Session mit separater Engine
-        from app.db.session import create_background_session
-        
-        async with create_background_session() as db:
-            try:
-                # ✅ NEW: Nutze den refactored Service mit atomischem DB-Update
-                updated_workout = await run_workout_revision_chain(
-                    workout_id=workout_id,
-                    user_feedback=request_data.user_feedback,
-                    user_id=UUID(user_id),
-                    db=db,
-                    save_to_db=True
-                )
-                
-                logger.info("[revise_workout_background] Workout-Revision erfolgreich abgeschlossen: %s", updated_workout.id)
-                
-                # ✅ Update bestehenden Log-Eintrag mit SUCCESS
-                await log_operation_success(
-                    db=db,
-                    log_id=log_id,
-                    duration_ms=timer.get_duration_ms()
-                )
-                    
-            except Exception as e:
-                logger.error("[revise_workout_background] Revision error: %s", str(e), exc_info=True)
-                
-                # ✅ Robuste Fehlerbehandlung für Background Tasks
-                try:
-                    # ✅ Update bestehenden Log-Eintrag mit FAILED
-                    await log_operation_failed(
-                        db=db,
-                        log_id=log_id,
-                        error_message=str(e),
-                        duration_ms=timer.get_duration_ms()
-                    )
-                except Exception as log_error:
-                    logger.error("[revise_workout_background] Log update failed: %s", str(log_error))
-                    
-    except Exception as outer_error:
-        logger.error("[revise_workout_background] Critical error: %s", str(outer_error), exc_info=True)
-        
-        # ✅ FALLBACK: Versuche Log-Update mit neuer Session
+    from app.db.session import create_background_session
+    
+    async with create_background_session() as db:
         try:
-            from app.db.session import create_background_session
-            async with create_background_session() as fallback_db:
-                await log_operation_failed(
-                    db=fallback_db,
-                    log_id=log_id,
-                    error_message=f"Critical error: {str(outer_error)}",
-                    duration_ms=timer.get_duration_ms()
-                )
-        except Exception as fallback_error:
-            logger.error("[revise_workout_background] Fallback log update failed: %s", str(fallback_error))
+            # ✅ NEW: Nutze den refactored Service mit atomischem DB-Update
+            updated_workout = await run_workout_revision_chain(
+                workout_id=workout_id,
+                user_feedback=request_data.user_feedback,
+                user_id=UUID(user_id),
+                db=db,
+                save_to_db=True
+            )
+            
+            logger.info("[revise_workout_background] Workout-Revision erfolgreich abgeschlossen: %s", updated_workout.id)
+            
+            # ✅ Update bestehenden Log-Eintrag mit SUCCESS
+            await log_operation_success(
+                db=db,
+                log_id=log_id,
+                duration_ms=timer.get_duration_ms()
+            )
+                
+        except Exception as e:
+            logger.error("[revise_workout_background] Exception: %s", str(e), exc_info=True)
+            
+            # ✅ Update bestehenden Log-Eintrag mit FAILED
+            await log_operation_failed(
+                db=db,
+                log_id=log_id,
+                error_message=str(e),
+                duration_ms=timer.get_duration_ms()
+            )
