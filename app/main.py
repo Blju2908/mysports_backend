@@ -3,17 +3,23 @@ from contextlib import asynccontextmanager
 from app.api import create_api_router
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
-from app.db.session import create_db_and_tables, DatabaseManager
+from app.db.session import create_db_and_tables, close_engine
 from app.middleware.activity_logging_middleware import ActivityLoggingMiddleware
+import os
 
 @asynccontextmanager
-async def lifespan(app):
+async def lifespan(app: FastAPI):
+    """✅ STANDARD: FastAPI Lifespan with proper database handling"""
     load_dotenv()
-    # Startup-Tasks: DB-Init, LLM-Cache etc.
-    await create_db_and_tables()  # Tabellen erstellen (nur für lokale Entwicklung/Migrationen)
+    
+    # ✅ PRODUCTION-SAFE: Only create tables in development
+    if os.getenv("ENVIRONMENT") == "development":
+        await create_db_and_tables()
+    
     yield
-    # Shutdown-Tasks
-    await DatabaseManager.close_engine()
+    
+    # ✅ STANDARD: Proper cleanup
+    await close_engine()
 
 app = FastAPI(lifespan=lifespan)
 
