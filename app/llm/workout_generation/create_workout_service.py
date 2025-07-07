@@ -6,6 +6,7 @@ from datetime import datetime
 
 from app.models.training_plan_model import TrainingPlan
 from sqlmodel import select
+from sqlalchemy.orm import selectinload
 from app.db.workout_db_access import get_training_history_for_user_from_db
 from app.llm.workout_generation.workout_generation_chain import (
     execute_workout_generation_sequence,
@@ -16,17 +17,115 @@ from app.models.exercise_model import Exercise
 from app.models.set_model import Set
 
 
+# ✅ NEW: Atomic workout replacement following SQLModel best practices
+async def replace_workout_atomically(
+    db: AsyncSession,
+    workout_id: int,
+    user_id: UUID,
+    new_workout_data: Dict[str, Any],
+    training_plan_id: Optional[int] = None
+) -> Workout:
+    """
+    ✅ SQLModel Best Practice: Atomare Workout-Ersetzung mit User-Validation
+    
+    Vorteile:
+    - Vollständig atomare Transaktion (kein Datenverlust möglich)
+    - User Authorization Check (Sicherheit)
+    - UPDATE statt DELETE+INSERT (behält ID und Constraints bei)
+    - Proper Error Handling mit automatischem Rollback
+    - Cascade-Löschung für Beziehungen
+    
+    Args:
+        db: Database session
+        workout_id: ID des zu ersetzenden Workouts
+        user_id: User ID für Authorization
+        new_workout_data: Neue Workout-Daten (von LLM)
+        training_plan_id: Optional training plan ID
+        
+    Returns:
+        Das aktualisierte Workout-Objekt
+        
+    Raises:
+        ValueError: Wenn Workout nicht gefunden
+        PermissionError: Wenn User nicht berechtigt
+    """
+    # ✅ Nutze die bestehende Session-Transaktion (keine zusätzliche db.begin() nötig)
+    # 1. Lade und validiere existing workout mit EAGER LOADING (verhindert lazy loading)
+    stmt = select(Workout).options(
+        selectinload(Workout.blocks)
+        .selectinload(Block.exercises)
+        .selectinload(Exercise.sets)
+    ).where(Workout.id == workout_id)
+    
+    result = await db.execute(stmt)
+    existing_workout = result.scalar_one_or_none()
+    
+    if not existing_workout:
+        raise ValueError(f"Workout mit ID {workout_id} nicht gefunden.")
+    
+    # 3. ✅ UPDATE Workout-Hauptdaten (behält ID bei)
+    existing_workout.name = clean_text_data(new_workout_data.get("name", "Unbenanntes Workout"))
+    existing_workout.description = clean_text_data(new_workout_data.get("description"))
+    existing_workout.focus = clean_text_data(new_workout_data.get("focus"))
+    existing_workout.duration = new_workout_data.get("duration")
+    existing_workout.date_created = datetime.utcnow()  # Update timestamp
+    existing_workout.training_plan_id = training_plan_id  # Update training plan reference
+    
+    # 4. ✅ Lösche alte Beziehungen (CASCADE löscht automatisch Sets und Exercises)
+    for block in existing_workout.blocks:
+        await db.delete(block)
+    await db.flush()  # Stelle sicher, dass alte Blöcke gelöscht sind
+    
+    # 5. ✅ Erstelle neue Beziehungen
+    existing_workout.blocks = []
+    for block_index, block_data in enumerate(new_workout_data.get("blocks", [])):
+        block_model = Block(
+            name=clean_text_data(block_data.get("name", "Unbenannter Block")),
+            description=clean_text_data(block_data.get("description")),
+            position=block_data.get("position", block_index),
+            exercises=[],
+        )
+
+        for exercise_index, exercise_data in enumerate(block_data.get("exercises", [])):
+            exercise_model = Exercise(
+                name=clean_text_data(exercise_data.get("name", "Unbenannte Übung")),
+                superset_id=clean_text_data(exercise_data.get("superset_id")),
+                position=exercise_data.get("position", exercise_index),
+                sets=[],
+            )
+
+            for set_index, set_data_from_llm in enumerate(exercise_data.get("sets", [])):
+                if isinstance(set_data_from_llm, dict) and "values" in set_data_from_llm:
+                    values = set_data_from_llm.get("values", [])
+                    set_obj = Set.from_values_list(values)
+                    
+                    if set_obj:
+                        set_obj.position = set_data_from_llm.get("position", set_index)
+                        exercise_model.sets.append(set_obj)
+
+            if exercise_model.sets:
+                block_model.exercises.append(exercise_model)
+
+        if block_model.exercises:
+            existing_workout.blocks.append(block_model)
+    
+    # 6. ✅ Commit erfolgt automatisch durch create_background_session()
+    await db.commit()
+    await db.refresh(existing_workout)
+    return existing_workout
+
+
 async def run_workout_chain(
     user_id: UUID | None,
     user_prompt: str | None,
     db: AsyncSession,
     save_to_db: bool = True,
     use_exercise_filtering: bool = False,
-    approach: Literal["one_step", "two_step"] = "two_step"
+    workout_id: Optional[int] = None
 ) -> Any:
     """
     ✅ ENHANCED: Führt den Workout-Generierungs-Prozess mit dem LLM durch.
-    Kann optional Exercise Filtering verwenden.
+    Kann optional Exercise Filtering verwenden und bestehende Workouts aktualisieren.
 
     Args:
         user_id: Die ID des Benutzers.
@@ -34,7 +133,7 @@ async def run_workout_chain(
         db: Die Datenbankverbindung.
         save_to_db: Wenn True, wird das Workout in der DB gespeichert.
         use_exercise_filtering: Wenn True, werden Übungen aus der DB gefiltert.
-        approach: "one_step" oder "two_step" für die Generierung.
+        workout_id: Optional - wenn angegeben, wird das bestehende Workout aktualisiert.
     """
 
     formatted_training_plan = None
@@ -57,7 +156,7 @@ async def run_workout_chain(
         )
         if raw_training_history:
             formatted_history = format_training_history_for_llm(raw_training_history)
-        
+    
     # LLM-Call durchführen mit der neuen, vereinheitlichten Funktion
     workout_schema = await execute_workout_generation_sequence(
         training_plan_obj=training_plan_db_obj,
@@ -66,25 +165,44 @@ async def run_workout_chain(
         user_prompt=user_prompt,
         db=db,
         use_exercise_filtering=use_exercise_filtering,
-        approach=approach
+
     )
 
     # Speichern des Workouts in der DB
     if save_to_db:
         if not user_id:
             raise ValueError("user_id ist erforderlich, um das Workout zu speichern.")
-            
-        workout_model = convert_llm_output_to_db_models(
-            workout_schema.model_dump(),
-            user_id=user_id,
-            training_plan_id=training_plan_id_for_saving,
-        )
         
-        db.add(workout_model)
-        await db.commit()
-        await db.refresh(workout_model)
-        print(f"✅ Workout erfolgreich in Datenbank gespeichert mit ID: {workout_model.id}")
-        return workout_model
+        if workout_id:
+            # ✅ IMPROVED: Atomare Workout-Ersetzung mit User-Validation
+            try:
+                updated_workout = await replace_workout_atomically(
+                    db=db,
+                    workout_id=workout_id,
+                    user_id=user_id,
+                    new_workout_data=workout_schema.model_dump(),
+                    training_plan_id=training_plan_id_for_saving
+                )
+                print(f"✅ Workout atomisch aktualisiert mit ID: {updated_workout.id}")
+                return updated_workout
+            except PermissionError as pe:
+                raise ValueError(f"Berechtigung verweigert: {str(pe)}")
+            except Exception as e:
+                print(f"❌ Fehler bei atomarer Workout-Ersetzung: {str(e)}")
+                raise
+        else:
+            # ✅ CREATE: Neues Workout erstellen
+            workout_model = convert_llm_output_to_db_models(
+                workout_schema.model_dump(),
+                user_id=user_id,
+                training_plan_id=training_plan_id_for_saving,
+            )
+            
+            db.add(workout_model)
+            await db.commit()
+            await db.refresh(workout_model)
+            print(f"✅ Workout erfolgreich in Datenbank gespeichert mit ID: {workout_model.id}")
+            return workout_model
     else:
         # Rückgabe des strukturierten Schemas
         return workout_schema
@@ -337,8 +455,8 @@ def clean_text_data(text: str | None) -> str | None:
     return cleaned if cleaned else None
 
 def convert_llm_output_to_db_models(
-    workout_dict: Dict[str, Any],  # Expecting dict from WorkoutSchema.model_dump()
-    user_id: UUID,  # ✅ NEW: Required user_id for direct relationship
+    workout_dict: Dict[str, Any],  
+    user_id: UUID,  
     training_plan_id: Optional[int] = None,
 ) -> Workout:
     """

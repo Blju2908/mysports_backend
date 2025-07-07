@@ -1,6 +1,7 @@
-from typing import Optional, List, TYPE_CHECKING
+from typing import Optional, List, TYPE_CHECKING, Dict, Any
 from datetime import datetime
-from sqlmodel import SQLModel, Field, Relationship
+from sqlmodel import SQLModel, Field, Relationship, Column
+from sqlalchemy import JSON
 from enum import Enum
 from uuid import UUID
 
@@ -26,6 +27,13 @@ class Workout(SQLModel, table=True):
     duration: Optional[int] = Field(default=None)
     focus: Optional[str] = Field(default=None)
     notes: Optional[str] = Field(default=None)
+    
+    # ✅ NEW: Revision data as JSON column (SQLModel best practice)
+    revised_workout_data: Optional[Dict[str, Any]] = Field(
+        default=None, 
+        sa_column=Column(JSON),
+        description="Complete revised workout as JSON object"
+    )
 
     user: "UserModel" = Relationship(back_populates="workouts")
     plan: Optional["TrainingPlan"] = Relationship(back_populates="workouts")
@@ -55,3 +63,20 @@ class Workout(SQLModel, table=True):
         elif len(done_sets) > 0:
             return WorkoutStatusEnum.STARTED
         return WorkoutStatusEnum.NOT_STARTED
+    
+    # ✅ NEW: Helper methods for revision handling
+    def has_pending_revision(self) -> bool:
+        """Check if workout has a pending revision"""
+        return self.revised_workout_data is not None
+    
+    def clear_revision(self) -> None:
+        """Clear revision data"""
+        self.revised_workout_data = None
+    
+    def set_revision_data(self, workout_data: Dict[str, Any]) -> None:
+        """Set revision data"""
+        self.revised_workout_data = workout_data
+    
+    def get_revision_data(self) -> Optional[Dict[str, Any]]:
+        """Get revision data"""
+        return self.revised_workout_data

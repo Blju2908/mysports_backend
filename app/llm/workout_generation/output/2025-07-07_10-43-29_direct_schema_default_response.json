@@ -1,0 +1,539 @@
+{
+  "name": "Pull Day - Rücken, Bizeps & Core",
+  "description": "Klassisches Pull- und Core-Training zur Stärkung des Rückens und Bizeps",
+  "duration": 60,
+  "focus": "Rücken, Bizeps, Core",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Aufwärmphase",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Torso Twists",
+          "sets": [
+            {
+              "values": [
+                null,
+                16,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "World's Greatest Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        },
+        {
+          "name": "World's Greatest Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 5
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Kraftübungen für Rücken und Bizeps",
+      "exercises": [
+        {
+          "name": "Pull-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                6,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                null,
+                6,
+                null,
+                null,
+                60
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                70,
+                8,
+                null,
+                null,
+                60
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Lat Pulldown",
+          "sets": [
+            {
+              "values": [
+                70,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                70,
+                10,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Face Pull",
+          "sets": [
+            {
+              "values": [
+                20,
+                15,
+                null,
+                null,
+                45
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20,
+                15,
+                null,
+                null,
+                45
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                20,
+                15,
+                null,
+                null,
+                45
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 3
+        },
+        {
+          "name": "Dumbbell Hammer Curl",
+          "sets": [
+            {
+              "values": [
+                14,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                14,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                14,
+                12,
+                null,
+                null,
+                60
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 4
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Core Finisher",
+      "description": "Core-Intensivierung",
+      "exercises": [
+        {
+          "name": "Leg Raise",
+          "sets": [
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                45
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                45
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                12,
+                null,
+                null,
+                45
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                30
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                30
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                30
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Russian Twist",
+          "sets": [
+            {
+              "values": [
+                12,
+                20,
+                null,
+                null,
+                30
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                12,
+                20,
+                null,
+                null,
+                30
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                12,
+                20,
+                null,
+                null,
+                30
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Entspannung",
+      "exercises": [
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Supine Twist rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        },
+        {
+          "name": "Supine Twist links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45,
+                null,
+                15
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        }
+      ],
+      "position": 3
+    }
+  ]
+}

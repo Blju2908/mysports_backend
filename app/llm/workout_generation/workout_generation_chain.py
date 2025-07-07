@@ -29,7 +29,6 @@ async def execute_workout_generation_sequence(
     user_prompt: Optional[str] = None,
     db: Optional[AsyncSession] = None,
     use_exercise_filtering: bool = False,
-    approach: Literal["one_step", "two_step"] = "two_step",
 ) -> WorkoutSchema:
     """
     Args:
@@ -43,6 +42,7 @@ async def execute_workout_generation_sequence(
     """
 
     _start_total = datetime.now()
+    approach = "two_step"
 
     # Prepare exercise context by deciding which exercise list to use
     exercise_library = None
@@ -211,7 +211,7 @@ async def generate_freeform_workout_enhanced(
         )
 
         # LLM Call
-        llm = get_llm_model(provider="openai", model="o4-mini")
+        llm = get_llm_model(provider="google", model="gemini-2.5-flash")
         _start = datetime.now()
         response = await llm.ainvoke(formatted_prompt)
         _duration = (datetime.now() - _start).total_seconds()

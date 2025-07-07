@@ -7,7 +7,12 @@ from app.llm.workout_revision.workout_revision_chain import revise_workout_two_s
 from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 from app.models.training_plan_model import TrainingPlan
 from sqlmodel import select
-from app.llm.workout_generation.create_workout_service import format_training_plan_for_llm
+from app.llm.workout_generation.create_workout_service import (
+    format_training_plan_for_llm, 
+    format_training_history_for_llm,
+    replace_workout_atomically
+)
+from app.db.workout_db_access import get_training_history_for_user_from_db
 
 
 def workout_to_dict(workout: Workout) -> Dict[str, Any]:
@@ -75,65 +80,88 @@ def workout_to_dict(workout: Workout) -> Dict[str, Any]:
     return workout_dict
 
 
-
-
-
 async def run_workout_revision_chain(
     workout_id: int,
     user_feedback: str,
-    user_id: Optional[UUID] = None,
-    training_plan: Optional[str] = None,
-    training_history: Optional[str] = None,
-    db: Optional[AsyncSession] = None
-) -> WorkoutSchema:
+    user_id: UUID,
+    db: AsyncSession,
+    save_to_db: bool = True,
+) -> Workout:
     """
-    Führt die Workout-Revision Chain aus.
+    ✅ REFACTORED: Führt die Workout-Revision Chain aus und speichert das Ergebnis als JSON.
+    WICHTIG: Überschreibt NICHT das Original-Workout, sondern speichert Revision in JSON-Spalte.
     
     Args:
         workout_id: ID des zu überarbeitenden Workouts
         user_feedback: Feedback/Kommentar des Users
-        user_id: Optional - User ID für zusätzlichen Kontext und Laden des Trainingsplans
-        training_plan: Optional - Trainingsplan als String (wird automatisch geladen und formatiert wenn user_id gegeben)
-        training_history: Optional - Trainingshistorie als JSON-String
-        db: Database Session
+        user_id: User ID für Kontext und Trainingsplan-Laden
+        db: Database Session (REQUIRED)
+        save_to_db: Wenn True, wird das revidierte Workout in der JSON-Spalte gespeichert
         
     Returns:
-        WorkoutSchema: Das überarbeitete Workout
+        Workout: Das Workout-Objekt mit gespeicherten Revision-Daten
+        
+    Raises:
+        ValueError: Bei fehlenden Parametern oder Workout nicht gefunden
+        Exception: Bei LLM- oder DB-Fehlern
     """
     if not db:
         raise ValueError("Database session is required")
     
     try:
-        # 1. Lade den Trainingsplan aus der DB wenn user_id gegeben ist
-        formatted_training_plan = training_plan
+        # 1. Lade den Trainingsplan aus der DB (analog zu run_workout_chain)
+        formatted_training_plan = None
         
-        if user_id is not None:
-            # Get training plan from the user
-            # ✅ SQLModel One-Liner: Direkt TrainingPlan über user_id laden
-            training_plan_db_obj = await db.scalar(
-                select(TrainingPlan).where(TrainingPlan.user_id == user_id)
-            )
-            if training_plan_db_obj:
-                formatted_training_plan = format_training_plan_for_llm(training_plan_db_obj)
+        training_plan_db_obj = await db.scalar(
+            select(TrainingPlan).where(TrainingPlan.user_id == user_id)
+        )
+        if training_plan_db_obj:
+            formatted_training_plan = format_training_plan_for_llm(training_plan_db_obj)
         
-        # 2. Lade das bestehende Workout aus der Datenbank
+        # 2. Lade die Trainingshistorie (analog zu run_workout_chain)
+        formatted_history = None
+        raw_training_history = await get_training_history_for_user_from_db(user_id, db, limit=10)
+        if raw_training_history:
+            formatted_history = format_training_history_for_llm(raw_training_history)
+        
+        # 3. Lade das bestehende Workout aus der Datenbank
         existing_workout_obj = await get_workout_details(
             workout_id=workout_id,
             db=db
         )
         
-        # 3. Konvertiere das Workout in ein Dictionary für das LLM
+        # 4. Konvertiere das Workout in ein Dictionary für das LLM
         existing_workout_dict = workout_to_dict(existing_workout_obj)
         
-        # 4. Führe die Revision Chain aus (2-Stufen)
+        # 5. Führe die Revision Chain aus (2-Stufen)
         revised_workout_schema = await revise_workout_two_step(
             existing_workout=existing_workout_dict,
             user_feedback=user_feedback,
             training_plan=formatted_training_plan,
-            training_history=training_history
+            training_history=formatted_history
         )
         
-        return revised_workout_schema
+        # 6. ✅ NEW: Speichere das revidierte Workout als JSON (ÜBERSCHREIBT NICHT DAS ORIGINAL!)
+        if save_to_db:
+            try:
+                # Store revision as JSON in the revised_workout_data column
+                existing_workout_obj.set_revision_data(revised_workout_schema.model_dump())
+                
+                # Add to session and commit
+                db.add(existing_workout_obj)
+                await db.commit()
+                await db.refresh(existing_workout_obj)
+                
+                print(f"✅ Workout revision saved as JSON for workout ID: {existing_workout_obj.id}")
+                return existing_workout_obj
+                
+            except Exception as e:
+                await db.rollback()
+                print(f"❌ Fehler bei JSON-Revision-Speicherung: {str(e)}")
+                raise
+        else:
+            # Falls save_to_db=False, geben wir das ursprüngliche Workout zurück
+            return existing_workout_obj
         
     except Exception as e:
         print(f"Error in run_workout_revision_chain: {e}")
@@ -155,6 +183,9 @@ async def get_workout_for_revision(
         
     Returns:
         Dict: Workout als Dictionary
+        
+    Raises:
+        Exception: Bei DB-Fehlern oder Workout nicht gefunden
     """
     try:
         workout_obj = await get_workout_details(
@@ -166,4 +197,64 @@ async def get_workout_for_revision(
         
     except Exception as e:
         print(f"Error in get_workout_for_revision: {e}")
+        raise
+
+
+async def accept_workout_revision(
+    workout_id: int,
+    user_id: UUID,
+    db: AsyncSession
+) -> Workout:
+    """
+    ✅ IMPROVED: Akzeptiert eine Workout-Revision und überschreibt das Original atomisch.
+    Nutzt die bewährte replace_workout_atomically() Funktion für vollständige Ersetzung.
+    
+    Args:
+        workout_id: ID des Workouts
+        user_id: User ID für Autorisierung
+        db: Database Session
+        
+    Returns:
+        Workout: Das aktualisierte Workout-Objekt mit allen Subkomponenten
+        
+    Raises:
+        ValueError: Wenn keine Revision vorhanden ist
+        Exception: Bei DB-Fehlern
+    """
+    try:
+        # 1. Lade das Workout
+        workout_obj = await get_workout_details(workout_id=workout_id, db=db)
+        
+        # 2. Prüfe ob Revision vorhanden ist
+        if not workout_obj.has_pending_revision():
+            raise ValueError("No pending revision found for this workout")
+        
+        # 3. Lade die Revision-Daten
+        revision_data = workout_obj.get_revision_data()
+        if not revision_data:
+            raise ValueError("No revision data available")
+        
+        # 4. ✅ IMPROVED: Atomische Ersetzung des Workouts mit Revision-Daten
+        updated_workout = await replace_workout_atomically(
+            db=db,
+            workout_id=workout_id,
+            user_id=user_id,
+            new_workout_data=revision_data,
+            training_plan_id=workout_obj.training_plan_id  # Behalte Training Plan Referenz
+        )
+        
+        # 5. ✅ NEW: Lösche die Revision-Daten nach erfolgreicher Ersetzung
+        updated_workout.clear_revision()
+        
+        # 6. Final commit für Revision-Clearing
+        db.add(updated_workout)
+        await db.commit()
+        await db.refresh(updated_workout)
+        
+        print(f"✅ Workout revision atomically accepted for workout ID: {updated_workout.id}")
+        return updated_workout
+        
+    except Exception as e:
+        await db.rollback()
+        print(f"❌ Fehler bei Accept-Workout-Revision: {str(e)}")
         raise 

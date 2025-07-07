@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from app.api import create_api_router
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
-from app.db.session import create_db_and_tables
+from app.db.session import create_db_and_tables, DatabaseManager
 from app.middleware.activity_logging_middleware import ActivityLoggingMiddleware
 
 @asynccontextmanager
@@ -13,6 +13,7 @@ async def lifespan(app):
     await create_db_and_tables()  # Tabellen erstellen (nur für lokale Entwicklung/Migrationen)
     yield
     # Shutdown-Tasks
+    await DatabaseManager.close_engine()
 
 app = FastAPI(lifespan=lifespan)
 
