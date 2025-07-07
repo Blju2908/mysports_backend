@@ -400,8 +400,8 @@ async def generate_workout_background(
     log_id: int
 ):
     """
-    ✅ IMPROVED: Background-Task für die asynchrone Workout-Generierung.
-    Nutzt dedizierte Session-Erstellung für Background Tasks.
+    ✅ VERCEL OPTIMIZED: Background-Task mit Retry-Mechanismus für robuste Verbindungen.
+    Verwendet separate Engine pro Task um Connection-Probleme zu vermeiden.
     """
     logger.info("[generate_workout_background] Start für workout_id: %s, log_id: %s", workout_id, log_id)
     
@@ -409,43 +409,68 @@ async def generate_workout_background(
     timer = OperationTimer()
     timer.start()
     
-    # ✅ IMPROVED: Nutze dedizierte Background Session (sauberer als async for + break)
-    from app.db.session import create_background_session
-    
-    async with create_background_session() as db:
-        try:
-            # ✅ Direkte Workout-Generierung mit sauberer Session-Verwaltung
-            updated_workout = await run_workout_chain(
-                user_id=UUID(user_id),
-                user_prompt=request_data.prompt,
-                db=db,
-                save_to_db=True,
-                use_exercise_filtering=request_data.use_exercise_filtering,
-                workout_id=workout_id
-            )
-            
-            logger.info("[generate_workout_background] Workout erfolgreich aktualisiert: %s", updated_workout.id)
-            
-            # ✅ Update bestehenden Log-Eintrag mit SUCCESS
-            await log_operation_success(
-                db=db,
-                log_id=log_id,
-                duration_ms=timer.get_duration_ms()
-            )
+    try:
+        # ✅ VERCEL OPTIMIZED: Retry-Mechanismus für robuste Background-Tasks
+        from app.db.session import create_background_session, retry_db_operation
+        
+        async def workout_generation_operation():
+            """Wrapper für die Workout-Generierung mit Retry-Logik"""
+            async with create_background_session() as db:
+                # ✅ Direkte Workout-Generierung mit robuster Session-Verwaltung
+                updated_workout = await run_workout_chain(
+                    user_id=UUID(user_id),
+                    user_prompt=request_data.prompt,
+                    db=db,
+                    save_to_db=True,
+                    use_exercise_filtering=request_data.use_exercise_filtering,
+                    workout_id=workout_id
+                )
                 
-        except Exception as e:
-            logger.error("[generate_workout_background] Exception: %s", str(e), exc_info=True)
-            
-            # ✅ Update bestehenden Log-Eintrag mit FAILED
-            await log_operation_failed(
-                db=db,
-                log_id=log_id,
-                error_message=str(e),
-                duration_ms=timer.get_duration_ms()
-            )
-            
-            # Bei Fehler: Placeholder-Workout löschen (mit Rollback-Sicherheit)
-            try:
+                logger.info("[generate_workout_background] Workout erfolgreich aktualisiert: %s", updated_workout.id)
+                return updated_workout
+        
+        # ✅ VERCEL OPTIMIZED: Führe Workout-Generierung mit Retry aus
+        updated_workout = await retry_db_operation(
+            workout_generation_operation,
+            max_retries=3,
+            delay=2  # Längere Delays für Background Tasks
+        )
+        
+        # ✅ Erfolg-Logging mit separater Session
+        async def success_logging_operation():
+            async with create_background_session() as db:
+                await log_operation_success(
+                    db=db,
+                    log_id=log_id,
+                    duration_ms=timer.get_duration_ms()
+                )
+        
+        await retry_db_operation(success_logging_operation, max_retries=2)
+        logger.info("[generate_workout_background] Success logged for workout_id: %s", workout_id)
+                
+    except Exception as e:
+        logger.error("[generate_workout_background] Exception: %s", str(e), exc_info=True)
+        
+        # ✅ Fehler-Logging mit separater Session und Retry
+        error_message = str(e)
+        async def error_logging_operation():
+            async with create_background_session() as db:
+                await log_operation_failed(
+                    db=db,
+                    log_id=log_id,
+                    error_message=error_message,
+                    duration_ms=timer.get_duration_ms()
+                )
+        
+        try:
+            await retry_db_operation(error_logging_operation, max_retries=2)
+            logger.info("[generate_workout_background] Error logged for workout_id: %s", workout_id)
+        except Exception as log_error:
+            logger.error("[generate_workout_background] Failed to log error: %s", str(log_error))
+        
+        # ✅ Cleanup: Placeholder-Workout löschen mit Retry
+        async def cleanup_operation():
+            async with create_background_session() as db:
                 stmt = select(Workout).where(Workout.id == workout_id)
                 result = await db.execute(stmt)
                 workout = result.scalar_one_or_none()
@@ -453,9 +478,12 @@ async def generate_workout_background(
                     await db.delete(workout)
                     await db.commit()
                     logger.info("[generate_workout_background] Placeholder-Workout gelöscht")
-            except Exception as cleanup_error:
-                logger.error("[generate_workout_background] Cleanup error: %s", str(cleanup_error))
-                await db.rollback()  # ✅ IMPROVED: Explicit rollback bei Cleanup-Fehlern
+        
+        try:
+            await retry_db_operation(cleanup_operation, max_retries=1)
+        except Exception as cleanup_error:
+            logger.error("[generate_workout_background] Cleanup failed: %s", str(cleanup_error))
+            # Don't fail the entire operation on cleanup errors
 
 
 async def revise_workout_background(
@@ -465,8 +493,8 @@ async def revise_workout_background(
     log_id: int
 ):
     """
-    ✅ REFACTORED: Background-Task für die asynchrone Workout-Revision.
-    Nutzt den neuen Service mit atomischem DB-Update.
+    ✅ VERCEL OPTIMIZED: Background-Task für Workout-Revision mit Retry-Mechanismus.
+    Verwendet separate Engine pro Task um Connection-Probleme zu vermeiden.
     """
     logger.info("[revise_workout_background] Start für workout_id: %s, log_id: %s", workout_id, log_id)
     
@@ -474,35 +502,60 @@ async def revise_workout_background(
     timer = OperationTimer()
     timer.start()
     
-    from app.db.session import create_background_session
-    
-    async with create_background_session() as db:
-        try:
-            # ✅ NEW: Nutze den refactored Service mit atomischem DB-Update
-            updated_workout = await run_workout_revision_chain(
-                workout_id=workout_id,
-                user_feedback=request_data.user_feedback,
-                user_id=UUID(user_id),
-                db=db,
-                save_to_db=True
-            )
-            
-            logger.info("[revise_workout_background] Workout-Revision erfolgreich abgeschlossen: %s", updated_workout.id)
-            
-            # ✅ Update bestehenden Log-Eintrag mit SUCCESS
-            await log_operation_success(
-                db=db,
-                log_id=log_id,
-                duration_ms=timer.get_duration_ms()
-            )
+    try:
+        # ✅ VERCEL OPTIMIZED: Retry-Mechanismus für robuste Background-Tasks
+        from app.db.session import create_background_session, retry_db_operation
+        
+        async def workout_revision_operation():
+            """Wrapper für die Workout-Revision mit Retry-Logik"""
+            async with create_background_session() as db:
+                # ✅ Workout-Revision mit robuster Session-Verwaltung
+                updated_workout = await run_workout_revision_chain(
+                    workout_id=workout_id,
+                    user_feedback=request_data.user_feedback,
+                    user_id=UUID(user_id),
+                    db=db,
+                    save_to_db=True
+                )
                 
-        except Exception as e:
-            logger.error("[revise_workout_background] Exception: %s", str(e), exc_info=True)
-            
-            # ✅ Update bestehenden Log-Eintrag mit FAILED
-            await log_operation_failed(
-                db=db,
-                log_id=log_id,
-                error_message=str(e),
-                duration_ms=timer.get_duration_ms()
-            )
+                logger.info("[revise_workout_background] Workout-Revision erfolgreich abgeschlossen: %s", updated_workout.id)
+                return updated_workout
+        
+        # ✅ VERCEL OPTIMIZED: Führe Workout-Revision mit Retry aus
+        updated_workout = await retry_db_operation(
+            workout_revision_operation,
+            max_retries=3,
+            delay=2  # Längere Delays für Background Tasks
+        )
+        
+        # ✅ Erfolg-Logging mit separater Session
+        async def success_logging_operation():
+            async with create_background_session() as db:
+                await log_operation_success(
+                    db=db,
+                    log_id=log_id,
+                    duration_ms=timer.get_duration_ms()
+                )
+        
+        await retry_db_operation(success_logging_operation, max_retries=2)
+        logger.info("[revise_workout_background] Success logged for workout_id: %s", workout_id)
+                
+    except Exception as e:
+        logger.error("[revise_workout_background] Exception: %s", str(e), exc_info=True)
+        
+        # ✅ Fehler-Logging mit separater Session und Retry
+        error_message = str(e)
+        async def error_logging_operation():
+            async with create_background_session() as db:
+                await log_operation_failed(
+                    db=db,
+                    log_id=log_id,
+                    error_message=error_message,
+                    duration_ms=timer.get_duration_ms()
+                )
+        
+        try:
+            await retry_db_operation(error_logging_operation, max_retries=2)
+            logger.info("[revise_workout_background] Error logged for workout_id: %s", workout_id)
+        except Exception as log_error:
+            logger.error("[revise_workout_background] Failed to log error: %s", str(log_error))
