@@ -6,7 +6,7 @@ from app.middleware.activity_logging_middleware import ActivityLoggingMiddleware
 from contextlib import asynccontextmanager
 import os
 from sqlalchemy import text
-from app.db.session import get_engine
+from app.db.session import get_engine, close_engine
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,39 +14,27 @@ logger = logging.getLogger(__name__)
 # Load environment
 load_dotenv()
 
-# -------------------------------------------------------
-# Lifespan context – initialises and disposes DB engine
-# -------------------------------------------------------
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Initialise global SQLAlchemy engine once per container."""
-    engine = get_engine()  # creates engine if not yet initialised
-
-    # Optional: small health check on cold start
+    """Initialize and cleanup database engine"""
+    # Initialize engine
+    engine = get_engine()
+    
+    # Test connection
     try:
         async with engine.connect() as conn:
             await conn.execute(text("SELECT 1"))
-        logger.info("✅ Database connection test successful")
+        logger.info("✅ Database connection successful")
     except Exception as e:
-        logger.error(f"❌ Database connection test failed: {e}")
+        logger.error(f"❌ Database connection failed: {e}")
         raise
-
-    # Store for later if needed
-    app.state.engine = engine
-
+    
     yield
+    
+    # Cleanup
+    await close_engine()
 
-    # Graceful shutdown
-    try:
-        await engine.dispose()
-        logger.info("✅ SQLAlchemy engine disposed")
-    except Exception as e:
-        logger.warning(f"Engine disposal warning: {e}")
-
-
-# FastAPI app instance
+# FastAPI app
 app = FastAPI(
     title="S3SSIONS API",
     description="Backend API for S3SSIONS fitness app",
@@ -82,21 +70,15 @@ def health():
         "environment": os.getenv("ENVIRONMENT", "unknown")
     }
 
-# --- Database health-check using SQLAlchemy engine
-
-
 @app.get("/health/db")
 async def health_db():
-    """Simple database health check using the global engine."""
-    engine = get_engine()
+    """Database health check"""
     try:
+        engine = get_engine()
         async with engine.connect() as conn:
             result = await conn.execute(text("SELECT 1"))
             if result.scalar() == 1:
-                return {
-                    "status": "ok",
-                    "database": "connected"
-                }
+                return {"status": "ok", "database": "connected"}
             return {"status": "error", "database": "query_failed"}
     except Exception as e:
         return {"status": "error", "database": "error", "error": str(e)}

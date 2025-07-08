@@ -399,90 +399,56 @@ async def generate_workout_background(
     request_data: CreateWorkoutRequest,
     log_id: int
 ):
-    """
-    ✅ BEST PRACTICE: Background-Task mit einfacher Session-Verwaltung.
-    Nutzt die Standard-Session für robuste Verbindungen.
-    """
-    logger.info("[generate_workout_background] Start für workout_id: %s, log_id: %s", workout_id, log_id)
+    """Background task for workout generation"""
+    logger.info(f"[generate_workout_background] Starting workout_id: {workout_id}")
     
-    # Timer für Performance-Messung
+    from app.db.session import get_background_session
+    from app.services.llm_logging_service import log_operation_success, log_operation_failed, OperationTimer
+    
     timer = OperationTimer()
     timer.start()
     
     try:
-        # ✅ SIMPLE: Standard Background Session
-        from app.db.session import create_background_session, retry_db_operation
+        # Generate workout
+        async with get_background_session() as db:
+            updated_workout = await run_workout_chain(
+                user_id=UUID(user_id),
+                user_prompt=request_data.prompt,
+                db=db,
+                save_to_db=True,
+                use_exercise_filtering=request_data.use_exercise_filtering,
+                workout_id=workout_id
+            )
+            logger.info(f"[generate_workout_background] Workout generated: {updated_workout.id}")
         
-        async def workout_generation_operation():
-            """Wrapper für die Workout-Generierung"""
-            async with create_background_session() as db:
-                # ✅ Direkte Workout-Generierung
-                updated_workout = await run_workout_chain(
-                    user_id=UUID(user_id),
-                    user_prompt=request_data.prompt,
-                    db=db,
-                    save_to_db=True,
-                    use_exercise_filtering=request_data.use_exercise_filtering,
-                    workout_id=workout_id
-                )
-                
-                logger.info("[generate_workout_background] Workout erfolgreich aktualisiert: %s", updated_workout.id)
-                return updated_workout
-        
-        # ✅ Führe Workout-Generierung mit Retry aus
-        updated_workout = await retry_db_operation(
-            workout_generation_operation,
-            max_retries=3,
-            delay=2
-        )
-        
-        # ✅ Erfolg-Logging mit separater Session
-        async def success_logging_operation():
-            async with create_background_session() as db:
-                await log_operation_success(
-                    db=db,
-                    log_id=log_id,
-                    duration_ms=timer.get_duration_ms()
-                )
-        
-        await retry_db_operation(success_logging_operation, max_retries=2)
-        logger.info("[generate_workout_background] Success logged for workout_id: %s", workout_id)
-                
+        # Log success
+        async with get_background_session() as db:
+            await log_operation_success(
+                db=db,
+                log_id=log_id,
+                duration_ms=timer.get_duration_ms()
+            )
+            
     except Exception as e:
-        logger.error("[generate_workout_background] Exception: %s", str(e), exc_info=True)
+        logger.error(f"[generate_workout_background] Error: {e}")
         
-        # ✅ Fehler-Logging mit separater Session und Retry
-        error_message = str(e)
-        async def error_logging_operation():
-            async with create_background_session() as db:
-                await log_operation_failed(
-                    db=db,
-                    log_id=log_id,
-                    error_message=error_message,
-                    duration_ms=timer.get_duration_ms()
-                )
+        # Log error
+        async with get_background_session() as db:
+            await log_operation_failed(
+                db=db,
+                log_id=log_id,
+                error_message=str(e),
+                duration_ms=timer.get_duration_ms()
+            )
         
-        try:
-            await retry_db_operation(error_logging_operation, max_retries=2)
-            logger.info("[generate_workout_background] Error logged for workout_id: %s", workout_id)
-        except Exception as log_error:
-            logger.error("[generate_workout_background] Failed to log error: %s", str(log_error))
-        
-        # ✅ Cleanup: Placeholder-Workout löschen mit Retry
-        async def cleanup_operation():
-            async with create_background_session() as db:
-                stmt = select(Workout).where(Workout.id == workout_id)
-                result = await db.execute(stmt)
-                workout = result.scalar_one_or_none()
-                if workout:
-                    await db.delete(workout)
-                    await db.commit()
-                    logger.info("[generate_workout_background] Placeholder-Workout gelöscht")
-        
-        try:
-            await retry_db_operation(cleanup_operation, max_retries=1)
-        except Exception as cleanup_error:
-            logger.error("[generate_workout_background] Cleanup failed: %s", str(cleanup_error))
+        # Cleanup placeholder workout
+        async with get_background_session() as db:
+            stmt = select(Workout).where(Workout.id == workout_id)
+            result = await db.execute(stmt)
+            workout = result.scalar_one_or_none()
+            if workout:
+                await db.delete(workout)
+                await db.commit()
 
 
 async def revise_workout_background(
@@ -491,70 +457,43 @@ async def revise_workout_background(
     request_data: WorkoutRevisionRequestSchema,
     log_id: int
 ):
-    """
-    ✅ BEST PRACTICE: Background-Task für Workout-Revision mit einfacher Session-Verwaltung.
-    Nutzt die Standard-Session für robuste Verbindungen.
-    """
-    logger.info("[revise_workout_background] Start für workout_id: %s, log_id: %s", workout_id, log_id)
+    """Background task for workout revision"""
+    logger.info(f"[revise_workout_background] Starting workout_id: {workout_id}")
     
-    # Timer für Performance-Messung
+    from app.db.session import get_background_session
+    from app.services.llm_logging_service import log_operation_success, log_operation_failed, OperationTimer
+    
     timer = OperationTimer()
     timer.start()
     
     try:
-        # ✅ SIMPLE: Standard Background Session
-        from app.db.session import create_background_session, retry_db_operation
+        # Revise workout
+        async with get_background_session() as db:
+            updated_workout = await run_workout_revision_chain(
+                workout_id=workout_id,
+                user_feedback=request_data.user_feedback,
+                user_id=UUID(user_id),
+                db=db,
+                save_to_db=True
+            )
+            logger.info(f"[revise_workout_background] Workout revised: {updated_workout.id}")
         
-        async def workout_revision_operation():
-            """Wrapper für die Workout-Revision"""
-            async with create_background_session() as db:
-                # ✅ Workout-Revision
-                updated_workout = await run_workout_revision_chain(
-                    workout_id=workout_id,
-                    user_feedback=request_data.user_feedback,
-                    user_id=UUID(user_id),
-                    db=db,
-                    save_to_db=True
-                )
-                
-                logger.info("[revise_workout_background] Workout-Revision erfolgreich abgeschlossen: %s", updated_workout.id)
-                return updated_workout
-        
-        # ✅ Führe Workout-Revision mit Retry aus
-        updated_workout = await retry_db_operation(
-            workout_revision_operation,
-            max_retries=3,
-            delay=2
-        )
-        
-        # ✅ Erfolg-Logging mit separater Session
-        async def success_logging_operation():
-            async with create_background_session() as db:
-                await log_operation_success(
-                    db=db,
-                    log_id=log_id,
-                    duration_ms=timer.get_duration_ms()
-                )
-        
-        await retry_db_operation(success_logging_operation, max_retries=2)
-        logger.info("[revise_workout_background] Success logged for workout_id: %s", workout_id)
-                
+        # Log success
+        async with get_background_session() as db:
+            await log_operation_success(
+                db=db,
+                log_id=log_id,
+                duration_ms=timer.get_duration_ms()
+            )
+            
     except Exception as e:
-        logger.error("[revise_workout_background] Exception: %s", str(e), exc_info=True)
+        logger.error(f"[revise_workout_background] Error: {e}")
         
-        # ✅ Fehler-Logging mit separater Session und Retry
-        error_message = str(e)
-        async def error_logging_operation():
-            async with create_background_session() as db:
-                await log_operation_failed(
-                    db=db,
-                    log_id=log_id,
-                    error_message=error_message,
-                    duration_ms=timer.get_duration_ms()
-                )
-        
-        try:
-            await retry_db_operation(error_logging_operation, max_retries=2)
-            logger.info("[revise_workout_background] Error logged for workout_id: %s", workout_id)
-        except Exception as log_error:
-            logger.error("[revise_workout_background] Failed to log error: %s", str(log_error))
+        # Log error
+        async with get_background_session() as db:
+            await log_operation_failed(
+                db=db,
+                log_id=log_id,
+                error_message=str(e),
+                duration_ms=timer.get_duration_ms()
+            )

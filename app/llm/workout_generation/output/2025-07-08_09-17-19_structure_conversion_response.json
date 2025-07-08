@@ -1,0 +1,516 @@
+{
+  "name": "Rücken & Bizeps Kraft mit Core Fokus",
+  "description": "Rücken & Bizeps Krafttraining mit Fokus auf den Core Bereich.",
+  "duration": 60,
+  "focus": "Rücken, Bizeps, Core, Kraft",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Dynamische Mobilisierung für Schultern, Wirbelsäule und Hüfte",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Thoracic Spine Rotation links",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Thoracic Spine Rotation rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "90/90 Hip Switch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "World's Greatest Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                6.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "World's Greatest Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                6.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Klassisches Krafttraining für Rücken und Bizeps mit intensivem Core-Block",
+      "exercises": [
+        {
+          "name": "Pull-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                7.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                6.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Barbell Row",
+          "sets": [
+            {
+              "values": [
+                65.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                60.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                60.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Lat Pulldown",
+          "sets": [
+            {
+              "values": [
+                70.0,
+                10.0,
+                null,
+                null,
+                75.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                65.0,
+                12.0,
+                null,
+                null,
+                75.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                65.0,
+                12.0,
+                null,
+                null,
+                75.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Face Pull",
+          "sets": [
+            {
+              "values": [
+                20.0,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20.0,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                20.0,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "EZ-Bar Curl",
+          "sets": [
+            {
+              "values": [
+                30.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                28.0,
+                12.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                28.0,
+                12.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Side Plank links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Side Plank rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Reverse Crunch",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung und Entspannung",
+      "exercises": [
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Lying Glute Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Lying Glute Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Supine Twist links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Supine Twist rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}
