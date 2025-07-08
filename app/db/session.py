@@ -16,7 +16,7 @@ _engine: Optional = None
 _session_maker: Optional = None
 
 def get_engine():
-    """✅ SUPABASE TRANSACTION MODE: Engine optimized for 6543 pooler"""
+    """✅ SUPABASE TRANSACTION MODE: Engine optimized for 6543 pooler with full AsyncPG config"""
     global _engine
     if _engine is None:
         settings = get_config()
@@ -24,21 +24,26 @@ def get_engine():
         # ✅ VERCEL OPTIMIZATION: Detect serverless environment
         is_serverless = os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME")
         
+        # 🔥 CRITICAL: Complete AsyncPG configuration for Transaction Mode
+        asyncpg_config = {
+            # Required for Transaction Mode (per Supabase docs)
+            "statement_cache_size": 0,              # Disable statement cache
+            "prepared_statement_cache_size": 0,     # Disable prepared statement cache
+            "command_timeout": 90,                  # 90 seconds timeout for long-running operations
+            "server_settings": {
+                "application_name": "vercel_serverless_tx" if is_serverless else "local_dev_tx"
+            }
+        }
+        
         if is_serverless:
             # 🔥 SERVERLESS + TRANSACTION MODE: NullPool for maximum compatibility
             _engine = create_async_engine(
                 settings.SUPABASE_DB_URL,  # Now using 6543 (Transaction Mode)
                 poolclass=NullPool,         # No pooling at all
                 echo=False,                 # No echo in production
-                connect_args={
-                    "statement_cache_size": 0,              # Required for Transaction Mode
-                    "prepared_statement_cache_size": 0,     # Required for Transaction Mode
-                    "server_settings": {
-                        "application_name": "vercel_serverless_tx"
-                    }
-                }
+                connect_args=asyncpg_config
             )
-            logger.info("✅ Serverless Transaction Mode engine created (NullPool)")
+            logger.info("✅ Serverless Transaction Mode engine created (NullPool + 90s timeout)")
         else:
             # 🔧 LOCAL + TRANSACTION MODE: Minimal pooling for development
             _engine = create_async_engine(
@@ -48,15 +53,9 @@ def get_engine():
                 pool_pre_ping=True,         # Ping for health checks
                 pool_recycle=300,           # 5 minutes recycle
                 echo=False,                 # Set to True for SQL debugging
-                connect_args={
-                    "statement_cache_size": 0,              # Required for Transaction Mode
-                    "prepared_statement_cache_size": 0,     # Required for Transaction Mode
-                    "server_settings": {
-                        "application_name": "local_dev_tx"
-                    }
-                }
+                connect_args=asyncpg_config
             )
-            logger.info("✅ Local Transaction Mode engine created (Small pool)")
+            logger.info("✅ Local Transaction Mode engine created (Small pool + 90s timeout)")
     
     return _engine
 
@@ -88,27 +87,38 @@ async def get_session() -> AsyncGenerator[AsyncSession, None]:
         finally:
             await session.close()
 
-# ✅ SUPABASE TRANSACTION MODE: Background Tasks
+# ✅ SUPABASE TRANSACTION MODE: Background Tasks with retry logic
 @asynccontextmanager
 async def create_background_session():
     """
-    ✅ SUPABASE TRANSACTION MODE: Optimized for background tasks
+    ✅ SUPABASE TRANSACTION MODE: Optimized for background tasks with retry
     Uses the same engine but with fresh session per task
     """
     session_maker = get_session_maker()
     
     logger.info("✅ Background session created (Transaction Mode)")
     
-    async with session_maker() as session:
+    max_retries = 3
+    for attempt in range(max_retries):
         try:
-            yield session
+            async with session_maker() as session:
+                try:
+                    yield session
+                    break  # Success, exit retry loop
+                except Exception as e:
+                    logger.error(f"Background session error (attempt {attempt + 1}): {e}")
+                    await session.rollback()
+                    if attempt == max_retries - 1:
+                        raise
+                    await asyncio.sleep(1 * (attempt + 1))  # Exponential backoff
+                finally:
+                    await session.close()
+                    logger.info("✅ Background session closed")
         except Exception as e:
-            logger.error(f"Background session error: {e}")
-            await session.rollback()
-            raise
-        finally:
-            await session.close()
-            logger.info("✅ Background session closed")
+            if attempt == max_retries - 1:
+                logger.error(f"Background session failed after {max_retries} attempts: {e}")
+                raise
+            await asyncio.sleep(1 * (attempt + 1))
 
 # ✅ SUPABASE TRANSACTION MODE: Optional table creation
 async def create_db_and_tables():
