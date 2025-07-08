@@ -400,8 +400,8 @@ async def generate_workout_background(
     log_id: int
 ):
     """
-    ✅ VERCEL OPTIMIZED: Background-Task mit Retry-Mechanismus für robuste Verbindungen.
-    Verwendet separate Engine pro Task um Connection-Probleme zu vermeiden.
+    ✅ BEST PRACTICE: Background-Task mit einfacher Session-Verwaltung.
+    Nutzt die Standard-Session für robuste Verbindungen.
     """
     logger.info("[generate_workout_background] Start für workout_id: %s, log_id: %s", workout_id, log_id)
     
@@ -410,13 +410,13 @@ async def generate_workout_background(
     timer.start()
     
     try:
-        # ✅ VERCEL OPTIMIZED: Retry-Mechanismus für robuste Background-Tasks
+        # ✅ SIMPLE: Standard Background Session
         from app.db.session import create_background_session, retry_db_operation
         
         async def workout_generation_operation():
-            """Wrapper für die Workout-Generierung mit Retry-Logik"""
+            """Wrapper für die Workout-Generierung"""
             async with create_background_session() as db:
-                # ✅ Direkte Workout-Generierung mit robuster Session-Verwaltung
+                # ✅ Direkte Workout-Generierung
                 updated_workout = await run_workout_chain(
                     user_id=UUID(user_id),
                     user_prompt=request_data.prompt,
@@ -429,11 +429,11 @@ async def generate_workout_background(
                 logger.info("[generate_workout_background] Workout erfolgreich aktualisiert: %s", updated_workout.id)
                 return updated_workout
         
-        # ✅ VERCEL OPTIMIZED: Führe Workout-Generierung mit Retry aus
+        # ✅ Führe Workout-Generierung mit Retry aus
         updated_workout = await retry_db_operation(
             workout_generation_operation,
             max_retries=3,
-            delay=2  # Längere Delays für Background Tasks
+            delay=2
         )
         
         # ✅ Erfolg-Logging mit separater Session
@@ -483,7 +483,6 @@ async def generate_workout_background(
             await retry_db_operation(cleanup_operation, max_retries=1)
         except Exception as cleanup_error:
             logger.error("[generate_workout_background] Cleanup failed: %s", str(cleanup_error))
-            # Don't fail the entire operation on cleanup errors
 
 
 async def revise_workout_background(
@@ -493,8 +492,8 @@ async def revise_workout_background(
     log_id: int
 ):
     """
-    ✅ VERCEL OPTIMIZED: Background-Task für Workout-Revision mit Retry-Mechanismus.
-    Verwendet separate Engine pro Task um Connection-Probleme zu vermeiden.
+    ✅ BEST PRACTICE: Background-Task für Workout-Revision mit einfacher Session-Verwaltung.
+    Nutzt die Standard-Session für robuste Verbindungen.
     """
     logger.info("[revise_workout_background] Start für workout_id: %s, log_id: %s", workout_id, log_id)
     
@@ -503,13 +502,13 @@ async def revise_workout_background(
     timer.start()
     
     try:
-        # ✅ VERCEL OPTIMIZED: Retry-Mechanismus für robuste Background-Tasks
+        # ✅ SIMPLE: Standard Background Session
         from app.db.session import create_background_session, retry_db_operation
         
         async def workout_revision_operation():
-            """Wrapper für die Workout-Revision mit Retry-Logik"""
+            """Wrapper für die Workout-Revision"""
             async with create_background_session() as db:
-                # ✅ Workout-Revision mit robuster Session-Verwaltung
+                # ✅ Workout-Revision
                 updated_workout = await run_workout_revision_chain(
                     workout_id=workout_id,
                     user_feedback=request_data.user_feedback,
@@ -521,11 +520,11 @@ async def revise_workout_background(
                 logger.info("[revise_workout_background] Workout-Revision erfolgreich abgeschlossen: %s", updated_workout.id)
                 return updated_workout
         
-        # ✅ VERCEL OPTIMIZED: Führe Workout-Revision mit Retry aus
+        # ✅ Führe Workout-Revision mit Retry aus
         updated_workout = await retry_db_operation(
             workout_revision_operation,
             max_retries=3,
-            delay=2  # Längere Delays für Background Tasks
+            delay=2
         )
         
         # ✅ Erfolg-Logging mit separater Session
