@@ -23,6 +23,9 @@ def get_engine():
             echo=False,
             pool_size=10,
             max_overflow=5,
+            # ✅ Supabase/PgBouncer compatibility
+            pool_pre_ping=True,
+            pool_recycle=3600,  # 1 hour
             connect_args={
                 "statement_cache_size": 0,
                 "prepared_statement_cache_size": 0,
