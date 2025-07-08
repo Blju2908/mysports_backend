@@ -1,161 +1,132 @@
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.pool import NullPool
 from typing import AsyncGenerator, Optional
 from contextlib import asynccontextmanager
-from app.core.config import Settings
+from app.core.config import get_config
 import logging
 import os
 import asyncio
 
 logger = logging.getLogger(__name__)
 
-# ✅ VERCEL COMPATIBLE: Lazy-loaded engines (not global instances)
+# ✅ SUPABASE TRANSACTION MODE: Lazy-loaded engines
 _engine: Optional = None
 _session_maker: Optional = None
 
 def get_engine():
-    """✅ VERCEL COMPATIBLE: Lazy-loaded engine with minimal pooling"""
+    """✅ SUPABASE TRANSACTION MODE: Engine optimized for 6543 pooler"""
     global _engine
     if _engine is None:
-        settings = Settings()
+        settings = get_config()
         
         # ✅ VERCEL OPTIMIZATION: Detect serverless environment
         is_serverless = os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME")
         
         if is_serverless:
-            # 🔥 SERVERLESS: No pooling at all for maximum compatibility
+            # 🔥 SERVERLESS + TRANSACTION MODE: NullPool for maximum compatibility
             _engine = create_async_engine(
-                settings.SUPABASE_DB_URL,
-                pool_size=0,        # No pool
-                max_overflow=0,     # No overflow
-                pool_pre_ping=False, # No ping needed
-                pool_recycle=-1,    # No recycle
-                echo=False,         # No echo in production
+                settings.SUPABASE_DB_URL,  # Now using 6543 (Transaction Mode)
+                poolclass=NullPool,         # No pooling at all
+                echo=False,                 # No echo in production
                 connect_args={
-                    "statement_cache_size": 0,
-                    "prepared_statement_cache_size": 0,
+                    "statement_cache_size": 0,              # Required for Transaction Mode
+                    "prepared_statement_cache_size": 0,     # Required for Transaction Mode
                     "server_settings": {
-                        "application_name": "vercel_serverless"
+                        "application_name": "vercel_serverless_tx"
                     }
                 }
             )
-            logger.info("✅ Serverless database engine created (No pooling)")
+            logger.info("✅ Serverless Transaction Mode engine created (NullPool)")
         else:
-            # 🔧 LOCAL: Minimal pooling for development
+            # 🔧 LOCAL + TRANSACTION MODE: Minimal pooling for development
             _engine = create_async_engine(
-                settings.SUPABASE_DB_URL,
-                pool_size=1,        # Minimal pool for local
-                max_overflow=2,     # Small overflow
-                pool_pre_ping=True,
-                pool_recycle=300,
-                echo=settings.DEBUG if hasattr(settings, 'DEBUG') else False,
+                settings.SUPABASE_DB_URL,  # Now using 6543 (Transaction Mode)
+                pool_size=2,                # Small pool for local development
+                max_overflow=1,             # Small overflow
+                pool_pre_ping=True,         # Ping for health checks
+                pool_recycle=300,           # 5 minutes recycle
+                echo=False,                 # Set to True for SQL debugging
                 connect_args={
-                    "statement_cache_size": 0,
-                    "prepared_statement_cache_size": 0,
+                    "statement_cache_size": 0,              # Required for Transaction Mode
+                    "prepared_statement_cache_size": 0,     # Required for Transaction Mode
                     "server_settings": {
-                        "application_name": "local_development"
+                        "application_name": "local_dev_tx"
                     }
                 }
             )
-            logger.info("✅ Local database engine created (Minimal pooling)")
+            logger.info("✅ Local Transaction Mode engine created (Small pool)")
     
     return _engine
 
 def get_session_maker():
-    """✅ VERCEL COMPATIBLE: Lazy-loaded session maker"""
+    """✅ SUPABASE TRANSACTION MODE: Lazy-loaded session maker"""
     global _session_maker
     if _session_maker is None:
         _session_maker = async_sessionmaker(
             get_engine(), 
             class_=AsyncSession, 
             expire_on_commit=False,
-            autoflush=False
+            autoflush=False,
+            autocommit=False
         )
-        logger.info("✅ Session maker created (Vercel compatible)")
+        logger.info("✅ Transaction Mode session maker created")
     return _session_maker
 
-# ✅ VERCEL COMPATIBLE: FastAPI Dependency with lazy loading
+# ✅ SUPABASE TRANSACTION MODE: FastAPI Dependency
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
-    """Vercel compatible session dependency with lazy loading"""
+    """Transaction Mode compatible session dependency"""
     session_maker = get_session_maker()
     async with session_maker() as session:
         try:
             yield session
-        except Exception:
+        except Exception as e:
+            logger.error(f"Session error: {e}")
             await session.rollback()
             raise
         finally:
             await session.close()
 
-# ✅ VERCEL COMPATIBLE: Background Tasks with single connection
+# ✅ SUPABASE TRANSACTION MODE: Background Tasks
 @asynccontextmanager
 async def create_background_session():
     """
-    ✅ VERCEL OPTIMIZED: Single connection for background tasks
-    Creates a fresh engine per background task to avoid pooling issues
+    ✅ SUPABASE TRANSACTION MODE: Optimized for background tasks
+    Uses the same engine but with fresh session per task
     """
-    settings = Settings()
+    session_maker = get_session_maker()
     
-    # 🔥 BACKGROUND TASKS: Fresh engine per task (no pooling)
-    temp_engine = create_async_engine(
-        settings.SUPABASE_DB_URL,
-        pool_size=0,         # No pool
-        max_overflow=0,      # No overflow  
-        pool_pre_ping=False, # No ping
-        pool_recycle=-1,     # No recycle
-        echo=False,          # No echo
-        connect_args={
-            "statement_cache_size": 0,
-            "prepared_statement_cache_size": 0,
-            "server_settings": {
-                "application_name": "background_task"
-            }
-        }
-    )
+    logger.info("✅ Background session created (Transaction Mode)")
     
-    temp_session_maker = async_sessionmaker(
-        temp_engine, 
-        class_=AsyncSession, 
-        expire_on_commit=False,
-        autoflush=False
-    )
-    
-    logger.info("✅ Background session engine created (Single connection)")
-    
-    session = None
-    try:
-        session = temp_session_maker()
-        yield session
-    except Exception as e:
-        logger.error(f"Background session error: {e}")
-        if session:
+    async with session_maker() as session:
+        try:
+            yield session
+        except Exception as e:
+            logger.error(f"Background session error: {e}")
             await session.rollback()
-        raise
-    finally:
-        if session:
+            raise
+        finally:
             await session.close()
-        # 🔥 CRITICAL: Dispose engine after use
-        await temp_engine.dispose()
-        logger.info("✅ Background session disposed")
+            logger.info("✅ Background session closed")
 
-# ✅ VERCEL COMPATIBLE: Optional table creation (only for development)
+# ✅ SUPABASE TRANSACTION MODE: Optional table creation
 async def create_db_and_tables():
-    """Create database tables - Vercel compatible"""
+    """Create database tables - Transaction Mode compatible"""
     engine = get_engine()
     try:
         async with engine.begin() as conn:
             await conn.run_sync(SQLModel.metadata.create_all)
-        logger.info("✅ Database tables created (Vercel compatible)")
+        logger.info("✅ Database tables created (Transaction Mode)")
     except Exception as e:
         logger.error(f"Table creation error: {e}")
         # Don't fail in production
         if not os.getenv("VERCEL"):
             raise
 
-# ✅ VERCEL COMPATIBLE: Optional cleanup (may not be called in serverless)
+# ✅ SUPABASE TRANSACTION MODE: Cleanup
 async def close_engine():
-    """Close database engines - may not be called in Vercel"""
+    """Close database engines - Transaction Mode compatible"""
     global _engine, _session_maker
     
     try:
@@ -165,13 +136,13 @@ async def close_engine():
         
         _session_maker = None
         
-        logger.info("✅ Database engines disposed (Vercel compatible)")
+        logger.info("✅ Transaction Mode engines disposed")
     except Exception as e:
         logger.warning(f"Engine cleanup warning (normal in serverless): {e}")
 
-# ✅ VERCEL HELPER: Connection retry for robustness
+# ✅ SUPABASE TRANSACTION MODE: Connection retry helper
 async def retry_db_operation(operation, max_retries=3, delay=1):
-    """Helper for retrying database operations in serverless environments"""
+    """Helper for retrying database operations in Transaction Mode"""
     for attempt in range(max_retries):
         try:
             return await operation()
@@ -180,3 +151,16 @@ async def retry_db_operation(operation, max_retries=3, delay=1):
             if attempt == max_retries - 1:
                 raise
             await asyncio.sleep(delay * (attempt + 1))  # Exponential backoff
+
+# ✅ SUPABASE TRANSACTION MODE: Health check helper
+async def test_db_connection():
+    """Test database connection for health checks"""
+    try:
+        async with create_background_session() as session:
+            from sqlalchemy import text
+            result = await session.execute(text("SELECT 1"))
+            row = result.fetchone()
+            return row[0] == 1
+    except Exception as e:
+        logger.error(f"Database connection test failed: {e}")
+        return False

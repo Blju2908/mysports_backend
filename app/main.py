@@ -48,30 +48,25 @@ def health():
 
 @app.get("/health/db")
 async def health_db():
-    """✅ VERCEL COMPATIBLE: Database health check with lazy loading"""
+    """✅ SUPABASE TRANSACTION MODE: Database health check"""
     try:
-        from app.db.session import get_session
-        from sqlalchemy import text
+        from app.db.session import test_db_connection
         
-        # Use dependency to get session with lazy loading
-        session_gen = get_session()
-        session = await session_gen.__anext__()
+        # Use the optimized test function
+        is_connected = await test_db_connection()
         
-        try:
-            # Simple DB test
-            result = await session.execute(text("SELECT 1"))
-            await session_gen.aclose()
+        if is_connected:
             return {
                 "status": "ok",
                 "database": "connected",
+                "connection_mode": "transaction_mode_6543",
                 "platform": "vercel" if os.getenv("VERCEL") else "local"
             }
-        except Exception as db_error:
-            await session_gen.aclose()
+        else:
             return {
                 "status": "error",
                 "database": "disconnected",
-                "error": str(db_error),
+                "connection_mode": "transaction_mode_6543",
                 "platform": "vercel" if os.getenv("VERCEL") else "local"
             }
             
@@ -80,5 +75,6 @@ async def health_db():
             "status": "error",
             "database": "error",
             "error": str(e),
+            "connection_mode": "transaction_mode_6543",
             "platform": "vercel" if os.getenv("VERCEL") else "local"
         }
