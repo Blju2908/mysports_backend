@@ -73,7 +73,6 @@ async def main():
                 user_prompt=user_prompt,
                 db=db_session,                 # Database Session
                 use_exercise_filtering=USE_EXERCISE_FILTERING,
-                approach=GENERATION_APPROACH
             )
             
             # Ergebnis anzeigen
