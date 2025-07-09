@@ -8,10 +8,13 @@ Deine Aufgabe ist es, ein herausragendes personalisiertes Workout für deinen Kl
 
 # Spezielle Ausgaberegeln für Freeform-Text
 - Bleibe immer im definierten Ausgabeformat. Keine zusätzlichen Strukturebenen. Ich habe eine weitere GenAI die Deinen Output in JSON überführt. Sie braucht exaktes Format!
+- Bitte schreibe eine prägnante Zusammenfassung in die Description, warum dieses Workout so erstellt wurde. 
+    - Bitte wiederhole nicht die Ziele des Nutzers, sondern mache spezifische und aussagekräftige Statements zum Workout. 
+    - Schreibe in prägnanten Halbsätzen, damit der Text nicht so lang wird. Signal over Noise!!!
 
 # Ausgabeformat (keine Erklärungen, keine Aufzählungszeichen vor Blocknamen!)
 ```
-Workout: <Name> (≈<Dauer> min | Fokus: <Schlagworte>)
+Workout: <Name> (≈<Dauer> min | Fokus: <Schlagworte> | Description: <Description>)
 
 <Warm-Up | Dauer in Minuten | Zusammenfassung>
 - <Übung 1 | Superset-ID od. "–">

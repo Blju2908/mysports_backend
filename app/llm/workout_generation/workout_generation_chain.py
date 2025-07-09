@@ -211,7 +211,8 @@ async def generate_freeform_workout_enhanced(
         )
 
         # LLM Call
-        llm = get_llm_model(provider="google", model="gemini-2.5-flash")
+        llm = get_llm_model(provider="openai", model="gpt-4o")
+        # llm = get_llm_model(provider="google", model="gemini-2.5-flash")
         _start = datetime.now()
         response = await llm.ainvoke(formatted_prompt)
         _duration = (datetime.now() - _start).total_seconds()
@@ -333,14 +334,14 @@ def _document_llm_interaction(
 
 def get_llm_model(provider: str, model: str):
     if provider == "openai":
-        
-        reasoning = {
-            "effort": "medium",
-            "summary": None
-        }
-        
-
-        return ChatOpenAI(model=model, api_key=get_config().OPENAI_API_KEY2, use_responses_api=True, model_kwargs={"reasoning": reasoning})
+        if model == "o4-mini":
+            reasoning = {
+                "effort": "medium",
+                "summary": None
+            }
+            return ChatOpenAI(model=model, api_key=get_config().OPENAI_API_KEY2, use_responses_api=True, model_kwargs={"reasoning": reasoning})
+        else:
+            return ChatOpenAI(model=model, api_key=get_config().OPENAI_API_KEY2)
     elif provider == "anthropic":
         return ChatAnthropic(model=model, api_key=get_config().ANTHROPIC_API_KEY)
     elif provider == "google":

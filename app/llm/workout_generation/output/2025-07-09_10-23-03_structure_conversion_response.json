@@ -1,0 +1,410 @@
+{
+  "name": "Push Day – Kraft & Ästhetik",
+  "description": "Fokus auf Brust, Schultern und Trizeps für maximale Kraftentwicklung und Ästhetik. Hohe Intensität in Grundübungen nach optimaler Regeneration der Druckmuskulatur. Ergänzt durch Assistenz- und Isolationsübungen für umfassendes Muskelwachstum.",
+  "duration": 60,
+  "focus": "Brust, Schultern, Trizeps",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilisierung der Schultern und Aktivierung der Druckmuskulatur zur Vorbereitung auf schwere Lifts.",
+      "exercises": [
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Shoulder Pass-Through with Resistance Band",
+          "sets": [
+            {
+              "values": [
+                null,
+                12.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                12.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Push-up",
+          "sets": [
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Main",
+      "description": "Klassische Kraftübungen zur Steigerung der Maximalkraft und Muskelhypertrophie.",
+      "exercises": [
+        {
+          "name": "Barbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                70.0,
+                8.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                72.0,
+                6.0,
+                null,
+                null,
+                150.0
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                75.0,
+                6.0,
+                null,
+                null,
+                180.0
+              ],
+              "position": 3
+            },
+            {
+              "values": [
+                77.0,
+                5.0,
+                null,
+                null,
+                180.0
+              ],
+              "position": 4
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Strict Barbell Overhead Press",
+          "sets": [
+            {
+              "values": [
+                40.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                42.0,
+                5.0,
+                null,
+                null,
+                150.0
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                45.0,
+                5.0,
+                null,
+                null,
+                150.0
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Dumbbell Incline Bench Press",
+          "sets": [
+            {
+              "values": [
+                25.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                27.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                27.0,
+                8.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        },
+        {
+          "name": "Lateral Raise with Dumbbells",
+          "sets": [
+            {
+              "values": [
+                10.0,
+                12.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                10.0,
+                12.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                12.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        },
+        {
+          "name": "Cable Triceps Push-down with Straight Bar",
+          "sets": [
+            {
+              "values": [
+                20.0,
+                12.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                22.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                22.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 5
+        },
+        {
+          "name": "Overhead Triceps Extension with Dumbbell links",
+          "sets": [
+            {
+              "values": [
+                10.0,
+                12.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                12.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 6
+        },
+        {
+          "name": "Overhead Triceps Extension with Dumbbell rechts",
+          "sets": [
+            {
+              "values": [
+                10.0,
+                12.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                12.0,
+                10.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": "A",
+          "position": 7
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung der beanspruchten Muskelgruppen zur Förderung der Flexibilität und Regeneration.",
+      "exercises": [
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Triceps Overhead Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Triceps Overhead Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 3
+    }
+  ]
+}

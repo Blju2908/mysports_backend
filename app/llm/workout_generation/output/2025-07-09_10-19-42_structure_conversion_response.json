@@ -1,0 +1,475 @@
+{
+  "name": "Beine & Rumpf Power",
+  "description": "Dieses Workout konzentriert sich auf Beinkraft und Rumpfstabilisierung, um deine primären Ziele Kraft und Ästhetik zu fördern. Nach einer Phase intensiver Hyrox-Workouts sind deine Beine optimal erholt für ein hochintensives Krafttraining, insbesondere da die letzte schwere Bein-Session 9 Tage zurückliegt. Wir nutzen progressive Überlastung beim Kniebeugen und integrieren unilaterale Übungen für eine ausgewogene Entwicklung und zur Stärkung von Schwachstellen.",
+  "duration": 60,
+  "focus": "Kraft, Hypertrophie, Core-Stabilität",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Vorbereitung der Gelenke und Aktivierung der Zielmuskulatur für die bevorstehenden Belastungen.",
+      "exercises": [
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bird Dog Reach links",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bird Dog Reach rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Air Squat",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Dynamic Walking Lunges links",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Dynamic Walking Lunges rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Fokus auf klassische Kraftübungen für die Beine und gezieltes Core-Training zur Steigerung von Stärke und Muskelwachstum.",
+      "exercises": [
+        {
+          "name": "Back Squat",
+          "sets": [
+            {
+              "values": [
+                60.0,
+                5.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                102.0,
+                5.0,
+                null,
+                null,
+                180.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                102.0,
+                5.0,
+                null,
+                null,
+                180.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                102.0,
+                5.0,
+                null,
+                null,
+                180.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Barbell Romanian Deadlift",
+          "sets": [
+            {
+              "values": [
+                80.0,
+                10.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80.0,
+                10.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                80.0,
+                10.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bulgarian Split Squat with Barbell links",
+          "sets": [
+            {
+              "values": [
+                30.0,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30.0,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30.0,
+                8.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Bulgarian Split Squat with Barbell rechts",
+          "sets": [
+            {
+              "values": [
+                30.0,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30.0,
+                8.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                30.0,
+                8.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                60.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Leg Raise",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Dehnung der beanspruchten Muskulatur zur Förderung der Flexibilität und Regeneration.",
+      "exercises": [
+        {
+          "name": "Pigeon Pose links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Pigeon Pose rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Kneeling Quad Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Kneeling Quad Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Hamstring Stretch (Standing) links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Hamstring Stretch (Standing) rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}
