@@ -11,6 +11,7 @@ from app.db.workout_db_access import get_training_history_for_user_from_db
 from app.llm.workout_generation.workout_generation_chain import (
     execute_workout_generation_sequence,
 )
+from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
 from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise
@@ -113,6 +114,51 @@ async def replace_workout_atomically(
     await db.commit()
     await db.refresh(existing_workout)
     return existing_workout
+
+
+async def save_workout_schema_to_db(
+    db: AsyncSession,
+    workout_schema: WorkoutSchema,
+    user_id: UUID,
+    training_plan_id: Optional[int] = None,
+    workout_id: Optional[int] = None
+) -> Workout:
+    """
+    ✅ NEW: Saves or updates a workout schema to the database efficiently
+    
+    Args:
+        db: Database session
+        workout_schema: Generated workout schema from LLM
+        user_id: User ID for ownership
+        training_plan_id: Optional training plan ID
+        workout_id: Optional - if provided, updates existing workout
+    
+    Returns:
+        The saved/updated workout object
+    """
+    workout_dict = workout_schema.model_dump()
+    
+    if workout_id:
+        # Update existing workout
+        return await replace_workout_atomically(
+            db=db,
+            workout_id=workout_id,
+            user_id=user_id,
+            new_workout_data=workout_dict,
+            training_plan_id=training_plan_id
+        )
+    else:
+        # Create new workout
+        workout_model = convert_llm_output_to_db_models(
+            workout_dict=workout_dict,
+            user_id=user_id,
+            training_plan_id=training_plan_id,
+        )
+        
+        db.add(workout_model)
+        await db.commit()
+        await db.refresh(workout_model)
+        return workout_model
 
 
 async def run_workout_chain(

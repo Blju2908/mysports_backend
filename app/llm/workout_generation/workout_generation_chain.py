@@ -29,44 +29,57 @@ async def execute_workout_generation_sequence(
     user_prompt: Optional[str] = None,
     db: Optional[AsyncSession] = None,
     use_exercise_filtering: bool = False,
+    exercise_library: Optional[str] = None,  # ✅ NEW: Pre-built exercise library
 ) -> WorkoutSchema:
     """
+    ✅ IMPROVED: DB-Session nur für Exercise Filtering, nicht für LLM-Calls
+    
     Args:
-        training_plan_obj: TrainingPlan Object für Exercise Filtering
+        training_plan_obj: TrainingPlan Object für Exercise Filtering (optional)
         training_plan_str: Formatierter TrainingPlan String für LLM
         training_history: Training History String
         user_prompt: User Prompt
-        db: Database Session (nur für Exercise Filtering nötig)
+        db: Database Session (nur für Exercise Filtering nötig, wenn exercise_library nicht gegeben)
         use_exercise_filtering: Wenn True, filtert Übungen aus DB
-        approach: "one_step" oder "two_step" Generation
+        exercise_library: ✅ NEU: Vorgefertigte Übungsbibliothek (umgeht DB-Calls)
     """
 
     _start_total = datetime.now()
     approach = "two_step"
 
-    # Prepare exercise context by deciding which exercise list to use
-    exercise_library = None
-    if use_exercise_filtering and training_plan_obj and db:
-        try:
-            print("🔍 Using DB Exercise Filtering...")
-            exercise_library = await get_filtered_exercises_for_user(
-                training_plan=training_plan_obj, db=db, user_prompt=user_prompt
-            )
-            if exercise_library:
-                print(
-                    f"✅ Using {len(exercise_library.splitlines())} filtered exercises from DB"
-                )
-            else:
-                print(
-                    "⚠️ DB filtering failed or returned no exercises, falling back to full DB list."
-                )
-        except Exception as e:
-            print(f"Error in get_filtered_exercises_for_user: {e}")
-            exercise_library = None
-
+    # ✅ IMPROVED: Prepare exercise context with pre-built library option
     if exercise_library is None:
-        exercise_library = await get_all_exercises_for_prompt(db)
+        # Only use DB if exercise_library is not provided
+        if use_exercise_filtering and training_plan_obj and db:
+            try:
+                print("🔍 Using DB Exercise Filtering...")
+                exercise_library = await get_filtered_exercises_for_user(
+                    training_plan=training_plan_obj, db=db, user_prompt=user_prompt
+                )
+                if exercise_library:
+                    print(
+                        f"✅ Using {len(exercise_library.splitlines())} filtered exercises from DB"
+                    )
+                else:
+                    print(
+                        "⚠️ DB filtering failed or returned no exercises, falling back to full DB list."
+                    )
+            except Exception as e:
+                print(f"Error in get_filtered_exercises_for_user: {e}")
+                exercise_library = None
 
+        # Fallback to DB or static library
+        if exercise_library is None:
+            if db:
+                exercise_library = await get_all_exercises_for_prompt(db)
+            else:
+                # ✅ NEW: Static fallback when no DB available
+                exercise_library = get_static_exercise_library()
+    else:
+        print(f"✅ Using pre-built exercise library ({len(exercise_library.splitlines())} exercises)")
+
+    # ✅ FROM HERE: Only LLM calls - NO DB operations!
+    
     # Choose generation method based on approach
     if approach == "one_step":
         print("Using enhanced one-step approach")
@@ -386,3 +399,45 @@ def get_llm_model(provider: str, model: str):
         return ChatGoogleGenerativeAI(
             model=model, google_api_key=get_config().GOOGLE_API_KEY
         )
+
+
+def get_static_exercise_library() -> str:
+    """
+    ✅ NEW: Fallback exercise library when no DB is available
+    Returns a basic set of common exercises for workout generation
+    """
+    return """
+# Grundlegende Übungsbibliothek
+
+## Push (Drückende Bewegungen)
+- Push-ups (Liegestütze)
+- Pike Push-ups (Handstand-Liegestütze)
+- Dips
+- Overhead Press (Schulterdrücken)
+- Bench Press (Bankdrücken)
+- Chest Fly (Brustöffnung)
+
+## Pull (Ziehende Bewegungen)  
+- Pull-ups (Klimmzüge)
+- Chin-ups (Klimmzüge)
+- Bent-over Rows (Vorgebeugtes Rudern)
+- Lat Pulldowns (Latziehen)
+- Face Pulls
+- Bicep Curls
+
+## Legs (Beine)
+- Squats (Kniebeugen)
+- Lunges (Ausfallschritte)
+- Deadlifts (Kreuzheben)
+- Calf Raises (Wadenheben)
+- Glute Bridges (Gesäßbrücke)
+- Wall Sits (Wandsitz)
+
+## Core (Rumpf)
+- Plank (Unterarmstütz)
+- Crunches (Bauchpressen)
+- Dead Bug
+- Bird Dog
+- Mountain Climbers
+- Russian Twists
+"""
