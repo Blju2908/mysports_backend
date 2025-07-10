@@ -16,21 +16,27 @@ load_dotenv()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Initialize and cleanup database engine"""
+    """Vercel Serverless optimized lifespan"""
     engine = get_engine()
     
-    # Test connection - Transaction Mode für schnelle API-Responses
+    # ✅ Vercel Serverless: Non-blocking startup - Test unified DB connection
     try:
-        async with engine.connect() as conn:
+        async with engine.begin() as conn:  # ✅ Using begin() for transaction
             await conn.execute(text("SELECT 1"))
-        logger.info("✅ Database connection successful (Dual-Mode: API=Transaction, Background=Session)")
+        logger.info("✅ Vercel Pro: Unified Supabase connection successful (Session Mode 5432)")
     except Exception as e:
-        logger.error(f"❌ Database connection failed: {e}")
-        raise
+        logger.error(f"⚠️ Vercel Startup: Database connection test failed: {e}")
+        # ✅ Don't crash - Vercel kann trotzdem starten
+        logger.info("🔄 Continuing startup - DB connections will be established on demand")
     
     yield
     
-    await close_engine()
+    # ✅ Vercel Serverless: Graceful cleanup
+    try:
+        await close_engine()
+        logger.info("✅ Vercel Shutdown: Database engines disposed")
+    except Exception as e:
+        logger.error(f"⚠️ Vercel Shutdown error: {e}")
 
 # FastAPI app
 app = FastAPI(
@@ -70,19 +76,20 @@ def health():
 
 @app.get("/health/db")
 async def health_db():
-    """Database health check - Dual Mode: API uses Transaction Mode (6543), Background uses Session Mode (5432)"""
+    """Vercel Pro DB health check - Unified Supabase Session Mode"""
     try:
         engine = get_engine()
-        async with engine.connect() as conn:
+        async with engine.begin() as conn:  # ✅ Using begin() for proper transaction
             result = await conn.execute(text("SELECT 1"))
             if result.scalar() == 1:
                 return {
                     "status": "ok", 
                     "database": "connected", 
-                    "mode": "dual", 
-                    "api_mode": "transaction_6543",
-                    "background_mode": "session_5432"
+                    "platform": "vercel_pro",
+                    "mode": "unified_engine", 
+                    "engine": "supabase_session_5432",
+                    "config": "prepared_statements_enabled_better_performance"
                 }
             return {"status": "error", "database": "query_failed"}
     except Exception as e:
-        return {"status": "error", "database": "error", "error": str(e)}
+        return {"status": "error", "database": "error", "error": str(e), "platform": "vercel_pro"}
