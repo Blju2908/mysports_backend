@@ -178,6 +178,7 @@ async def generate_freeform_workout_enhanced(
     training_history: Optional[str] = None,
     user_prompt: Optional[str] = None,
     exercise_library: Optional[str] = None,
+    training_principles: Optional[str] = None,  # ✅ NEU: Direkte Übergabe der Prinzipien
 ) -> str:
     """Enhanced freeform generation using a dynamic exercise library."""
 
@@ -189,16 +190,16 @@ async def generate_freeform_workout_enhanced(
         if not prompt_path.exists():
             raise FileNotFoundError(f"Prompt file not found at {prompt_path}")
             
-        # Load training principles
-        training_principles_path = (
-            Path(__file__).parent / "prompts" / "training_principles_base.md"
-        )
+        # ✅ NEU: Lade Prinzipien nur, wenn sie nicht direkt übergeben werden
+        if training_principles is None:
+            training_principles_path = (
+                Path(__file__).parent / "prompts" / "training_principles_base.md"
+            )
+            with open(training_principles_path, "r", encoding="utf-8") as f:
+                training_principles = f.read()
 
         with open(prompt_path, "r", encoding="utf-8") as f:
             prompt_template_content = f.read()
-
-        with open(training_principles_path, "r", encoding="utf-8") as f:
-            training_principles_content = f.read()
 
         # Format prompt with the dynamic exercise library and training principles
         formatted_prompt = prompt_template_content.format(
@@ -206,7 +207,7 @@ async def generate_freeform_workout_enhanced(
             training_history=training_history or "",
             user_prompt=user_prompt or "",
             exercise_library=exercise_library or "",
-            training_principles=training_principles_content,
+            training_principles=training_principles,
             current_date=datetime.now().strftime("%d.%m.%Y"),
         )
 
@@ -217,36 +218,73 @@ async def generate_freeform_workout_enhanced(
         response = await llm.ainvoke(formatted_prompt)
         _duration = (datetime.now() - _start).total_seconds()
         print(f"⏱️ freeform LLM duration: {_duration:.1f}s")
-
-        # Extract content
-        if hasattr(response, "content"):
-            freeform_text = (
-                response.content
-                if isinstance(response.content, str)
-                else str(response.content)
-            )
-        else:
-            freeform_text = str(response)
+        
+        freeform_text = response.content.strip()
 
         # Document output
-        suffix = (
-            "db_filtered"
-            if "Oberschenkel-Vorderseite" in (exercise_library or "")
-            else "default"
-        )
         _document_llm_interaction(
-            stage="freeform",
+            stage="freeform_default",
             prompt=formatted_prompt,
             response=freeform_text,
-            suffix=suffix,
         )
 
         return freeform_text
 
     except Exception as e:
-        print(f"Error in enhanced freeform generation: {e}")
+        print(f"Error in generate_freeform_workout_enhanced: {e}")
+        import traceback
+
+        traceback.print_exc()
         raise
 
+
+# ✅ NEU: Funktion speziell für den Refinement-Loop
+async def generate_freeform_workout_for_refinement(
+    training_plan_obj: Optional[TrainingPlan] = None,
+    training_plan_str: Optional[str] = None,
+    training_history: Optional[str] = None,
+    user_prompt: Optional[str] = None,
+    db: Optional[AsyncSession] = None,
+    use_exercise_filtering: bool = False,
+    training_principles: Optional[str] = None,
+) -> str:
+    """
+    Generates just the freeform markdown workout, skipping the structuring step.
+    Ideal for the prompt refinement loop.
+    """
+    # Prepare exercise context by deciding which exercise list to use
+    exercise_library = None
+    if use_exercise_filtering and training_plan_obj and db:
+        try:
+            print("🔍 Using DB Exercise Filtering...")
+            exercise_library = await get_filtered_exercises_for_user(
+                training_plan=training_plan_obj, db=db, user_prompt=user_prompt
+            )
+            if exercise_library:
+                print(
+                    f"✅ Using {len(exercise_library.splitlines())} filtered exercises from DB"
+                )
+            else:
+                print(
+                    "⚠️ DB filtering failed or returned no exercises, falling back to full DB list."
+                )
+        except Exception as e:
+            print(f"Error in get_filtered_exercises_for_user: {e}")
+            exercise_library = None
+
+    if exercise_library is None:
+        exercise_library = await get_all_exercises_for_prompt(db)
+
+    # Generate the freeform workout using the custom training principles
+    freeform_text = await generate_freeform_workout_enhanced(
+        training_plan=training_plan_str,
+        training_history=training_history,
+        user_prompt=user_prompt,
+        exercise_library=exercise_library,
+        training_principles=training_principles,
+    )
+    return freeform_text
+    
 
 # Two-Step Approach - Step 2
 async def convert_freeform_workout_to_schema(freeform_text: str) -> WorkoutSchema:

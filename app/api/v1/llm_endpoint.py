@@ -63,21 +63,31 @@ async def start_workout_creation(
             description="Workout wird erstellt. Bitte warten..."
         )
         db.add(placeholder_workout)
-        await db.commit()
-        await db.refresh(placeholder_workout)
+        
+        # Flush, um die workout_id vor dem Commit zu erhalten
+        await db.flush()
         
         workout_id = placeholder_workout.id
         logger.info("[llm/start-workout] Placeholder-Workout erstellt mit ID: %s", workout_id)
         
-        # ✅ NEU: Erstelle sofort Log-Eintrag mit Status STARTED
-        log_id = await log_operation_start(
-            db=db,
+        # ✅ Korrektur: Log-Eintrag erstellen, aber Commit aufschieben
+        log_entry = LlmCallLog(
             user_id=current_user.id,
             endpoint_name="llm/start-workout-creation",
             llm_operation_type="workout_creation",
+            status=LlmOperationStatus.STARTED,
             workout_id=workout_id
         )
+        db.add(log_entry)
+
+        # Transaktion für beide Objekte committen
+        await db.commit()
+
+        # Jetzt die Objekte refreshen, um die DB-generierten Werte zu laden
+        await db.refresh(placeholder_workout)
+        await db.refresh(log_entry)
         
+        log_id = log_entry.id
         logger.info("[llm/start-workout] Log-Eintrag erstellt mit ID: %s", log_id)
         
         # 2. Starte Background-Task mit log_id für Status-Updates
@@ -409,7 +419,7 @@ async def generate_workout_background(
     timer.start()
     
     try:
-        # Generate workout
+        # Use a single session for the entire workout generation and success logging
         async with get_background_session() as db:
             updated_workout = await run_workout_chain(
                 user_id=UUID(user_id),
@@ -421,8 +431,7 @@ async def generate_workout_background(
             )
             logger.info(f"[generate_workout_background] Workout generated: {updated_workout.id}")
         
-        # Log success
-        async with get_background_session() as db:
+            # Log success within the same transaction
             await log_operation_success(
                 db=db,
                 log_id=log_id,
@@ -430,25 +439,31 @@ async def generate_workout_background(
             )
             
     except Exception as e:
-        logger.error(f"[generate_workout_background] Error: {e}")
+        logger.error(f"[generate_workout_background] Error during workout generation for workout_id {workout_id}: {e}", exc_info=True)
         
-        # Log error
-        async with get_background_session() as db:
-            await log_operation_failed(
-                db=db,
-                log_id=log_id,
-                error_message=str(e),
-                duration_ms=timer.get_duration_ms()
-            )
+        # Use a NEW, separate session to log the failure to ensure it gets committed
+        try:
+            async with get_background_session() as error_db:
+                await log_operation_failed(
+                    db=error_db,
+                    log_id=log_id,
+                    error_message=str(e),
+                    duration_ms=timer.get_duration_ms()
+                )
+        except Exception as log_e:
+            logger.error(f"[generate_workout_background] CRITICAL: Failed to log error for workout_id {workout_id}: {log_e}", exc_info=True)
         
-        # Cleanup placeholder workout
-        async with get_background_session() as db:
-            stmt = select(Workout).where(Workout.id == workout_id)
-            result = await db.execute(stmt)
-            workout = result.scalar_one_or_none()
-            if workout:
-                await db.delete(workout)
-                await db.commit()
+        # Optional: Cleanup placeholder workout in a separate session
+        try:
+            async with get_background_session() as cleanup_db:
+                stmt = select(Workout).where(Workout.id == workout_id)
+                result = await cleanup_db.execute(stmt)
+                workout = result.scalar_one_or_none()
+                if workout and workout.name == "Wird generiert...":
+                    await cleanup_db.delete(workout)
+                    logger.info(f"[generate_workout_background] Cleaned up placeholder workout_id: {workout_id}")
+        except Exception as cleanup_e:
+            logger.error(f"[generate_workout_background] CRITICAL: Failed to cleanup placeholder for workout_id {workout_id}: {cleanup_e}", exc_info=True)
 
 
 async def revise_workout_background(
@@ -467,7 +482,7 @@ async def revise_workout_background(
     timer.start()
     
     try:
-        # Revise workout
+        # Use a single session for the entire revision and success logging
         async with get_background_session() as db:
             updated_workout = await run_workout_revision_chain(
                 workout_id=workout_id,
@@ -478,8 +493,7 @@ async def revise_workout_background(
             )
             logger.info(f"[revise_workout_background] Workout revised: {updated_workout.id}")
         
-        # Log success
-        async with get_background_session() as db:
+            # Log success within the same transaction
             await log_operation_success(
                 db=db,
                 log_id=log_id,
@@ -487,13 +501,16 @@ async def revise_workout_background(
             )
             
     except Exception as e:
-        logger.error(f"[revise_workout_background] Error: {e}")
+        logger.error(f"[revise_workout_background] Error during workout revision for workout_id {workout_id}: {e}", exc_info=True)
         
-        # Log error
-        async with get_background_session() as db:
-            await log_operation_failed(
-                db=db,
-                log_id=log_id,
-                error_message=str(e),
-                duration_ms=timer.get_duration_ms()
-            )
+        # Use a NEW, separate session to log the failure
+        try:
+            async with get_background_session() as error_db:
+                await log_operation_failed(
+                    db=error_db,
+                    log_id=log_id,
+                    error_message=str(e),
+                    duration_ms=timer.get_duration_ms()
+                )
+        except Exception as log_e:
+            logger.error(f"[revise_workout_background] CRITICAL: Failed to log error for workout_id {workout_id}: {log_e}", exc_info=True)

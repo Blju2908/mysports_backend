@@ -17,21 +17,19 @@ load_dotenv()
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialize and cleanup database engine"""
-    # Initialize engine
     engine = get_engine()
     
-    # Test connection
+    # Test connection - Session Mode unterstützt alle Features
     try:
         async with engine.connect() as conn:
             await conn.execute(text("SELECT 1"))
-        logger.info("✅ Database connection successful")
+        logger.info("✅ Database connection successful (Session Mode)")
     except Exception as e:
         logger.error(f"❌ Database connection failed: {e}")
         raise
     
     yield
     
-    # Cleanup
     await close_engine()
 
 # FastAPI app
@@ -72,13 +70,13 @@ def health():
 
 @app.get("/health/db")
 async def health_db():
-    """Database health check"""
+    """Database health check - Session Mode supports all PostgreSQL features"""
     try:
         engine = get_engine()
         async with engine.connect() as conn:
             result = await conn.execute(text("SELECT 1"))
             if result.scalar() == 1:
-                return {"status": "ok", "database": "connected"}
+                return {"status": "ok", "database": "connected", "mode": "session"}
             return {"status": "error", "database": "query_failed"}
     except Exception as e:
         return {"status": "error", "database": "error", "error": str(e)}

@@ -7,6 +7,7 @@ import os
 from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import NullPool
 from app.core.config import get_config
 
 class DatabaseManager:
@@ -49,15 +50,25 @@ class DatabaseManager:
         if self._engine is None:
             db_url = self._get_database_url()
             
-            # Engine-Konfiguration für Scripts (nicht für Web-Requests optimiert)
-            self._engine = create_async_engine(
-                db_url,
-                echo=False,  # Setze auf True für SQL-Debugging
-                pool_size=5,
-                max_overflow=10,
-                pool_pre_ping=True,  # Prüft Verbindungen vor Verwendung
-                pool_recycle=3600,   # Recycelt Verbindungen nach 1 Stunde
-            )
+            engine_args = {
+                "echo": False,
+            }
+
+            if self.use_production:
+                engine_args["poolclass"] = NullPool
+                engine_args["connect_args"] = {
+                    "statement_cache_size": 0,
+                    "prepared_statement_cache_size": 0
+                }
+            else:
+                engine_args.update({
+                    "pool_size": 5,
+                    "max_overflow": 10,
+                    "pool_pre_ping": True,
+                    "pool_recycle": 3600,
+                })
+            
+            self._engine = create_async_engine(db_url, **engine_args)
             
             # Session Factory
             self._session_factory = sessionmaker(
