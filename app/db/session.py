@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
-from sqlalchemy.pool import AsyncAdaptedQueuePool
+from sqlalchemy.pool import AsyncAdaptedQueuePool, NullPool
 from typing import AsyncGenerator
 from contextlib import asynccontextmanager
 from app.core.config import get_config
@@ -10,31 +10,29 @@ from sqlalchemy import text
 
 logger = logging.getLogger(__name__)
 
-# --- ✅ SIMPLE: Always Session Mode (Port 5432) with 2 separate pools ---
+# --- ✅ DUAL-MODE: Transaction Mode for API + Session Mode for Background ---
 settings = get_config()
 
-# Ensure we use Session Mode (Port 5432)
-api_db_url = settings.SUPABASE_DB_URL
-if ":6543/" in api_db_url:
-    api_db_url = api_db_url.replace(":6543/", ":5432/")
-    logger.info("📝 Switched from Transaction Mode to Session Mode (Port 5432)")
+# API Engine - Transaction Mode (6543) für AWS Lambda Serverless
+api_db_url = settings.SUPABASE_DB_URL_TRANSACTION
+logger.info("🚀 API Engine: Transaction Mode (Port 6543) - Optimized for Serverless")
 
-logger.info("🎯 Using Session Mode (Port 5432) for ALL connections")
+# Background Engine - Session Mode (5432) für DB-intensive Operations
+bg_db_url = settings.SUPABASE_DB_URL
+if ":6543/" in bg_db_url:
+    bg_db_url = bg_db_url.replace(":6543/", ":5432/")
+logger.info("🗄️  Background Engine: Session Mode (Port 5432) - Optimized for DB Operations")
 
-# API Engine - Small pool for fast API requests
+# API Engine - Transaction Mode für schnelle Serverless Responses
 engine = create_async_engine(
-    api_db_url,
+    api_db_url,  # Transaction Mode URL (6543)
     echo=False,
-    poolclass=AsyncAdaptedQueuePool,
-    pool_size=5,           # API Pool: 5 connections
-    max_overflow=5,        # Can grow to 10 total
-    pool_pre_ping=True,    # Test connections before use
-    pool_recycle=3600,     # Recycle after 1 hour
+    poolclass=NullPool,      # ✅ Serverless: Keine persistenten Connections
     connect_args={
-        "timeout": 30,               # 30s connection timeout
-        "command_timeout": 120,      # 2 minutes for API queries
+        "timeout": 5,                    # ✅ Schneller Timeout für Lambda
+        "command_timeout": 30,           # ✅ Kurze API-Queries
         "server_settings": {
-            "application_name": "s3ssions_api",
+            "application_name": "s3ssions_api_transaction",
         },
     },
     execution_options={
@@ -42,20 +40,20 @@ engine = create_async_engine(
     },
 )
 
-# Background Engine - Separate pool for long-running tasks
+# Background Engine - Session Mode für DB-intensive Operations
 background_engine = create_async_engine(
-    api_db_url,  # Same URL, different pool
+    bg_db_url,   # Session Mode URL (5432)
     echo=False,
     poolclass=AsyncAdaptedQueuePool,
-    pool_size=3,           # Background Pool: 3 connections 
-    max_overflow=2,        # Can grow to 5 total
+    pool_size=5,           # Background Pool: 5 connections 
+    max_overflow=3,        # Can grow to 8 total
     pool_pre_ping=True,    # Test connections before use
-    pool_recycle=1800,     # Recycle after 30 minutes (more frequent)
+    pool_recycle=1800,     # Recycle after 30 minutes
     connect_args={
-        "timeout": 30,               # 30s connection timeout
-        "command_timeout": 600,      # 10 minutes for LLM calls
+        "timeout": 15,               # ✅ Moderate timeout für Session Mode
+        "command_timeout": 300,      # ✅ 5 min für DB-Operations (LLM-Calls sind separat)
         "server_settings": {
-            "application_name": "s3ssions_background",
+            "application_name": "s3ssions_background_session",
         },
     },
     execution_options={
@@ -76,40 +74,40 @@ background_session_maker = async_sessionmaker(
     expire_on_commit=False
 )
 
-logger.info("✅ Session Mode engines configured:")
-logger.info(f"   🔹 API Pool: {engine.pool.size()} connections + {engine.pool._max_overflow} overflow")
-logger.info(f"   🔹 Background Pool: {background_engine.pool.size()} connections + {background_engine.pool._max_overflow} overflow")
+logger.info("✅ Dual-Mode engines configured:")
+logger.info(f"   🚀 API Engine (Transaction Mode): NullPool - Serverless optimized")
+logger.info(f"   🗄️  Background Engine (Session Mode): {background_engine.pool.size()} connections + {background_engine.pool._max_overflow} overflow")
 
 
 def get_engine():
-    """Returns the API SQLAlchemy engine."""
+    """Returns the API SQLAlchemy engine (Transaction Mode)."""
     return engine
 
 def get_background_engine():
-    """Returns the Background Tasks SQLAlchemy engine."""
+    """Returns the Background Tasks SQLAlchemy engine (Session Mode)."""
     return background_engine
 
-# FastAPI dependency for API endpoints
+# FastAPI dependency for API endpoints - Transaction Mode
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
-    """Get database session for API endpoints"""
+    """Get database session for API endpoints (Transaction Mode 6543)"""
     async with session_maker() as session:
         try:
             yield session
         except Exception as e:
-            logger.error(f"API session error: {e}", exc_info=True)
+            logger.error(f"API session error (Transaction Mode): {e}", exc_info=True)
             await session.rollback()
             raise
 
-# Background task sessions - SEPARATE ENGINE & POOL!
+# Background task sessions - Session Mode für DB-Operations
 @asynccontextmanager
 async def get_background_session():
-    """Get database session for background tasks - uses separate engine & pool!"""
+    """Get database session for background tasks (Session Mode 5432) - SHORT DB operations only!"""
     async with background_session_maker() as session:
         try:
             yield session
             await session.commit()
         except Exception as e:
-            logger.error(f"Background session error: {e}", exc_info=True)
+            logger.error(f"Background session error (Session Mode): {e}", exc_info=True)
             await session.rollback()
             raise
 
@@ -122,10 +120,10 @@ async def close_engine():
         await engine.dispose()
         engine = None
         session_maker = None
-        logger.info("✅ API SQLAlchemy engine disposed")
+        logger.info("✅ API SQLAlchemy engine disposed (Transaction Mode)")
         
     if background_engine:
         await background_engine.dispose()
         background_engine = None
         background_session_maker = None
-        logger.info("✅ Background SQLAlchemy engine disposed")
+        logger.info("✅ Background SQLAlchemy engine disposed (Session Mode)")
