@@ -31,6 +31,7 @@ engine = create_async_engine(
     connect_args={
         "timeout": 5,                    # ✅ Schneller Timeout für Lambda
         "command_timeout": 30,           # ✅ Kurze API-Queries
+        "statement_cache_size": 0,       # ✅ Disable prepared statements for pgbouncer transaction mode
         "server_settings": {
             "application_name": "s3ssions_api_transaction",
         },
