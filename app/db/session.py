@@ -25,7 +25,6 @@ engine = create_async_engine(
     connect_args={
         "timeout": 20,                   # ✅ Längere Timeouts für Session Mode
         "command_timeout": 120,          # ✅ 2min für Background Tasks
-        # ✅ REMOVED: statement_cache_size=0 - Session Mode unterstützt prepared statements!
         "server_settings": {
             "application_name": "s3ssions_unified_session",
         },
