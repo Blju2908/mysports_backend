@@ -43,3 +43,6 @@ env/
 .env.production
 .env.production
 .env.development
+
+# LLM Generated Content
+app/llm/workout_generation/output/
