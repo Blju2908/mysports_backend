@@ -225,7 +225,8 @@ async def generate_freeform_workout_enhanced(
         )
 
         # LLM Call
-        llm = get_llm_model(provider="openai", model="gpt-4o")
+        llm = get_llm_model(provider="openai", model="gpt-4.1")
+        # llm = get_llm_model(provider="anthropic", model="gpt-4o")
         # llm = get_llm_model(provider="google", model="gemini-2.5-flash")
         _start = datetime.now()
         response = await llm.ainvoke(formatted_prompt)

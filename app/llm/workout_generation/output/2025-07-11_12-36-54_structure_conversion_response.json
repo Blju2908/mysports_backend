@@ -1,0 +1,451 @@
+{
+  "name": "Lower Body Foundation & Core",
+  "description": "Unterkörper komplett regeneriert, alle Beinmuskeln >5 Tage ohne Hauptreiz. Front Squats zuletzt mit schwer gefallen notiert – heute leichter und technisch sauber, Fokus auf Quad/Hüft-Mobilität und unilateralem Ausgleich, kombiniert mit Core für funktionelle Performance. Volumenbalanced, kein überlappendes Pull/Push, klare Progression für Unterkörper.",
+  "duration": 60,
+  "focus": "Beine, Glutes, Core, funktionelle Kraft",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Gelenk-Mobilität, Rumpfaktivierung, Bewegungsvorbereitung",
+      "exercises": [
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                15.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                15.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
+                null,
+                null,
+                30.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "90/90 Hip Switch",
+          "sets": [
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                20.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Dynamic Walking Lunges [unilateral]",
+          "sets": [
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                10.0,
+                null,
+                null,
+                40.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Main",
+      "description": "Quadrizeps & Glutes Schwerpunkteinheit, unilateral ausbalanciert, Core gezielt eingebaut, Stretchpausen",
+      "exercises": [
+        {
+          "name": "Barbell Front Squat",
+          "sets": [
+            {
+              "values": [
+                60.0,
+                8.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                75.0,
+                6.0,
+                null,
+                null,
+                150.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                75.0,
+                6.0,
+                null,
+                null,
+                150.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                75.0,
+                6.0,
+                null,
+                null,
+                150.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bulgarian Split Squat with Dumbbells (links)",
+          "sets": [
+            {
+              "values": [
+                18.0,
+                10.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                18.0,
+                10.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                18.0,
+                10.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Bulgarian Split Squat with Dumbbells (rechts)",
+          "sets": [
+            {
+              "values": [
+                18.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                18.0,
+                10.0,
+                null,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                18.0,
+                10.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Barbell Romanian Deadlift",
+          "sets": [
+            {
+              "values": [
+                70.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                10.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                70.0,
+                10.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Single-Leg Calf Raise (links)",
+          "sets": [
+            {
+              "values": [
+                null,
+                12.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                12.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Single-Leg Calf Raise (rechts)",
+          "sets": [
+            {
+              "values": [
+                null,
+                12.0,
+                null,
+                null,
+                40.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                12.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                60.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                null,
+                null,
+                45.0,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Beweglichkeit, Stretching Full Lower Body, Erholung fördern",
+      "exercises": [
+        {
+          "name": "Hamstring Stretch (Standing) (links)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "D",
+          "position": 0
+        },
+        {
+          "name": "Hamstring Stretch (Standing) (rechts)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                10.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "D",
+          "position": 0
+        },
+        {
+          "name": "Couch Stretch (links)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "E",
+          "position": 0
+        },
+        {
+          "name": "Couch Stretch (rechts)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                10.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "E",
+          "position": 0
+        },
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                60.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        }
+      ],
+      "position": 0
+    }
+  ]
+}

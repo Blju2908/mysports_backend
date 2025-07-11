@@ -1,0 +1,309 @@
+{
+  "name": "Push-Fokus Kraft & Muskelaufbau",
+  "description": "Fokussiert auf Push-Muskulatur. Unterstützung bei der Muscle-Up-Zielsetzung. Ermöglicht funktionelle Kraftsteigerung.",
+  "duration": 60,
+  "focus": "Brust, Schultern, Trizeps",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "description": "Mobilisation und Aktivierung der Oberkörpermuskulatur",
+      "exercises": [
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Shoulder Pass-Through with Resistance Band",
+          "sets": [
+            {
+              "values": [
+                null,
+                12.0,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                12.0,
+                null,
+                null,
+                null
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Band Pull-Aparts",
+          "sets": [
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                null,
+                15.0,
+                null,
+                null,
+                null
+              ],
+              "position": 2
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 1
+    },
+    {
+      "name": "Main",
+      "description": "Schweres Push-Training mit Progressionsfokus",
+      "exercises": [
+        {
+          "name": "Barbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                60.0,
+                10.0,
+                null,
+                null,
+                180.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                70.0,
+                8.0,
+                null,
+                null,
+                180.0
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                80.0,
+                6.0,
+                null,
+                null,
+                180.0
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Dumbbell Shoulder Press",
+          "sets": [
+            {
+              "values": [
+                22.0,
+                12.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                25.0,
+                10.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                27.0,
+                8.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Dumbbell Fly",
+          "sets": [
+            {
+              "values": [
+                15.0,
+                12.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                17.0,
+                12.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                20.0,
+                12.0,
+                null,
+                null,
+                90.0
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        },
+        {
+          "name": "Close-Grip Barbell Bench Press",
+          "sets": [
+            {
+              "values": [
+                50.0,
+                10.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 1
+            },
+            {
+              "values": [
+                55.0,
+                8.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 2
+            },
+            {
+              "values": [
+                60.0,
+                6.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 3
+            }
+          ],
+          "superset_id": null,
+          "position": 4
+        }
+      ],
+      "position": 2
+    },
+    {
+      "name": "Cool-Down",
+      "description": "Lockerung und Entspannung der Push-Muskulatur",
+      "exercises": [
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 1
+        },
+        {
+          "name": "Triceps Overhead Stretch links",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 2
+        },
+        {
+          "name": "Triceps Overhead Stretch rechts",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                null
+              ],
+              "position": 1
+            }
+          ],
+          "superset_id": null,
+          "position": 3
+        }
+      ],
+      "position": 3
+    }
+  ]
+}
