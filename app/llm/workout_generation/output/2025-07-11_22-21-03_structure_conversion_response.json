@@ -1,26 +1,33 @@
 {
-  "name": "Push Training – Kraft & Muskelaufbau",
-  "description": "Fokus auf compound Grundübungen zur Kraftsteigerung. Progression im Bankdrücken und Schulterdrücken. Balanced Push/Pull mit Assistenzübungen.",
+  "name": "Athletic Lower Body Strength & Core",
+  "description": "Frische Beine nach 6 Tagen – daher intensive, progressive Lower-Body-Session. Kniebeuge- und Glute-Push zur Steigerung funktioneller Kraft, Bewegungsausgleich durch Hip Thrust. Isolierte Unilateralität für Side-Balance, Core zwischengeschaltet. Stretching-Pausen im Block für Regeneration und Beweglichkeits-Boost.",
   "duration": 60,
-  "focus": "Brust, Schultern, Trizeps",
+  "focus": "Unterkörper, Glute-Balance, Core, Progression",
   "blocks": [
     {
       "name": "Warm-Up",
-      "description": "Mobilisierung und Aufwärmen der Schultergelenke",
+      "description": "Mobilisation und Aktivierung Unterkörper & Core, Vorbereitung auf schwere Grundübungen",
       "exercises": [
         {
-          "name": "Arm Circles",
+          "name": "Jumping Jacks",
           "sets": [
             {
               "values": [
                 null,
-                15.0,
                 null,
+                45.0,
                 null,
                 null
               ],
               "position": 0
-            },
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Air Squat",
+          "sets": [
             {
               "values": [
                 null,
@@ -36,12 +43,12 @@
           "position": 0
         },
         {
-          "name": "Shoulder Dislocate with Resistance Band",
+          "name": "Dynamic Walking Lunges [unilateral]",
           "sets": [
             {
               "values": [
                 null,
-                12.0,
+                8.0,
                 null,
                 null,
                 null
@@ -51,7 +58,24 @@
             {
               "values": [
                 null,
-                12.0,
+                8.0,
+                null,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "A",
+          "position": 0
+        },
+        {
+          "name": "Inchworm Walkout",
+          "sets": [
+            {
+              "values": [
+                null,
+                8.0,
                 null,
                 null,
                 null
@@ -63,22 +87,12 @@
           "position": 0
         },
         {
-          "name": "Band Pull-Aparts",
+          "name": "Hip Circles",
           "sets": [
             {
               "values": [
                 null,
-                15.0,
-                null,
-                null,
-                null
-              ],
-              "position": 0
-            },
-            {
-              "values": [
-                null,
-                15.0,
+                10.0,
                 null,
                 null,
                 null
@@ -90,29 +104,66 @@
           "position": 0
         }
       ],
-      "position": 0
+      "position": 1
     },
     {
       "name": "Main",
-      "description": "Kombination aus schweren compound Übungen und gezielten Isolationsübungen",
+      "description": "Progressives Kraft-/Hypertrophie-Volumen für Beine/Glutes, Core-Integration, Stretch Pausen",
       "exercises": [
         {
-          "name": "Barbell Bench Press",
+          "name": "Barbell Back Squat",
           "sets": [
             {
               "values": [
-                70.0,
-                8.0,
+                95.0,
+                7.0,
                 null,
                 null,
-                120.0
+                150.0
               ],
               "position": 0
             },
             {
               "values": [
-                75.0,
-                8.0,
+                95.0,
+                7.0,
+                null,
+                null,
+                150.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                100.0,
+                6.0,
+                null,
+                null,
+                180.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                100.0,
+                6.0,
+                null,
+                null,
+                180.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Barbell Romanian Deadlift",
+          "sets": [
+            {
+              "values": [
+                80.0,
+                10.0,
                 null,
                 null,
                 120.0
@@ -122,7 +173,7 @@
             {
               "values": [
                 80.0,
-                6.0,
+                10.0,
                 null,
                 null,
                 120.0
@@ -131,8 +182,8 @@
             },
             {
               "values": [
-                85.0,
-                5.0,
+                90.0,
+                8.0,
                 null,
                 null,
                 120.0
@@ -144,22 +195,76 @@
           "position": 0
         },
         {
-          "name": "Dumbbell Shoulder Press",
+          "name": "Barbell Hip Thrust",
           "sets": [
             {
               "values": [
-                18.0,
-                10.0,
+                100.0,
+                12.0,
                 null,
                 null,
-                90.0
+                120.0
               ],
               "position": 0
             },
             {
               "values": [
-                20.0,
+                110.0,
+                10.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                120.0,
                 8.0,
+                null,
+                null,
+                120.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Bulgarian Split Squat with Dumbbells (links)",
+          "sets": [
+            {
+              "values": [
+                22.0,
+                10.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            },
+            {
+              "values": [
+                22.0,
+                8.0,
+                null,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "B",
+          "position": 0
+        },
+        {
+          "name": "Bulgarian Split Squat with Dumbbells (rechts)",
+          "sets": [
+            {
+              "values": [
+                22.0,
+                10.0,
                 null,
                 null,
                 90.0
@@ -177,27 +282,17 @@
               "position": 0
             }
           ],
-          "superset_id": null,
+          "superset_id": "B",
           "position": 0
         },
         {
-          "name": "Incline Push-up on Bench",
+          "name": "Plank Hold",
           "sets": [
             {
               "values": [
                 null,
-                12.0,
                 null,
-                null,
-                60.0
-              ],
-              "position": 0
-            },
-            {
-              "values": [
-                null,
-                12.0,
-                null,
+                60.0,
                 null,
                 60.0
               ],
@@ -206,8 +301,8 @@
             {
               "values": [
                 null,
-                12.0,
                 null,
+                45.0,
                 null,
                 60.0
               ],
@@ -218,86 +313,148 @@
           "position": 0
         },
         {
-          "name": "Cable Triceps Push-down with Rope",
+          "name": "Hamstring Stretch (Standing) (links)",
           "sets": [
             {
               "values": [
+                null,
+                null,
                 30.0,
-                12.0,
                 null,
-                null,
-                60.0
-              ],
-              "position": 0
-            },
-            {
-              "values": [
-                32.0,
-                12.0,
-                null,
-                null,
-                60.0
-              ],
-              "position": 0
-            },
-            {
-              "values": [
-                35.0,
-                10.0,
-                null,
-                null,
-                60.0
+                0.0
               ],
               "position": 0
             }
           ],
-          "superset_id": null,
+          "superset_id": "C",
           "position": 0
         },
         {
-          "name": "Arnold Press",
+          "name": "Hamstring Stretch (Standing) (rechts)",
           "sets": [
             {
               "values": [
-                16.0,
-                10.0,
                 null,
                 null,
-                90.0
-              ],
-              "position": 0
-            },
-            {
-              "values": [
-                18.0,
-                10.0,
-                null,
-                null,
-                90.0
-              ],
-              "position": 0
-            },
-            {
-              "values": [
-                20.0,
-                8.0,
-                null,
+                30.0,
                 null,
                 90.0
               ],
               "position": 0
             }
           ],
-          "superset_id": null,
+          "superset_id": "C",
+          "position": 0
+        },
+        {
+          "name": "Couch Stretch (links)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                0.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "D",
+          "position": 0
+        },
+        {
+          "name": "Couch Stretch (rechts)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                30.0,
+                null,
+                90.0
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": "D",
           "position": 0
         }
       ],
-      "position": 0
+      "position": 2
     },
     {
       "name": "Cool-Down",
-      "description": "Sanfte Dehnung zur Förderung der Regeneration",
+      "description": "Regeneration, Mobilität Fokus Hüfte & Beuge, entspannter Abschluss",
       "exercises": [
+        {
+          "name": "Pigeon Pose (links)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                40.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Pigeon Pose (rechts)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                40.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Figure-4 Stretch (Seated) (links)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                40.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
+        {
+          "name": "Figure-4 Stretch (Seated) (rechts)",
+          "sets": [
+            {
+              "values": [
+                null,
+                null,
+                40.0,
+                null,
+                null
+              ],
+              "position": 0
+            }
+          ],
+          "superset_id": null,
+          "position": 0
+        },
         {
           "name": "Child's Pose",
           "sets": [
@@ -314,60 +471,9 @@
           ],
           "superset_id": null,
           "position": 0
-        },
-        {
-          "name": "Doorway Pec Stretch",
-          "sets": [
-            {
-              "values": [
-                null,
-                null,
-                30.0,
-                null,
-                null
-              ],
-              "position": 0
-            }
-          ],
-          "superset_id": null,
-          "position": 0
-        },
-        {
-          "name": "Triceps Overhead Stretch links",
-          "sets": [
-            {
-              "values": [
-                null,
-                null,
-                30.0,
-                null,
-                null
-              ],
-              "position": 0
-            }
-          ],
-          "superset_id": null,
-          "position": 0
-        },
-        {
-          "name": "Triceps Overhead Stretch rechts",
-          "sets": [
-            {
-              "values": [
-                null,
-                null,
-                30.0,
-                null,
-                null
-              ],
-              "position": 0
-            }
-          ],
-          "superset_id": null,
-          "position": 0
         }
       ],
-      "position": 0
+      "position": 3
     }
   ]
 }
