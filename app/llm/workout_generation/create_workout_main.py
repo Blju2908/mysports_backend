@@ -24,17 +24,16 @@ from app.llm.workout_generation.create_workout_service import format_training_pl
 from app.llm.workout_generation.workout_generation_chain import execute_workout_generation_sequence
 
 # 🎯 KONFIGURATION - Einfach hier ändern!
-USER_ID = "df668bed-9092-4035-82fa-c68e6fa2a8ff"  # Ersetze mit deiner echten User-ID
-USE_PRODUCTION_DB = False # True für Produktionsdatenbank, False für lokale DB
+# USER_ID = "df668bed-9092-4035-82fa-c68e6fa2a8ff"  # Dev-User
+USER_ID = "a6a3f5e6-1d4e-4ec2-80c7-ddd257c655a1"  # Prod-User
+USE_PRODUCTION_DB = False 
 USE_EXERCISE_FILTERING = False  
-GENERATION_APPROACH = "two_step"
 
 async def main():
     """Hauptfunktion für Workout-Generation Test mit DB-Verbindung"""
     
     print("🏋️ Workout-Generation Test")
     print(f"🔍 Exercise Filtering: {'✅ Aktiviert' if USE_EXERCISE_FILTERING else '❌ Deaktiviert'}")
-    print(f"⚙️ Generation: {GENERATION_APPROACH.replace('_', '-').upper()}")
     print(f"👤 User-ID: {USER_ID}")
     print(f"🗄️ Datenbank: {'🚀 Produktionsdatenbank' if USE_PRODUCTION_DB else '💻 Lokale Entwicklungsdatenbank'}")
     print("=" * 50)

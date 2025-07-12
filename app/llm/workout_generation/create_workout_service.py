@@ -500,6 +500,77 @@ def clean_text_data(text: str | None) -> str | None:
     cleaned = text.replace('\x00', '').replace('\r', '').strip()
     return cleaned if cleaned else None
 
+
+def summarize_training_history(
+    training_history_workouts: List[Workout],
+) -> Optional[str]:
+    """
+    Summarizes training history into a token-efficient, structured text format
+    based on the user's final requested format.
+    """
+    if not training_history_workouts:
+        return None
+
+    summary_lines = [
+        "--- WORKOUT HISTORY SUMMARY ---",
+        "*Legende: r (Wiederholungen) | kg (Gewicht) | m (Distanz) | s (Dauer) | p (Pause)*\n"
+    ]
+
+    for workout in training_history_workouts:
+        date_str = "N/A"
+        earliest_completed_at = None
+        for block in workout.blocks:
+            for exercise in block.exercises:
+                for s_set in exercise.sets:
+                    if s_set.completed_at:
+                        if earliest_completed_at is None or s_set.completed_at < earliest_completed_at:
+                            earliest_completed_at = s_set.completed_at
+        
+        final_date = earliest_completed_at or workout.date_created
+        if final_date:
+            date_str = final_date.strftime("%Y-%m-%d")
+
+        header_parts = [f"**Workout: {workout.name or 'Unbenanntes Workout'}", date_str]
+        if workout.focus:
+            header_parts.append(f"Fokus: {workout.focus}**")
+        else:
+            header_parts[-1] += "**"
+        
+        summary_lines.append(" | ".join(header_parts))
+        
+        if workout.description:
+            summary_lines.append(f"*Beschreibung: {workout.description}*")
+        if workout.notes:
+            summary_lines.append(f"*Notizen: {workout.notes}*")
+        
+        for block in sorted(workout.blocks, key=lambda b: b.position):
+            summary_lines.append(f"\n  **Block: {block.name or 'Unbenannter Block'}**")
+            if block.notes:
+                summary_lines.append(f"    *Notiz: {block.notes}*")
+
+            for exercise in sorted(block.exercises, key=lambda e: e.position):
+                summary_lines.append(f"    - {exercise.name or 'Unbenannte Übung'}")
+                if exercise.notes:
+                    summary_lines.append(f"      - Notiz: \"{exercise.notes}\"")
+                
+                for s_set in sorted(exercise.sets, key=lambda s: s.position):
+                    set_parts = []
+                    if s_set.reps: set_parts.append(f"{s_set.reps}r")
+                    if s_set.weight: set_parts.append(f"{s_set.weight}kg")
+                    if s_set.distance: set_parts.append(f"{s_set.distance}m")
+                    if s_set.duration: set_parts.append(f"{s_set.duration}s")
+                    if s_set.rest_time: set_parts.append(f"p: {s_set.rest_time}s")
+                    
+                    if set_parts:
+                        summary_lines.append(f"      - {' / '.join(set_parts)}")
+
+        summary_lines.append("")
+
+    summary_lines.append("--- END OF HISTORY ---")
+    
+    return "\n".join(summary_lines)
+
+
 def convert_llm_output_to_db_models(
     workout_dict: Dict[str, Any],  
     user_id: UUID,  

@@ -1,0 +1,18 @@
+{
+  "conversation_id": "resp_6872089fa5f88199894fc5a33c1494920845242b255be929",
+  "created_at": "2025-07-12T09:02:57.680909",
+  "model": "gpt-4.1-mini",
+  "system_prompt_length": 9802,
+  "assistant_response": "Base Conversation initialisiert. Bereit für Workout-Generierung.",
+  "usage": {
+    "input_tokens": 2915,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 19,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 2934
+  }
+}

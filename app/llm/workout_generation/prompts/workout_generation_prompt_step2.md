@@ -22,72 +22,72 @@ Parameternotation des Inputs:
 # Vollständiges Workout-Beispiel
 Für ein Workout mit Warm-Up, Hauptteil und Cooldown:
 ```json
-{
+{{
   "name": "Krafttraining Oberkörper",
   "description": "Vollständiges Krafttraining für den Oberkörper mit Warm-Up und Cooldown",
   "duration": 60,
   "focus": "Kraft, Oberkörper",
   "blocks": [
-    {
+    {{
       "name": "Warm-Up",
       "description": "Dynamische Aufwärmung",
       "exercises": [
-        {
+        {{
           "name": "Jumping Jacks",
           "sets": [
-            {"values": [null, null, 60, null, null]}
+            {{"values": [null, null, 60, null, null]}}
           ]
-        },
-        {
+        }},
+        {{
           "name": "Armkreisen",
           "sets": [
-            {"values": [null, 10, null, null, null]}
+            {{"values": [null, 10, null, null, null]}}
           ]
-        }
+        }}
       ]
-    },
-    {
+    }},
+    {{
       "name": "Hauptteil",
       "description": "Krafttraining Superset",
       "exercises": [
-        {
+        {{
           "name": "Kurzhantel Bankdrücken",
           "superset_id": "A",
           "sets": [
-            {"values": [20, 12, null, null, 60]},
-            {"values": [20, 10, null, null, 60]},
-            {"values": [20, 8, null, null, 60]}
+            {{"values": [20, 12, null, null, 60]}},
+            {{"values": [20, 10, null, null, 60]}},
+            {{"values": [20, 8, null, null, 60]}}
           ]
-        },
-        {
+        }},
+        {{
           "name": "Kurzhantel Rudern",
           "superset_id": "A",
           "sets": [
-            {"values": [20, 12, null, null, 0]},
-            {"values": [20, 10, null, null, 0]},
-            {"values": [20, 8, null, null, 0]}
+            {{"values": [20, 12, null, null, 0]}},
+            {{"values": [20, 10, null, null, 0]}},
+            {{"values": [20, 8, null, null, 0]}}
           ]
-        }
+        }}
       ]
-    },
-    {
+    }},
+    {{
       "name": "Cooldown",
       "description": "Dehnung und Entspannung",
       "exercises": [
-        {
+        {{
           "name": "Brustdehnung",
           "sets": [
-            {"values": [null, null, 30, null, null]}
+            {{"values": [null, null, 30, null, null]}}
           ]
-        }
+        }}
       ]
-    }
+    }}
   ]
-}
+}}
 ```
 
 # Input
-FREEFORM_WORKOUT_PLACEHOLDER
+{FREEFORM_WORKOUT_PLACEHOLDER}
 
 # Ausgabe
 Ausschließlich korrektes JSON ohne Markdown oder zusätzliche Erklärungen. 
