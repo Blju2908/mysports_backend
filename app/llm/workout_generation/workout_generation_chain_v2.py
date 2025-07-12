@@ -42,7 +42,7 @@ class WorkoutGenerationChainV2:
         self.openai_client = AsyncOpenAI(api_key=self.config.OPENAI_API_KEY2)
         self.base_conversation_file = Path(__file__).parent / "base_conversation.json"
         self.structure_llm = ChatGoogleGenerativeAI(
-            model="gemini-2.5-flash", 
+            model="gemini-2.5-flash-lite-preview-06-17", 
             google_api_key=self.config.GOOGLE_API_KEY
         ).with_structured_output(WorkoutSchema)
         
@@ -103,22 +103,38 @@ Befolge die Anweisungen aus dem Base-Prompt zur Erstellung und Formatierung des 
         # Erstelle Fork-Prompt
         fork_prompt = self.create_fork_prompt(chain_inputs)
         
-        reasoning = {
-            "effort": "low",
-            "summary": None
-        }
+        model = "gpt-4.1"
+
+        
         
         try:
             # Fork die Base Conversation
+            if model == "o4-mini":
+                reasoning = {
+                    "effort": "low",
+                    "summary": None
+                }
+            else:
+                reasoning = None
+
             response = await self.openai_client.responses.create(
-                model="o4-mini",
+                model=model,
                 input=fork_prompt,
                 previous_response_id=base_conversation_id,
                 reasoning=reasoning
             )
             
             print(f"✅ Freeform-Workout generiert (Fork ID: {response.id})")
-            print(f"🔄 Token Usage: {response.usage.total_tokens}")
+            if response.usage:
+                usage = response.usage
+                print(f"🔄 Token Usage:")
+                print(f"   Input Tokens: {usage.input_tokens}")
+                if hasattr(usage, 'input_tokens_details') and usage.input_tokens_details:
+                    print(f"   Cached Tokens: {usage.input_tokens_details.cached_tokens}")
+                print(f"   Output Tokens: {usage.output_tokens}")
+                if hasattr(usage, 'output_tokens_details') and usage.output_tokens_details:
+                    print(f"   Reasoning Tokens: {usage.output_tokens_details.reasoning_tokens}")
+                print(f"   Total Tokens: {usage.total_tokens}")
             
             return response.output_text
             

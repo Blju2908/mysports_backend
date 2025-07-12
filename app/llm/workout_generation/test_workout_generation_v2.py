@@ -116,13 +116,6 @@ async def main():
             print(f"\n⏱️ Gesamtdauer: {duration:.1f}s")
             print("=" * 70)
             
-            # Zusätzliche Infos
-            print("\n💡 VORTEILE DER V2-VERSION:")
-            print("• 🏃 Schneller durch Base Conversation Forking")
-            print("• 💰 Günstiger durch Token-Caching")
-            print("• 📊 Konstante Token-Kosten (keine exponentielle Steigerung)")
-            print("• 🔄 Einfache Wartung der Base Conversation")
-            
             return result
             
         except Exception as e:

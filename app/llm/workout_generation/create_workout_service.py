@@ -79,6 +79,7 @@ async def replace_workout_atomically(
     
     # 5. ✅ Erstelle neue Beziehungen
     existing_workout.blocks = []
+    # ✅ FIX: Use the correct field name 'blocks' as defined in WorkoutSchema
     for block_index, block_data in enumerate(new_workout_data.get("blocks", [])):
         block_model = Block(
             name=clean_text_data(block_data.get("name", "Unbenannter Block")),
@@ -96,13 +97,18 @@ async def replace_workout_atomically(
             )
 
             for set_index, set_data_from_llm in enumerate(exercise_data.get("sets", [])):
-                if isinstance(set_data_from_llm, dict) and "values" in set_data_from_llm:
-                    values = set_data_from_llm.get("values", [])
-                    set_obj = Set.from_values_list(values)
-                    
-                    if set_obj:
-                        set_obj.position = set_data_from_llm.get("position", set_index)
-                        exercise_model.sets.append(set_obj)
+                # ✅ UPDATED: Handle the new SetSchema format with direct fields
+                if isinstance(set_data_from_llm, dict):
+                    # Create Set object directly from schema fields
+                    set_obj = Set(
+                        reps=set_data_from_llm.get("reps"),
+                        weight=set_data_from_llm.get("weight"),
+                        duration=set_data_from_llm.get("duration_seconds"),  # Map duration_seconds to duration
+                        distance=set_data_from_llm.get("distance"),
+                        rest_time=set_data_from_llm.get("rest_seconds"),  # Map rest_seconds to rest_time
+                        position=set_data_from_llm.get("position", set_index),
+                    )
+                    exercise_model.sets.append(set_obj)
 
             if exercise_model.sets:
                 block_model.exercises.append(exercise_model)
@@ -619,19 +625,20 @@ def convert_llm_output_to_db_models(
             )
 
             for set_index, set_data_from_llm in enumerate(exercise_data.get("sets", [])):
-                # ✅ OPTIMIZED: Verwende die bewährte Set.from_values_list Methode
-                if isinstance(set_data_from_llm, dict) and "values" in set_data_from_llm:
-                    values = set_data_from_llm.get("values", [])
-                    set_obj = Set.from_values_list(values)
-                    
-                    if set_obj:
-                        # Add position to the set
-                        set_obj.position = set_data_from_llm.get("position", set_index)
-                        exercise_model.sets.append(set_obj)
-                    else:
-                        print(f"⚠️ Skipping set data - no valid values: {values}")
+                # ✅ UPDATED: Handle the new SetSchema format with direct fields
+                if isinstance(set_data_from_llm, dict):
+                    # Create Set object directly from schema fields
+                    set_obj = Set(
+                        reps=set_data_from_llm.get("reps"),
+                        weight=set_data_from_llm.get("weight"),
+                        duration=set_data_from_llm.get("duration_seconds"),  # Map duration_seconds to duration
+                        distance=set_data_from_llm.get("distance"),
+                        rest_time=set_data_from_llm.get("rest_seconds"),  # Map rest_seconds to rest_time
+                        position=set_data_from_llm.get("position", set_index),
+                    )
+                    exercise_model.sets.append(set_obj)
                 else:
-                    print(f"⚠️ Skipping set data due to unexpected format or missing 'values' key: {set_data_from_llm}")
+                    print(f"⚠️ Skipping set data due to unexpected format: {set_data_from_llm}")
 
             if exercise_model.sets:
                 block_model.exercises.append(exercise_model)

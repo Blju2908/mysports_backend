@@ -421,15 +421,10 @@ async def generate_workout_background(
     from app.llm.workout_generation.create_workout_service import (
         get_training_history_for_user_from_db,
         format_training_plan_for_llm,
-        format_training_history_for_llm,
         save_workout_schema_to_db
     )
-    from app.llm.workout_generation.workout_generation_chain import execute_workout_generation_sequence
-    from app.llm.workout_generation.exercise_filtering_service import (
-        get_filtered_exercises_for_user,
-        get_all_exercises_for_prompt
-    )
-    
+    from app.llm.workout_generation.workout_generation_chain_v2 import execute_workout_generation_sequence_v2
+
     timer = OperationTimer()
     timer.start()
     
@@ -438,8 +433,7 @@ async def generate_workout_background(
         formatted_training_plan = None
         training_plan_db_obj = None
         training_plan_id_for_saving = None
-        formatted_history = None
-        exercise_library = None
+        raw_training_history = None # V2 uses raw history
         
         # DB Session for quick data gathering only
         async with get_background_session() as db:
@@ -454,48 +448,18 @@ async def generate_workout_background(
                     training_plan_id_for_saving = training_plan_db_obj.id
                     formatted_training_plan = format_training_plan_for_llm(training_plan_db_obj)
 
-                # Load Training History
+                # Load Training History for V2
                 raw_training_history = await get_training_history_for_user_from_db(
                     UUID(user_id), db, limit=10
                 )
-                if raw_training_history:
-                    formatted_history = format_training_history_for_llm(raw_training_history)
-            
-            # ✅ IMPORTANT: Prepare exercise library ONCE in DB session
-            if request_data.use_exercise_filtering and training_plan_db_obj:
-                try:
-                    logger.info(f"[generate_workout_background] Loading filtered exercises...")
-                    exercise_library = await get_filtered_exercises_for_user(
-                        training_plan=training_plan_db_obj, 
-                        db=db, 
-                        user_prompt=request_data.prompt
-                    )
-                    if not exercise_library:
-                        logger.info(f"[generate_workout_background] Filtered exercises empty, falling back to all exercises")
-                        exercise_library = await get_all_exercises_for_prompt(db)
-                except Exception as e:
-                    logger.warning(f"[generate_workout_background] Exercise filtering failed: {e}")
-                    exercise_library = await get_all_exercises_for_prompt(db)
-            else:
-                # Load all exercises or use static fallback
-                try:
-                    exercise_library = await get_all_exercises_for_prompt(db)
-                except Exception as e:
-                    logger.warning(f"[generate_workout_background] DB exercise loading failed: {e}")
-                    # Will use static fallback in LLM chain
-                    exercise_library = None
         
-        logger.info(f"[generate_workout_background] DB operations completed. Starting LLM generation...")
+        logger.info(f"[generate_workout_background] DB operations completed. Starting LLM generation with V2...")
         
-        # ✅ STEP 2: LLM operations WITHOUT any DB connection
-        workout_schema = await execute_workout_generation_sequence(
-            training_plan_obj=None,  # ✅ No DB object - prevents accidental DB usage
+        # ✅ STEP 2: LLM operations using V2 chain WITHOUT any DB connection
+        workout_schema = await execute_workout_generation_sequence_v2(
             training_plan_str=formatted_training_plan,
-            training_history=formatted_history,
+            training_history=raw_training_history,
             user_prompt=request_data.prompt,
-            db=None,  # ✅ NO DB session for LLM calls
-            use_exercise_filtering=False,  # ✅ Already done above
-            exercise_library=exercise_library  # ✅ Pre-built exercise library
         )
         
         logger.info(f"[generate_workout_background] LLM generation completed. Saving to DB...")
