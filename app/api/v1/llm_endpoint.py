@@ -18,7 +18,7 @@ from uuid import UUID
 import logging
 from sqlalchemy.orm import selectinload
 from app.llm.workout_generation.create_workout_schemas import CompactWorkoutSchema
-from app.llm.workout_generation.workout_parser import parse_compact_workout_to_db_models
+from app.llm.workout_generation.workout_parser import parse_compact_workout_to_db_models, update_existing_workout_with_compact_data, update_existing_workout_with_revision_data
 
 
 router = APIRouter()
@@ -345,7 +345,7 @@ async def get_workout_revision_status(
         )
 
 
-@router.post("/llm/accept-revision/{workout_id}")
+@router.post("/llm/accept-workout-revision")
 async def accept_workout_revision(
     workout_id: int,
     current_user: User = Depends(get_current_user),
@@ -373,26 +373,29 @@ async def accept_workout_revision(
         if not workout.revised_workout_data:
             raise HTTPException(status_code=400, detail="No pending revision found")
         
-        # The stored JSON is now a dump of a Workout model.
-        # We can validate it back into a transient Workout object.
-        parsed_workout = Workout.model_validate(workout.revised_workout_data)
-        
-        # Update fields
-        workout.name = parsed_workout.name
-        workout.description = parsed_workout.description
-        workout.duration = parsed_workout.duration
-        workout.focus = parsed_workout.focus
-        workout.notes = parsed_workout.notes
-        
-        # Atomically replace blocks
-        for block in workout.blocks:
+        # ✅ FIX: Clear blocks before updating to avoid session conflicts
+        # Store the blocks to delete them explicitly
+        blocks_to_delete = list(workout.blocks)
+        for block in blocks_to_delete:
             await db.delete(block)
         await db.flush()
         
-        workout.blocks = parsed_workout.blocks
+        # ✅ CRITICAL FIX: Clear the blocks list to remove references to deleted objects
+        workout.blocks = []
+        
+        # Refresh the workout to ensure it's clean after block deletion
+        await db.refresh(workout)
+        
+        # ✅ FIX: Update existing workout directly from revision data
+        update_existing_workout_with_revision_data(
+            existing_workout=workout,
+            revision_data=workout.revised_workout_data,
+        )
         
         # Clear revision data
         workout.revised_workout_data = None
+        
+        db.add(workout)
         
         await db.commit()
         await db.refresh(workout)
@@ -433,13 +436,12 @@ async def generate_workout_background(
     from app.llm.workout_generation.exercise_filtering_service import get_all_exercises_for_prompt
     from app.llm.workout_generation.workout_generation_chain_v2 import execute_workout_generation_sequence_v2
     from app.llm.workout_generation.workout_parser import parse_compact_workout_to_db_models
-    from app.llm.utils.db_utils import DatabaseManager
+    from app.db.session import get_background_session
     from sqlalchemy.orm import selectinload
 
     timer = OperationTimer()
     timer.start()
 
-    db_manager = DatabaseManager()
     user_id_uuid = UUID(user_id)
 
     try:
@@ -449,7 +451,7 @@ async def generate_workout_background(
         exercise_library_str = ""
         training_plan_id_for_saving = None
 
-        async with await db_manager.get_session() as db:
+        async with get_background_session() as db:
             logger.info("[generate_workout_background_v2] Loading user data from DB...")
 
             # Load and format TrainingPlan
@@ -486,7 +488,7 @@ async def generate_workout_background(
         logger.info("[generate_workout_background_v2] LLM generation completed. Saving to DB...")
 
         # --- STEP 3: Parse and save results to the DB ---
-        async with await db_manager.get_session() as save_db:
+        async with get_background_session() as save_db:
             # Load the placeholder workout eagerly
             stmt = select(Workout).options(
                 selectinload(Workout.blocks).selectinload('*')
@@ -497,26 +499,17 @@ async def generate_workout_background(
             if not placeholder_workout:
                 raise ValueError(f"Placeholder workout with ID {workout_id} not found.")
 
-            # Parse the LLM output into a transient object tree
-            parsed_workout_obj = parse_compact_workout_to_db_models(
-                compact_workout=compact_workout_schema,
-                user_id=user_id_uuid,
-                training_plan_id=training_plan_id_for_saving,
-            )
-
-            # Update the placeholder with the new data
-            placeholder_workout.name = parsed_workout_obj.name
-            placeholder_workout.description = parsed_workout_obj.description
-            placeholder_workout.duration = parsed_workout_obj.duration
-            placeholder_workout.focus = parsed_workout_obj.focus
-            placeholder_workout.notes = parsed_workout_obj.notes
-            
-            # Atomically replace the blocks
+            # ✅ FIX: Delete existing blocks first to avoid orphaned records
             for block in placeholder_workout.blocks:
                 await save_db.delete(block)
-            await save_db.flush() 
+            await save_db.flush()
 
-            placeholder_workout.blocks = parsed_workout_obj.blocks
+            # ✅ FIX: Update existing workout directly instead of creating new one
+            update_existing_workout_with_compact_data(
+                existing_workout=placeholder_workout,
+                compact_workout=compact_workout_schema,
+                training_plan_id=training_plan_id_for_saving,
+            )
             
             save_db.add(placeholder_workout)
             await save_db.commit()
@@ -524,7 +517,7 @@ async def generate_workout_background(
             logger.info(f"[generate_workout_background_v2] Workout {workout_id} successfully updated.")
 
         # --- STEP 4: Log success ---
-        async with await db_manager.get_session() as log_db:
+        async with get_background_session() as log_db:
             await log_operation_success(
                 db=log_db,
                 log_id=log_id,
@@ -537,7 +530,7 @@ async def generate_workout_background(
         logger.error(f"[generate_workout_background_v2] Error: {e}", exc_info=True)
         # Log failure in a separate session
         try:
-            async with await db_manager.get_session() as error_db:
+            async with get_background_session() as error_db:
                 await log_operation_failed(
                     db=error_db,
                     log_id=log_id,

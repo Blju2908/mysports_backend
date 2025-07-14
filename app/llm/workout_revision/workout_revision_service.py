@@ -173,11 +173,17 @@ async def revise_workout_background_v2(
     from app.services.llm_logging_service import log_operation_success, log_operation_failed, OperationTimer
     from app.models.training_plan_model import TrainingPlan
     from sqlalchemy import select
+    from app.db.session import get_background_session
+    from app.llm.workout_generation.workout_utils import summarize_training_history
+    from app.db.workout_db_access import get_training_history_for_user_from_db
+    from app.llm.workout_generation.exercise_filtering_service import get_all_exercises_for_prompt
+    from app.llm.workout_generation.create_workout_service import format_training_plan_for_llm
+    from .workout_revision_chain import execute_workout_revision_sequence_v2
+    from app.llm.workout_generation.workout_parser import parse_compact_workout_to_db_models
 
     timer = OperationTimer()
     timer.start()
 
-    db_manager = DatabaseManager()
     user_id_uuid = UUID(user_id)
 
     try:
@@ -188,7 +194,7 @@ async def revise_workout_background_v2(
         existing_workout_dict = None
         training_plan_id_for_saving = None
 
-        async with await db_manager.get_session() as db:
+        async with get_background_session() as db:
             logger.info("[revise_workout_background_v2] Loading data from DB...")
 
             # Load existing workout
@@ -247,7 +253,7 @@ async def revise_workout_background_v2(
         logger.info("[revise_workout_background_v2] Parsed workout. Saving to DB...")
 
         # --- STEP 4: Store revision as JSON instead of direct update ---
-        async with await db_manager.get_session() as save_db:
+        async with get_background_session() as save_db:
             # Load the original workout
             stmt = select(Workout).where(Workout.id == workout_id)
             result = await save_db.execute(stmt)
@@ -260,12 +266,11 @@ async def revise_workout_background_v2(
             original_workout.revised_workout_data = revision_dict
             
             save_db.add(original_workout)
-            await save_db.commit()
             
             logger.info(f"[revise_workout_background_v2] Revised workout stored as JSON for workout {workout_id}.")
 
         # --- STEP 5: Log success (EXACT same as workout generation) ---
-        async with await db_manager.get_session() as log_db:
+        async with get_background_session() as log_db:
             await log_operation_success(
                 db=log_db,
                 log_id=log_id,
@@ -278,7 +283,7 @@ async def revise_workout_background_v2(
         logger.error(f"[revise_workout_background_v2] Error: {e}", exc_info=True)
         # Log failure in a separate session (EXACT same as workout generation)
         try:
-            async with await db_manager.get_session() as error_db:
+            async with get_background_session() as error_db:
                 await log_operation_failed(
                     db=error_db,
                     log_id=log_id,
