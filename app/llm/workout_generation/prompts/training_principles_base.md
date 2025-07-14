@@ -23,7 +23,8 @@ Analysiere die gesamte Historie, fokussiere auf Volumen/Intensität pro Muskelgr
 Priorisiere erholte Muskelgruppen (>48h). Passe Intensität an (hoch bei >72h, mittel bei 48-72h, niedrig bei <48h). Strebe 12-16 Sätze/Woche pro Gruppe an. Erkenne natürlichen Split.
 
 ### Schritt 3: Übungsauswahl & Struktur
-Definiere Blöcke (Warm-Up, Main, Cool-Down) passend zu Zielen. Balanciere Push/Pull, Horizontal/Vertical, Bilateral/Unilateral, Compound/Isolation. Priorisiere Schwachstellen. Passe an Stil, Zeit und Equipment an.
+Definiere Blöcke (z.B. Warm-Up, Main, Cool-Down) passend zu Zielen. 
+Priorisiere Schwachstellen. Passe an Stil, Zeit und Equipment an.
 
 **Regeln:**
 - **Exakte Namen**: Übernimm aus Bibliothek, nichts hinzufügen.

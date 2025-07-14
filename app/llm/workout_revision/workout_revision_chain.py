@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
-from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
+from app.llm.workout_generation.create_workout_schemas import CompactWorkoutSchema
 from app.llm.utils.llm_documentation import document_llm_session, document_llm_input, document_llm_output
 import json
 from app.core.config import get_config
@@ -20,7 +20,7 @@ async def revise_workout_two_step(
     user_feedback: str,
     training_plan: Optional[str] = None,
     training_history: Optional[str] = None
-) -> WorkoutSchema:
+) -> CompactWorkoutSchema:
     """
     Überarbeitet ein Workout in zwei Schritten:
     1. Freie Revision für Kreativität und Flexibilität
@@ -36,7 +36,7 @@ async def revise_workout_two_step(
     
     return structured_workout
 
-async def convert_revision_to_schema(freeform_revision_text: str) -> WorkoutSchema:
+async def convert_revision_to_schema(freeform_revision_text: str) -> CompactWorkoutSchema:
     """
     Konvertiert freien Revisions-Text in strukturiertes WorkoutSchema.
     Nutzt ein kleines, schnelles LLM für die Strukturierung.
@@ -63,7 +63,7 @@ async def convert_revision_to_schema(freeform_revision_text: str) -> WorkoutSche
         )
         
         # LangChain's structured output für automatische Schema-Validierung
-        structured_llm = llm.with_structured_output(WorkoutSchema)
+        structured_llm = llm.with_structured_output(CompactWorkoutSchema)
         
         print("Converting freeform revision to structured workout schema...")
         structured_workout = await structured_llm.ainvoke(formatted_prompt)
@@ -185,7 +185,7 @@ async def revise_workout(
     user_feedback: str,
     training_plan: Optional[str] = None,
     training_history: Optional[str] = None
-) -> WorkoutSchema:
+) -> CompactWorkoutSchema:
     """
     Legacy function - delegates to new two-step process
     """

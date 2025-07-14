@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import Optional
-from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
+from app.llm.workout_generation.create_workout_schemas import CompactWorkoutSchema
 
 
 class WorkoutRevisionRequestSchema(BaseModel):
@@ -15,13 +15,13 @@ class WorkoutRevisionResponseSchema(BaseModel):
     """Schema for workout revision responses."""
     original_workout_id: int = Field(..., description="ID des ursprünglichen Workouts")
     user_feedback: str = Field(..., description="Das User-Feedback, das verwendet wurde")
-    revised_workout: WorkoutSchema = Field(..., description="Das überarbeitete Workout")
+    revised_workout: CompactWorkoutSchema = Field(..., description="Das überarbeitete Workout")
     revision_timestamp: str = Field(..., description="Zeitstempel der Überarbeitung")
 
 
 class WorkoutRevisionPreviewSchema(BaseModel):
     """Schema for workout revision preview (before confirmation)."""
-    revised_workout: WorkoutSchema = Field(..., description="Das überarbeitete Workout (Vorschau)")
+    revised_workout: CompactWorkoutSchema = Field(..., description="Das überarbeitete Workout (Vorschau)")
     changes_summary: Optional[str] = Field(default=None, description="Zusammenfassung der Änderungen")
 
 

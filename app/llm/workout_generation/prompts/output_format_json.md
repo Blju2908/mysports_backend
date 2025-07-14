@@ -6,15 +6,16 @@
 Gib das Workout in folgendem JSON-Format zurück. Halte dich exakt an die Struktur und die Feldnamen.
 
 - **`sets` object**: `{{"r": reps, "w": weight_kg, "s": duration_s, "d": distance_m, "p": pause_s}}`
-- Use `null` for values that are not applicable.
+- **Omit fields that are not applicable.**
+- **Omit Nulls**: Do not include fields with `null` values in the JSON output. This applies especially to `sets` objects (e.g., if reps are not applicable, omit the `r` field instead of setting `r: null`).
 - Do not include units in the JSON output.
 
 ```json
 {{
   "muscle_group_load": [
     "Beine: Benötigen aktive Regeneration oder komplette Pause.",
-    "Rücken/Bizeps (Pull): Leicht ermüdet (48h Erholung).",
-    "Brust/Schultern/Trizeps (Push): Vollständig erholt.",
+    "Rücken/Bizeps (Pull): Stark ermüdet nach gestrigem Training. Pause empfohlen.",
+    "Brust/Schultern/Trizeps (Push): Trotz gestriger Belastung leicht ermüdet. Nicht alle Bereiche der Muskelgruppe wurden beansprucht. Daher Push Workout möglich. ",
     "Core: Vollständig erholt."
   ],
   "focus_derivation": "Heutiger Fokus: Oberkörper (Kraft) und Rumpfstabität. Begründung: Um den Beinen nach der gestrigen, langen Radtour ausreichend Erholungszeit zu geben (>48h), ist ein Oberkörper-Workout ideal.",
@@ -32,15 +33,13 @@ Gib das Workout in folgendem JSON-Format zurück. Halte dich exakt an die Strukt
           "name": "Jumping Jacks",
           "sets": [
             {{"s": 60}}
-          ],
-          "superset_group": null
+          ]
         }},
         {{
           "name": "Arm Circles",
           "sets": [
             {{"r": 15}}
-          ],
-          "superset_group": null
+          ]
         }}
       ]
     }},
@@ -55,8 +54,7 @@ Gib das Workout in folgendem JSON-Format zurück. Halte dich exakt an die Strukt
             {{"r": 8, "w": 80.0, "p": 120}},
             {{"r": 8, "w": 80.0, "p": 120}},
             {{"r": 6, "w": 82.5, "p": 120}}
-          ],
-          "superset_group": null
+          ]
         }},
         {{
           "name": "Single-Arm Dumbbell Row (rechts)",
@@ -87,13 +85,10 @@ Gib das Workout in folgendem JSON-Format zurück. Halte dich exakt an die Strukt
           "name": "Doorway Pec Stretch",
           "sets": [
             {{"s": 30}}
-          ],
-          "superset_group": null
+          ]
         }}
       ]
     }}
   ]
 }}
 ```
-
-Beispiel-Parameter für `sets`

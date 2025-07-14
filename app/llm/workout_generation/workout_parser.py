@@ -1,129 +1,89 @@
-import re
-from typing import Tuple
-
-from app.llm.workout_generation.create_workout_schemas import (
-    BlockSchema,
-    CompactWorkoutSchema,
-    ExerciseSchema,
-    SetSchema,
-    WorkoutSchema,
-)
+from typing import List, Optional
+from uuid import UUID
+from app.llm.workout_generation.create_workout_schemas import CompactWorkoutSchema
+from app.models.workout_model import Workout
+from app.models.block_model import Block
+from app.models.exercise_model import Exercise
+from app.models.set_model import Set, SetStatus
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 
-def _parse_set_string(set_str: str) -> SetSchema:
+def parse_compact_workout_to_db_models(
+    compact_workout: CompactWorkoutSchema,
+    user_id: UUID,
+    training_plan_id: Optional[int],
+) -> Workout:
     """
-    Parses a formatted string (e.g., '10r / 20kg / P: 60s') into a SetSchema object.
-    This function uses a robust method of splitting the string and parsing each part
-    to handle various combinations of parameters like reps, weight, distance, duration, and rest.
+    Translates a CompactWorkoutSchema object into a tree of SQLModel objects
+    (Workout, Block, Exercise, Set) ready for database insertion.
     """
-    parts = [p.strip() for p in set_str.split("/")]
-    params = {}
-    for part in parts:
-        # Match repetitions (e.g., '8r', '12r')
-        if "r" in part and "kg" not in part:
-            match = re.match(r"(\d+)", part)
-            if match:
-                params["reps"] = int(match.group(1))
-        # Match weight (e.g., '80kg', '22.5kg')
-        elif "kg" in part:
-            match = re.match(r"(\d+(?:\.\d+)?)", part)
-            if match:
-                params["weight"] = float(match.group(1))
-        # Match distance (e.g., '300m')
-        elif "m" in part:
-            match = re.match(r"(\d+(?:\.\d+)?)", part)
-            if match:
-                params["distance"] = float(match.group(1))
-        # Match rest period (e.g., 'P: 60s', 'P:120s')
-        elif "P:" in part:
-            match = re.search(r"(\d+)", part)
-            if match:
-                params["rest_seconds"] = int(match.group(1))
-        # Match duration (e.g., '60s')
-        elif "s" in part:
-            match = re.match(r"(\d+)", part)
-            if match:
-                params["duration_seconds"] = int(match.group(1))
 
-    # Ensure all fields exist, defaulting to None if not found
-    return SetSchema(
-        reps=params.get("reps"),
-        weight=params.get("weight"),
-        distance=params.get("distance"),
-        duration_seconds=params.get("duration_seconds"),
-        rest_seconds=params.get("rest_seconds"),
+    workout_obj = Workout(
+        user_id=user_id,
+        training_plan_id=training_plan_id,
+        name=compact_workout.name,
+        description=compact_workout.description,
+        duration=compact_workout.duration_min,
+        focus=compact_workout.focus,
+        notes=f"Focus derivation: {compact_workout.focus_derivation}\n\nMuscle group load: {'; '.join(compact_workout.muscle_group_load)}",
+        blocks=[],
     )
 
-
-def _parse_workout_header(header: str) -> Tuple[str, int, str, str]:
-    """
-    Parses the workout header string to extract the name, duration, focus, and description.
-    Example: 'Intensives Oberkörper-Workout (≈60 min | Fokus: Kraft, Muskelaufbau | Description: Ein anspruchsvolles...)'
-    """
-    name_match = re.match(r"([^()]+)", header)
-    name = name_match.group(1).strip() if name_match else "Workout"
-
-    duration_match = re.search(r"(\d+)\s*min", header)
-    duration = int(duration_match.group(1)) if duration_match else 0
-
-    focus_match = re.search(r"Fokus:\s*([^|)]+)", header, re.IGNORECASE)
-    focus = focus_match.group(1).strip() if focus_match else ""
-
-    desc_match = re.search(r"Description:\s*([^)]+)", header, re.IGNORECASE)
-    description = desc_match.group(1).strip() if desc_match else ""
-
-    return name, duration, focus, description
-
-
-def _parse_block_header(header: str) -> Tuple[str, str]:
-    """
-    Parses the block header string to extract the block's name and description.
-    Example: 'Main | 50 min | Hauptteil mit Fokus auf Push & Pull'
-    """
-    parts = [p.strip() for p in header.split("|")]
-    name = parts[0]
-    # The description is assumed to be the last part if there are multiple parts.
-    description = parts[-1] if len(parts) > 1 else ""
-    return name, description
-
-
-def convert_compact_to_verbose_schema(
-    compact_workout: CompactWorkoutSchema,
-) -> WorkoutSchema:
-    """
-    Converts a CompactWorkoutSchema, which is optimized for LLM generation,
-    into the application's more structured and verbose WorkoutSchema.
-    """
-    name, duration, focus, description = _parse_workout_header(compact_workout.header)
-
-    verbose_blocks = []
-    for i, compact_block in enumerate(compact_workout.blocks):
-        block_name, block_desc = _parse_block_header(compact_block.header)
-
-        verbose_exercises = []
-        for j, compact_exercise in enumerate(compact_block.exercises):
-            verbose_sets = [_parse_set_string(s) for s in compact_exercise.sets]
-
-            verbose_exercise = ExerciseSchema(
-                name=compact_exercise.name,
-                sets=verbose_sets,
-                superset_group=compact_exercise.superset_group,
-                position=j,
-            )
-            verbose_exercises.append(verbose_exercise)
-
-        verbose_block = BlockSchema(
-            name=block_name,
-            description=block_desc,
-            exercises=verbose_exercises,
-            position=i,
+    for block_pos, compact_block in enumerate(compact_workout.blocks):
+        block_obj = Block(
+            name=compact_block.name,
+            description=compact_block.description,
+            position=block_pos,
+            exercises=[],
         )
-        verbose_blocks.append(verbose_block)
 
-    return WorkoutSchema(
-        name=name,
-        description=description,
-        duration=duration,
-        focus=focus,
-        blocks=verbose_blocks,
-    ) 
+        for exercise_pos, compact_exercise in enumerate(compact_block.exercises):
+            exercise_obj = Exercise(
+                name=compact_exercise.name,
+                superset_id=compact_exercise.superset_group,
+                position=exercise_pos,
+                sets=[],
+            )
+
+            for set_pos, compact_set in enumerate(compact_exercise.sets):
+                # Map from CompactSetSchema to Set
+                set_obj = Set(
+                    reps=compact_set.r,
+                    weight=compact_set.w,
+                    duration=compact_set.s,
+                    distance=compact_set.d,
+                    rest_time=compact_set.p,
+                    position=set_pos,
+                    status=SetStatus.open,
+                )
+                # Only add set if it has any values to avoid empty sets
+                if any(
+                    v is not None
+                    for v in [
+                        compact_set.r,
+                        compact_set.w,
+                        compact_set.s,
+                        compact_set.d,
+                        compact_set.p,
+                    ]
+                ):
+                    exercise_obj.sets.append(set_obj)
+
+            if exercise_obj.sets:
+                block_obj.exercises.append(exercise_obj)
+
+        if block_obj.exercises:
+            workout_obj.blocks.append(block_obj)
+
+    return workout_obj
+
+
+async def save_workout_to_db(workout: Workout, db_session: AsyncSession) -> Workout:
+    """
+    Saves the complete Workout object tree to the database.
+    """
+    db_session.add(workout)
+    await db_session.commit()
+    await db_session.refresh(workout)
+
+    return workout 
