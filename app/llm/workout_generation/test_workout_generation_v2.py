@@ -8,15 +8,26 @@ import asyncio
 from pathlib import Path
 from datetime import datetime
 from uuid import UUID
+from dotenv import load_dotenv
+
+# 🎯 KONFIGURATION
+USER_ID_DEV = "df668bed-9092-4035-82fa-c68e6fa2a8ff"  # Prod-User
+USER_ID_PROD = "a6a3f5e6-1d4e-4ec2-80c7-ddd257c655a1"
+USE_PRODUCTION_DB = True
+TEST_USER_PROMPT = ""
+ONLY_FREEFORM_GENERATION = True # Set to True to only generate freeform text, skipping structuring
 
 # Setup paths
 BACKEND_DIR = Path(__file__).resolve().parents[3]
 sys.path.append(str(BACKEND_DIR))
 
 # Load environment
-from dotenv import load_dotenv
-dotenv_path = BACKEND_DIR / ".env.development"
-load_dotenv(dotenv_path=dotenv_path)
+if USE_PRODUCTION_DB:
+    print("🔌 Loading .env.production...")
+    load_dotenv(dotenv_path=BACKEND_DIR / ".env.production", override=True)
+else:
+    print("🔌 Loading .env.development...")
+    load_dotenv(dotenv_path=BACKEND_DIR / ".env.development", override=True)
 
 # Imports
 from app.llm.utils.db_utils import DatabaseManager
@@ -28,24 +39,22 @@ from app.db.workout_db_access import get_training_history_for_user_from_db
 from app.models.training_plan_model import TrainingPlan
 from sqlmodel import select
 
-# 🎯 KONFIGURATION
-USER_ID = "df668bed-9092-4035-82fa-c68e6fa2a8ff"  # Prod-User
-USE_PRODUCTION_DB = False
-TEST_USER_PROMPT = "Ich möchte heute ein intensives Oberkörper-Workout"
-ONLY_FREEFORM_GENERATION = True # Set to True to only generate freeform text, skipping structuring
-
 
 async def main():
     """Hauptfunktion für V2 Workout-Generierung Test."""
     print("🏋️ Streamlined Workout Generation V2 Test")
     print("=" * 70)
-    print(f"👤 User-ID: {USER_ID}")
+    print(f"👤 User-ID: {USER_ID_DEV}")
     print(f"🗄️ Datenbank: {'🚀 Produktionsdatenbank' if USE_PRODUCTION_DB else '💻 Lokale Entwicklungsdatenbank'}")
     print(f"📝 Test-Prompt: {TEST_USER_PROMPT}")
     print("=" * 70)
 
     start_time = datetime.now()
-    user_id_uuid = UUID(USER_ID)
+    
+    if USE_PRODUCTION_DB:
+        user_id_uuid = UUID(USER_ID_PROD)
+    else:
+        user_id_uuid = UUID(USER_ID_DEV)
     
     # Verbinde mit Datenbank
     db_manager = DatabaseManager(use_production=USE_PRODUCTION_DB)
@@ -56,7 +65,7 @@ async def main():
                 select(TrainingPlan).where(TrainingPlan.user_id == user_id_uuid)
             )
             if not training_plan_db_obj:
-                print(f"❌ KEIN TRAININGSPLAN FÜR USER {USER_ID} GEFUNDEN!")
+                print(f"❌ KEIN TRAININGSPLAN FÜR USER {user_id_uuid} GEFUNDEN!")
                 print("💡 Erstelle einen Trainingsplan für diesen User.")
                 return
             

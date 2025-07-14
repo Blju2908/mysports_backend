@@ -10,6 +10,7 @@ Konvertiere den folgenden freien Workout-Revisions-Text in das exakte JSON-Schem
 6. **Keine Null-Bytes**: Verwende niemals Null-Bytes oder andere ungültige Zeichen
 7. **Vollständigkeit**: Gib immer das gesamte Workout aus!
 8. **Änderungen berücksichtigen**: Integriere alle beschriebenen Änderungen aus der Revision
+9. **Coach-Statement ignorieren**: Die `Coach-Statement:`-Zeile am Anfang des Inputs wird ignoriert und nicht in das JSON übernommen.
 
 Parameternotation des Inputs:
 - Gewicht + Wiederholungen: `8 @ 80 kg / P: 60 s`
