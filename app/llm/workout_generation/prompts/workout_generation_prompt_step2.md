@@ -1,26 +1,25 @@
-# Aufgabe
-Konvertiere den folgenden freien Workout-Text in das exakte JSON-Schema-Format. Du bist ein Datenparser.
+# Task
+Convert the following freeform workout text into the exact JSON schema format. You are a data parser.
 
-# Regeln
-1. **Präzise Strukturierung**: Extrahiere alle Informationen und mappe sie korrekt
-2. **Schema-Konformität**: Folge exakt dem WorkoutSchema (name, description, duration, focus, blocks)
-3. **Set-Parameter**: Pro Satz: [Gewicht_kg, Wiederholungen, Dauer_sek, Distanz_m, Pause_sek] - nutze `null` für nicht relevante Werte. Achte darauf, dass die Parameter an den richtigen Stellen eingesetzt werden!!!
-4. **Superset-IDs**: Übernehme gleiche IDs (A, B, C) für gruppierte Übungen
-5. **Realistische Werte**: Behalte alle Gewichte, Zeiten und Wiederholungen bei
-6. **Keine Null-Bytes**: Verwende niemals Null-Bytes oder andere ungültige Zeichen
-7. **Vollständigkeit**: Gib immer das gesamte Workout aus!
+# Rules
+1.  **Precise Structuring**: Extract all information and map it correctly.
+2.  **Schema Conformance**: Strictly follow the WorkoutSchema (name, description, duration, focus, blocks).
+3.  **Set Parameters**: For each set: [weight_kg, repetitions, duration_sec, distance_m, rest_sec] - use `null` for irrelevant values. Ensure parameters are placed correctly!!!
+4.  **Superset IDs**: Retain the same IDs (A, B, C) for grouped exercises.
+5.  **Realistic Values**: Preserve all weights, times, and repetitions.
+6.  **No Null Bytes**: Never use null bytes or other invalid characters.
+7.  **Completeness**: Always output the entire workout!
 
-Parameternotation des Inputs:
-- Gewicht + Wiederholungen: `8 @ 80 kg / P: 60 s`
-- Wiederholungen: `15 reps`
-- Dauer: `60 s`
-- Dauer und Gewicht: `60 s @ 80 kg`
-- Distanz: `300 m`
-- Pause: `... / P: 60 s` --> Pause in Sekunden
+Parameter Notation of Input:
+-   Weight + Repetitions: `8 @ 80 kg / P: 60 s`
+-   Repetitions: `15 reps`
+-   Duration: `60 s`
+-   Duration and Weight: `60 s @ 80 kg`
+-   Distance: `300 m`
+-   Rest: `... / P: 60 s` --> Rest in seconds
 
-
-# Vollständiges Workout-Beispiel
-Für ein Workout mit Warm-Up, Hauptteil und Cooldown:
+# Full Workout Example
+For a workout with Warm-Up, Main, and Cooldown:
 ```json
 {{
   "name": "Krafttraining Oberkörper",
@@ -89,5 +88,5 @@ Für ein Workout mit Warm-Up, Hauptteil und Cooldown:
 # Input
 {FREEFORM_WORKOUT_PLACEHOLDER}
 
-# Ausgabe
-Ausschließlich korrektes JSON ohne Markdown oder zusätzliche Erklärungen. 
+# Output
+Strictly correct JSON without Markdown or additional explanations. The output MUST be in GERMAN. 

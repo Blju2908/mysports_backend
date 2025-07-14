@@ -1,13 +1,17 @@
 """
-Neue Version der Workout-Generierung mit Base Conversation Forking.
-Nutzt die OpenAI Responses API für effizienten Token-Verbrauch.
+Streamlined workout generation.
+
+Workflow:
+1.  Create a comprehensive prompt with general principles and user-specific data.
+2.  Generate a freeform workout using a powerful language model.
+3.  Structure the result into a clean JSON schema with a fast, specialized model.
 """
 
 import asyncio
 import os
 import json
 from datetime import datetime
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Union
 from pathlib import Path
 
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -23,124 +27,79 @@ from app.llm.workout_generation.exercise_filtering_service import (
     get_filtered_exercises_for_user,
     get_all_exercises_for_prompt,
 )
-from app.llm.workout_generation.create_base_conversation import BaseConversationManager
 from app.llm.workout_generation.create_workout_service import summarize_training_history
+from app.llm.utils.db_utils import DatabaseManager # Import DatabaseManager
 
 
 class WorkoutGenerationChainV2:
     """
-    Neue Version der Workout-Generierung mit Base Conversation Forking.
-    
+    Streamlined workout generation.
+
     Workflow:
-    1. Lade Base Conversation ID (erstellt von create_base_conversation.py)
-    2. Fork Base Conversation mit spezifischen Workout-Daten
-    3. Strukturiere das Ergebnis mit Google AI
+    1.  Create a comprehensive prompt with general principles and user-specific data.
+    2.  Generate a freeform workout using a powerful language model.
+    3.  Structure the result into a clean JSON schema with a fast, specialized model.
     """
-    
+
     def __init__(self):
         self.config = get_config()
-        self.openai_client = AsyncOpenAI(api_key=self.config.OPENAI_API_KEY2)
-        self.base_conversation_file = Path(__file__).parent / "base_conversation.json"
+        self.freeform_llm = ChatGoogleGenerativeAI(
+            model="gemini-2.5-flash",
+            google_api_key=self.config.GOOGLE_API_KEY,
+            temperature=0.2,
+        )
         self.structure_llm = ChatGoogleGenerativeAI(
-            model="gemini-2.5-flash-lite-preview-06-17", 
+            model="gemini-2.5-flash",
             google_api_key=self.config.GOOGLE_API_KEY
         ).with_structured_output(WorkoutSchema)
-        
-    def load_base_conversation_data(self) -> Optional[Dict[str, Any]]:
-        """Lade die gesamten Base Conversation Daten aus der JSON-Datei."""
-        if not self.base_conversation_file.exists():
-            return None
-        
-        try:
-            with open(self.base_conversation_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"❌ Fehler beim Laden der Base Conversation Daten: {e}")
-            return None
-    
+
+    def _load_full_prompt_template(self) -> PromptTemplate:
+        """Loads the complete prompt template for workout generation."""
+        prompt_path = Path(__file__).parent / "prompts" / "workout_generation_prompt.md"
+        with open(prompt_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        return PromptTemplate.from_template(content, template_format="f-string")
+
+
     def load_structure_prompt(self) -> PromptTemplate:
         """Lade den Strukturierungs-Prompt."""
         prompt_path = Path(__file__).parent / "prompts" / "workout_generation_prompt_step2.md"
         with open(prompt_path, 'r', encoding='utf-8') as f:
             content = f.read()
         return PromptTemplate.from_template(content, template_format="f-string")
-    
-    def create_fork_prompt(self, chain_inputs: Dict[str, Any]) -> str:
-        """Erstelle den Prompt für das Forking der Base Conversation."""
-        return f"""
-Erstelle jetzt ein personalisiertes Workout basierend auf folgenden Daten:
 
-# Aktuelles Datum
-{chain_inputs.get('current_date', datetime.now().strftime('%d.%m.%Y'))}
-
-# User Prompt
-{chain_inputs.get('user_prompt', 'Kein spezifischer Prompt')}
-
-# Trainingsplan
-{chain_inputs.get('training_plan', 'Keine Trainingsziele definiert')}
-
-# Trainingshistorie
-{chain_inputs.get('training_history', 'Keine Historie verfügbar')}
-
-Befolge die Anweisungen aus dem Base-Prompt zur Erstellung und Formatierung des Workouts.
-"""
-    
-    async def generate_freeform_workout(self, base_conversation_data: Dict[str, Any], chain_inputs: Dict[str, Any]) -> str:
+    async def generate_freeform_workout(self, chain_inputs: Dict[str, Any]) -> str:
         """
-        Generiere Freeform-Workout durch Forking der Base Conversation.
-        
-        ⚠️ WICHTIG: Nutzt gecachte Tokens für Kostenersparnis!
-        
+        Generate a freeform workout using a single, complete prompt.
+
         Returns:
-            str: Der generierte Freeform-Text des Workouts
+            str: The generated freeform text of the workout.
         """
-        if not base_conversation_data or 'conversation_id' not in base_conversation_data:
-            raise ValueError("Keine gültigen Base Conversation Daten übergeben.")
-            
-        base_conversation_id = base_conversation_data['conversation_id']
-        print(f"🔄 Forking Base Conversation: {base_conversation_id}")
-        
-        # Erstelle Fork-Prompt
-        fork_prompt = self.create_fork_prompt(chain_inputs)
-        
-        model = "gpt-4.1"
+        print("🔄 Creating full prompt...")
+        full_prompt = self._load_full_prompt_template()
 
-        
-        
+        chain = full_prompt | self.freeform_llm
+
+        print(f"🤖 Generating freeform workout with {self.freeform_llm.model}...")
+
         try:
-            # Fork die Base Conversation
-            if model == "o4-mini":
-                reasoning = {
-                    "effort": "low",
-                    "summary": None
-                }
-            else:
-                reasoning = None
+            response = await chain.ainvoke(chain_inputs)
+            freeform_text = response.content
 
-            response = await self.openai_client.responses.create(
-                model=model,
-                input=fork_prompt,
-                previous_response_id=base_conversation_id,
-                reasoning=reasoning
-            )
-            
-            print(f"✅ Freeform-Workout generiert (Fork ID: {response.id})")
-            if response.usage:
-                usage = response.usage
-                print(f"🔄 Token Usage:")
-                print(f"   Input Tokens: {usage.input_tokens}")
-                if hasattr(usage, 'input_tokens_details') and usage.input_tokens_details:
-                    print(f"   Cached Tokens: {usage.input_tokens_details.cached_tokens}")
-                print(f"   Output Tokens: {usage.output_tokens}")
-                if hasattr(usage, 'output_tokens_details') and usage.output_tokens_details:
-                    print(f"   Reasoning Tokens: {usage.output_tokens_details.reasoning_tokens}")
-                print(f"   Total Tokens: {usage.total_tokens}")
-            
-            return response.output_text
-            
+            print("✅ Freeform workout generated.")
+
+            if response.response_metadata and 'token_usage' in response.response_metadata:
+                usage = response.response_metadata['token_usage']
+                print(f"📊 Token Usage (Gemini):")
+                print(f"   Input Tokens:  {usage.get('prompt_token_count', 'N/A')}")
+                print(f"   Output Tokens: {usage.get('candidates_token_count', 'N/A')}")
+                print(f"   Total Tokens:  {usage.get('total_token_count', 'N/A')}")
+
+            return freeform_text
+
         except Exception as e:
-            print(f"❌ Fehler beim Forking: {e}")
-            raise ValueError(f"Base Conversation Fork fehlgeschlagen: {e}")
+            print(f"❌ Error during freeform generation: {e}")
+            raise ValueError(f"Workout generation failed: {e}")
     
     async def structure_workout(self, freeform_text: str) -> WorkoutSchema:
         """Strukturiere das Freeform-Workout zu einem JSON-Schema."""
@@ -156,43 +115,20 @@ Befolge die Anweisungen aus dem Base-Prompt zur Erstellung und Formatierung des 
         print("✅ Workout strukturiert")
         return structured_workout
     
-    def _document_llm_interaction(self, stage: str, prompt: Any, response: Any) -> None:
-        """Dokumentiere LLM-Interaktion im Stil von workout_generation_chain.py."""
+    def _document_llm_interaction(self, stage: str, prompt_template: PromptTemplate, inputs: Dict[str, Any], response: Any) -> None:
+        """Dokumentiere die vollständige LLM-Interaktion."""
         try:
             ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
             out_dir = Path(__file__).parent / "output"
             out_dir.mkdir(exist_ok=True)
 
-            # --- Prompt-Formatierung ---
+            # --- Prompt-Formatierung (Vollständiger Prompt) ---
             prompt_path = out_dir / f"{ts}_{stage}_prompt.md"
-            prompt_content = f"# 🤖 Prompt für Stage: `{stage}`\n\n"
+            full_prompt_text = prompt_template.format(**inputs)
+            
+            prompt_content = f"# 🤖 Vollständiger Prompt für Stage: `{stage}`\n\n"
             prompt_content += f"**Timestamp:** {ts}\n\n---\n\n"
-
-            if isinstance(prompt, dict):
-                for key, value in prompt.items():
-                    section_title = key.replace('_', ' ').title()
-                    icons = {
-                        'Training Plan': '📋',
-                        'Training History': '📊',
-                        'User Prompt': '💬',
-                        'Current Date': '📅'
-                    }
-                    icon = icons.get(section_title, '📄')
-                    prompt_content += f"## {icon} {section_title}\n\n"
-
-                    if key == 'training_history' and isinstance(value, str) and value.strip().startswith('['):
-                        try:
-                            history_data = json.loads(value)
-                            prompt_content += "```json\n" + json.dumps(history_data, indent=2, ensure_ascii=False) + "\n```\n\n"
-                        except json.JSONDecodeError:
-                            prompt_content += f"```\n{value}\n```\n\n"
-                    elif isinstance(value, str) and len(value) > 200:
-                        prompt_content += f"```\n{value}\n```\n\n"
-                    else:
-                        prompt_content += f"**{value}**\n\n"
-                    prompt_content += "---\n\n"
-            else:
-                prompt_content += f"```\n{str(prompt)}\n```\n\n"
+            prompt_content += full_prompt_text
 
             prompt_path.write_text(prompt_content, encoding="utf-8")
 
@@ -230,70 +166,91 @@ async def execute_workout_generation_sequence_v2(
     training_plan_str: Optional[str] = None,
     training_history: Optional[List[Workout]] = None,
     user_prompt: Optional[str] = None,
-) -> WorkoutSchema:
+    only_freeform_generation: bool = False,
+    db_manager: Optional[DatabaseManager] = None, # Changed type from AsyncSession to DatabaseManager
+) -> Union[WorkoutSchema, str]:
     """
-    Hauptfunktion für Workout-Generierung mit Base Conversation Forking.
-    
-    ⚠️ NEUE VERSION: Nutzt gecachte Base Conversation für Kostenersparnis!
+    Hauptfunktion für Workout-Generierung mit einem modularen Prompt.
     
     Workflow:
-    1. Lade Base Conversation ID
-    2. Fork mit spezifischen Workout-Daten
-    3. Strukturiere das Ergebnis
+    1. Erstelle einen vollständigen Prompt mit allgemeinen und spezifischen Workout-Daten.
+    2. Generiere das Workout als Freitext.
+    3. Strukturiere das Ergebnis (optional).
     
+    Args:
+        training_plan_str (Optional[str]): Formatierter Trainingsplan als String.
+        training_history (Optional[List[Workout]]): Liste der Workout-Objekte aus der Historie.
+        user_prompt (Optional[str]): Der spezifische User-Prompt für das Workout.
+        only_freeform_generation (bool): Wenn True, wird nur der Freiform-Text generiert und zurückgegeben.
+        
     Returns:
-        WorkoutSchema: Strukturiertes Workout
+        Union[WorkoutSchema, str]: Strukturiertes Workout-Schema oder der unstrukturierte Freiform-Text, 
+                                   abhängig vom `only_freeform_generation` Flag.
     """
     _start_total = datetime.now()
     
-    print("🏋️ Workout-Generierung V2 mit Base Conversation Forking")
+    print("🏋️ Streamlined Workout Generation V2")
     print("=" * 60)
-    
-    # NEU: Stelle eine gültige Base Conversation sicher
-    print("🛡️  Prüfe und sichere Base Conversation...")
-    manager = BaseConversationManager()
-    base_conversation_data = await manager.get_or_create_base_conversation()
-    print("✅ Base Conversation ist gültig und bereit.")
 
     summarized_history = "Keine Historie verfügbar"
     if training_history:
-        print("🔄 Komprimiere Trainingshistorie...")
+        print("🔄 Compressing training history...")
         summarized_history = summarize_training_history(training_history)
-        print("✅ Trainingshistorie komprimiert.")
-    
-    # Hole Chain-Instanz
+        print("✅ Training history compressed.")
+
+    # Load exercise library
+    exercise_library_str = ""
+    if db_manager:
+        print("🔄 Loading all exercises from database...")
+        exercise_library_str = await get_all_exercises_for_prompt(db_manager)
+        print(f"✅ Loaded {len(exercise_library_str.splitlines())} exercises from database.")
+    else:
+        print("⚠️ No database manager provided. Exercise library will be empty.")
+
+    # Get chain instance
     chain = get_chain()
     
-    # Bereite Input-Daten vor
+    # Prepare input data
     chain_inputs = {
         "training_plan": training_plan_str or "Keine Trainingsziele definiert",
         "training_history": summarized_history,
         "user_prompt": user_prompt or "Kein spezifischer Prompt",
         "current_date": datetime.now().strftime("%d.%m.%Y"),
+        "exercise_library": exercise_library_str,
     }
     
-    # Schritt 1: Generiere Freeform-Workout durch Forking
-    print("🔄 Schritt 1: Freeform-Generierung via Base Conversation Fork")
-    freeform_text = await chain.generate_freeform_workout(
-        base_conversation_data=base_conversation_data, 
-        chain_inputs=chain_inputs
+    # Step 1: Generate freeform workout
+    print("🔄 Step 1: Generating freeform workout...")
+    freeform_text = await chain.generate_freeform_workout(chain_inputs=chain_inputs)
+    
+    # Document the intermediate freeform workout
+    freeform_prompt_template = chain._load_full_prompt_template()
+    chain._document_llm_interaction(
+        "freeform_generation", freeform_prompt_template, chain_inputs, freeform_text
     )
-    
-    # NEU: Ausgabe und Dokumentation des Freeform-Workouts
-    chain._document_llm_interaction("freeform_generation", chain_inputs, freeform_text)
-    
-    # Schritt 2: Strukturiere das Workout
-    print("🔄 Schritt 2: Strukturierung mit Google AI")
+
+    if only_freeform_generation:
+        print("⚠️ Only freeform generation requested. Skipping structuring step.")
+        _total_duration = (datetime.now() - _start_total).total_seconds()
+        print(f"⏱️  Total generation time: {_total_duration:.1f}s")
+        print("=" * 70)
+        return freeform_text
+
+    # Step 2: Structure the workout
+    print("🔄 Step 2: Structuring with Google AI...")
     structured_workout = await chain.structure_workout(freeform_text)
     
-    # Detaillierte Ausgabe des Workouts
+    # Detailed workout output
     _total_duration = (datetime.now() - _start_total).total_seconds()
     
-    print("✅ Workout-Generierung V2 abgeschlossen!")
-    print(f"⏱️  Gesamte Generierungszeit: {_total_duration:.1f}s")
+    print("✅ Workout Generation V2 complete!")
+    print(f"⏱️  Total generation time: {_total_duration:.1f}s")
     print("=" * 70)
     
-    # Dokumentiere die finalen Ergebnisse
-    chain._document_llm_interaction("final_workout", chain_inputs, structured_workout)
+    # Document final results
+    structure_prompt_template = chain.load_structure_prompt()
+    chain._document_llm_interaction(
+        "final_workout", structure_prompt_template, {"FREEFORM_WORKOUT_PLACEHOLDER": freeform_text}, structured_workout
+    )
     
     return structured_workout 

@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Any
 from sqlmodel.ext.asyncio.session import AsyncSession
 from langchain_google_genai import ChatGoogleGenerativeAI
 from pydantic import BaseModel, Field
@@ -168,30 +168,34 @@ def format_exercises_for_prompt(exercises: List[ExerciseDescription]) -> str:
     return "\n".join(formatted) 
 
 
-async def get_all_exercises_for_prompt(db: [AsyncSession] = None) -> str:
+async def get_all_exercises_for_prompt(db_manager: Any = None) -> str:
     """
-    Lädt alle deutschen Übungsnamen aus der Datenbank für den Prompt.
-    Einfach und direkt - nur die Namen.
+    Loads all English exercise names from the database for the prompt, handling its own session.
+    If no db_manager is provided, it falls back to a minimal, hardcoded list.
     """
-    
+    if db_manager is None:
+        print("⚠️ No DatabaseManager provided for get_all_exercises_for_prompt. Returning fallback exercises.")
+        return "# Available Exercises\n\n- Push-up\n- Squat"
+
     try:
-        # Lade alle Übungen aus DB
-        all_exercises = await get_all_exercise_names(db)
-        
-        # Namen mit unilateral Tag extrahieren und formatieren
-        formatted_names = []
-        for ex in all_exercises:
-            if ex.name_english:
-                name = ex.name_english
-                # Füge [unilateral] Tag hinzu wenn nötig
-                if ex.is_unilateral:
-                    name = f"{name} [unilateral]"
-                formatted_names.append(f"- {name}")
-        
-        formatted_names.sort()  # Alphabetisch sortieren
-        
-        return "# Verfügbare Übungen\n\n" + "\n".join(formatted_names)
-        
+        async with await db_manager.get_session() as db_session:
+            # Lade alle Übungen aus DB
+            all_exercises = await get_all_exercise_names(db_session)
+            
+            # Namen mit unilateral Tag extrahieren und formatieren
+            formatted_names = []
+            for ex in all_exercises:
+                if ex.name_english:
+                    name = ex.name_english
+                    # Füge [unilateral] Tag hinzu wenn nötig
+                    if ex.is_unilateral:
+                        name = f"{name} [unilateral]"
+                    formatted_names.append(f"- {name}")
+            
+            formatted_names.sort()  # Alphabetisch sortieren
+            
+            return "# Available Exercises\n\n" + "\n".join(formatted_names)
+            
     except Exception as e:
-        print(f"❌ Error loading exercises from database: {e}")
-        return "# Verfügbare Übungen\n\n- Push-up\n- Squat"
+        print(f"❌ Error loading exercises from database in isolated session: {e}")
+        return "# Available Exercises\n\n- Push-up\n- Squat"

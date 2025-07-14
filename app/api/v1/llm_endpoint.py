@@ -414,7 +414,6 @@ async def generate_workout_background(
     """
     logger.info(f"[generate_workout_background] Starting workout_id: {workout_id}")
     
-    from app.db.session import get_background_session
     from app.services.llm_logging_service import log_operation_success, log_operation_failed, OperationTimer
     from app.models.training_plan_model import TrainingPlan
     from sqlalchemy import select
@@ -424,9 +423,12 @@ async def generate_workout_background(
         save_workout_schema_to_db
     )
     from app.llm.workout_generation.workout_generation_chain_v2 import execute_workout_generation_sequence_v2
+    from app.llm.utils.db_utils import DatabaseManager
 
     timer = OperationTimer()
     timer.start()
+
+    db_manager = DatabaseManager()
     
     # ✅ STEP 1: Quick DB operations to gather all necessary data
     try:
@@ -436,7 +438,7 @@ async def generate_workout_background(
         raw_training_history = None # V2 uses raw history
         
         # DB Session for quick data gathering only
-        async with get_background_session() as db:
+        async with await db_manager.get_session() as db:
             logger.info(f"[generate_workout_background] Loading user data from DB...")
             
             # Load TrainingPlan
@@ -460,12 +462,13 @@ async def generate_workout_background(
             training_plan_str=formatted_training_plan,
             training_history=raw_training_history,
             user_prompt=request_data.prompt,
+            db_manager=db_manager,
         )
         
         logger.info(f"[generate_workout_background] LLM generation completed. Saving to DB...")
         
         # ✅ STEP 3: Quick DB operation to save results
-        async with get_background_session() as save_db:
+        async with await db_manager.get_session() as save_db:
             updated_workout = await save_workout_schema_to_db(
                 db=save_db,
                 workout_schema=workout_schema,
@@ -476,7 +479,7 @@ async def generate_workout_background(
             logger.info(f"[generate_workout_background] Workout saved: {updated_workout.id}")
         
         # ✅ STEP 4: Log success in separate session
-        async with get_background_session() as log_db:
+        async with await db_manager.get_session() as log_db:
             await log_operation_success(
                 db=log_db,
                 log_id=log_id,
@@ -490,7 +493,7 @@ async def generate_workout_background(
         
         # Separate Session für Error Logging
         try:
-            async with get_background_session() as error_db:
+            async with await db_manager.get_session() as error_db:
                 await log_operation_failed(
                     db=error_db,
                     log_id=log_id,
