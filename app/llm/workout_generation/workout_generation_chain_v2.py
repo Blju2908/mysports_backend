@@ -19,7 +19,8 @@ from langchain_core.prompts import PromptTemplate
 from sqlmodel.ext.asyncio.session import AsyncSession
 from openai import AsyncOpenAI
 
-from app.llm.workout_generation.create_workout_schemas import WorkoutSchema
+from app.llm.workout_generation.create_workout_schemas import WorkoutSchema, CompactWorkoutSchema
+from app.llm.workout_generation.workout_parser import convert_compact_to_verbose_schema
 from app.core.config import get_config
 from app.models.training_plan_model import TrainingPlan
 from app.models.workout_model import Workout
@@ -53,20 +54,30 @@ class WorkoutGenerationChainV2:
             google_api_key=self.config.GOOGLE_API_KEY
         ).with_structured_output(WorkoutSchema)
 
+    def _load_prompt_from_files(self, *file_paths: Path) -> PromptTemplate:
+        """Loads and concatenates content from multiple prompt files."""
+        full_content = ""
+        for file_path in file_paths:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                full_content += f.read() + "\n\n"
+        return PromptTemplate.from_template(full_content, template_format="f-string")
+
     def _load_full_prompt_template(self) -> PromptTemplate:
-        """Loads the complete prompt template for workout generation."""
-        prompt_path = Path(__file__).parent / "prompts" / "workout_generation_prompt.md"
-        with open(prompt_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-        return PromptTemplate.from_template(content, template_format="f-string")
+        """Loads the complete prompt for freeform workout generation."""
+        base_path = Path(__file__).parent / "prompts"
+        return self._load_prompt_from_files(
+            base_path / "workout_generation_prompt_base.md",
+            base_path / "output_format_freeform.md",
+        )
 
+    def _load_json_prompt_template(self) -> PromptTemplate:
+        """Loads the JSON prompt template for direct structured output."""
+        base_path = Path(__file__).parent / "prompts"
+        return self._load_prompt_from_files(
+            base_path / "workout_generation_prompt_base.md",
+            base_path / "output_format_json.md",
+        )
 
-    def load_structure_prompt(self) -> PromptTemplate:
-        """Lade den Strukturierungs-Prompt."""
-        prompt_path = Path(__file__).parent / "prompts" / "workout_generation_prompt_step2.md"
-        with open(prompt_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-        return PromptTemplate.from_template(content, template_format="f-string")
 
     async def generate_freeform_workout(self, chain_inputs: Dict[str, Any]) -> str:
         """
@@ -100,20 +111,44 @@ class WorkoutGenerationChainV2:
         except Exception as e:
             print(f"❌ Error during freeform generation: {e}")
             raise ValueError(f"Workout generation failed: {e}")
+
+    async def generate_structured_workout_directly(self, chain_inputs: Dict[str, Any]) -> CompactWorkoutSchema:
+        """
+        Generate a structured workout directly using a single, JSON-focused prompt.
+
+        Returns:
+            CompactWorkoutSchema: The compact, structured workout object from the LLM.
+        """
+        print("🔄 Creating JSON prompt...")
+        json_prompt = self._load_json_prompt_template()
+
+        # Chain to generate a compact, structured workout
+        chain = json_prompt | self.freeform_llm.with_structured_output(CompactWorkoutSchema)
+
+        print(f"🤖 Generating structured workout directly with {self.freeform_llm.model}...")
+
+        try:
+            compact_workout = await chain.ainvoke(chain_inputs)
+
+            print("✅ Compact workout generated.")
+            # Document the intermediate compact workout
+            self._document_llm_interaction(
+                "one_step_compact_generation", json_prompt, chain_inputs, compact_workout
+            )
+
+            # Temporarily disabled as per user request to inspect raw output
+            # verbose_workout = convert_compact_to_verbose_schema(compact_workout)
+            # print("✅ Workout parsed successfully.")
+
+            return compact_workout
+
+        except Exception as e:
+            print(f"❌ Error during direct structured generation: {e}")
+            raise ValueError(f"Direct workout generation failed: {e}")
     
     async def structure_workout(self, freeform_text: str) -> WorkoutSchema:
         """Strukturiere das Freeform-Workout zu einem JSON-Schema."""
-        print("🔄 Strukturiere Workout...")
-        
-        structure_prompt = self.load_structure_prompt()
-        
-        # Strukturiere mit Google AI
-        structured_workout = await (
-            structure_prompt | self.structure_llm
-        ).ainvoke({"FREEFORM_WORKOUT_PLACEHOLDER": freeform_text})
-        
-        print("✅ Workout strukturiert")
-        return structured_workout
+        raise NotImplementedError("The two-step structuring process is currently disabled in favor of the one-step direct JSON generation.")
     
     def _document_llm_interaction(self, stage: str, prompt_template: PromptTemplate, inputs: Dict[str, Any], response: Any) -> None:
         """Dokumentiere die vollständige LLM-Interaktion."""
@@ -166,30 +201,28 @@ async def execute_workout_generation_sequence_v2(
     training_plan_str: Optional[str] = None,
     training_history: Optional[List[Workout]] = None,
     user_prompt: Optional[str] = None,
-    only_freeform_generation: bool = False,
+    generation_mode: str = "one-step", # Can be "one-step" or "two-step"
     db_manager: Optional[DatabaseManager] = None, # Changed type from AsyncSession to DatabaseManager
-) -> Union[WorkoutSchema, str]:
+) -> Union[WorkoutSchema, CompactWorkoutSchema, str]:
     """
     Hauptfunktion für Workout-Generierung mit einem modularen Prompt.
     
     Workflow:
-    1. Erstelle einen vollständigen Prompt mit allgemeinen und spezifischen Workout-Daten.
-    2. Generiere das Workout als Freitext.
-    3. Strukturiere das Ergebnis (optional).
+    - one-step: Generiert ein strukturiertes JSON-Workout direkt.
+    - two-step: Generiert das Workout als Freitext und strukturiert es danach.
     
     Args:
         training_plan_str (Optional[str]): Formatierter Trainingsplan als String.
         training_history (Optional[List[Workout]]): Liste der Workout-Objekte aus der Historie.
         user_prompt (Optional[str]): Der spezifische User-Prompt für das Workout.
-        only_freeform_generation (bool): Wenn True, wird nur der Freiform-Text generiert und zurückgegeben.
+        generation_mode (str): The generation strategy to use.
         
     Returns:
-        Union[WorkoutSchema, str]: Strukturiertes Workout-Schema oder der unstrukturierte Freiform-Text, 
-                                   abhängig vom `only_freeform_generation` Flag.
+        Union[WorkoutSchema, CompactWorkoutSchema, str]: Strukturiertes Workout-Schema oder der unstrukturierte Freiform-Text.
     """
     _start_total = datetime.now()
     
-    print("🏋️ Streamlined Workout Generation V2")
+    print(f"🏋️ Streamlined Workout Generation V2 (Mode: {generation_mode})")
     print("=" * 60)
 
     summarized_history = "Keine Historie verfügbar"
@@ -218,28 +251,40 @@ async def execute_workout_generation_sequence_v2(
         "current_date": datetime.now().strftime("%d.%m.%Y"),
         "exercise_library": exercise_library_str,
     }
-    
-    # Step 1: Generate freeform workout
-    print("🔄 Step 1: Generating freeform workout...")
-    freeform_text = await chain.generate_freeform_workout(chain_inputs=chain_inputs)
-    
-    # Document the intermediate freeform workout
-    freeform_prompt_template = chain._load_full_prompt_template()
-    chain._document_llm_interaction(
-        "freeform_generation", freeform_prompt_template, chain_inputs, freeform_text
-    )
 
-    if only_freeform_generation:
-        print("⚠️ Only freeform generation requested. Skipping structuring step.")
-        _total_duration = (datetime.now() - _start_total).total_seconds()
-        print(f"⏱️  Total generation time: {_total_duration:.1f}s")
-        print("=" * 70)
-        return freeform_text
+    if generation_mode == "one-step":
+        # Step 1 (Single Step): Generate structured workout directly
+        print("🔄 Running One-Step Generation...")
+        structured_workout = await chain.generate_structured_workout_directly(chain_inputs=chain_inputs)
+        
+        # Document final results
+        final_prompt_template = chain._load_json_prompt_template()
+        chain._document_llm_interaction(
+            "final_workout_one_step", final_prompt_template, chain_inputs, structured_workout
+        )
+        
+        # The result is the raw CompactWorkoutSchema, as requested
+        final_result = structured_workout
 
-    # Step 2: Structure the workout
-    print("🔄 Step 2: Structuring with Google AI...")
-    structured_workout = await chain.structure_workout(freeform_text)
+    elif generation_mode == "two-step":
+        # Step 1: Generate freeform workout
+        print("🔄 Running Two-Step Generation: Step 1 (Freeform)...")
+        freeform_text = await chain.generate_freeform_workout(chain_inputs=chain_inputs)
+        
+        # Document the intermediate freeform workout
+        freeform_prompt_template = chain._load_full_prompt_template()
+        chain._document_llm_interaction(
+            "freeform_generation", freeform_prompt_template, chain_inputs, freeform_text
+        )
+
+        # For now, the two-step process stops here and returns the freeform text.
+        # The structuring step is disabled.
+        print("⚠️ Two-step structuring is currently disabled. Returning freeform text.")
+        final_result = freeform_text
     
+    else:
+        raise ValueError(f"Invalid generation_mode: '{generation_mode}'. Must be 'one-step' or 'two-step'.")
+
     # Detailed workout output
     _total_duration = (datetime.now() - _start_total).total_seconds()
     
@@ -247,10 +292,4 @@ async def execute_workout_generation_sequence_v2(
     print(f"⏱️  Total generation time: {_total_duration:.1f}s")
     print("=" * 70)
     
-    # Document final results
-    structure_prompt_template = chain.load_structure_prompt()
-    chain._document_llm_interaction(
-        "final_workout", structure_prompt_template, {"FREEFORM_WORKOUT_PLACEHOLDER": freeform_text}, structured_workout
-    )
-    
-    return structured_workout 
+    return final_result 

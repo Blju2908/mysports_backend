@@ -15,7 +15,7 @@ USER_ID_DEV = "df668bed-9092-4035-82fa-c68e6fa2a8ff"  # Prod-User
 USER_ID_PROD = "a6a3f5e6-1d4e-4ec2-80c7-ddd257c655a1"
 USE_PRODUCTION_DB = True
 TEST_USER_PROMPT = ""
-ONLY_FREEFORM_GENERATION = True # Set to True to only generate freeform text, skipping structuring
+GENERATION_MODE = "one-step" # Can be "one-step" or "two-step"
 
 # Setup paths
 BACKEND_DIR = Path(__file__).resolve().parents[3]
@@ -35,6 +35,7 @@ from app.llm.workout_generation.workout_generation_chain_v2 import execute_worko
 from app.llm.workout_generation.create_workout_service import (
     format_training_plan_for_llm
 )
+from app.llm.workout_generation.create_workout_schemas import CompactWorkoutSchema, WorkoutSchema
 from app.db.workout_db_access import get_training_history_for_user_from_db
 from app.models.training_plan_model import TrainingPlan
 from sqlmodel import select
@@ -47,6 +48,7 @@ async def main():
     print(f"👤 User-ID: {USER_ID_DEV}")
     print(f"🗄️ Datenbank: {'🚀 Produktionsdatenbank' if USE_PRODUCTION_DB else '💻 Lokale Entwicklungsdatenbank'}")
     print(f"📝 Test-Prompt: {TEST_USER_PROMPT}")
+    print(f"⚙️ Generation Mode: {GENERATION_MODE}")
     print("=" * 70)
 
     start_time = datetime.now()
@@ -88,7 +90,7 @@ async def main():
                 training_plan_str=formatted_training_plan,
                 training_history=raw_training_history,
                 user_prompt=TEST_USER_PROMPT,
-                only_freeform_generation=ONLY_FREEFORM_GENERATION,
+                generation_mode=GENERATION_MODE,
                 db_manager=db_manager # Pass db_manager instead of db_session
             )
             
@@ -97,34 +99,32 @@ async def main():
             duration = (end_time - start_time).total_seconds()
             
             print("\n" + "=" * 70)
-            if ONLY_FREEFORM_GENERATION:
+
+            if isinstance(result, str):
                 print("🎉 V2 FREEFORM WORKOUT GENERIERUNG ERFOLGREICH!")
                 print("=" * 70)
                 print("--- FREEFORM WORKOUT TEXT ---")
                 print(result)
                 print("-----------------------------")
-            else:
-                print("🎉 V2 WORKOUT-GENERIERUNG ERFOLGREICH!")
+            elif isinstance(result, CompactWorkoutSchema):
+                print("🎉 V2 ONE-STEP (COMPACT) WORKOUT-GENERIERUNG ERFOLGREICH!")
+                print("=" * 70)
+                print(result.model_dump_json(indent=2))
+
+            elif isinstance(result, WorkoutSchema):
+                print("🎉 V2 TWO-STEP (VERBOSE) WORKOUT-GENERIERUNG ERFOLGREICH!")
                 print("=" * 70)
                 print(f"🏋️ Workout: {result.name}")
                 print(f"⏱️ Dauer: {result.duration} min")
                 print(f"🎯 Fokus: {result.focus}")
                 print(f"📝 Beschreibung: {result.description}")
                 print(f"📦 Blöcke: {len(result.blocks)}")
-                
-                # Blöcke anzeigen
                 for i, block in enumerate(result.blocks, 1):
-                    exercises_count = len(block.exercises)
-                    print(f"   {i}. {block.name} ({exercises_count} Übungen)")
-                    
-                    # Erste paar Übungen anzeigen
-                    for j, exercise in enumerate(block.exercises[:2], 1):
-                        sets_count = len(exercise.sets)
-                        print(f"      • {exercise.name} ({sets_count} Sätze)")
-                    
-                    if len(block.exercises) > 2:
-                        print(f"      • ... und {len(block.exercises) - 2} weitere Übungen")
-            
+                    print(f"   {i}. {block.name} ({len(block.exercises)} Übungen)")
+
+            else:
+                print(f"🤔 Unbekannter Ergebnistyp: {type(result)}")
+
             print(f"\n⏱️ Gesamtdauer: {duration:.1f}s")
             print("=" * 70)
             
