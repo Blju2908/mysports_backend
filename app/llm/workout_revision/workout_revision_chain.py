@@ -1,5 +1,6 @@
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from app.llm.workout_generation.create_workout_schemas import CompactWorkoutSchema
 from app.llm.utils.llm_documentation import document_llm_session, document_llm_input, document_llm_output
 import json
@@ -8,185 +9,87 @@ from datetime import datetime
 from typing import Optional, Dict, Any
 from pathlib import Path
 
-PROMPT_FILE_FREEFORM = "workout_revision_prompt_step1.md"  # New prompt for creative/free-form revision
-PROMPT_FILE_STRUCTURE = "workout_revision_prompt_step2.md"  # New prompt for structure conversion
+# V2 Single-step workout revision prompt
+PROMPT_FILE_V2 = "workout_revision_prompt_v2.md"
 
 # ============================================================
-# Two-step workout revision: Step 1 (Free-form) + Step 2 (Structured)
+# Single-step workout revision V2: Clean implementation
 # ============================================================
 
-async def revise_workout_two_step(
+def _load_revision_prompt_v2() -> PromptTemplate:
+    """Loads the unified revision prompt template."""
+    prompt_path = Path(__file__).parent / "prompts" / PROMPT_FILE_V2
+    with open(prompt_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    return PromptTemplate.from_template(content, template_format="f-string")
+
+async def execute_workout_revision_sequence_v2(
     existing_workout: Dict[str, Any],
     user_feedback: str,
-    training_plan: Optional[str] = None,
-    training_history: Optional[str] = None
+    training_plan_str: Optional[str] = None,
+    training_history_str: Optional[str] = None,
+    exercise_library_str: str = "",
 ) -> CompactWorkoutSchema:
     """
-    Überarbeitet ein Workout in zwei Schritten:
-    1. Freie Revision für Kreativität und Flexibilität
-    2. Strukturierung in WorkoutSchema mit kleinem, schnellem LLM
+    Executes the streamlined, single-step workout revision sequence.
+    
+    This function initializes the LLM, prepares the prompt, and invokes the chain
+    to generate a revised workout based on the provided inputs.
+    
+    Args:
+        existing_workout (Dict[str, Any]): Current workout as dictionary
+        user_feedback (str): User's feedback/revision request
+        training_plan_str (Optional[str]): Formatted training plan as a string
+        training_history_str (Optional[str]): Summarized training history as a string
+        exercise_library_str (str): String representation of the exercise library
+        
+    Returns:
+        CompactWorkoutSchema: The revised workout object
     """
-    # Step 1: Freie Workout-Revision
-    freeform_revision_text = await revise_workout_freeform(
-        existing_workout, user_feedback, training_plan, training_history
+    _start_total = datetime.now()
+    print("🔄 Streamlined Workout Revision V2 (Mode: Single-Step)")
+    print("=" * 60)
+    
+    # --- LLM and Prompt Setup ---
+    config = get_config()
+    base_llm = ChatGoogleGenerativeAI(
+        model="gemini-2.5-flash",
+        google_api_key=config.GOOGLE_API_KEY,
+        # Using model default temperature for creativity in revisions
     )
+    llm_with_structure = base_llm.with_structured_output(CompactWorkoutSchema)
     
-    # Step 2: Strukturierung des freien Revisions-Texts
-    structured_workout = await convert_revision_to_schema(freeform_revision_text)
+    print("🔄 Creating revision prompt...")
+    revision_prompt = _load_revision_prompt_v2()
     
-    return structured_workout
-
-async def convert_revision_to_schema(freeform_revision_text: str) -> CompactWorkoutSchema:
-    """
-    Konvertiert freien Revisions-Text in strukturiertes WorkoutSchema.
-    Nutzt ein kleines, schnelles LLM für die Strukturierung.
-    """
+    chain = revision_prompt | llm_with_structure
+    
+    # --- Chain Execution ---
+    print(f"🤖 Generating revised workout directly with {base_llm.model}...")
+    
+    # Convert existing workout to JSON string for the prompt
+    existing_workout_json = json.dumps(existing_workout, indent=2, ensure_ascii=False, default=str)
+    
+    chain_inputs = {
+        "current_date": datetime.now().strftime("%d.%m.%Y"),
+        "existing_workout": existing_workout_json,
+        "user_feedback": user_feedback,
+        "training_plan": training_plan_str or "Keine Trainingsziele definiert",
+        "training_history": training_history_str or "Keine Historie verfügbar",
+        "exercise_library": exercise_library_str,
+    }
+    
     try:
-        # Load structure conversion prompt
-        prompt_path = Path(__file__).parent / PROMPT_FILE_STRUCTURE
-        with open(prompt_path, "r", encoding="utf-8") as f:
-            prompt_template_content = f.read()
-        
-        formatted_prompt = prompt_template_content.replace(
-            "{freeform_revision}", freeform_revision_text
-        )
-        
-        # API key aus der config holen
-        config = get_config()
-        OPENAI_API_KEY = config.OPENAI_API_KEY2
-        
-        # Nutze kleines, schnelles Modell für Strukturierung
-        llm = ChatOpenAI(
-            model="gpt-4.1-mini", 
-            api_key=OPENAI_API_KEY,
-            temperature=0.1  # Niedrige Temperatur für konsistente Strukturierung
-        )
-        
-        # LangChain's structured output für automatische Schema-Validierung
-        structured_llm = llm.with_structured_output(CompactWorkoutSchema)
-        
-        print("Converting freeform revision to structured workout schema...")
-        structured_workout = await structured_llm.ainvoke(formatted_prompt)
-        print("Successfully converted revision to structured schema")
-        
-        # NOTE: File output disabled for production deployment
-        # try:
-        #     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        #     out_dir = Path(__file__).parent / "output"
-        #     out_dir.mkdir(exist_ok=True)
-        #     
-        #     # Input dokumentieren
-        #     input_path = out_dir / f"{ts}_revision_structure_conversion_input.md"
-        #     input_path.write_text(freeform_revision_text, encoding="utf-8")
-        #     
-        #     # Output dokumentieren
-        #     output_path = out_dir / f"{ts}_revision_structure_conversion_output.json"
-        #     output_path.write_text(structured_workout.model_dump_json(indent=2), encoding="utf-8")
-        #     
-        #     print(f"[LLM_DOCS] Revision structure conversion documented: {input_path} -> {output_path}")
-        # except Exception as e:  # noqa: BLE001
-        #     print(f"[LLM_DOCS] Could not document revision structure conversion: {e}")
-        
-        return structured_workout
-
+        revised_workout = await chain.ainvoke(chain_inputs)
+        print("✅ Revised workout generated.")
     except Exception as e:
-        print(f"Error in convert_revision_to_schema: {e}")
-        import traceback
-        traceback.print_exc()
-        raise
-
-async def revise_workout_freeform(
-    existing_workout: Dict[str, Any],
-    user_feedback: str,
-    training_plan: Optional[str] = None,
-    training_history: Optional[str] = None
-) -> str:
-    """
-    Überarbeitet ein Workout mit LLM in freier Textform.
-    """
-    try:
-        # Load the Prompt File        
-        prompt_path = Path(__file__).parent / PROMPT_FILE_FREEFORM
-        with open(prompt_path, "r", encoding="utf-8") as f:
-            prompt_template_content = f.read()
-
-        # Convert existing workout to JSON string for the prompt
-        existing_workout_json = json.dumps(existing_workout, indent=2, ensure_ascii=False, default=str)
-
-        # Ensure default empty strings if None, to avoid issues with .format
-        formatted_prompt = prompt_template_content.format(
-            existing_workout=existing_workout_json,
-            user_feedback=user_feedback,
-            training_plan=training_plan if training_plan is not None else "",
-            training_history=training_history if training_history is not None else "",
-            current_date=datetime.now().strftime("%d.%m.%Y"),
-        )
-
-        # API key aus der config holen
-        config = get_config()
-        OPENAI_API_KEY = config.OPENAI_API_KEY2
-
-        reasoning = {
-            "effort": "low",
-            "summary": None
-        }
-        
-        llm = ChatOpenAI(model="o4-mini", api_key=OPENAI_API_KEY, use_responses_api=True, model_kwargs={"reasoning": reasoning})
-
-        # Add reasoning to the prompt
-        # await document_llm_input(formatted_prompt, "workout_revision_prompt_freeform.md")
-
-        print("Sending request to OpenAI API (freeform revision)…")
-        response = await llm.ainvoke(formatted_prompt)
-        print("Received response from OpenAI API (freeform revision)")
-
-        # Extract actual text content from LangChain response
-        if hasattr(response, 'content'):
-            if isinstance(response.content, list):
-                # Handle list content (e.g., from structured responses)
-                freeform_text = ""
-                for item in response.content:
-                    if hasattr(item, 'text'):
-                        freeform_text += item.text
-                    elif isinstance(item, dict) and 'text' in item:
-                        freeform_text += item['text']
-                    else:
-                        freeform_text += str(item)
-            else:
-                freeform_text = response.content
-        else:
-            freeform_text = str(response)
-
-        # NOTE: File output disabled for production deployment
-        # try:
-        #     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        #     out_dir = Path(__file__).parent / "output"
-        #     out_dir.mkdir(exist_ok=True)
-        #     out_path = out_dir / f"{ts}_workout_revision_freeform_output.md"
-        #     out_path.write_text(freeform_text, encoding="utf-8")
-        #     print(f"[LLM_DOCS] Free-form revision output documented: {out_path}")
-        # except Exception as e:  # noqa: BLE001
-        #     print(f"[LLM_DOCS] Could not document free-form revision output: {e}")
-
-        return freeform_text
-
-    except Exception as e:
-        print(f"Error in revise_workout_freeform: {e}")
-        import traceback
-        traceback.print_exc()
-        raise
-
-# ============================================================
-# Legacy function for backward compatibility
-# ============================================================
-
-async def revise_workout(
-    existing_workout: Dict[str, Any],
-    user_feedback: str,
-    training_plan: Optional[str] = None,
-    training_history: Optional[str] = None
-) -> CompactWorkoutSchema:
-    """
-    Legacy function - delegates to new two-step process
-    """
-    return await revise_workout_two_step(existing_workout, user_feedback, training_plan, training_history) 
+        print(f"❌ Error during revision generation: {e}")
+        raise ValueError(f"Workout revision failed: {e}")
+    
+    # --- Finalization ---
+    _total_duration = (datetime.now() - _start_total).total_seconds()
+    print("✅ Workout Revision V2 complete!")
+    print(f"⏱️  Total revision time: {_total_duration:.1f}s")
+    print("=" * 70)
+    
+    return revised_workout
