@@ -255,13 +255,12 @@ async def execute_workout_generation_sequence_v2(
     if generation_mode == "one-step":
         # Step 1 (Single Step): Generate structured workout directly
         print("🔄 Running One-Step Generation...")
-        structured_workout = await chain.generate_structured_workout_directly(chain_inputs=chain_inputs)
+        structured_workout = await chain.generate_structured_workout_directly(chain_inputs)
         
-        # Document final results
-        final_prompt_template = chain._load_json_prompt_template()
-        chain._document_llm_interaction(
-            "final_workout_one_step", final_prompt_template, chain_inputs, structured_workout
-        )
+        # The structured workout is already documented inside generate_structured_workout_directly
+        # self._document_llm_interaction(
+        #     "final_workout_one_step", final_prompt_template, chain_inputs, structured_workout
+        # )
         
         # The result is the raw CompactWorkoutSchema, as requested
         final_result = structured_workout
