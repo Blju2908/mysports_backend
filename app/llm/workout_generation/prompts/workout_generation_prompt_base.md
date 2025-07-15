@@ -32,7 +32,7 @@ Define blocks (e.g. Warm-Up, Main, Cool-Down) that fit the user's goals. Priorit
 **Rules:**
 - **Exact Names**: Use the exact names from the library; do not add anything.
 - **No Rep Ranges**: Always specify an exact number of repetitions (e.g., `8`), not a range (like `8-10`).
-- **Unilateral/Asynchronous**: Create two separate exercises when exercise is [unilateral]. Please add the side to the exercise name. Group the two sides in a superset.
+- **Unilateral/Asynchronous**: Create two separate exercises when exercise is [unilateral]. Please add the side to the exercise name. IMPORTANT: Please ALWAYS group the unilateral exercises in a superset. There may be other exercises in the same superset if it makes sense.
 - **Supersets & Circuits**:
     - **Grouping**: To create a superset or circuit, assign the same letter (e.g., 'A') to the `superset_group` field for all exercises within that group. A workout can have multiple distinct superset groups (e.g., Group A, Group B).
     - **Context is Key**:

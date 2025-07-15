@@ -1,9 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, Request, BackgroundTasks
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
-from app.services.llm_logging_service import (
-    log_workout_revision_start,
-)
 from app.models.llm_call_log_model import LlmOperationStatus
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -17,8 +14,7 @@ from app.llm.workout_revision.workout_revision_schemas import (
 from uuid import UUID
 import logging
 from sqlalchemy.orm import selectinload
-from app.llm.workout_generation.create_workout_schemas import CompactWorkoutSchema
-from app.llm.workout_generation.workout_parser import parse_compact_workout_to_db_models, update_existing_workout_with_compact_data, update_existing_workout_with_revision_data
+from app.llm.workout_generation.workout_parser import update_existing_workout_with_compact_data, update_existing_workout_with_revision_data
 
 
 router = APIRouter()
