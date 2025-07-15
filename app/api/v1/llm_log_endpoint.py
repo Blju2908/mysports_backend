@@ -12,6 +12,9 @@ from app.db.session import get_session
 
 router = APIRouter(prefix="/llm-logs", tags=["llm-logs"])
 
+# ✅ Centralized tracking configuration - single source of truth
+TRACKED_WORKOUT_ENDPOINTS = ['llm/start-workout-creation', 'llm/start-workout-revision']
+
 
 class WorkoutUsageRequest(BaseModel):
     subscription_start: str
@@ -84,6 +87,45 @@ def calculate_current_billing_period(subscription_start: datetime, current_date:
     return period_start, period_end
 
 
+@router.get("/total-workout-count", response_model=int)
+async def get_total_workout_count(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_session),
+) -> int:
+    """
+    Get total number of workouts created by the current user.
+    
+    Returns the lifetime count of successful workout generations.
+    This includes both workout creations and revisions.
+    Used for tracking free user limits and overall usage statistics.
+    
+    Returns:
+        int: Total number of successful workouts created by user
+    """
+    try:
+        # Ensure user ID is a string (database expects VARCHAR)
+        user_id_str = str(current_user.id)
+        
+        result = await db.execute(
+            select(func.count(LlmCallLog.id)).where(
+                and_(
+                    LlmCallLog.user_id == user_id_str,
+                    LlmCallLog.status == LlmOperationStatus.SUCCESS,
+                    LlmCallLog.endpoint_name.in_(TRACKED_WORKOUT_ENDPOINTS)
+                )
+            )
+        )
+        
+        return result.scalar() or 0
+        
+    except Exception as e:
+        print(f"Error getting total workout count: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error retrieving total workout count"
+        )
+
+
 @router.post("/workout-usage", response_model=Dict[str, Any])
 async def get_workout_usage_stats(
     request: WorkoutUsageRequest,
@@ -109,8 +151,6 @@ async def get_workout_usage_stats(
         user_id_str = str(current_user.id)
         
         # Query for successful workout-related API calls in current billing period
-        workout_endpoints = ['llm/start-workout-creation', 'llm/start-workout-revision']
-        
         result = await db.execute(
             select(func.count(LlmCallLog.id)).where(
                 and_(
@@ -118,7 +158,7 @@ async def get_workout_usage_stats(
                     LlmCallLog.timestamp >= start_date,
                     LlmCallLog.timestamp < end_date,
                     LlmCallLog.status == LlmOperationStatus.SUCCESS,
-                    LlmCallLog.endpoint_name.in_(workout_endpoints)
+                    LlmCallLog.endpoint_name.in_(TRACKED_WORKOUT_ENDPOINTS)
                 )
             )
         )
@@ -145,7 +185,7 @@ async def get_workout_usage_stats(
             "period_start": start_date.isoformat(),
             "period_end": end_date.isoformat(),
             "period_type": "subscription_billing",
-            "tracked_endpoints": workout_endpoints
+            "tracked_endpoints": TRACKED_WORKOUT_ENDPOINTS
         }
         
     except Exception as e:
