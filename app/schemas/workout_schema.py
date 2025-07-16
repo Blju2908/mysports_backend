@@ -135,6 +135,8 @@ class WorkoutRead(BaseModel):
     duration: Optional[int] = None
     focus: Optional[str] = None
     notes: Optional[str] = None
+    muscle_group_load: Optional[List[str]] = None
+    focus_derivation: Optional[str] = None
     blocks: List[BlockRead] = []
     
     @computed_field

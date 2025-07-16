@@ -27,6 +27,12 @@ class Workout(SQLModel, table=True):
     duration: Optional[int] = Field(default=None)
     focus: Optional[str] = Field(default=None)
     notes: Optional[str] = Field(default=None)
+    muscle_group_load: Optional[List[str]] = Field(
+        default=None,
+        sa_column=Column(JSON),
+        description="List of muscle groups loaded during the workout"
+    )
+    focus_derivation: Optional[str] = Field(default=None)
     
     # ✅ NEW: Revision data as JSON column (SQLModel best practice)
     revised_workout_data: Optional[Dict[str, Any]] = Field(

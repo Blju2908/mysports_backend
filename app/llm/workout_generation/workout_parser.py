@@ -25,6 +25,8 @@ def parse_compact_workout_to_db_models(
         description=compact_workout.description,
         duration=compact_workout.duration_min,
         focus=compact_workout.focus,
+        muscle_group_load=compact_workout.muscle_group_load,
+        focus_derivation=compact_workout.focus_derivation,
         notes=f"Focus derivation: {compact_workout.focus_derivation}\n\nMuscle group load: {'; '.join(compact_workout.muscle_group_load)}",
         blocks=[],
     )
@@ -82,6 +84,8 @@ def update_existing_workout_with_compact_data(
     existing_workout: Workout,
     compact_workout: CompactWorkoutSchema,
     training_plan_id: Optional[int] = None,
+    muscle_group_load: Optional[List[str]] = None,
+    focus_derivation: Optional[str] = None,
 ) -> None:
     """
     ✅ FIX: Updates an existing workout object with data from CompactWorkoutSchema.
@@ -97,6 +101,8 @@ def update_existing_workout_with_compact_data(
     existing_workout.description = compact_workout.description
     existing_workout.duration = compact_workout.duration_min
     existing_workout.focus = compact_workout.focus
+    existing_workout.muscle_group_load = compact_workout.muscle_group_load
+    existing_workout.focus_derivation = compact_workout.focus_derivation
     existing_workout.notes = f"Focus derivation: {compact_workout.focus_derivation}\n\nMuscle group load: {'; '.join(compact_workout.muscle_group_load)}"
     
     if training_plan_id is not None:

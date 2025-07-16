@@ -15,7 +15,7 @@ from typing import Any, Dict
 # 🎯 KONFIGURATION
 USER_ID_DEV = "df668bed-9092-4035-82fa-c68e6fa2a8ff"  # Prod-User
 USER_ID_PROD = "a6a3f5e6-1d4e-4ec2-80c7-ddd257c655a1"
-USE_PRODUCTION_DB = True
+USE_PRODUCTION_DB = False
 TEST_USER_PROMPT = ""
 
 # Setup paths
@@ -40,8 +40,7 @@ from app.llm.workout_generation.create_workout_schemas import (
     CompactWorkoutSchema,
 )
 from app.llm.workout_generation.workout_parser import (
-    parse_compact_workout_to_db_models,
-    save_workout_to_db,
+    parse_compact_workout_to_db_models
 )
 from app.db.workout_db_access import get_training_history_for_user_from_db
 from app.llm.workout_generation.exercise_filtering_service import get_all_exercises_for_prompt
@@ -74,6 +73,8 @@ def serialize_workout_for_doc(workout: Workout) -> Dict:
         "focus": workout.focus,
         "duration": workout.duration,
         "notes": workout.notes,
+        "muscle_group_load": workout.muscle_group_load,
+        "focus_derivation": workout.focus_derivation,
         "blocks": [
             {
                 "name": block.name,
@@ -190,9 +191,9 @@ async def main():
                 document_output("parsed_db_model_workout", serialized_workout, out_dir)
                 
                 # Speichere das Workout in der Datenbank
-                print("\n🔄 Speichere das Workout in der Datenbank...")
-                saved_workout = await save_workout_to_db(parsed_workout, db_session)
-                print(f"✅ Workout erfolgreich gespeichert mit ID: {saved_workout.id}")
+                # print("\n🔄 Speichere das Workout in der Datenbank...")
+                # saved_workout = await save_workout_to_db(parsed_workout, db_session)
+                # print(f"✅ Workout erfolgreich gespeichert mit ID: {saved_workout.id}")
 
 
             else:
