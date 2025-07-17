@@ -42,6 +42,7 @@ Define blocks (e.g. Warm-Up, Main, Cool-Down) that fit the user's goals. Priorit
     - **Heavy Lifts**: Do not superset heavy compound exercises like Squats, Deadlifts, or Bench Press.
 - **Weights**: Always specify for gym workouts (estimate conservatively); for dumbbells, specify weight per dumbbell.
 - Avoid proprietary brand names.
+- Please do NEVE plan EMOM and AMRAP workouts.
 
 ### Step 4: Intensity & Progression
 Autoregulate weights based on history: increase by 2.5-5kg after a successful session with >48h rest; keep weight the same if the user struggled; decrease by 10% after a long break; estimate for new exercises. Choose exercises based on recovery (compound when fresh, isolation when recently trained).
