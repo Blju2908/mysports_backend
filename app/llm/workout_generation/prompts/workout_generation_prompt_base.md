@@ -29,6 +29,8 @@ Follow this logic sequentially:
 ### Step 2: Exercise Selection & Structure
 Define blocks (e.g. Warm-Up, Main, Cool-Down) that fit the user's goals. Prioritize weak points. Adapt to style, time, and equipment.
 
+Please plan the blocks according to the plan of the user. You can for example create a strenght and condition part, if that resonates with the training goals of the user. Please use your experience as coach. Please try to separate different parts of the training in different bocks. For example, if you plan intervalls of a specific exercise, please put them in a separate block. 
+
 **Rules:**
 - **Exact Names**: Use the exact names from the library; do not add anything.
 - **No Rep Ranges**: Always specify an exact number of repetitions (e.g., `8`), not a range (like `8-10`).
