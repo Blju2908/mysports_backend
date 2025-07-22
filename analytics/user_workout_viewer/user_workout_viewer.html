@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Workout Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .user-info {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .filters {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .filter-input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .file-selector {
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-button {
+            background: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .file-button:hover {
+            background: #2980b9;
+        }
+
+        .workout-list {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .workout-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .workout-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .workout-header {
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .workout-title {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .workout-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .meta-item {
+            background: #ecf0f1;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-done {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-started {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-not_started {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3498db;
+            transition: width 0.3s;
+        }
+
+        .workout-description {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .block {
+            margin-bottom: 25px;
+            border-left: 4px solid #3498db;
+            padding-left: 20px;
+        }
+
+        .block-header {
+            margin-bottom: 15px;
+        }
+
+        .block-title {
+            color: #2c3e50;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .block-description {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .exercises {
+            display: grid;
+            gap: 15px;
+        }
+
+        .exercise {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .superset-group {
+            border: 2px solid #e74c3c;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #fdf2f2;
+        }
+
+        .superset-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e74c3c;
+        }
+
+        .superset-label {
+            font-weight: 700;
+            color: #e74c3c;
+            font-size: 16px;
+        }
+
+        .superset-info {
+            font-size: 12px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .superset-exercises {
+            display: grid;
+            gap: 15px;
+        }
+
+        .exercise.in-superset {
+            background: white;
+            border: 1px solid #e74c3c;
+            border-radius: 8px;
+            margin: 0;
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .sets {
+            display: grid;
+            gap: 8px;
+        }
+
+        .set {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .set-number {
+            background: #3498db;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .set.completed {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+
+        .set-number.completed {
+            background: #28a745;
+        }
+
+        .set-values {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .set-value {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .value-label {
+            color: #7f8c8d;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .value-number {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .value-unit {
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+
+        .no-workouts {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 18px;
+            margin-top: 50px;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+
+        .completion-stats {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .workout-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .set-values {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>👤 User Workout Viewer</h1>
+            <p>Visualisiere Workouts für einen spezifischen Benutzer mit detaillierten Statistiken und Ausführungsdaten</p>
+        </header>
+
+        <div class="user-info" id="userInfo" style="display: none;">
+            <h3>Benutzer Informationen</h3>
+            <div id="userDetails"></div>
+        </div>
+
+        <div class="stats-grid" id="statsGrid" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-number" id="totalWorkouts">0</div>
+                <div class="stat-label">Gesamte Workouts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completedWorkouts">0</div>
+                <div class="stat-label">Abgeschlossen</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalExercises">0</div>
+                <div class="stat-label">Übungen</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalSets">0</div>
+                <div class="stat-label">Sätze</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completionRate">0%</div>
+                <div class="stat-label">Abschlussrate</div>
+            </div>
+        </div>
+
+        <div class="filters" id="filters" style="display: none;">
+            <h3>Filter</h3>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select class="filter-select" id="statusFilter">
+                        <option value="">Alle Status</option>
+                        <option value="done">Abgeschlossen</option>
+                        <option value="started">Gestartet</option>
+                        <option value="not_started">Nicht gestartet</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Focus</label>
+                    <input type="text" class="filter-input" id="focusFilter" placeholder="Focus filtern...">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Datum von</label>
+                    <input type="date" class="filter-input" id="dateFromFilter">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Datum bis</label>
+                    <input type="date" class="filter-input" id="dateToFilter">
+                </div>
+            </div>
+        </div>
+
+        <div class="file-selector">
+            <input type="file" id="fileInput" class="file-input" accept=".json">
+            <button class="file-button" onclick="document.getElementById('fileInput').click()">
+                📁 JSON-Datei auswählen (user_workouts.json)
+            </button>
+        </div>
+
+        <div id="loadingIndicator" class="loading" style="display: none;">
+            Lade Workouts...
+        </div>
+
+        <div id="errorContainer"></div>
+
+        <div id="workoutContainer" class="workout-list"></div>
+
+        <div id="noWorkouts" class="no-workouts" style="display: none;">
+            Keine Workouts geladen. Bitte wähle eine JSON-Datei aus dem output-Ordner aus.
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const workoutContainer = document.getElementById('workoutContainer');
+        const errorContainer = document.getElementById('errorContainer');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const noWorkouts = document.getElementById('noWorkouts');
+        const userInfo = document.getElementById('userInfo');
+        const userDetails = document.getElementById('userDetails');
+        const statsGrid = document.getElementById('statsGrid');
+        const filters = document.getElementById('filters');
+
+        let allWorkouts = [];
+        let filteredWorkouts = [];
+
+        fileInput.addEventListener('change', handleFileSelection);
+
+        function handleFileSelection(event) {
+            const files = Array.from(event.target.files);
+            const jsonFiles = files.filter(file => file.name.endsWith('.json'));
+            
+            if (jsonFiles.length === 0) {
+                showError('Keine JSON-Dateien ausgewählt.');
+                return;
+            }
+
+            loadWorkouts(jsonFiles[0]);
+        }
+
+        async function loadWorkouts(file) {
+            loadingIndicator.style.display = 'block';
+            noWorkouts.style.display = 'none';
+            workoutContainer.innerHTML = '';
+            errorContainer.innerHTML = '';
+            userInfo.style.display = 'none';
+            statsGrid.style.display = 'none';
+            filters.style.display = 'none';
+
+            try {
+                const content = await readFileContent(file);
+                const data = JSON.parse(content);
+                
+                if (data.workouts && Array.isArray(data.workouts)) {
+                    allWorkouts = data.workouts;
+                    filteredWorkouts = [...allWorkouts];
+                    
+                    displayUserInfo(data);
+                    displayStatistics(data);
+                    setupFilters();
+                    renderWorkouts(filteredWorkouts);
+                } else {
+                    showError('Ungültiges JSON-Format. Erwarte workouts Array.');
+                }
+            } catch (error) {
+                showError(`Fehler beim Laden von ${file.name}: ${error.message}`);
+            }
+
+            loadingIndicator.style.display = 'none';
+        }
+
+        function readFileContent(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = e => reject(new Error('Fehler beim Lesen der Datei'));
+                reader.readAsText(file);
+            });
+        }
+
+        function displayUserInfo(data) {
+            userDetails.innerHTML = `
+                <p><strong>User ID:</strong> ${data.user_id || 'N/A'}</p>
+                <p><strong>Export Date:</strong> ${data.export_date || 'N/A'}</p>
+                <p><strong>Total Workouts:</strong> ${data.total_workouts || 0}</p>
+            `;
+            userInfo.style.display = 'block';
+        }
+
+        function displayStatistics(data) {
+            const workouts = data.workouts || [];
+            
+            let totalExercises = 0;
+            let totalSets = 0;
+            let completedSets = 0;
+            let completedWorkouts = 0;
+            
+            workouts.forEach(workout => {
+                if (workout.status === 'done') completedWorkouts++;
+                
+                workout.blocks.forEach(block => {
+                    block.exercises.forEach(exercise => {
+                        if (exercise.type === 'superset') {
+                            exercise.exercises.forEach(ex => {
+                                totalExercises++;
+                                ex.sets.forEach(set => {
+                                    totalSets++;
+                                    if (set.status === 'done') completedSets++;
+                                });
+                            });
+                        } else {
+                            totalExercises++;
+                            exercise.sets.forEach(set => {
+                                totalSets++;
+                                if (set.status === 'done') completedSets++;
+                            });
+                        }
+                    });
+                });
+            });
+            
+            const completionRate = totalSets > 0 ? Math.round((completedSets / totalSets) * 100) : 0;
+            
+            document.getElementById('totalWorkouts').textContent = workouts.length;
+            document.getElementById('completedWorkouts').textContent = completedWorkouts;
+            document.getElementById('totalExercises').textContent = totalExercises;
+            document.getElementById('totalSets').textContent = totalSets;
+            document.getElementById('completionRate').textContent = completionRate + '%';
+            
+            statsGrid.style.display = 'grid';
+        }
+
+        function setupFilters() {
+            const statusFilter = document.getElementById('statusFilter');
+            const focusFilter = document.getElementById('focusFilter');
+            const dateFromFilter = document.getElementById('dateFromFilter');
+            const dateToFilter = document.getElementById('dateToFilter');
+            
+            [statusFilter, focusFilter, dateFromFilter, dateToFilter].forEach(filter => {
+                filter.addEventListener('change', applyFilters);
+                filter.addEventListener('input', applyFilters);
+            });
+            
+            filters.style.display = 'block';
+        }
+
+        function applyFilters() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const focusFilter = document.getElementById('focusFilter').value.toLowerCase();
+            const dateFromFilter = document.getElementById('dateFromFilter').value;
+            const dateToFilter = document.getElementById('dateToFilter').value;
+            
+            filteredWorkouts = allWorkouts.filter(workout => {
+                // Status filter
+                if (statusFilter && workout.status !== statusFilter) return false;
+                
+                // Focus filter
+                if (focusFilter && (!workout.focus || !workout.focus.toLowerCase().includes(focusFilter))) return false;
+                
+                // Date filters
+                if (dateFromFilter && workout.date_created < dateFromFilter) return false;
+                if (dateToFilter && workout.date_created > dateToFilter) return false;
+                
+                return true;
+            });
+            
+            renderWorkouts(filteredWorkouts);
+        }
+
+        function renderWorkouts(workouts) {
+            if (workouts.length === 0) {
+                noWorkouts.style.display = 'block';
+                return;
+            }
+            
+            noWorkouts.style.display = 'none';
+            workoutContainer.innerHTML = workouts.map(workout => renderWorkout(workout)).join('');
+        }
+
+        function renderWorkout(workout) {
+            const stats = workout.statistics || {};
+            const completionPercentage = stats.completion_percentage || 0;
+            
+            return `
+                <div class="workout-card">
+                    <div class="workout-header">
+                        <h2 class="workout-title">${escapeHtml(workout.name || 'Unbenanntes Workout')}</h2>
+                        <div class="workout-meta">
+                            <span class="meta-item">⏱️ ${workout.duration || 'N/A'} Min</span>
+                            <span class="meta-item">🎯 ${escapeHtml(workout.focus || 'N/A')}</span>
+                            <span class="meta-item">📅 ${formatDate(workout.date_created)}</span>
+                            <span class="status-badge status-${workout.status}">${workout.status.toUpperCase()}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${completionPercentage}%"></div>
+                        </div>
+                        <div class="completion-stats">
+                            <span>${stats.completed_sets || 0}/${stats.total_sets || 0} Sätze</span>
+                            <span>${completionPercentage}% abgeschlossen</span>
+                        </div>
+                        ${workout.description ? `<p class="workout-description">${escapeHtml(workout.description)}</p>` : ''}
+                    </div>
+                    <div class="blocks">
+                        ${(workout.blocks || []).map(block => renderBlock(block)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderBlock(block) {
+            const exercises = block.exercises || [];
+            const groupedExercises = groupExercisesBySuperset(exercises);
+            
+            return `
+                <div class="block">
+                    <div class="block-header">
+                        <h3 class="block-title">${escapeHtml(block.name || 'Unbenannter Block')}</h3>
+                        ${block.description ? `<p class="block-description">${escapeHtml(block.description)}</p>` : ''}
+                    </div>
+                    <div class="exercises">
+                        ${groupedExercises.map(group => renderExerciseGroup(group)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function groupExercisesBySuperset(exercises) {
+            const groups = [];
+            const supersetGroups = {};
+            
+            exercises.forEach(exercise => {
+                if (exercise.type === 'superset') {
+                    groups.push(exercise);
+                } else if (exercise.superset_id) {
+                    if (!supersetGroups[exercise.superset_id]) {
+                        supersetGroups[exercise.superset_id] = [];
+                    }
+                    supersetGroups[exercise.superset_id].push(exercise);
+                } else {
+                    groups.push({ type: 'single', exercises: [exercise] });
+                }
+            });
+            
+            // Add superset groups
+            Object.keys(supersetGroups).forEach(supersetId => {
+                groups.push({ 
+                    type: 'superset', 
+                    supersetId: supersetId,
+                    exercises: supersetGroups[supersetId].sort((a, b) => a.position - b.position)
+                });
+            });
+            
+            // Sort groups by position
+            groups.sort((a, b) => {
+                const aPos = a.exercises[0]?.position || 0;
+                const bPos = b.exercises[0]?.position || 0;
+                return aPos - bPos;
+            });
+            
+            return groups;
+        }
+
+        function renderExerciseGroup(group) {
+            if (group.type === 'superset') {
+                return `
+                    <div class="superset-group">
+                        <div class="superset-header">
+                            <span class="superset-label">🔄 Superset ${group.supersetId}</span>
+                            <span class="superset-info">Übungen im Wechsel ausführen</span>
+                        </div>
+                        <div class="superset-exercises">
+                            ${group.exercises.map(exercise => renderExercise(exercise, true)).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                return renderExercise(group.exercises[0], false);
+            }
+        }
+
+        function renderExercise(exercise, isInSuperset = false) {
+            const completedSets = exercise.sets.filter(set => set.status === 'done').length;
+            const totalSets = exercise.sets.length;
+            
+            return `
+                <div class="exercise ${isInSuperset ? 'in-superset' : ''}">
+                    <div class="exercise-header">
+                        <span class="exercise-name">${escapeHtml(exercise.name || 'Unbenannte Übung')}</span>
+                        <span class="completion-stats">${completedSets}/${totalSets} Sätze</span>
+                    </div>
+                    <div class="sets">
+                        ${(exercise.sets || []).map((set, index) => renderSet(set, index + 1)).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSet(set, setNumber) {
+            const values = set.values || [];
+            const valueLabels = ['Reps', 'Gewicht', 'Zeit', 'Distanz', 'Pause'];
+            const valueUnits = ['x', 'kg', 's', 'm', 's'];
+            const isCompleted = set.status === 'done';
+            
+            return `
+                <div class="set ${isCompleted ? 'completed' : ''}">
+                    <div class="set-number ${isCompleted ? 'completed' : ''}">${setNumber}</div>
+                    <div class="set-values">
+                        ${values.map((value, index) => {
+                            if (value === null || value === undefined) return '';
+                            return `
+                                <div class="set-value">
+                                    <span class="value-label">${valueLabels[index] || 'Wert'}:</span>
+                                    <span class="value-number">${value}</span>
+                                    <span class="value-unit">${valueUnits[index] || ''}</span>
+                                </div>
+                            `;
+                        }).filter(Boolean).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            errorContainer.appendChild(errorDiv);
+        }
+
+        function escapeHtml(text) {
+            if (typeof text !== 'string') return text;
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('de-DE', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Show initial message
+        noWorkouts.style.display = 'block';
+    </script>
+</body>
+</html> 

@@ -8,6 +8,16 @@ if TYPE_CHECKING:
     from .user_model import UserModel
     from .workout_model import Workout
 
+class TrainingProfile(SQLModel, table=True):
+    __tablename__ = "training_profiles"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    training_plan_id: Optional[int] = Field(default=None, foreign_key="training_plans.id")
+    equipment: Optional[str] = Field(default=None)
+    equipment_details: Optional[str] = Field(default=None)
+    is_primary: Optional[bool] = Field(default=False)
+
+    training_plan: Optional["TrainingPlan"] = Relationship(back_populates="training_profiles")
+
 
 class TrainingPlan(SQLModel, table=True):
     __tablename__ = "training_plans"
@@ -37,10 +47,8 @@ class TrainingPlan(SQLModel, table=True):
     session_duration: Optional[int] = Field(default=None)
     other_regular_activities: Optional[str] = Field(default=None)
     
-    # Equipment und Umgebung - Anpassung, um Frontend-Format direkt zu unterstützen
-    equipment: Optional[List[str]] = Field(
-        sa_column=Column(ARRAY(String)), default=None
-    )
+    # Equipment und Umgebung - Diese bleiben für Abwärtskompatibilität bestehen.
+    equipment: Optional[str] = Field(default=None)
     equipment_details: Optional[str] = Field(default=None)
     
     # Einschränkungen
@@ -53,5 +61,8 @@ class TrainingPlan(SQLModel, table=True):
     # One-to-One Beziehung zum User
     user: "UserModel" = Relationship(back_populates="training_plan")
     
-    # ✅ Beziehung zu Workouts (für Kontext - primäre Beziehung ist jetzt User->Workout)
+    # Beziehung zu Workouts (für Kontext - primäre Beziehung ist jetzt User->Workout)
     workouts: List["Workout"] = Relationship(back_populates="plan")
+
+    # Neue Beziehung zu TrainingProfiles
+    training_profiles: List["TrainingProfile"] = Relationship(back_populates="training_plan", sa_relationship_kwargs={"cascade": "all, delete-orphan"})

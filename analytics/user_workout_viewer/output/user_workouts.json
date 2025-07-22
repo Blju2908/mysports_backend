@@ -1,0 +1,422 @@
+{
+  "export_date": "2025-07-20T20:34:33.536524",
+  "user_id": "bb9ccd12-9018-4303-b870-fe31c94bd7b0",
+  "total_workouts": 1,
+  "workouts": [
+    {
+      "id": 495,
+      "name": "Skill Mastery Session",
+      "description": "Betonung auf Körperkontrolle mit komplexen Bewegungen. Nutzung von vorhandenen leichten Gewichten zur Intensivierung. Progression durch dynamische Balanceübungen.",
+      "duration": 45,
+      "focus": "Kraft, Kontrolle, Körpergewicht",
+      "notes": null,
+      "muscle_group_load": null,
+      "focus_derivation": null,
+      "date_created": "2025-07-09T09:35:17.280655",
+      "status": "not_started",
+      "blocks": [
+        {
+          "name": "Warm-Up",
+          "description": "Ganzkörpermobilisation und Erwärmung",
+          "notes": null,
+          "position": 0,
+          "exercises": [
+            {
+              "id": 5526,
+              "name": "Arm Circles",
+              "description": null,
+              "notes": null,
+              "superset_id": null,
+              "position": 0,
+              "sets": [
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    null,
+                    null,
+                    30,
+                    null,
+                    null
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 5527,
+              "name": "High Knees",
+              "description": null,
+              "notes": null,
+              "superset_id": null,
+              "position": 0,
+              "sets": [
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    null,
+                    null,
+                    30,
+                    null,
+                    null
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 5528,
+              "name": "Cat-Cow Flow",
+              "description": null,
+              "notes": null,
+              "superset_id": null,
+              "position": 0,
+              "sets": [
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    5,
+                    null,
+                    null,
+                    null,
+                    null
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 5529,
+              "name": "Inchworm Walkout",
+              "description": null,
+              "notes": null,
+              "superset_id": null,
+              "position": 0,
+              "sets": [
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    5,
+                    null,
+                    null,
+                    null,
+                    null
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Main",
+          "description": "Fokus auf Ganzkörperkraft und Stabilität",
+          "notes": null,
+          "position": 0,
+          "exercises": [
+            {
+              "id": 5532,
+              "name": "L-Sit",
+              "description": null,
+              "notes": null,
+              "superset_id": null,
+              "position": 0,
+              "sets": [
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    null,
+                    null,
+                    15,
+                    null,
+                    60
+                  ]
+                },
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    null,
+                    null,
+                    15,
+                    null,
+                    60
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 5535,
+              "name": "Dumbbell Shoulder Press",
+              "description": null,
+              "notes": null,
+              "superset_id": null,
+              "position": 0,
+              "sets": [
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    12,
+                    2.0,
+                    null,
+                    null,
+                    90
+                  ]
+                },
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    12,
+                    2.0,
+                    null,
+                    null,
+                    90
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "superset",
+              "superset_id": "A",
+              "exercises": [
+                {
+                  "id": 5530,
+                  "name": "Plank Hold",
+                  "description": null,
+                  "notes": null,
+                  "superset_id": "A",
+                  "position": 0,
+                  "sets": [
+                    {
+                      "position": 0,
+                      "status": "open",
+                      "completed_at": null,
+                      "values": [
+                        null,
+                        null,
+                        30,
+                        null,
+                        60
+                      ]
+                    },
+                    {
+                      "position": 0,
+                      "status": "open",
+                      "completed_at": null,
+                      "values": [
+                        null,
+                        null,
+                        30,
+                        null,
+                        60
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": 5531,
+                  "name": "Archer Push-up",
+                  "description": null,
+                  "notes": null,
+                  "superset_id": "A",
+                  "position": 0,
+                  "sets": [
+                    {
+                      "position": 0,
+                      "status": "open",
+                      "completed_at": null,
+                      "values": [
+                        5,
+                        null,
+                        null,
+                        null,
+                        60
+                      ]
+                    },
+                    {
+                      "position": 0,
+                      "status": "open",
+                      "completed_at": null,
+                      "values": [
+                        5,
+                        null,
+                        null,
+                        null,
+                        120
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "superset",
+              "superset_id": "B",
+              "exercises": [
+                {
+                  "id": 5533,
+                  "name": "Hollow Body Hold",
+                  "description": null,
+                  "notes": null,
+                  "superset_id": "B",
+                  "position": 0,
+                  "sets": [
+                    {
+                      "position": 0,
+                      "status": "open",
+                      "completed_at": null,
+                      "values": [
+                        null,
+                        null,
+                        20,
+                        null,
+                        60
+                      ]
+                    },
+                    {
+                      "position": 0,
+                      "status": "open",
+                      "completed_at": null,
+                      "values": [
+                        null,
+                        null,
+                        20,
+                        null,
+                        60
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": 5534,
+                  "name": "Ring Row",
+                  "description": null,
+                  "notes": null,
+                  "superset_id": "B",
+                  "position": 0,
+                  "sets": [
+                    {
+                      "position": 0,
+                      "status": "open",
+                      "completed_at": null,
+                      "values": [
+                        8,
+                        null,
+                        null,
+                        null,
+                        90
+                      ]
+                    },
+                    {
+                      "position": 0,
+                      "status": "open",
+                      "completed_at": null,
+                      "values": [
+                        8,
+                        null,
+                        null,
+                        null,
+                        90
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Cool-Down",
+          "description": "Dehnung und Entspannung",
+          "notes": null,
+          "position": 0,
+          "exercises": [
+            {
+              "id": 5536,
+              "name": "Child's Pose",
+              "description": null,
+              "notes": null,
+              "superset_id": null,
+              "position": 0,
+              "sets": [
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    null,
+                    null,
+                    60,
+                    null,
+                    null
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 5537,
+              "name": "Doorway Pec Stretch",
+              "description": null,
+              "notes": null,
+              "superset_id": null,
+              "position": 0,
+              "sets": [
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    null,
+                    null,
+                    30,
+                    null,
+                    null
+                  ]
+                }
+              ]
+            },
+            {
+              "id": 5538,
+              "name": "Downward Dog",
+              "description": null,
+              "notes": null,
+              "superset_id": null,
+              "position": 0,
+              "sets": [
+                {
+                  "position": 0,
+                  "status": "open",
+                  "completed_at": null,
+                  "values": [
+                    null,
+                    null,
+                    60,
+                    null,
+                    null
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "statistics": {
+        "total_blocks": 3,
+        "total_exercises": 13,
+        "total_sets": 19,
+        "completed_sets": 0,
+        "completion_percentage": 0.0
+      }
+    }
+  ]
+}
