@@ -19,7 +19,7 @@ from app.models import (
     app_feedback_model,
     llm_call_log_model,
     landing_page_survey_model,
-    exercise_description_model
+    exercise_description_model,
 )  
 
 # this is the Alembic Config object, which provides
