@@ -15,6 +15,17 @@ from uuid import UUID
 import logging
 from sqlalchemy.orm import selectinload
 from app.llm.workout_generation.workout_parser import update_existing_workout_with_compact_data, update_existing_workout_with_revision_data
+from app.models.training_plan_model import TrainingProfile
+from app.services.llm_logging_service import log_operation_success, log_operation_failed, OperationTimer
+from app.models.training_plan_model import TrainingPlan
+from sqlalchemy import select
+from app.llm.workout_generation.create_workout_service import format_training_plan_for_llm_v2
+from app.llm.workout_generation.workout_utils import summarize_training_history
+from app.db.workout_db_access import get_training_history_for_user_from_db
+from app.llm.workout_generation.exercise_filtering_service import get_all_exercises_for_prompt
+from app.llm.workout_generation.workout_generation_chain_v2 import execute_workout_generation_sequence_v2
+from app.db.session import get_background_session
+from sqlalchemy.orm import selectinload
 
 
 router = APIRouter()
@@ -24,7 +35,8 @@ logger = logging.getLogger("llm_endpoint")
 # Define a Pydantic model for the request body
 class CreateWorkoutRequest(BaseModel):
     prompt: str | None = Field(None, description="Optional user prompt for workout generation")
-    use_exercise_filtering: bool = Field(False, description="Enable exercise filtering based on user equipment and experience")
+    profile_id: int | None = Field(None, description="Optional profile ID for workout generation")
+    duration_minutes: int | None = Field(None, description="Optional duration in minutes for workout generation")
 
 
 @router.post("/llm/start-workout-creation")
@@ -39,8 +51,6 @@ async def start_workout_creation(
     Startet die asynchrone Workout-Erstellung und gibt sofort eine workout_id zurück.
     ✅ NEU: Erstellt sofort einen Log-Eintrag mit Status STARTED für durchgängiges Tracking.
     """
-    logger.info("[llm/start-workout] Start - User: %s, Exercise Filtering: %s", 
-                current_user.id, request_data.use_exercise_filtering)
     
     try:
         # 1. Erstelle Placeholder-Workout in der DB
@@ -83,7 +93,9 @@ async def start_workout_creation(
             workout_id=workout_id,
             user_id=current_user.id,
             request_data=request_data,
-            log_id=log_id  # ✅ NEU: Log-ID für Status-Updates
+            session_duration=request_data.duration_minutes,
+            profile_id=request_data.profile_id,
+            log_id=log_id  
         )
         
         return {
@@ -293,7 +305,6 @@ async def get_workout_revision_status(
                 "revision_data": None,
             }
         elif llm_log.status == LlmOperationStatus.SUCCESS:
-            # ✅ NEU: Lade das Workout und gib die Revisionsdaten zurück
             workout_stmt = select(Workout).where(Workout.id == workout_id)
             workout_result = await db.execute(workout_stmt)
             workout = workout_result.scalar_one_or_none()
@@ -412,6 +423,8 @@ async def generate_workout_background(
     user_id: str,
     request_data: CreateWorkoutRequest,
     log_id: int,
+    session_duration: int | None = None,
+    profile_id: int | None = None,
 ):
     """
     ✅ REFACTORED: Background task for V2 workout generation.
@@ -422,18 +435,6 @@ async def generate_workout_background(
     4. Updates the placeholder workout in the database.
     """
     logger.info(f"[generate_workout_background_v2] Starting for workout_id: {workout_id}")
-
-    from app.services.llm_logging_service import log_operation_success, log_operation_failed, OperationTimer
-    from app.models.training_plan_model import TrainingPlan
-    from sqlalchemy import select
-    from app.llm.workout_generation.create_workout_service import format_training_plan_for_llm
-    from app.llm.workout_generation.workout_utils import summarize_training_history
-    from app.db.workout_db_access import get_training_history_for_user_from_db
-    from app.llm.workout_generation.exercise_filtering_service import get_all_exercises_for_prompt
-    from app.llm.workout_generation.workout_generation_chain_v2 import execute_workout_generation_sequence_v2
-    from app.llm.workout_generation.workout_parser import parse_compact_workout_to_db_models
-    from app.db.session import get_background_session
-    from sqlalchemy.orm import selectinload
 
     timer = OperationTimer()
     timer.start()
@@ -450,13 +451,21 @@ async def generate_workout_background(
         async with get_background_session() as db:
             logger.info("[generate_workout_background_v2] Loading user data from DB...")
 
+            # Load profile
+            profile = await db.scalar(select(TrainingProfile).where(TrainingProfile.id == profile_id))
+
             # Load and format TrainingPlan
             training_plan_db_obj = await db.scalar(
                 select(TrainingPlan).where(TrainingPlan.user_id == user_id_uuid)
             )
+
+            # remove the session duration from the training_plan
+            if session_duration is not None:
+                training_plan_db_obj.session_duration = session_duration
+
             if training_plan_db_obj:
                 training_plan_id_for_saving = training_plan_db_obj.id
-                formatted_training_plan = format_training_plan_for_llm(training_plan_db_obj)
+                formatted_training_plan = format_training_plan_for_llm_v2(training_plan_db_obj, profile)
                 logger.info("[generate_workout_background_v2] Training plan loaded and formatted.")
 
             # Load, summarize, and format Training History
