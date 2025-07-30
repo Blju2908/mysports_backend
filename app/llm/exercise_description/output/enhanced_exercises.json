@@ -273,5 +273,2456 @@
     "muscle_fatigue_factor": 0.2,
     "muscle_recovery_hours": 6,
     "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Downward Dog to Cobra",
+    "name_english": "Downward Dog to Cobra",
+    "aliases": [
+      "Herabschauender Hund zur Kobra"
+    ],
+    "description_german": "Rückenmobilisierung im Wechsel von herabschauendem Hund zu Cobra",
+    "exercise_type": "mobility",
+    "difficulty_level": "beginner",
+    "movement_pattern": "rotation",
+    "muscle_activations": [
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "latissimus",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "chest",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Beginne im Vierfüßlerstand mit Händen unter den Schultern und Knien unter der Hüfte."
+    ],
+    "execution_steps": [
+      "Beginn im Vierfüßler, drücke die Hände fest in den Boden und heb dein Gesäß nach oben.",
+      "Strecke die Beine und drücke die Fersen Richtung Boden im herabschauenden Hund.",
+      "Gleite aus der Hüfte nach vorne in die Liegestützposition und ziehe den Oberkörper in die Cobra.",
+      "Spüre die Dehnung in Rücken und Brust, kontrolliere die Rückkehr in den Hund."
+    ],
+    "common_mistakes": [
+      "Rücken übermäßig rund oder hohl machen",
+      "Hüfte nicht aus der Hüfte schieben bei der Cobra",
+      "Gewicht zu weit in die Hände verlagern"
+    ],
+    "volume_unit": "time_seconds",
+    "typical_rep_range": "30-60s",
+    "met_value": 2.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Dynamische Ausfallschritte",
+    "name_english": "Dynamic Walking Lunges",
+    "aliases": [
+      "Walking Lunges",
+      "Gehende Ausfallschritte"
+    ],
+    "description_german": "Vorwärtsgehende Ausfallschritte mit Hüftstreckung",
+    "exercise_type": "strength",
+    "difficulty_level": "beginner",
+    "movement_pattern": "lunge",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": true,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Stelle dich aufrecht hin, Füße hüftbreit auseinander."
+    ],
+    "execution_steps": [
+      "Stell dich aufrecht hin und mache einen großen Schritt nach vorn.",
+      "Beuge beide Knie, bis das hintere Knie fast den Boden berührt.",
+      "Drücke dich kraftvoll über den vorderen Fuß zurück in den Stand.",
+      "Führe direkt den nächsten Ausfallschritt mit dem anderen Bein aus."
+    ],
+    "common_mistakes": [
+      "Knie ragt über die Zehenspitzen hinaus",
+      "Oberkörper zu weit nach vorn lehnen",
+      "Hinteres Knie auf den Boden schlagen lassen"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "10-12 pro Bein",
+    "met_value": 5.0,
+    "muscle_fatigue_factor": 1.0,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "High Knees",
+    "name_english": "High Knees",
+    "aliases": [
+      "Kniehebelauf",
+      "Knee Highs"
+    ],
+    "description_german": "Schnelle Kniehebeläufe zur Herz-Kreislauf-Aktivierung",
+    "exercise_type": "cardio",
+    "difficulty_level": "beginner",
+    "movement_pattern": "locomotion",
+    "muscle_activations": [
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Stelle dich hüftbreit hin und halte den Blick nach vorn."
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit hin und halte den Blick nach vorn.",
+      "Laufe auf der Stelle und hebe dabei abwechselnd die Knie so hoch wie möglich.",
+      "Spanne den Rumpf an und halte die Hüfte stabil.",
+      "Nutze aktiv die Arme im Laufrhythmus, um das Tempo zu steigern."
+    ],
+    "common_mistakes": [
+      "Knie nicht hoch genug heben",
+      "Oberkörper zu stark mitschwingen",
+      "Rumpf nicht ausreichend stabilisieren"
+    ],
+    "volume_unit": "time_seconds",
+    "typical_rep_range": "30-60s",
+    "met_value": 8.0,
+    "muscle_fatigue_factor": 1.2,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Hüftkreisen",
+    "name_english": "Hip Circles",
+    "aliases": [
+      "Hip Rotations",
+      "Beckenkreisen"
+    ],
+    "description_german": "Gleichmäßige Kreisbewegungen im Hüftgelenk",
+    "exercise_type": "mobility",
+    "difficulty_level": "beginner",
+    "movement_pattern": "rotation",
+    "muscle_activations": [
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Stelle dich hüftbreit hin und lege die Hände an die Hüften."
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit hin und lege die Hände in die Hüften.",
+      "Bewege die Hüfte in großen, kontrollierten Kreisen im Uhrzeigersinn.",
+      "Führe nach einigen Wiederholungen die Kreise gegen den Uhrzeigersinn aus.",
+      "Halte den Oberkörper ruhig und führe das Becken bewusst."
+    ],
+    "common_mistakes": [
+      "Oberkörper mitschwingen lassen",
+      "Kreise zu klein oder unkontrolliert ausführen",
+      "Gewicht nicht gleichmäßig verteilen"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "10-15 pro Richtung",
+    "met_value": 2.0,
+    "muscle_fatigue_factor": 0.3,
+    "muscle_recovery_hours": 6,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Inchworm Walkout",
+    "name_english": "Inchworm Walkout",
+    "aliases": [
+      "Wurmbewegung"
+    ],
+    "description_german": "Ganzkörperbewegung von stehend in die Plank-Position",
+    "exercise_type": "strength",
+    "difficulty_level": "advanced",
+    "movement_pattern": "hip_hinge",
+    "muscle_activations": [
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "chest",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Stelle dich aufrecht mit geradem Rücken und Füßen hüftbreit.",
+      "Halte den Blick nach vorn gerichtet."
+    ],
+    "execution_steps": [
+      "Stell dich aufrecht mit geradem Rücken und beuge dich aus der Hüfte nach vorn.",
+      "Lege die Hände auf den Boden und laufe mit den Händen in eine hohe Plank-Position.",
+      "Halte den Körper in einer geraden Linie und spüre die Spannung im Core.",
+      "Gehe mit den Händen zurück zu den Füßen und richte dich langsam wieder auf."
+    ],
+    "common_mistakes": [
+      "Rücken rund machen beim Absenken",
+      "Hüfte durchhängen in der Plank",
+      "Schultern nicht stabilisieren"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "8-12",
+    "met_value": 5.0,
+    "muscle_fatigue_factor": 1.0,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Jumping Jacks",
+    "name_english": "Jumping Jacks",
+    "aliases": [
+      "Star Jump"
+    ],
+    "description_german": "Dynamische Ganzkörperübung zur Aktivierung von Beinen und Schultern",
+    "exercise_type": "cardio",
+    "difficulty_level": "beginner",
+    "movement_pattern": "locomotion",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 65
+      },
+      {
+        "muscle_group": "shoulders_lateral",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 30
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [],
+    "setup_steps": [
+      "Stelle dich aufrecht hin, Füße zusammen und Arme seitlich am Körper."
+    ],
+    "execution_steps": [
+      "Stehe schulterbreit, Arme an den Seiten",
+      "Schwinge dein Gewicht leicht in die Knie",
+      "Spring in eine Grätsche und führe dabei die Arme seitlich über den Kopf",
+      "Spring zurück in die Ausgangsposition und bring die Arme an die Seiten",
+      "Achte auf eine weiche Landung mit leicht gebeugten Knien"
+    ],
+    "common_mistakes": [
+      "Knie vollständig durchstrecken bei der Landung",
+      "Oberkörper nach vorne fallen lassen",
+      "Knie nach innen kollabieren",
+      "Arme nicht voll durchstrecken"
+    ],
+    "volume_unit": "time_seconds",
+    "typical_rep_range": "30-60s",
+    "met_value": 6.0,
+    "muscle_fatigue_factor": 1.2,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Lateral Shuffle",
+    "name_english": "Lateral Shuffle",
+    "aliases": [
+      "Side Shuffle"
+    ],
+    "description_german": "Seitliche Ausweichbewegung zur Verbesserung der Beinarbeit und Agilität",
+    "exercise_type": "cardio",
+    "difficulty_level": "beginner",
+    "movement_pattern": "locomotion",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "abductors",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "adductors",
+        "activation_percentage": 50
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [],
+    "setup_steps": [
+      "Begib dich in den leichten Fußballer-Bodenstand mit leicht gebeugten Knien.",
+      "Halte den Oberkörper aufrecht und den Blick nach vorn."
+    ],
+    "execution_steps": [
+      "Verlagere dein Gewicht auf ein Bein und schiebe dich seitlich ab",
+      "Führe schnelle Schritte in eine Richtung, halte den Körperschwerpunkt niedrig",
+      "Ändere die Laufrichtung mit explosivem Abstoßen"
+    ],
+    "common_mistakes": [
+      "Oberkörper nach vorne beugen",
+      "Füße kreuzen statt parallel zu bleiben",
+      "Hüfte zu hoch halten",
+      "Blick nach unten richten"
+    ],
+    "volume_unit": "distance_meters",
+    "typical_rep_range": "10-20m",
+    "met_value": 5.0,
+    "muscle_fatigue_factor": 1.1,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Leg Swings Front-to-Back",
+    "name_english": "Leg Swings Front-to-Back",
+    "aliases": [
+      "Beinschwung vorne-hinten"
+    ],
+    "description_german": "Dynamische Beinvor- und Rückschwünge zur Mobilisierung der Hüfte",
+    "exercise_type": "mobility",
+    "difficulty_level": "beginner",
+    "movement_pattern": "hip_hinge",
+    "muscle_activations": [
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 30
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": false,
+    "equipment_list": [],
+    "setup_steps": [
+      "Stelle dich seitlich an eine Wand oder Stange und halte dich leicht fest."
+    ],
+    "execution_steps": [
+      "Schwinge ein Bein vorwärts bis auf Hüfthöhe",
+      "Kontrolliere den Rückschwung und schwinge das Bein nach hinten",
+      "Halte den Oberkörper stabil",
+      "Wechsle nach jeder Schwungserie das Bein"
+    ],
+    "common_mistakes": [
+      "Zu hoher Schwung ohne Kontrolle",
+      "Hohlkreuzbildung im Rücken",
+      "Oberkörper mitbewegen",
+      "Zu schnelles Tempo"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "10-15",
+    "met_value": 2.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 6,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Leg Swings Side-to-Side",
+    "name_english": "Leg Swings Side-to-Side",
+    "aliases": [
+      "Beinschwung seitlich"
+    ],
+    "description_german": "Seitliche Beinpendel zur Aktivierung von Hüftabduktoren und -adduktoren",
+    "exercise_type": "mobility",
+    "difficulty_level": "beginner",
+    "movement_pattern": "hip_hinge",
+    "muscle_activations": [
+      {
+        "muscle_group": "abductors",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "adductors",
+        "activation_percentage": 30
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": false,
+    "equipment_list": [],
+    "setup_steps": [
+      "Stelle dich mit dem Rücken zur Wand und halte dich zur Balance fest."
+    ],
+    "execution_steps": [
+      "Führe das freie Bein seitlich vor den Standfuß",
+      "Swinge das Bein kontrolliert nach außen so weit wie möglich",
+      "Halte den Oberkörper aufrecht",
+      "Wechsle nach jeder Serie das Bein"
+    ],
+    "common_mistakes": [
+      "Oberkörper mitdrehen",
+      "Fuß zu tief absenken",
+      "Rumpfstabilität vernachlässigen",
+      "Zu schnelles Tempo"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "10-15",
+    "met_value": 2.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 6,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Shoulder Pass-Through mit PVC-Stange",
+    "name_english": "Shoulder Pass-Through with PVC Pipe",
+    "aliases": [
+      "PVC Pass-Through"
+    ],
+    "description_german": "Schulterblattmobilisation zur Verbesserung der Schulterbeweglichkeit",
+    "exercise_type": "mobility",
+    "difficulty_level": "intermediate",
+    "movement_pattern": "rotation",
+    "muscle_activations": [
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "shoulders_lateral",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "rhomboids",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "mid_traps",
+        "activation_percentage": 30
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "PVC pipe"
+    ],
+    "setup_steps": [
+      "Greife eine PVC-Stange eng mit beiden Händen.",
+      "Heb die Stange vor dem Körper auf Hüfthöhe."
+    ],
+    "execution_steps": [
+      "Halte die Arme gestreckt und führe die Stange langsam über den Kopf nach hinten",
+      "Achte auf eine gleichmäßige Bewegung und einen lockeren Griff",
+      "Führe die Stange zurück in die Ausgangsposition"
+    ],
+    "common_mistakes": [
+      "Hohlkreuzbildung im Rücken",
+      "Ellbogen beugen statt gestreckt halten",
+      "Zu enger oder zu weiter Griff",
+      "Ruckartige Bewegungen"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "10-15",
+    "met_value": 2.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Shoulder Pass-Through mit Widerstandsband",
+    "name_english": "Shoulder Pass-Through with Resistance Band",
+    "aliases": [
+      "Band Pass-Through",
+      "Shoulder Pass-Through"
+    ],
+    "description_german": "Schulterblattmobilisation zur Verbesserung der Schulterbeweglichkeit",
+    "exercise_type": "mobility",
+    "difficulty_level": "advanced",
+    "movement_pattern": "rotation",
+    "muscle_activations": [
+      {
+        "muscle_group": "shoulders_posterior",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "rhomboids",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "mid_traps",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "lower_traps",
+        "activation_percentage": 30
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [
+      "Resistance Band"
+    ],
+    "setup_steps": [
+      "Stehe aufrecht mit geradem Rücken und neutralem Becken.",
+      "Greife das Widerstandsband mit weiter Handhaltung und halte es vor deinem Körper auf Hüfthöhe."
+    ],
+    "execution_steps": [
+      "Greife ein langes Widerstandsband mit weiter Handhaltung",
+      "Führe das Band vor deinem Körper auf Hüfthöhe",
+      "Halte die Arme gestreckt und führe das Band über den Kopf nach hinten",
+      "Kontrolliere die Spannung im Band, um die Schultern nicht zu überdehnen",
+      "Führe das Band langsam wieder nach vorn zurück"
+    ],
+    "common_mistakes": [
+      "Schultern beim Heben hochziehen",
+      "Ellenbogen beugen anstatt Arme gestreckt zu halten",
+      "Ruckartige Bewegungen statt kontrollierter Ausführung"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "10-15",
+    "met_value": 2.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 6,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Torso Twists",
+    "name_english": "Torso Twists",
+    "aliases": [
+      "Seated Torso Twist",
+      "Sitzende Rumpfdrehung"
+    ],
+    "description_german": "Rotation der Rumpfmuskulatur zur Aktivierung von Bauch und Rücken",
+    "exercise_type": "stability",
+    "difficulty_level": "beginner",
+    "movement_pattern": "rotation",
+    "muscle_activations": [
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 40
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [],
+    "setup_steps": [
+      "Setze dich hüftbreit auf den Boden, die Hände hinter dir abgestützt.",
+      "Heb dein Gesäß leicht an und halte den Körper gerade."
+    ],
+    "execution_steps": [
+      "Setz dich hüftbreit auf den Boden, Handflächen hinter dir abgestützt",
+      "Heb dein Gesäß leicht an und halte den Körper gerade",
+      "Drehe den Oberkörper seitlich und führe ein Knie Richtung Ellbogen",
+      "Wechsle die Seite in fließender Bewegung",
+      "Achte auf eine saubere Rumpfrotation und stabile Schultern"
+    ],
+    "common_mistakes": [
+      "Rundrücken statt aufrechte Haltung",
+      "Schwung statt kontrollierte Bewegung",
+      "Schultern hochziehen statt entspannt halten"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "12-16",
+    "met_value": 3.0,
+    "muscle_fatigue_factor": 0.8,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "World's Greatest Stretch",
+    "name_english": "World's Greatest Stretch",
+    "aliases": [
+      "Hip Flexor T-Spine Rotation Stretch"
+    ],
+    "description_german": "Ganzkörper-Dehnung zur Mobilisierung von Hüfte und Thorax",
+    "exercise_type": "mobility",
+    "difficulty_level": "advanced",
+    "movement_pattern": "hip_hinge",
+    "muscle_activations": [
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": true,
+    "equipment_list": [],
+    "setup_steps": [
+      "Begib dich in einen hohen Ausfallschritt mit dem vorderen Knie über dem Fuß.",
+      "Platziere beide Hände auf dem Boden innerhalb deines vorderen Beins."
+    ],
+    "execution_steps": [
+      "Begib dich in einen hohen Ausfallschritt mit vorderem Knie über dem Fuß",
+      "Bring die Ellenbogen innerhalb des vorderen Beins auf den Boden",
+      "Dreh den Oberkörper zur Seite und streck den Arm zur Decke",
+      "Drück die Hüftgegend leicht nach vorn, um die Dehnung zu spüren",
+      "Wechsle nach der Dehnphase das Bein"
+    ],
+    "common_mistakes": [
+      "Hinteres Bein sinkt durch statt hüftbreit zu bleiben",
+      "Übermäßiges Drehen der Lendenwirbelsäule statt thorakaler Drehung",
+      "Knie des vorderen Beins nach innen kippen"
+    ],
+    "volume_unit": "time_seconds",
+    "typical_rep_range": "30-45s",
+    "met_value": 2.0,
+    "muscle_fatigue_factor": 0.2,
+    "muscle_recovery_hours": 6,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Air Squat",
+    "name_english": "Air Squat",
+    "aliases": [
+      "Bodyweight Squat",
+      "Luftkniebeuge"
+    ],
+    "description_german": "Tiefe Ganzkörperkniebeuge zur Aktivierung von Hüften und Beinen",
+    "exercise_type": "strength",
+    "difficulty_level": "beginner",
+    "movement_pattern": "squat",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [],
+    "setup_steps": [
+      "Stehe schulterbreit, Füße leicht nach außen gedreht.",
+      "Spanne den Rumpf an und halte die Brust aufrecht."
+    ],
+    "execution_steps": [
+      "Steh schulterbreit, Füße leicht nach außen gedreht",
+      "Senk die Hüfte nach hinten und unten in eine tiefe Kniebeuge",
+      "Halte die Brust aufrecht und den Blick nach vorn",
+      "Drück die Knie in Richtung der Fußspitzen",
+      "Schiebe die Hüfte kraftvoll zurück nach oben und spanne das Gesäß an"
+    ],
+    "common_mistakes": [
+      "Fersen heben vom Boden",
+      "Knie fallen nach innen",
+      "Rücken rund statt stabil halten",
+      "Oberkörper zu weit nach vorne kippen"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "12-20",
+    "met_value": 5.0,
+    "muscle_fatigue_factor": 1.0,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Archer Push-up",
+    "name_english": "Archer Push-up",
+    "aliases": [
+      "Archer Liegestütz",
+      "Pfeil-Liegestütz"
+    ],
+    "description_german": "Asymmetrische Liegestützvariante für Brust, Schultern und Rumpf",
+    "exercise_type": "strength",
+    "difficulty_level": "expert",
+    "movement_pattern": "push_horizontal",
+    "muscle_activations": [
+      {
+        "muscle_group": "chest",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "latissimus",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": true,
+    "equipment_list": [],
+    "setup_steps": [
+      "Geh in die Liegestützposition mit Händen weiter als schulterbreit.",
+      "Strecke einen Arm zur Seite, während der andere Arm gebeugt ist."
+    ],
+    "execution_steps": [
+      "Geh in den Liegestütz, Hände weiter als schulterbreit",
+      "Verlagere das Gewicht auf eine Seite, Arm auf dieser Seite stark gebeugt",
+      "Halte den anderen Arm fast gestreckt und senk den Oberkörper kontrolliert ab",
+      "Drück das gestreckte Arm zurück, während das gebeugte Arm Kraft aufnimmt",
+      "Wechsle die Seite nach jeder Serie"
+    ],
+    "common_mistakes": [
+      "Schultern nicht stabil, dadurch Winging",
+      "Hüften rotieren statt Körper gerade halten",
+      "Ellenbogen zu weit nach außen fächern",
+      "Unvollständige Bewegungsausführung auf der gebeugten Seite"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "5-8 per side",
+    "met_value": 7.0,
+    "muscle_fatigue_factor": 1.2,
+    "muscle_recovery_hours": 48,
+    "recovery_complexity": "high"
+  },
+  {
+    "name_german": "Bear Crawl",
+    "name_english": "Bear Crawl",
+    "aliases": [
+      "Bärenkriechen"
+    ],
+    "description_german": "Bodenkriechen zur Stabilisierung von Schultergürtel und Rumpf",
+    "exercise_type": "stability",
+    "difficulty_level": "advanced",
+    "movement_pattern": "locomotion",
+    "muscle_activations": [
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "chest",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "forearms",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "lower_traps",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [],
+    "setup_steps": [
+      "Begib dich auf Hände und Füße, die Knie leicht über dem Boden",
+      "Positioniere die Hände schulterbreit unter den Schultern",
+      "Spanne den Rumpf und halte den Rücken neutral"
+    ],
+    "execution_steps": [
+      "Begib dich auf Hände und Füße, Knie leicht über dem Boden",
+      "Heb die Knie ein paar Zentimeter an und halte den Rücken gerade",
+      "Krabble abwechselnd mit rechter Hand und linkem Fuß vorwärts",
+      "Halte einen niedrigen Körperschwerpunkt und festen Rumpf",
+      "Behalte eine konstante Distanz zum Boden bei"
+    ],
+    "common_mistakes": [
+      "Hüfte hängt durch oder ist zu hoch",
+      "Rücken wird gekrümmt",
+      "Fehlende Koordination zwischen Armen und Beinen",
+      "Blick nach oben statt schlankem Nacken"
+    ],
+    "volume_unit": "distance_meters",
+    "typical_rep_range": "10-20m",
+    "met_value": 5.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Bankdip mit erhöhten Füßen",
+    "name_english": "Bench Dip Feet Elevated",
+    "aliases": [
+      "Erhöhte Bankdips"
+    ],
+    "description_german": "Armbeugertraining mit Hüftstreckung durch erhöhte Fußposition",
+    "exercise_type": "strength",
+    "difficulty_level": "advanced",
+    "movement_pattern": "push_vertical",
+    "muscle_activations": [
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "chest",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "forearms",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [
+      "Flache Bank",
+      "Box"
+    ],
+    "setup_steps": [
+      "Stell dich mit dem Rücken seitlich zur Bank und leg die Hände schulterbreit darauf ab",
+      "Streck die Beine auf eine höhere Bank oder Box und schieb die Hüfte leicht nach vorne",
+      "Spanne den Rumpf stabil"
+    ],
+    "execution_steps": [
+      "Beuge die Ellenbogen kontrolliert, bis sie etwa 90° erreichen",
+      "Drück dich über die Handflächen nach oben in die Ausgangsposition",
+      "Spann Rumpf und Gesäß während der gesamten Bewegung fest"
+    ],
+    "common_mistakes": [
+      "Schultern heben während der Bewegung",
+      "Ellenbogen weit nach außen führen",
+      "Hüfte sackt nach unten",
+      "Unkontrollierter Bewegungsablauf"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "8-12",
+    "met_value": 6.0,
+    "muscle_fatigue_factor": 0.7,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Fahrrad-Crunch",
+    "name_english": "Bicycle Crunch",
+    "aliases": [
+      "Fahrrad Crunch"
+    ],
+    "description_german": "Rotation der Rumpfmuskulatur im Wechsel mit gestreckten Beinen",
+    "exercise_type": "stability",
+    "difficulty_level": "beginner",
+    "movement_pattern": "rotation",
+    "muscle_activations": [
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": false,
+    "equipment_list": [],
+    "setup_steps": [
+      "Leg dich flach auf den Rücken und verschränk die Hände locker hinter dem Kopf",
+      "Streck die Beine aus und halte sie leicht über dem Boden",
+      "Halte den Nacken neutral und schau zur Decke"
+    ],
+    "execution_steps": [
+      "Zieh ein Knie zur Brust und führ den gegenüberliegenden Ellbogen diagonal zusammen",
+      "Streck das andere Bein lang aus, ohne die Fußspitze abzulegen",
+      "Wechsel in einer fließenden Bewegung die Seite",
+      "Halte Rücken und Nacken entspannt und spann den Rumpf bewusst an"
+    ],
+    "common_mistakes": [
+      "Ziehen am Nacken",
+      "Schnelles Absetzen der Füße auf dem Boden",
+      "Unzureichende Rotation im Oberkörper",
+      "Rücken wölbt sich"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "12-20",
+    "met_value": 3.0,
+    "muscle_fatigue_factor": 0.3,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Pike-Liegestütz auf Box",
+    "name_english": "Box Pike Push-up",
+    "aliases": [
+      "Pike Push-up auf Box"
+    ],
+    "description_german": "Schulterbetonte Liegestützvariante mit Hüftbeugung",
+    "exercise_type": "strength",
+    "difficulty_level": "advanced",
+    "movement_pattern": "push_vertical",
+    "muscle_activations": [
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "upper_traps",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 40
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [
+      "Box"
+    ],
+    "setup_steps": [
+      "Stell die Füße schulterbreit auf eine Box",
+      "Geh mit den Händen schulterbreit vor der Box in die Liegestützposition",
+      "Positioniere die Hüfte so, dass dein Körper ein umgekehrtes V bildet"
+    ],
+    "execution_steps": [
+      "Schieb die Hüfte nach oben, bis dein Körper ein umgekehrtes V bildet",
+      "Beuge die Ellenbogen und senk den Kopf kontrolliert Richtung Boden",
+      "Drück dich kraftvoll zurück in die gestreckte Pike-Position",
+      "Halte während der gesamten Übung rumpf- und beckenstabil"
+    ],
+    "common_mistakes": [
+      "Hüfte zu hoch oder zu niedrig positioniert",
+      "Ellenbogen stark nach außen abgespreizt",
+      "Rücken durchhängen lassen",
+      "Kopf zu stark nach vorne oder unten bewegen"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "8-12",
+    "met_value": 6.0,
+    "muscle_fatigue_factor": 0.6,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "high"
+  },
+  {
+    "name_german": "Step-Up auf Box",
+    "name_english": "Box Step-Up",
+    "aliases": [
+      "Box Step Up"
+    ],
+    "description_german": "Unilaterales Aufsteigen für Beine und Rumpfstabilität",
+    "exercise_type": "strength",
+    "difficulty_level": "beginner",
+    "movement_pattern": "squat",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": true,
+    "equipment_list": [
+      "Box"
+    ],
+    "setup_steps": [
+      "Stell dich vor eine stabile Box und platzier einen Fuß komplett oben auf der Oberfläche",
+      "Achte auf aufrechten Oberkörper und eine neutrale Wirbelsäule"
+    ],
+    "execution_steps": [
+      "Drück dich über die Ferse des vorderen Beins nach oben, bis das Standbein gestreckt ist",
+      "Führ das hintere Bein kontrolliert zurück auf den Boden",
+      "Wechsle nach jeder Wiederholung die Seite"
+    ],
+    "common_mistakes": [
+      "Druck mit dem hinteren Bein statt vollständig über das vordere Bein",
+      "Knie fällt nach innen",
+      "Oberkörper lehnt sich zu stark nach vorne",
+      "Die Box ist instabil oder zu hoch gewählt"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "10-15 per leg",
+    "met_value": 4.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Standweitsprung",
+    "name_english": "Broad Jump",
+    "aliases": [
+      "Standweitsprung"
+    ],
+    "description_german": "Explosiver Sprung nach vorne aus dem Stand, fokussiert auf maximale Weite.",
+    "exercise_type": "plyometric",
+    "difficulty_level": "advanced",
+    "movement_pattern": "hip_hinge",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 85
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 75
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 30
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [],
+    "setup_steps": [
+      "Stelle dich hüftbreit auf ebenen Untergrund",
+      "Spanne Rumpf und Gesäß leicht an",
+      "Halte den Blick nach vorne gerichtet"
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit hin und schwing die Arme nach hinten",
+      "Geh leicht in die Hocke und schwing die Arme explosiv nach vorne",
+      "Explodier in die maximale Weite nach vorne",
+      "Lande sanft mit leicht gebeugten Knien",
+      "Spann Rumpf und Gesäß über die gesamte Bewegung an"
+    ],
+    "common_mistakes": [
+      "Rumpf knickt beim Absprung ein",
+      "Landung mit durchgestreckten Knien",
+      "Arme nicht synchron eingesetzt"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "5-10",
+    "met_value": 8.0,
+    "muscle_fatigue_factor": 0.8,
+    "muscle_recovery_hours": 48,
+    "recovery_complexity": "very_high"
+  },
+  {
+    "name_german": "Bulgarischer Split Squat einbeinig",
+    "name_english": "Bulgarian Split Squat",
+    "aliases": [
+      "Bulgarischer Ausfallschritt einbeinig"
+    ],
+    "description_german": "Einbeinige Kniebeuge mit hinterem Fuß auf Bank ohne Zusatzgewicht.",
+    "exercise_type": "strength",
+    "difficulty_level": "advanced",
+    "movement_pattern": "squat",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "adductors",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": true,
+    "equipment_list": [
+      "Flache Bank"
+    ],
+    "setup_steps": [
+      "Positioniere eine flache Bank hinter dir",
+      "Stelle einen Fuß hüftbreit vor die Bank",
+      "Spanne Rumpf und Gesäß leicht an"
+    ],
+    "execution_steps": [
+      "Stell dich im Ausfallschritt vor eine Bank und leg den hinteren Fuß darauf ab",
+      "Verlagere dein Gewicht auf das vordere Bein und senk den Oberkörper kontrolliert ab",
+      "Beuge das vordere Knie, bis es etwa 90° erreicht",
+      "Drück dich über die Ferse zurück in den Stand",
+      "Halte während der Übung Oberkörper und Hüfte stabil"
+    ],
+    "common_mistakes": [
+      "Vorderes Knie fällt nach innen",
+      "Gewicht wandert auf die Zehen",
+      "Oberkörper kippt nach vorne"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "8-12",
+    "met_value": 6.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Bulgarischer Split Squat mit Kurzhanteln",
+    "name_english": "Bulgarian Split Squat with Dumbbells",
+    "aliases": [],
+    "description_german": "Einbeinige Kniebeuge mit Kurzhanteln für zusätzliches Widerstand.",
+    "exercise_type": "strength",
+    "difficulty_level": "advanced",
+    "movement_pattern": "squat",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 85
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 85
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 65
+      },
+      {
+        "muscle_group": "adductors",
+        "activation_percentage": 45
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 25
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": true,
+    "equipment_list": [
+      "Kurzhanteln",
+      "Flache Bank"
+    ],
+    "setup_steps": [
+      "Wähle passende Kurzhanteln und stelle sie griffbereit auf den Boden",
+      "Positioniere eine flache Bank hinter dir",
+      "Spanne Rumpf und Gesäß leicht an"
+    ],
+    "execution_steps": [
+      "Nimm in jede Hand eine Kurzhantel und stell dich vor eine Bank",
+      "Leg den hinteren Fuß auf die Bank und spann Rumpf und Gesäß an",
+      "Senke das vordere Bein kontrolliert, bis das Knie etwa 90° erreicht",
+      "Drück dich über die Ferse zurück in den Stand",
+      "Achte auf aufrechten Oberkörper und gleichmäßige Gewichtsverteilung"
+    ],
+    "common_mistakes": [
+      "Kurzhanteln werden zu weit unten gehalten",
+      "Vorderes Knie geht über die Fußspitze hinaus",
+      "Oberkörper neigt sich zur Seite"
+    ],
+    "volume_unit": "weight_reps",
+    "typical_rep_range": "6-10",
+    "met_value": 7.0,
+    "muscle_fatigue_factor": 0.6,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Bulgarischer Split Squat mit Langhantel",
+    "name_english": "Bulgarian Split Squat with Barbell",
+    "aliases": [
+      "Barbell Bulgarian Split Squat"
+    ],
+    "description_german": "Einbeinige Kniebeuge mit Langhantel auf den Schultern.",
+    "exercise_type": "strength",
+    "difficulty_level": "expert",
+    "movement_pattern": "squat",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 90
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 90
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "adductors",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 25
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": true,
+    "equipment_list": [
+      "Langhantel",
+      "Flache Bank"
+    ],
+    "setup_steps": [
+      "Positioniere Langhantel auf Kniehöhe im Squat-Rack",
+      "Greife die Langhantel etwas weiter als schulterbreit und lege sie auf den hinteren Schultern ab",
+      "Positioniere eine flache Bank hinter dir und spanne Rumpf sowie Gesäß an"
+    ],
+    "execution_steps": [
+      "Lade die Langhantel auf und positionier sie sicher im Nackenbereich",
+      "Stell dich im Ausfallschritt vor eine Bank und leg den hinteren Fuß darauf ab",
+      "Senke das vordere Bein kontrolliert, bis das Knie etwa 90° erreicht",
+      "Drück dich über die Ferse zurück in die Ausgangsposition",
+      "Halte Rumpf und Hüfte stabil und achte auf kontrollierte Bewegung"
+    ],
+    "common_mistakes": [
+      "Langhantel sitzt zu tief im Nacken",
+      "Knie kippt nach innen",
+      "Rumpf rotiert unter Last"
+    ],
+    "volume_unit": "weight_reps",
+    "typical_rep_range": "6-8",
+    "met_value": 7.0,
+    "muscle_fatigue_factor": 0.7,
+    "muscle_recovery_hours": 48,
+    "recovery_complexity": "high"
+  },
+  {
+    "name_german": "Burpee",
+    "name_english": "Burpee",
+    "aliases": [],
+    "description_german": "Ganzkörperübung mit Liegestütz und Strecksprung.",
+    "exercise_type": "plyometric",
+    "difficulty_level": "advanced",
+    "movement_pattern": "squat",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "chest",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 65
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 30
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [],
+    "setup_steps": [
+      "Stelle dich aufrecht hin und halte ausreichend Platz frei",
+      "Spanne Rumpf und Gesäß leicht an"
+    ],
+    "execution_steps": [
+      "Geh in die Hocke und platziere die Hände schulterbreit vor dir",
+      "Kick die Füße nach hinten in die Liegestützposition",
+      "Führe einen Liegestütz kontrolliert aus",
+      "Zieh die Füße zurück in die Hocke",
+      "Explodiere aus der Hocke heraus in einen Strecksprung"
+    ],
+    "common_mistakes": [
+      "Hüfte sackt im Liegestütz ab",
+      "Knöchel werden nicht stabilisiert",
+      "Keine vollständige Streckung im Sprung"
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "10-15",
+    "met_value": 8.0,
+    "muscle_fatigue_factor": 0.8,
+    "muscle_recovery_hours": 48,
+    "recovery_complexity": "very_high"
+  },
+  {
+    "name_german": "Wadenheben mit Körpergewicht",
+    "name_english": "Calf Raise Bodyweight",
+    "aliases": [
+      "Bodyweight Calf Raise"
+    ],
+    "description_german": "Fersenhebung an der Stufe ohne Zusatzgewicht",
+    "exercise_type": "strength",
+    "difficulty_level": "beginner",
+    "movement_pattern": "isometric",
+    "muscle_activations": [
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 90
+      },
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "Stufe"
+    ],
+    "setup_steps": [
+      "Stelle eine stabile Stufe auf ebenem Untergrund auf.",
+      "Positioniere dich so, dass deine Fußballen auf der Stufe ruhen und die Fersen frei hängen."
+    ],
+    "execution_steps": [
+      "Stell die Fußballen auf eine Stufe, Fersen über der Kante freihängen",
+      "Spann deinen Rumpf und zieh die Fußspitzen leicht zum Schienbein",
+      "Heb die Fersen langsam an, bis du so hoch wie möglich stehst",
+      "Senke die Fersen kontrolliert unter die Stufenkante",
+      "Spür die Dehnung in den Waden bei jeder Wiederkehr"
+    ],
+    "common_mistakes": [
+      "Fersen zu schnell hoch- und runterbewegen",
+      "Übermäßige Beugung der Knie",
+      "Nicht vollständiges Absenken der Fersen"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "12-20",
+    "met_value": 3.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Wadenheben mit Kurzhanteln",
+    "name_english": "Calf Raise with Dumbbells",
+    "aliases": [
+      "Dumbbell Calf Raise"
+    ],
+    "description_german": "Fersenhebung mit Zusatzgewicht an der Stufe",
+    "exercise_type": "strength",
+    "difficulty_level": "beginner",
+    "movement_pattern": "isometric",
+    "muscle_activations": [
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 90
+      },
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "Kurzhanteln",
+      "Stufe"
+    ],
+    "setup_steps": [
+      "Wähle passende Kurzhanteln und platziere sie sicher in den Händen.",
+      "Stelle deine Fußballen auf eine Stufe, sodass die Fersen frei hängen."
+    ],
+    "execution_steps": [
+      "Nimm in jede Hand eine Kurzhantel und stell dich mit den Fußballen auf eine Stufe",
+      "Spann Rumpf und zieh die Fußspitzen leicht zum Schienbein",
+      "Heb die Fersen langsam an, bis du maximal oben bist",
+      "Senke die Fersen kontrolliert unter die Stufenkante",
+      "Halte das Gewicht stabil und spür die Wadenarbeit"
+    ],
+    "common_mistakes": [
+      "Gewicht nicht kontrolliert geführt",
+      "Ruckartiges Bewegen ohne Kontrolle",
+      "Fersen nicht vollständig absenken"
+    ],
+    "volume_unit": "weight_reps",
+    "typical_rep_range": "8-15",
+    "met_value": 3.5,
+    "muscle_fatigue_factor": 0.6,
+    "muscle_recovery_hours": 18,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Wadenheben an der Maschine",
+    "name_english": "Calf Raise on Machine",
+    "aliases": [
+      "Machine Calf Raise"
+    ],
+    "description_german": "Fersenhebung an der Gym-Maschine für konstantes Widerstandsprofil",
+    "exercise_type": "strength",
+    "difficulty_level": "beginner",
+    "movement_pattern": "isometric",
+    "muscle_activations": [
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 90
+      },
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "Gym-Maschine"
+    ],
+    "setup_steps": [
+      "Einstellen der Polsterhöhe und Fußposition an der Maschine.",
+      "Positioniere deine Fußballen auf dem Fußpodest und die Schultern unter den Polstern."
+    ],
+    "execution_steps": [
+      "Stell dich mit den Fußballen auf das Fußpodest der Maschine",
+      "Positionier die Schultern unter den Polstern und spann den Rumpf",
+      "Heb die Fersen kontrolliert an, bis du völlig gestreckt bist",
+      "Senke die Fersen langsam ab, bis du Dehnung spürst",
+      "Behalte Haltung und Spannung über den gesamten Bewegungsablauf"
+    ],
+    "common_mistakes": [
+      "Schultern nicht korrekt unter den Polstern positioniert",
+      "Bewegungsgeschwindigkeit nicht kontrolliert"
+    ],
+    "volume_unit": "weight_reps",
+    "typical_rep_range": "10-15",
+    "met_value": 3.5,
+    "muscle_fatigue_factor": 0.6,
+    "muscle_recovery_hours": 18,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Handstand gegen die Wand",
+    "name_english": "Chest-to-Wall Handstand",
+    "aliases": [
+      "Wall Handstand",
+      "Chest-to-Wall Handstand"
+    ],
+    "description_german": "Umgekehrte Haltungsübung zur Schulter- und Rumpfstabilität",
+    "exercise_type": "stability",
+    "difficulty_level": "advanced",
+    "movement_pattern": "isometric",
+    "muscle_activations": [
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "shoulders_lateral",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "upper_traps",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 50
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "Wand"
+    ],
+    "setup_steps": [
+      "Wähle eine freie Wandfläche ohne Hindernisse.",
+      "Positioniere dich im Vierfüßlerstand mit einem Fußabstand von der Wand."
+    ],
+    "execution_steps": [
+      "Stell dich mit dem Gesicht zur Wand und geh in den Vierfüßlerstand",
+      "Platziere die Hände schulterbreit einen Fußabstand von der Wand",
+      "Tritt ein Bein an und das andere hinterher hoch, bis du gestreckt stehst",
+      "Drück die Schulterblätter nach oben und spür die Aktivierung im Rumpf",
+      "Halte Blick und Kinn leicht zur Brust und spann Beine und Gesäß an"
+    ],
+    "common_mistakes": [
+      "Hohlkreuzbildung durch mangelnde Rumpfspannung",
+      "Kopfposition zu weit nach hinten oder vorne",
+      "Unkontrolliertes Absenken der Hüfte"
+    ],
+    "volume_unit": "time_seconds",
+    "typical_rep_range": "30-60s",
+    "met_value": 4.0,
+    "muscle_fatigue_factor": 0.8,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "high"
+  },
+  {
+    "name_german": "Crab Walk",
+    "name_english": "Crab Walk",
+    "aliases": [
+      "Krabbelgang"
+    ],
+    "description_german": "Vorgebeugte Gehbewegung für Schulter- und Rumpfstabilität",
+    "exercise_type": "stability",
+    "difficulty_level": "beginner",
+    "movement_pattern": "carry",
+    "muscle_activations": [
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "shoulders_lateral",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 30
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [],
+    "setup_steps": [
+      "Setze dich mit gebeugten Knien auf den Boden und platziere die Hände hinter dir.",
+      "Heb das Becken an, bis dein Körper von Händen bis Knien eine Linie bildet."
+    ],
+    "execution_steps": [
+      "Setz dich mit gebeugten Knien auf den Boden und stell Hände hinter dir auf",
+      "Heb das Becken an, bis Körper von Händen bis Knien eine Linie bildet",
+      "Geh seitwärts in kleinen Schritten mit Händen und Füßen synchron",
+      "Halte Hüfte hoch und spann den Rumpf konstant",
+      "Behalte kontrollierte Schulterstellung und Blick nach vorne"
+    ],
+    "common_mistakes": [
+      "Hüfte hängt durch und verliert Höhe",
+      "Rumpf nicht stabil gehalten",
+      "Hände und Füße nicht synchron bewegt"
+    ],
+    "volume_unit": "distance_meters",
+    "typical_rep_range": "5-10",
+    "met_value": 4.0,
+    "muscle_fatigue_factor": 0.7,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Kreuz-Bergsteiger",
+    "name_english": "Cross-Body Mountain Climber",
+    "aliases": [
+      "Cross Body MC",
+      "Kreuz Mountain Climber"
+    ],
+    "description_german": "Dynamische Rumpfübung mit seitlicher Beinführung aus der Plank-Position",
+    "exercise_type": "strength",
+    "difficulty_level": "advanced",
+    "movement_pattern": "rotation",
+    "muscle_activations": [
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 85
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 75
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 30
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Gehe in die hohe Plank-Position mit gestreckten Armen",
+      "Spanne Rumpf und Gesäß an, um die Körperlinie stabil zu halten"
+    ],
+    "execution_steps": [
+      "Nimm die Liegestützposition ein und halte den Rumpf gerade",
+      "Ziehe abwechselnd das rechte Knie zur linken Schulter und zurück",
+      "Achte auf eine ruhige Hüftführung und ein enges Schulterblatt-Setting",
+      "Halte Rücken und Becken stabil ohne abzusinken oder hochzuziehen"
+    ],
+    "common_mistakes": [
+      "Hüften sinken oder heben sich quá stark",
+      "Rücken rund machen",
+      "Kopf absinken lassen",
+      "Unvollständige Beinführung"
+    ],
+    "volume_unit": "time_seconds",
+    "typical_rep_range": "30-60s",
+    "met_value": 6.0,
+    "muscle_fatigue_factor": 0.8,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Krähe",
+    "name_english": "Crow Pose",
+    "aliases": [
+      "Bakasana",
+      "Krähe Pose"
+    ],
+    "description_german": "Isometrische Arm-Balancierung in der Yogastellung Crow Pose",
+    "exercise_type": "stability",
+    "difficulty_level": "expert",
+    "movement_pattern": "isometric",
+    "muscle_activations": [
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "forearms",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Stelle dich vor eine Yogamatte und positioniere deine Hände schulterbreit auf dem Boden",
+      "Spreize die Finger und beuge die Ellenbogen leicht",
+      "Platziere die Knie an den Oberarmen"
+    ],
+    "execution_steps": [
+      "Stelle die Hände schulterbreit auf den Boden und spreize die Finger",
+      "Beuge die Ellenbogen leicht und drücke die Knie nach innen an die Oberarme",
+      "Verlagere das Körpergewicht langsam nach vorne und hebe die Füße an",
+      "Spanne Rumpf und Gesäß an, um die Balance auf den Händen zu halten"
+    ],
+    "common_mistakes": [
+      "Ellenbogen komplett durchdrücken",
+      "Hüfte zu hoch oder zu niedrig halten",
+      "Rumpf nicht ausreichend anspannen",
+      "Blick nicht nach vorne richten"
+    ],
+    "volume_unit": "time_seconds",
+    "typical_rep_range": "10-30s",
+    "met_value": 3.0,
+    "muscle_fatigue_factor": 0.6,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Curtsy Lunge",
+    "name_english": "Curtsy Lunge",
+    "aliases": [
+      "Curtsy Ausfallschritt",
+      "Kreuz-Lunge"
+    ],
+    "description_german": "Diagonaler Ausfallschritt nach hinten zur Stärkung von Quadrizeps, Gesäß und Adduktoren",
+    "exercise_type": "strength",
+    "difficulty_level": "advanced",
+    "movement_pattern": "squat",
+    "muscle_activations": [
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 85
+      },
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "adductors",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": true,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Stehe aufrecht mit hüftbreit auseinanderstehenden Füßen",
+      "Spanne den Rumpf an und halte die Brust aufrecht"
+    ],
+    "execution_steps": [
+      "Stehe aufrecht mit hüftbreit auseinander stehenden Füßen",
+      "Mache einen diagonalen Schritt nach hinten und kreuze das hintere Bein",
+      "Senke das vordere Knie ab, bis beide Oberschenkel parallel sind",
+      "Drücke dich über die Ferse des vorderen Fußes zurück in den Stand"
+    ],
+    "common_mistakes": [
+      "Oberkörper nach vorne lehnen",
+      "Hinteres Knie den Boden hart aufsetzen",
+      "Gewicht zu sehr auf Vorfuß verlagern",
+      "Knie des vorderen Beins über die Zehenspitzen hinaus schieben"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "8-12",
+    "met_value": 5.0,
+    "muscle_fatigue_factor": 0.7,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Decline Push-up",
+    "name_english": "Decline Push-up",
+    "aliases": [
+      "Decline Liegestütz",
+      "Schräger Liegestütz"
+    ],
+    "description_german": "Liegestütz mit erhöhten Füßen zur Betonung der oberen Brustmuskulatur",
+    "exercise_type": "strength",
+    "difficulty_level": "advanced",
+    "movement_pattern": "push_horizontal",
+    "muscle_activations": [
+      {
+        "muscle_group": "chest",
+        "activation_percentage": 85
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [
+      "bodyweight",
+      "elevated_surface"
+    ],
+    "setup_steps": [
+      "Platziere eine Bank oder Box hinter dir und lege die Füße darauf ab",
+      "Greife den Boden schulterbreit und positioniere den Körper in einer geraden Linie"
+    ],
+    "execution_steps": [
+      "Lege die Füße auf eine Bank oder Box und halte den Körper in einer Linie",
+      "Greife den Boden schulterbreit und spanne Rumpf und Gesäß",
+      "Senke den Oberkörper kontrolliert ab, bis die Brust fast den Boden berührt",
+      "Drücke dich explosiv zurück in die Ausgangsposition"
+    ],
+    "common_mistakes": [
+      "Ellbogen zu weit nach außen stellen",
+      "Hüften durchhängen lassen",
+      "Unvollständige Abwärtsbewegung",
+      "Kopf zu weit nach vorne strecken"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "8-15",
+    "met_value": 5.0,
+    "muscle_fatigue_factor": 0.75,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Diamond Push-up",
+    "name_english": "Diamond Push-up",
+    "aliases": [
+      "Diamond Liegestütz",
+      "Dreieck Push-up"
+    ],
+    "description_german": "Enge Liegestützvariante mit zusammengeführten Händen für Fokus auf Trizeps und Innenseite der Brust",
+    "exercise_type": "strength",
+    "difficulty_level": "advanced",
+    "movement_pattern": "push_horizontal",
+    "muscle_activations": [
+      {
+        "muscle_group": "triceps",
+        "activation_percentage": 85
+      },
+      {
+        "muscle_group": "chest",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": true,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Positioniere die Hände unter der Brust, Daumen und Zeigefinger formen ein Dreieck",
+      "Strecke die Beine und richte den Körper in einer geraden Linie aus"
+    ],
+    "execution_steps": [
+      "Positioniere die Hände unter der Brust, Daumen und Zeigefinger bilden ein Dreieck",
+      "Strecke die Beine und halte den Körper in gerader Linie",
+      "Senke den Oberkörper bewusst ab und halte die Ellbogen nah am Körper",
+      "Drücke dich fokussiert über die Trizepspartie wieder nach oben"
+    ],
+    "common_mistakes": [
+      "Ellbogen scheren nach außen",
+      "Griff zu eng oder zu breit",
+      "Rücken absacken lassen",
+      "Ungleichmäßige Kraftverteilung"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "8-12",
+    "met_value": 5.0,
+    "muscle_fatigue_factor": 0.8,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Donkey Kick",
+    "name_english": "Donkey Kick",
+    "aliases": [],
+    "description_german": "Hüftstreckung im Vierfüßlerstand zur Aktivierung des Gluteus maximus",
+    "exercise_type": "strength",
+    "difficulty_level": "beginner",
+    "movement_pattern": "hip_hinge",
+    "muscle_activations": [
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 90
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Begib dich in den Vierfüßlerstand auf Hände und Knie",
+      "Positioniere Hände unter den Schultern und Knie unter den Hüften",
+      "Halte den Rücken gerade und den Blick auf den Boden gerichtet"
+    ],
+    "execution_steps": [
+      "Gehe in den Vierfüßlerstand und halte die Hüfte stabil",
+      "Hebe ein Bein angewinkelt nach oben, bis die Fußsohle zur Decke zeigt",
+      "Spüre die Kontraktion im Gesäß und führe das Bein kontrolliert zurück",
+      "Wechsle erst nach Abschluss aller Wiederholungen die Seite"
+    ],
+    "common_mistakes": [
+      "Rundrücken oder Hohlkreuz im unteren Rücken",
+      "Becken kippt seitlich weg",
+      "Schwung statt kontrollierter Bewegung",
+      "Zu starkes Beugen oder Strecken im Knie"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "12-20",
+    "met_value": 3.5,
+    "muscle_fatigue_factor": 0.8,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Fire Hydrant",
+    "name_english": "Fire Hydrant",
+    "aliases": [],
+    "description_german": "Seitliche Hüftöffnung im Vierfüßlerstand zur Aktivierung des Gluteus medius",
+    "exercise_type": "strength",
+    "difficulty_level": "beginner",
+    "movement_pattern": "hip_hinge",
+    "muscle_activations": [
+      {
+        "muscle_group": "abductors",
+        "activation_percentage": 90
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Begib dich in den Vierfüßlerstand auf Hände und Knie",
+      "Positioniere Hände unter den Schultern und Knie unter den Hüften",
+      "Halte die Wirbelsäule neutral und spanne die Körpermitte an"
+    ],
+    "execution_steps": [
+      "Beginn im Vierfüßlerstand mit stabilen Schultern über den Händen",
+      "Hebe ein angewinkeltes Bein seitlich an, bis die Hüfte auf Höhe der Schulter ist",
+      "Halte die Wirbelsäule neutral und spüre die Aktivierung seitlich im Gesäß",
+      "Senke das Bein kontrolliert zurück, ohne das Becken zu drehen"
+    ],
+    "common_mistakes": [
+      "Drehen oder Kippen des Beckens",
+      "Überstrecken im unteren Rücken",
+      "Schwung statt kontrollierter Bewegung"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "12-20",
+    "met_value": 3.5,
+    "muscle_fatigue_factor": 0.8,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Flutter Kick",
+    "name_english": "Flutter Kick",
+    "aliases": [],
+    "description_german": "Abwechselndes Beinwippen zur Stärkung der Bauchmuskulatur und Hüftbeuger",
+    "exercise_type": "stability",
+    "difficulty_level": "beginner",
+    "movement_pattern": "anti_rotation",
+    "muscle_activations": [
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "hip_flexors",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Lege dich auf den Rücken und lege die Hände unter dem Gesäß ab",
+      "Hebe beide gestreckten Beine einige Zentimeter vom Boden ab",
+      "Spanne die Körpermitte an und halte den unteren Rücken am Boden"
+    ],
+    "execution_steps": [
+      "Lege dich auf den Rücken, Hände unter dem Gesäß ablegen",
+      "Hebe beide gestreckten Beine einige Zentimeter vom Boden ab",
+      "Wechsle abwechselnd das Heben und Senken der Beine in schnellen, kontrollierten Bewegungen",
+      "Halte den unteren Rücken fest am Boden, um eine Überstreckung zu vermeiden"
+    ],
+    "common_mistakes": [
+      "Hohlkreuz durch Abheben des unteren Rückens",
+      "Beine zu hoch anheben und Spannung verlieren",
+      "Zu schnelles und unkontrolliertes Wippen"
+    ],
+    "volume_unit": "time_seconds",
+    "typical_rep_range": "30-60s",
+    "met_value": 3.0,
+    "muscle_fatigue_factor": 0.6,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Ausfallschritt vorwärts",
+    "name_english": "Forward Lunge",
+    "aliases": [
+      "Lunge"
+    ],
+    "description_german": "Kontrollierter Schritt nach vorne zur Stärkung der Beinmuskulatur",
+    "exercise_type": "strength",
+    "difficulty_level": "beginner",
+    "movement_pattern": "lunge",
+    "muscle_activations": [
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 85
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": true,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Stehe aufrecht mit hüftbreit auseinanderstehenden Füßen",
+      "Spanne den Rumpf an und halte den Oberkörper aufrecht",
+      "Blicke geradeaus"
+    ],
+    "execution_steps": [
+      "Stehe aufrecht und mache einen großen Schritt nach vorne",
+      "Senke das hintere Knie kontrolliert ab, bis es knapp über dem Boden ist",
+      "Achte auf senkrechtes vorderes Schienbein und aufrechten Oberkörper",
+      "Drücke dich über die Ferse des vorderen Fußes wieder in den Stand zurück"
+    ],
+    "common_mistakes": [
+      "Vorderes Knie zu weit über die Fußspitze",
+      "Oberkörper nach vorne kippen",
+      "Becken seitlich abkippen"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "8-12",
+    "met_value": 5.0,
+    "muscle_fatigue_factor": 1.0,
+    "muscle_recovery_hours": 24,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Glute Bridge",
+    "name_english": "Glute Bridge",
+    "aliases": [
+      "Hip Bridge"
+    ],
+    "description_german": "Hüftheben in Rückenlage zur Aktivierung der Gesäßmuskulatur",
+    "exercise_type": "strength",
+    "difficulty_level": "beginner",
+    "movement_pattern": "hip_hinge",
+    "muscle_activations": [
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 90
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "transverse_abdominis",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Lege dich auf den Rücken und stelle die Füße hüftbreit auf",
+      "Lege die Arme entspannt neben den Körper",
+      "Spanne die Körpermitte an"
+    ],
+    "execution_steps": [
+      "Lege dich auf den Rücken, stelle die Füße hüftbreit auf",
+      "Drücke das Becken nach oben, bis Oberkörper und Oberschenkel eine Linie bilden",
+      "Spüre die Spannung im Gesäß und halte kurz die Position",
+      "Senke das Becken kontrolliert ab, ohne die Hüften komplett abzulegen"
+    ],
+    "common_mistakes": [
+      "Überstrecken der Lendenwirbelsäule",
+      "Füße zu weit vom Gesäß entfernt",
+      "Becken kippt nach vorne"
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "12-20",
+    "met_value": 3.5,
+    "muscle_fatigue_factor": 0.8,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
   }
 ]
