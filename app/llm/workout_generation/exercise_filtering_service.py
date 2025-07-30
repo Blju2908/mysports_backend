@@ -9,16 +9,23 @@ async def get_all_exercises_for_prompt(db_session: AsyncSession) -> str:
     If no session is provided, it returns a minimal, hardcoded list.
     """
     try:
-        # Lade alle Übungen aus DB
-        all_exercises = await db_session.scalars(select(ExerciseDescription).order_by(ExerciseDescription.name_german))
+        # Lade nur die benötigten Spalten, nicht das komplette Model
+        # Das umgeht das Problem mit der fehlenden 'aliases' Spalte
+        stmt = select(
+            ExerciseDescription.name_english,
+            ExerciseDescription.is_unilateral
+        ).order_by(ExerciseDescription.name_german)
+        
+        result = await db_session.execute(stmt)
+        exercises = result.all()
         
         # Namen mit unilateral Tag extrahieren und formatieren
         formatted_names = []
-        for ex in all_exercises:
-            if ex.name_english:
-                name = ex.name_english
+        for name_english, is_unilateral in exercises:
+            if name_english:
+                name = name_english
                 # Füge [unilateral] Tag hinzu wenn nötig
-                if ex.is_unilateral:
+                if is_unilateral:
                     name = f"{name} [unilateral]"
                 formatted_names.append(f"- {name}")
         
@@ -28,4 +35,4 @@ async def get_all_exercises_for_prompt(db_session: AsyncSession) -> str:
             
     except Exception as e:
         print(f"❌ Error loading exercises from database: {e}")
-        return "# Available Exercises\n\n- Push-up\n- Squat"
+        return "# Available Exercises\n\n- Push-up\n- Squat\n- Pull-up\n- Plank"

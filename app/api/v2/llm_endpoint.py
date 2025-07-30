@@ -15,36 +15,18 @@ from app.services.llm_logging_service import (
     log_operation_failed,
     OperationTimer,
 )
-from app.services.workout_service import get_latest_workouts_with_details
-
 from app.models.llm_call_log_model import LlmOperationStatus
 from app.models.workout_model import Workout
 from app.models.llm_call_log_model import LlmCallLog
-from app.models.training_plan_model import TrainingProfile
-from app.models.training_plan_model import TrainingPlan
 
 from app.llm.workout_revision.workout_revision_schemas import (
     WorkoutRevisionRequestSchema,
 )
 
 # Workout Generation Base Imports
-from app.llm.workout_generation_v1.utils.format_training_history_for_llm import (
-    format_training_history_for_llm,
-)
-from app.llm.workout_generation_v1.utils.format_training_plan_for_llm import (
-    format_training_plan_for_llm,
-)
-from app.llm.workout_generation_v1.utils.prepare_prompt import prepare_prompt
 from app.llm.workout_generation.workout_parser import (
     update_existing_workout_with_compact_data,
     update_existing_workout_with_revision_data,
-)
-from app.llm.workout_generation.workout_utils import summarize_training_history
-from app.llm.workout_generation.exercise_filtering_service import (
-    get_all_exercises_for_prompt,
-)
-from app.llm.workout_generation.workout_generation_chain_v2 import (
-    execute_workout_generation_sequence_v2,
 )
 
 
@@ -488,16 +470,14 @@ async def generate_workout_background(
     profile_id: int | None = None,
 ):
     """
-    ✅ REFACTORED: Background task for V2 workout generation.
-    Follows the clean architecture from test_workout_generation_v2.py:
-    1. Gathers all necessary data strings.
-    2. Calls the pure LLM chain function.
-    3. Parses the result into DB models.
-    4. Updates the placeholder workout in the database.
+    ✅ REFACTORED: Background task for V2 workout generation using shared service.
+    Uses workout_generation_service to eliminate code duplication.
     """
     logger.info(
         f"[generate_workout_background_v2] Starting for workout_id: {workout_id}"
     )
+
+    from app.llm.workout_generation.workout_generation_service import WorkoutGenerationInput, generate_workout_complete
 
     timer = OperationTimer()
     timer.start()
@@ -505,77 +485,23 @@ async def generate_workout_background(
     user_id_uuid = UUID(user_id)
 
     try:
-        # --- STEP 1: Gather all necessary data in one DB session ---
-        formatted_training_plan = None
-        summarized_history_str = None
-        exercise_library_str = ""
-        training_plan_id_for_saving = None
-
+        # --- STEP 1 & 2: Use shared service for data loading and LLM generation ---
+        input_data = WorkoutGenerationInput(
+            user_id=user_id_uuid,
+            user_prompt=request_data.prompt,
+            profile_id=profile_id,
+            session_duration=session_duration
+        )
+        
         async with create_session() as db:
-            logger.info("[generate_workout_background_v2] Loading user data from DB...")
-
-            ### Training Profile
-            environment_profile = await db.scalar(
-                select(TrainingProfile).where(TrainingProfile.id == profile_id)
+            logger.info("[generate_workout_background_v2] Using shared service for workout generation...")
+            
+            full_prompt, compact_workout_schema, generation_data = await generate_workout_complete(
+                db=db,
+                input_data=input_data
             )
-
-            ### TrainingPlan
-            training_goals = await db.scalar(
-                select(TrainingPlan).where(TrainingPlan.user_id == user_id_uuid)
-            )
-
-            # remove the session duration from the training_plan
-            if session_duration is not None and training_goals:
-                training_goals.session_duration = session_duration
-
-            # format the training plan for the LLM
-            if training_goals:
-                training_plan_id_for_saving = training_goals.id
-                formatted_training_plan = format_training_plan_for_llm(
-                    training_goals, environment_profile
-                )
-                logger.info(
-                    "[generate_workout_background_v2] Training plan loaded and formatted."
-                )
-
-            ### Training History
-            raw_training_history = await get_latest_workouts_with_details(
-                db=db, user_id=user_id_uuid, number_of_workouts=10
-            )
-            if raw_training_history:
-                summarized_history_str = summarize_training_history(
-                    raw_training_history
-                )
-                logger.info(
-                    "[generate_workout_background_v2] Training history loaded and summarized."
-                )
-
-            ### Exercise Library
-            exercise_library_str = await get_all_exercises_for_prompt(db)
-            logger.info(
-                f"[generate_workout_background_v2] Loaded {len(exercise_library_str.splitlines())} exercises."
-            )
-
-        logger.info(
-            "[generate_workout_background_v2] DB data gathering complete. Starting LLM generation..."
-        )
-
-        # Generate the prompt
-        prompt = prepare_prompt(
-            user_prompt=request_data.prompt,
-            training_goals=training_goals,
-            environment_profile=environment_profile,
-            training_history=summarized_history_str,
-            exercise_library=exercise_library_str,
-        )
-
-        # --- STEP 2: Execute LLM chain (no DB connection) ---
-        compact_workout_schema = await execute_workout_generation_sequence_v2(
-            training_plan_str=formatted_training_plan,
-            training_history_str=summarized_history_str,
-            user_prompt=request_data.prompt,
-            exercise_library_str=exercise_library_str,
-        )
+            
+            training_plan_id_for_saving = generation_data.training_plan_id
 
         logger.info(
             "[generate_workout_background_v2] LLM generation completed. Saving to DB..."

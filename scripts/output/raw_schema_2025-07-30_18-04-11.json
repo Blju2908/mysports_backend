@@ -1,0 +1,236 @@
+{
+  "muscle_group_load": [
+    "Beine: Moderat ermüdet von den letzten Ganzkörper-Workouts. Werden heute mit explosiven Kettlebell Swings und Goblet Squats beansprucht, was gut zur Performance-Orientierung passt, ohne zu überlasten.",
+    "Brust/Schultern/Trizeps (Push): Leicht ermüdet von der gestrigen Belastung. Push-ups werden diese Gruppe moderat beanspruchen.",
+    "Rücken/Bizeps (Pull): Leicht ermüdet von gestern. Pull-ups werden diese Gruppe erneut beanspruchen, was gut für das Muscle-Up-Ziel ist.",
+    "Core: Gut erholt und wird durch Kettlebell Swings, Goblet Squats, Push-ups, Pull-ups und Plank Hold intensiv beansprucht."
+  ],
+  "focus_derivation": "Heutiger Fokus: Funktionale Ganzkörperkraft, Explosivität und Rumpfstabilität, mit Betonung auf die Integration der Kettlebell und des Türrecks. Begründung: Nach den letzten Ganzkörper-Workouts sind die Muskelgruppen zwar leicht ermüdet, aber bereit für eine hochintensive, kurze Einheit, die die Leistung durch explosive Bewegungen (Kettlebell Swings) und grundlegende Kraftübungen (Pull-ups, Goblet Squats, Push-ups) weiter steigert. Dies zahlt direkt auf die Ziele wie Muscle-Ups, Marathonlauf und die allgemeine Grundfitness ein und nutzt optimal die verfügbaren Geräte in einem 20-minütigen Zeitfenster.",
+  "name": "Explosives Home-Workout mit Kettlebell und Türreck",
+  "duration_min": 20,
+  "focus": "Funktionelle Kraft, Explosivität, Ausdauer",
+  "description": "Ein kurzes, aber intensives Ganzkörper-Workout, das funktionelle Kraft, explosive Bewegungen und Ausdauer durch den Einsatz von Kettlebell und Türreck fördert, um die Leistung zu steigern und die Grundfitness zu optimieren.",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "duration_min": 4,
+      "description": "Vorbereitung des Körpers auf die intensive Belastung.",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "r": 15,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Squat",
+          "sets": [
+            {
+              "r": 15,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        }
+      ]
+    },
+    {
+      "name": "Main Performance Circuit",
+      "duration_min": 14,
+      "description": "Hochintensiver Zirkel zur Steigerung von Kraft und Ausdauer.",
+      "exercises": [
+        {
+          "name": "Kettlebell Swing",
+          "sets": [
+            {
+              "r": 15,
+              "w": 24.0,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 15,
+              "w": 24.0,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 15,
+              "w": 24.0,
+              "s": null,
+              "d": null,
+              "p": 0
+            }
+          ],
+          "superset_group": "A"
+        },
+        {
+          "name": "Pull-up",
+          "sets": [
+            {
+              "r": 5,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 5,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 5,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 0
+            }
+          ],
+          "superset_group": "A"
+        },
+        {
+          "name": "Goblet Squat",
+          "sets": [
+            {
+              "r": 10,
+              "w": 24.0,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 10,
+              "w": 24.0,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 10,
+              "w": 24.0,
+              "s": null,
+              "d": null,
+              "p": 0
+            }
+          ],
+          "superset_group": "A"
+        },
+        {
+          "name": "Push-up",
+          "sets": [
+            {
+              "r": 15,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 15,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 15,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 0
+            }
+          ],
+          "superset_group": "A"
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 45,
+              "d": null,
+              "p": 90
+            },
+            {
+              "r": null,
+              "w": null,
+              "s": 45,
+              "d": null,
+              "p": 90
+            },
+            {
+              "r": null,
+              "w": null,
+              "s": 45,
+              "d": null,
+              "p": 90
+            }
+          ],
+          "superset_group": "A"
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down",
+      "duration_min": 2,
+      "description": "Dehnung zur Förderung der Regeneration.",
+      "exercises": [
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Doorway Pec Stretch",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 30,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        }
+      ]
+    }
+  ]
+}
