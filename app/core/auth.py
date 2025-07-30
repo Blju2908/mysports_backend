@@ -8,7 +8,7 @@ from datetime import datetime
 import time
 import logging
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login-form")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/v2/auth/login-form")
 
 logger = logging.getLogger("auth")
 
@@ -65,7 +65,7 @@ async def get_current_user_optional(request: Request) -> Optional[User]:
         if not authorization or not authorization.startswith("Bearer "):
             return None
         
-        token = authorization.split(" ")[1]
+        token = authorization.split("")[1]
         
         # ✅ WICHTIG: use_service_role=True auch hier
         supabase = await get_supabase_client(use_service_role=True)

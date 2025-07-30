@@ -8,12 +8,12 @@ from app.models.training_plan_model import TrainingPlan
 from sqlmodel import select
 from app.llm.workout_generation.create_workout_service import format_training_plan_for_llm
 from app.llm.workout_generation.workout_utils import summarize_training_history
-from app.db.workout_db_access import get_training_history_for_user_from_db
 from app.llm.workout_generation.exercise_filtering_service import get_all_exercises_for_prompt
 from app.llm.workout_generation.workout_parser import parse_compact_workout_to_db_models
 from app.llm.utils.db_utils import DatabaseManager
 from sqlalchemy.orm import selectinload
 import logging
+from app.services.workout_service import get_latest_workouts_with_details
 
 logger = logging.getLogger("workout_revision_service")
 
@@ -173,9 +173,8 @@ async def revise_workout_background_v2(
     from app.services.llm_logging_service import log_operation_success, log_operation_failed, OperationTimer
     from app.models.training_plan_model import TrainingPlan
     from sqlalchemy import select
-    from app.db.session import get_background_session
+    from app.db.session import create_session
     from app.llm.workout_generation.workout_utils import summarize_training_history
-    from app.db.workout_db_access import get_training_history_for_user_from_db
     from app.llm.workout_generation.exercise_filtering_service import get_all_exercises_for_prompt
     from app.llm.workout_generation.create_workout_service import format_training_plan_for_llm
     from .workout_revision_chain import execute_workout_revision_sequence_v2
@@ -194,8 +193,8 @@ async def revise_workout_background_v2(
         existing_workout_dict = None
         training_plan_id_for_saving = None
 
-        async with get_background_session() as db:
-            logger.info("[revise_workout_background_v2] Loading data from DB...")
+        async with create_session() as db:
+            logger.info(f"[revise_workout_background_v2] Loading workout {workout_id} for revision...")
 
             # Load existing workout
             existing_workout_obj = await get_workout_details(
@@ -214,8 +213,8 @@ async def revise_workout_background_v2(
                 logger.info("[revise_workout_background_v2] Training plan loaded and formatted.")
 
             # Load, summarize, and format Training History (same as workout generation)
-            raw_training_history = await get_training_history_for_user_from_db(
-                user_id_uuid, db, limit=10
+            raw_training_history = await get_latest_workouts_with_details(
+                db=db, user_id=user_id_uuid, number_of_workouts=10
             )
             if raw_training_history:
                 summarized_history_str = summarize_training_history(raw_training_history)
@@ -253,7 +252,7 @@ async def revise_workout_background_v2(
         logger.info("[revise_workout_background_v2] Parsed workout. Saving to DB...")
 
         # --- STEP 4: Store revision as JSON instead of direct update ---
-        async with get_background_session() as save_db:
+        async with create_session() as save_db:
             # Load the original workout
             stmt = select(Workout).where(Workout.id == workout_id)
             result = await save_db.execute(stmt)
@@ -270,7 +269,7 @@ async def revise_workout_background_v2(
             logger.info(f"[revise_workout_background_v2] Revised workout stored as JSON for workout {workout_id}.")
 
         # --- STEP 5: Log success (EXACT same as workout generation) ---
-        async with get_background_session() as log_db:
+        async with create_session() as log_db:
             await log_operation_success(
                 db=log_db,
                 log_id=log_id,
@@ -283,7 +282,7 @@ async def revise_workout_background_v2(
         logger.error(f"[revise_workout_background_v2] Error: {e}", exc_info=True)
         # Log failure in a separate session (EXACT same as workout generation)
         try:
-            async with get_background_session() as error_db:
+            async with create_session() as error_db:
                 await log_operation_failed(
                     db=error_db,
                     log_id=log_id,

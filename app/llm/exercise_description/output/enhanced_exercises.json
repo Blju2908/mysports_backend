@@ -1,0 +1,277 @@
+[
+  {
+    "name_german": "Ankle Bounces",
+    "name_english": "Ankle Bounces",
+    "aliases": [
+      "Ankle Hops",
+      "Knöchel-Federn"
+    ],
+    "description_german": "Federnde Sprünge zur Mobilisierung der Fußgelenke",
+    "exercise_type": "mobility",
+    "difficulty_level": "beginner",
+    "movement_pattern": "squat",
+    "muscle_activations": [
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 80
+      },
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 20
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 10
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Stelle dich schulterbreit hin und beuge die Knie leicht."
+    ],
+    "execution_steps": [
+      "Stell dich schulterbreit hin und beuge die Knie leicht.",
+      "Push dich federnd über die Zehen nach oben und lasse die Fersen wieder sanft auf dem Boden aufkommen.",
+      "Halte den Rumpf aufrecht und spüre die Aktivierung der Waden und Fußgelenke.",
+      "Land weich, um die Gelenke zu schonen."
+    ],
+    "common_mistakes": [
+      "Knie vollständig durchstrecken statt leicht gebeugt.",
+      "Har­te Landung ohne Federung.",
+      "Rumpf verlagert nach vorn oder hinten."
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "15-20",
+    "met_value": 3.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Armkreisen",
+    "name_english": "Arm Circles",
+    "aliases": [
+      "Arm Rotations",
+      "Schulterkreisen"
+    ],
+    "description_german": "Kreisende Armbewegungen zur Schulteraktivierung",
+    "exercise_type": "mobility",
+    "difficulty_level": "beginner",
+    "movement_pattern": "rotation",
+    "muscle_activations": [
+      {
+        "muscle_group": "shoulders_anterior",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "shoulders_lateral",
+        "activation_percentage": 60
+      },
+      {
+        "muscle_group": "shoulders_posterior",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "upper_traps",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Stell dich aufrecht hin und hebe die Arme seitlich auf Schulterhöhe."
+    ],
+    "execution_steps": [
+      "Stell dich aufrecht hin und hebe die Arme seitlich auf Schulterhöhe.",
+      "Halte die Arme gestreckt und beginne mit kleinen, kontrollierten Kreisbewegungen vorwärts.",
+      "Vergrößere nach einigen Kreisen langsam den Radius und wechsle dann die Richtung.",
+      "Lass die Schultern entspannt, um Verspannungen zu vermeiden."
+    ],
+    "common_mistakes": [
+      "Schultern hochziehen statt entspannt lassen.",
+      "Zu große, unkontrollierte Kreise.",
+      "Rücken wölbt sich oder verspannt sich."
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "20-30",
+    "met_value": 2.0,
+    "muscle_fatigue_factor": 0.3,
+    "muscle_recovery_hours": 6,
+    "recovery_complexity": "low"
+  },
+  {
+    "name_german": "Bird Dog Reach",
+    "name_english": "Bird Dog Reach",
+    "aliases": [
+      "Bird Dog",
+      "Quadruped Reach"
+    ],
+    "description_german": "Stabilitätsübung im Vierfüßler mit entgegengesetztem Arm und Bein",
+    "exercise_type": "stability",
+    "difficulty_level": "beginner",
+    "movement_pattern": "isometric",
+    "muscle_activations": [
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 40
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": true,
+    "is_compound": true,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Komme in den Vierfüßlerstand, Hände unter den Schultern, Knie unter den Hüften."
+    ],
+    "execution_steps": [
+      "Komme in den Vierfüßlerstand, Hände unter den Schultern, Knie unter den Hüften.",
+      "Spanne den Rumpf an und strecke diagonal einen Arm nach vorn und das gegenüberliegende Bein nach hinten.",
+      "Halte die Hüfte stabil, ohne dass sie seitlich kippt.",
+      "Führe die Arme und Beine kontrolliert zurück und wechsle die Seite."
+    ],
+    "common_mistakes": [
+      "Hüfte kippt seitlich statt stabil zu bleiben.",
+      "Rücken überstreckt oder absackt.",
+      "Bewegung zu schnell ausgeführt, ohne Kontrolle."
+    ],
+    "volume_unit": "bodyweight_reps",
+    "typical_rep_range": "8-12",
+    "met_value": 3.0,
+    "muscle_fatigue_factor": 0.5,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Butt Kicks",
+    "name_english": "Butt Kicks",
+    "aliases": [
+      "Fersenlauf",
+      "Butt Kicks Drill"
+    ],
+    "description_german": "Joggingbewegung mit Fersen zum Gesäß",
+    "exercise_type": "cardio",
+    "difficulty_level": "beginner",
+    "movement_pattern": "locomotion",
+    "muscle_activations": [
+      {
+        "muscle_group": "hamstrings",
+        "activation_percentage": 70
+      },
+      {
+        "muscle_group": "glutes",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "calves",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "quadriceps",
+        "activation_percentage": 20
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Stell dich hüftbreit hin und lockere den Oberkörper."
+    ],
+    "execution_steps": [
+      "Stell dich hüftbreit und lockere den Oberkörper.",
+      "Führe einen leichten Joggingschritt aus und ziehe dabei die Ferse abwechselnd zum Gesäß.",
+      "Halte die Schritte federnd und das Tempo konstant.",
+      "Spüre die Aktivierung der hinteren Oberschenkel und des Gesäßes."
+    ],
+    "common_mistakes": [
+      "Oberkörper steif statt locker schwingen.",
+      "Zu große Schritte, dadurch Ungleichgewicht.",
+      "Fersen werden nicht ausreichend Richtung Gesäß gezogen."
+    ],
+    "volume_unit": "time_seconds",
+    "typical_rep_range": "30-60s",
+    "met_value": 6.0,
+    "muscle_fatigue_factor": 0.6,
+    "muscle_recovery_hours": 12,
+    "recovery_complexity": "moderate"
+  },
+  {
+    "name_german": "Cat-Cow Flow",
+    "name_english": "Cat-Cow Flow",
+    "aliases": [
+      "Cat Cow",
+      "Rückenmobilisation"
+    ],
+    "description_german": "Wechselnde Rückenbeugung und -streckung im Vierfüßler",
+    "exercise_type": "mobility",
+    "difficulty_level": "beginner",
+    "movement_pattern": "rotation",
+    "muscle_activations": [
+      {
+        "muscle_group": "erector_spinae",
+        "activation_percentage": 50
+      },
+      {
+        "muscle_group": "rectus_abdominis",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "obliques",
+        "activation_percentage": 30
+      },
+      {
+        "muscle_group": "lower_traps",
+        "activation_percentage": 10
+      }
+    ],
+    "is_unilateral": false,
+    "is_compound": false,
+    "equipment_list": [
+      "bodyweight"
+    ],
+    "setup_steps": [
+      "Begib dich in den Vierfüßlerstand, Hände unter den Schultern, Knie unter den Hüften."
+    ],
+    "execution_steps": [
+      "Begib dich in den Vierfüßlerstand, Hände unter den Schultern.",
+      "Runde beim Einatmen den Rücken nach oben und ziehe das Kinn zur Brust (Cat).",
+      "Senke beim Ausatmen den Rücken durch, hebe Brust und Blick an (Cow).",
+      "Fließe langsam und kontrolliert zwischen den beiden Positionen."
+    ],
+    "common_mistakes": [
+      "Ausführung zu hastig statt kontrolliert fließen.",
+      "Ziehen am Nacken statt Fokus auf Wirbelsäule.",
+      "Hüfte bleibt statisch statt in Bewegung."
+    ],
+    "volume_unit": "reps_only",
+    "typical_rep_range": "8-10",
+    "met_value": 1.5,
+    "muscle_fatigue_factor": 0.2,
+    "muscle_recovery_hours": 6,
+    "recovery_complexity": "low"
+  }
+]

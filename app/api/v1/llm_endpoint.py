@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Request, BackgroundTasks
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
+from app.db.session import create_session
 from app.models.llm_call_log_model import LlmOperationStatus
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,11 +11,11 @@ from app.models.llm_call_log_model import LlmCallLog
 from app.llm.workout_revision.workout_revision_schemas import (
     WorkoutRevisionRequestSchema,
 )
-# from app.llm.workout_revision.workout_revision_service import run_workout_revision_chain
 from uuid import UUID
 import logging
 from sqlalchemy.orm import selectinload
 from app.llm.workout_generation.workout_parser import update_existing_workout_with_compact_data, update_existing_workout_with_revision_data
+from app.services.workout_service import get_latest_workouts_with_details
 
 
 router = APIRouter()
@@ -428,11 +429,9 @@ async def generate_workout_background(
     from sqlalchemy import select
     from app.llm.workout_generation.create_workout_service import format_training_plan_for_llm
     from app.llm.workout_generation.workout_utils import summarize_training_history
-    from app.db.workout_db_access import get_training_history_for_user_from_db
     from app.llm.workout_generation.exercise_filtering_service import get_all_exercises_for_prompt
     from app.llm.workout_generation.workout_generation_chain_v2 import execute_workout_generation_sequence_v2
     from app.llm.workout_generation.workout_parser import parse_compact_workout_to_db_models
-    from app.db.session import get_background_session
     from sqlalchemy.orm import selectinload
 
     timer = OperationTimer()
@@ -447,7 +446,7 @@ async def generate_workout_background(
         exercise_library_str = ""
         training_plan_id_for_saving = None
 
-        async with get_background_session() as db:
+        async with create_session() as db:
             logger.info("[generate_workout_background_v2] Loading user data from DB...")
 
             # Load and format TrainingPlan
@@ -460,8 +459,8 @@ async def generate_workout_background(
                 logger.info("[generate_workout_background_v2] Training plan loaded and formatted.")
 
             # Load, summarize, and format Training History
-            raw_training_history = await get_training_history_for_user_from_db(
-                user_id_uuid, db, limit=10
+            raw_training_history = await get_latest_workouts_with_details(
+                db=db, user_id=user_id_uuid, number_of_workouts=10
             )
             if raw_training_history:
                 summarized_history_str = summarize_training_history(raw_training_history)
@@ -484,7 +483,7 @@ async def generate_workout_background(
         logger.info("[generate_workout_background_v2] LLM generation completed. Saving to DB...")
 
         # --- STEP 3: Parse and save results to the DB ---
-        async with get_background_session() as save_db:
+        async with create_session() as save_db:
             # Load the placeholder workout eagerly
             stmt = select(Workout).options(
                 selectinload(Workout.blocks).selectinload('*')
@@ -513,7 +512,7 @@ async def generate_workout_background(
             logger.info(f"[generate_workout_background_v2] Workout {workout_id} successfully updated.")
 
         # --- STEP 4: Log success ---
-        async with get_background_session() as log_db:
+        async with create_session() as log_db:
             await log_operation_success(
                 db=log_db,
                 log_id=log_id,
@@ -526,7 +525,7 @@ async def generate_workout_background(
         logger.error(f"[generate_workout_background_v2] Error: {e}", exc_info=True)
         # Log failure in a separate session
         try:
-            async with get_background_session() as error_db:
+            async with create_session() as error_db:
                 await log_operation_failed(
                     db=error_db,
                     log_id=log_id,

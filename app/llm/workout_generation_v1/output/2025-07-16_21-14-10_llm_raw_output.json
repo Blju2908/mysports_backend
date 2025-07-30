@@ -1,0 +1,379 @@
+{
+  "muscle_group_load": [
+    "Beine: Stark ermüdet nach dem langen Lauf am 11.07.2025 und dem Hyrox-Workout am 03.07.2025. Benötigen weiterhin Regeneration.",
+    "Rücken/Bizeps (Pull): Vollständig erholt nach dem letzten Pull-Training am 04.07.2025 und bereit für intensive Belastung.",
+    "Brust/Schultern/Trizeps (Push): Leicht ermüdet nach dem Push-Workout am 11.07.2025. Vordere Schulter und Trizeps sollten heute geschont werden, hintere Schulter kann beansprucht werden (z.B. Face Pulls).",
+    "Core: Vollständig erholt und bereit für Training."
+  ],
+  "focus_derivation": "Heutiger Fokus: Rücken, Bizeps und Rumpf. Begründung: Um den Beinen und der Brustmuskulatur nach den jüngsten Belastungen ausreichend Erholungszeit zu geben, konzentriert sich das heutige Training auf die erholten Zugmuskeln und den Rumpf. Dies unterstützt zudem das Ziel, die funktionelle Kraft für Übungen wie Muscle Ups zu steigern.",
+  "name": "Kraftaufbau Pull-Workout für funktionelle Stärke",
+  "duration_min": 60,
+  "focus": "Kraft, Muskelaufbau, Funktionelle Stärke",
+  "description": "Ein fokussiertes Pull-Workout zur Steigerung der Kraft und des Muskelaufbaus im Rücken und Bizeps, mit einem besonderen Augenmerk auf die Entwicklung der für funktionelle Übungen notwendigen Zugkraft und Rumpfstabilität.",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "duration_min": 8,
+      "description": "Allgemeine Erwärmung und Aktivierung der Schulter- und Rückenmuskulatur.",
+      "exercises": [
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "r": 15,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": null
+            },
+            {
+              "r": 15,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Shoulder Pass-Through with Resistance Band",
+          "sets": [
+            {
+              "r": 12,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": null
+            },
+            {
+              "r": 12,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Band Pull-Aparts",
+          "sets": [
+            {
+              "r": 15,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": null
+            },
+            {
+              "r": 15,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        }
+      ]
+    },
+    {
+      "name": "Main",
+      "duration_min": 47,
+      "description": "Hauptteil mit Fokus auf Kraft- und Muskelaufbau für Rücken und Bizeps, inklusive Rumpfstabilisation.",
+      "exercises": [
+        {
+          "name": "Pull-up",
+          "sets": [
+            {
+              "r": 7,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 120
+            },
+            {
+              "r": 7,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 120
+            },
+            {
+              "r": 6,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 120
+            },
+            {
+              "r": 6,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 120
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Barbell Bent Over Row",
+          "sets": [
+            {
+              "r": 8,
+              "w": 72.5,
+              "s": null,
+              "d": null,
+              "p": 90
+            },
+            {
+              "r": 8,
+              "w": 72.5,
+              "s": null,
+              "d": null,
+              "p": 90
+            },
+            {
+              "r": 8,
+              "w": 72.5,
+              "s": null,
+              "d": null,
+              "p": 90
+            },
+            {
+              "r": 8,
+              "w": 72.5,
+              "s": null,
+              "d": null,
+              "p": 90
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Single-Arm Dumbbell Row (rechts)",
+          "sets": [
+            {
+              "r": 10,
+              "w": 32.5,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 10,
+              "w": 32.5,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 10,
+              "w": 32.5,
+              "s": null,
+              "d": null,
+              "p": 60
+            }
+          ],
+          "superset_group": "A"
+        },
+        {
+          "name": "Single-Arm Dumbbell Row (links)",
+          "sets": [
+            {
+              "r": 10,
+              "w": 32.5,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 10,
+              "w": 32.5,
+              "s": null,
+              "d": null,
+              "p": 0
+            },
+            {
+              "r": 10,
+              "w": 32.5,
+              "s": null,
+              "d": null,
+              "p": 60
+            }
+          ],
+          "superset_group": "A"
+        },
+        {
+          "name": "Face Pull",
+          "sets": [
+            {
+              "r": 12,
+              "w": 25.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 12,
+              "w": 25.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 12,
+              "w": 25.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Barbell Curl",
+          "sets": [
+            {
+              "r": 10,
+              "w": 40.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 10,
+              "w": 40.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 10,
+              "w": 40.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Hammer Curl with Dumbbells",
+          "sets": [
+            {
+              "r": 12,
+              "w": 12.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 12,
+              "w": 12.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 12,
+              "w": 12.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": 60
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Russian Twist",
+          "sets": [
+            {
+              "r": 20,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 20,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 20,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 60
+            }
+          ],
+          "superset_group": null
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down",
+      "duration_min": 5,
+      "description": "Dehnung zur Förderung der Flexibilität und Erholung der beanspruchten Muskulatur.",
+      "exercises": [
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "r": 10,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        }
+      ]
+    }
+  ]
+}

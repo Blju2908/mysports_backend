@@ -1,5 +1,6 @@
 from sqlmodel.ext.asyncio.session import AsyncSession
-from app.db.exercise_description_db_access import get_all_exercise_names
+from sqlmodel import select
+from app.models.exercise_description_model import ExerciseDescription
 
 
 async def get_all_exercises_for_prompt(db_session: AsyncSession) -> str:
@@ -9,7 +10,7 @@ async def get_all_exercises_for_prompt(db_session: AsyncSession) -> str:
     """
     try:
         # Lade alle Übungen aus DB
-        all_exercises = await get_all_exercise_names(db_session)
+        all_exercises = await db_session.scalars(select(ExerciseDescription).order_by(ExerciseDescription.name_german))
         
         # Namen mit unilateral Tag extrahieren und formatieren
         formatted_names = []

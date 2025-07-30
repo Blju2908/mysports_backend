@@ -1,0 +1,356 @@
+{
+  "muscle_group_load": [
+    "Beine: Stark ermüdet von intensiven Einheiten und Radtouren. Aktive Belastung mit Fokus auf Regeneration und Technik.",
+    "Rücken/Bizeps (Pull): Ermüdet von den letzten Trainingseinheiten. Moderate Belastung zur Aufrechterhaltung der Frequenz.",
+    "Brust/Schultern/Trizeps (Push): Stark ermüdet vom gestrigen Training. Moderate Belastung zur Aufrechterhaltung der Frequenz.",
+    "Core: Vollständig erholt, kann moderat trainiert werden."
+  ],
+  "focus_derivation": "Heutiger Fokus: Ganzkörper-Kraftausdauer und Mobilität. Begründung: Nach mehreren aufeinanderfolgenden intensiven Trainingstagen und Radtouren ist es entscheidend, dem Körper eine aktive Erholung zu ermöglichen. Dieses Workout fördert die Kraftausdauer, verbessert gezielt die Hüftmobilität (unter Berücksichtigung der Knie-Einschränkung) und schont die stark beanspruchten Muskelgruppen, während es die allgemeine Fitness aufrechterhält.",
+  "name": "Ganzkörper-Revitalisierung mit Mobilitätsfokus",
+  "duration_min": 60,
+  "focus": "Kraftausdauer, Aktive Erholung, Mobilität",
+  "description": "Ein ausgewogenes Ganzkörper-Workout, das auf die Erhaltung von Kraft und Muskelmasse abzielt, während es dem Körper nach intensiven Trainingstagen aktive Erholung bietet. Besonderes Augenmerk liegt auf der Verbesserung der Hüftmobilität und der Schonung des Knies.",
+  "blocks": [
+    {
+      "name": "Warm-Up",
+      "duration_min": 10,
+      "description": "Allgemeine Erwärmung und Aktivierung der Gelenke und Muskulatur, mit besonderem Fokus auf die Hüftmobilität.",
+      "exercises": [
+        {
+          "name": "Jumping Jacks",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Arm Circles",
+          "sets": [
+            {
+              "r": 15,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "90/90 Hip Switch",
+          "sets": [
+            {
+              "r": 12,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 15
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "World's Greatest Hip Opener links",
+          "sets": [
+            {
+              "r": 6,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 15
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "World's Greatest Hip Opener rechts",
+          "sets": [
+            {
+              "r": 6,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 15
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Cat-Cow Flow",
+          "sets": [
+            {
+              "r": 10,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 15
+            }
+          ],
+          "superset_group": null
+        }
+      ]
+    },
+    {
+      "name": "Main",
+      "duration_min": 45,
+      "description": "Hauptteil des Trainings mit Fokus auf Kraftausdauer und Muskelaufbau für den gesamten Körper, angepasst an den Erholungsstatus.",
+      "exercises": [
+        {
+          "name": "Leg Press",
+          "sets": [
+            {
+              "r": 15,
+              "w": 60.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 12,
+              "w": 80.0,
+              "s": null,
+              "d": null,
+              "p": 90
+            },
+            {
+              "r": 12,
+              "w": 100.0,
+              "s": null,
+              "d": null,
+              "p": 120
+            },
+            {
+              "r": 12,
+              "w": 100.0,
+              "s": null,
+              "d": null,
+              "p": 120
+            },
+            {
+              "r": 10,
+              "w": 105.0,
+              "s": null,
+              "d": null,
+              "p": 120
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Lat Pulldown",
+          "sets": [
+            {
+              "r": 15,
+              "w": 40.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 12,
+              "w": 55.0,
+              "s": null,
+              "d": null,
+              "p": 90
+            },
+            {
+              "r": 12,
+              "w": 55.0,
+              "s": null,
+              "d": null,
+              "p": 90
+            },
+            {
+              "r": 10,
+              "w": 60.0,
+              "s": null,
+              "d": null,
+              "p": 90
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Dumbbell Bench Press",
+          "sets": [
+            {
+              "r": 15,
+              "w": 18.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 12,
+              "w": 26.0,
+              "s": null,
+              "d": null,
+              "p": 90
+            },
+            {
+              "r": 12,
+              "w": 26.0,
+              "s": null,
+              "d": null,
+              "p": 90
+            },
+            {
+              "r": 10,
+              "w": 28.0,
+              "s": null,
+              "d": null,
+              "p": 90
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Face Pull",
+          "sets": [
+            {
+              "r": 15,
+              "w": 20.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 15,
+              "w": 20.0,
+              "s": null,
+              "d": null,
+              "p": 60
+            },
+            {
+              "r": 12,
+              "w": 22.5,
+              "s": null,
+              "d": null,
+              "p": 60
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Glute Bridge",
+          "sets": [
+            {
+              "r": 20,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 45
+            },
+            {
+              "r": 20,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 45
+            },
+            {
+              "r": 20,
+              "w": null,
+              "s": null,
+              "d": null,
+              "p": 45
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Plank Hold",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": 45
+            },
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": 45
+            },
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": 45
+            }
+          ],
+          "superset_group": null
+        }
+      ]
+    },
+    {
+      "name": "Cool-Down",
+      "duration_min": 5,
+      "description": "Dehnung der beanspruchten Muskulatur und Förderung der Flexibilität, insbesondere der Hüfte.",
+      "exercises": [
+        {
+          "name": "Child's Pose",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Hamstring Stretch (Standing) links",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 45,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Hamstring Stretch (Standing) rechts",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 45,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        },
+        {
+          "name": "Butterfly Stretch",
+          "sets": [
+            {
+              "r": null,
+              "w": null,
+              "s": 60,
+              "d": null,
+              "p": null
+            }
+          ],
+          "superset_group": null
+        }
+      ]
+    }
+  ]
+}

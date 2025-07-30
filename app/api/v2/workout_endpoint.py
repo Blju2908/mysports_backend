@@ -3,9 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, case
 from typing import List, Optional
 from sqlalchemy.orm import selectinload
-from datetime import datetime
+from datetime import datetime, timezone
 from pydantic import BaseModel, Field, field_validator
 from uuid import UUID
+import os
+import json
 
 from app.models.workout_model import Workout
 from app.models.block_model import Block
@@ -20,12 +22,13 @@ from app.schemas.workout_schema import (
     BlockInput,
     SetRead,
     SetUpdate,
-    WorkoutStatusEnum
+    WorkoutStatusEnum,
+    ExerciseRead
 )
 
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
-
+from app.services.workout_service import get_latest_workouts_with_details, get_exercises_with_done_sets_only
 
 # --- API Specific Request Payloads ---
 
@@ -123,6 +126,47 @@ async def get_user_workouts(
         workouts.append(WorkoutListRead(**workout_dict))
 
     return workouts
+
+
+@router.get("/latest-workouts", response_model=List[WorkoutWithBlocksRead])
+async def get_latest_workouts(
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    ✅ BEST PRACTICE: Einfache Workout-Erstellung mit Auto-Serialization
+    """
+    workouts = await get_latest_workouts_with_details(db=db, user_id=UUID(current_user.id))
+
+    # create directory outputs if it doesn't exist
+    os.makedirs("outputs", exist_ok=True)
+    # store the workouts in the directory outputs with the current timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    with open(f"outputs/latest_workouts_{timestamp}.json", "w", encoding='utf-8') as f:
+        json.dump([WorkoutWithBlocksRead.model_validate(w).model_dump(mode='json') for w in workouts], f, default=str, ensure_ascii=False)
+
+    return workouts
+
+@router.get("/exercises-with-done-sets", response_model=List[ExerciseRead])
+async def get_user_exercises_with_done_sets(
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Retrieves all exercises for the current user that have at least one 'done' set,
+    including only the 'done' sets for each exercise.
+    Exercises without any 'done' sets are excluded.
+    """
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    exercises = await get_exercises_with_done_sets_only(
+        db=db,
+        current_user_id=UUID(current_user.id)
+    )
+    with open(f"outputs/exercises_with_done_sets_{timestamp}.json", "w", encoding='utf-8') as f:
+        json.dump([ExerciseRead.model_validate(e).model_dump(mode='json') for e in exercises], f, default=str, ensure_ascii=False)
+    return exercises
+
+
 
 
 @router.get("/{workout_id}", response_model=WorkoutWithBlocksRead)
@@ -402,11 +446,8 @@ async def update_set_status_endpoint(
     for field, value in payload.model_dump(exclude_unset=True).items():
         setattr(db_set, field, value)
     
-    # Special logic for done status
-    if payload.status == SetStatus.done and not db_set.completed_at:
-        db_set.completed_at = datetime.utcnow()
-    elif payload.status != SetStatus.done:
-        db_set.completed_at = None
+    # set the completed_at timestamp to the current time
+    db_set.completed_at = datetime.now(timezone.utc)
 
     try:
         await db.commit()
@@ -532,3 +573,5 @@ async def create_manual_activity(
     except Exception as e:
         await db.rollback()
         raise HTTPException(status_code=500, detail=f"Error creating manual activity: {str(e)}")
+
+

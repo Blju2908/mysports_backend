@@ -10,7 +10,7 @@ from sqlalchemy import text
 
 logger = logging.getLogger(__name__)
 
-# --- ✅ UNIFIED ENGINE: One simple engine for everything ---
+
 settings = get_config()
 
 # Single Engine - Supabase Session Mode für Vercel Pro + Background Tasks
@@ -49,11 +49,6 @@ logger.info(f"   ⚡ Benefits: Better performance, longer timeouts, no pgbouncer
 
 
 def get_engine():
-    """Returns the unified SQLAlchemy engine."""
-    return engine
-
-def get_background_engine():
-    """Returns the same unified engine - no separate background engine needed."""
     return engine
 
 # FastAPI dependency für API endpoints - Unified session
