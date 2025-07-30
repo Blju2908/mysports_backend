@@ -1,0 +1,452 @@
+[
+  {
+    "id": 1,
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "name": "Intensiver Pull-Tag",
+    "date_created": "2025-07-28T18:00:00",
+    "description": "5 Übungen fokussiert auf Rücken, Bizeps und hintere Schultern",
+    "duration": 65,
+    "focus": "pull",
+    "notes": "Intensive Einheit für Zugmuskeln",
+    "blocks": [
+      {
+        "id": 1,
+        "name": "Main Pull Block",
+        "description": "Hauptübungen für Pull-Muskulatur",
+        "position": 1,
+        "exercises": [
+          {
+            "id": 1,
+            "name": "Pull-ups",
+            "description": "Klimmzüge mit Körpergewicht",
+            "position": 1,
+            "sets": [
+              {
+                "id": 1,
+                "weight": null,
+                "reps": 8,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 1,
+                "status": "done",
+                "completed_at": "2025-07-28T18:10:00"
+              },
+              {
+                "id": 2,
+                "weight": null,
+                "reps": 7,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 2,
+                "status": "done",
+                "completed_at": "2025-07-28T18:13:00"
+              },
+              {
+                "id": 3,
+                "weight": null,
+                "reps": 6,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 3,
+                "status": "done",
+                "completed_at": "2025-07-28T18:16:00"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "name": "Barbell Rows",
+            "description": "Langhantelrudern vorgebeugt",
+            "position": 2,
+            "sets": [
+              {
+                "id": 4,
+                "weight": 80.0,
+                "reps": 8,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 1,
+                "status": "done",
+                "completed_at": "2025-07-28T18:22:00"
+              },
+              {
+                "id": 5,
+                "weight": 80.0,
+                "reps": 8,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 2,
+                "status": "done",
+                "completed_at": "2025-07-28T18:25:00"
+              },
+              {
+                "id": 6,
+                "weight": 80.0,
+                "reps": 7,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 3,
+                "status": "done",
+                "completed_at": "2025-07-28T18:28:00"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "name": "Lat Pulldowns",
+            "description": "Latzug zur Brust",
+            "position": 3,
+            "sets": [
+              {
+                "id": 7,
+                "weight": 70.0,
+                "reps": 10,
+                "duration": null,
+                "distance": null,
+                "rest_time": 90,
+                "position": 1,
+                "status": "done",
+                "completed_at": "2025-07-28T18:33:00"
+              },
+              {
+                "id": 8,
+                "weight": 70.0,
+                "reps": 9,
+                "duration": null,
+                "distance": null,
+                "rest_time": 90,
+                "position": 2,
+                "status": "done",
+                "completed_at": "2025-07-28T18:36:00"
+              },
+              {
+                "id": 9,
+                "weight": 70.0,
+                "reps": 8,
+                "duration": null,
+                "distance": null,
+                "rest_time": 90,
+                "position": 3,
+                "status": "done",
+                "completed_at": "2025-07-28T18:39:00"
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "name": "Face Pulls",
+            "description": "Face Pulls am Kabelzug",
+            "position": 4,
+            "sets": [
+              {
+                "id": 10,
+                "weight": 25.0,
+                "reps": 15,
+                "duration": null,
+                "distance": null,
+                "rest_time": 60,
+                "position": 1,
+                "status": "done",
+                "completed_at": "2025-07-28T18:44:00"
+              },
+              {
+                "id": 11,
+                "weight": 25.0,
+                "reps": 14,
+                "duration": null,
+                "distance": null,
+                "rest_time": 60,
+                "position": 2,
+                "status": "done",
+                "completed_at": "2025-07-28T18:46:00"
+              },
+              {
+                "id": 12,
+                "weight": 25.0,
+                "reps": 13,
+                "duration": null,
+                "distance": null,
+                "rest_time": 60,
+                "position": 3,
+                "status": "done",
+                "completed_at": "2025-07-28T18:48:00"
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "name": "Barbell Curls",
+            "description": "Bizeps-Curls mit Langhantel",
+            "position": 5,
+            "sets": [
+              {
+                "id": 13,
+                "weight": 40.0,
+                "reps": 12,
+                "duration": null,
+                "distance": null,
+                "rest_time": 60,
+                "position": 1,
+                "status": "done",
+                "completed_at": "2025-07-28T18:52:00"
+              },
+              {
+                "id": 14,
+                "weight": 40.0,
+                "reps": 10,
+                "duration": null,
+                "distance": null,
+                "rest_time": 60,
+                "position": 2,
+                "status": "done",
+                "completed_at": "2025-07-28T18:54:00"
+              },
+              {
+                "id": 15,
+                "weight": 40.0,
+                "reps": 9,
+                "duration": null,
+                "distance": null,
+                "rest_time": 60,
+                "position": 3,
+                "status": "done",
+                "completed_at": "2025-07-28T18:56:00"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "name": "Intensiver Push-Tag",
+    "date_created": "2025-07-29T18:00:00",
+    "description": "5 Übungen fokussiert auf Brust, Schultern und Trizeps",
+    "duration": 60,
+    "focus": "push",
+    "notes": "Intensive Einheit mit hohem Volumen",
+    "blocks": [
+      {
+        "id": 2,
+        "name": "Main Push Block",
+        "description": "Hauptübungen für Push-Muskulatur",
+        "position": 1,
+        "exercises": [
+          {
+            "id": 6,
+            "name": "Bench Press",
+            "description": "Bankdrücken mit der Langhantel",
+            "position": 1,
+            "sets": [
+              {
+                "id": 16,
+                "weight": 100.0,
+                "reps": 8,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 1,
+                "status": "done",
+                "completed_at": "2025-07-29T18:10:00"
+              },
+              {
+                "id": 17,
+                "weight": 100.0,
+                "reps": 8,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 2,
+                "status": "done",
+                "completed_at": "2025-07-29T18:13:00"
+              },
+              {
+                "id": 18,
+                "weight": 100.0,
+                "reps": 7,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 3,
+                "status": "done",
+                "completed_at": "2025-07-29T18:16:00"
+              }
+            ]
+          },
+          {
+            "id": 7,
+            "name": "Incline Dumbbell Press",
+            "description": "Schrägbankdrücken mit Kurzhanteln",
+            "position": 2,
+            "sets": [
+              {
+                "id": 19,
+                "weight": 35.0,
+                "reps": 10,
+                "duration": null,
+                "distance": null,
+                "rest_time": 90,
+                "position": 1,
+                "status": "done",
+                "completed_at": "2025-07-29T18:22:00"
+              },
+              {
+                "id": 5,
+                "weight": 35.0,
+                "reps": 9,
+                "duration": null,
+                "distance": null,
+                "rest_time": 90,
+                "position": 2,
+                "status": "done",
+                "completed_at": "2025-07-29T18:25:00"
+              },
+              {
+                "id": 6,
+                "weight": 35.0,
+                "reps": 8,
+                "duration": null,
+                "distance": null,
+                "rest_time": 90,
+                "position": 3,
+                "status": "done",
+                "completed_at": "2025-07-29T18:28:00"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "name": "Dips",
+            "description": "Dips mit Zusatzgewicht",
+            "position": 3,
+            "sets": [
+              {
+                "id": 7,
+                "weight": 20.0,
+                "reps": 12,
+                "duration": null,
+                "distance": null,
+                "rest_time": 90,
+                "position": 1,
+                "status": "done",
+                "completed_at": "2025-07-29T18:33:00"
+              },
+              {
+                "id": 8,
+                "weight": 20.0,
+                "reps": 11,
+                "duration": null,
+                "distance": null,
+                "rest_time": 90,
+                "position": 2,
+                "status": "done",
+                "completed_at": "2025-07-29T18:36:00"
+              },
+              {
+                "id": 9,
+                "weight": 20.0,
+                "reps": 10,
+                "duration": null,
+                "distance": null,
+                "rest_time": 90,
+                "position": 3,
+                "status": "done",
+                "completed_at": "2025-07-29T18:39:00"
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "name": "Overhead Press",
+            "description": "Schulterdrücken stehend",
+            "position": 4,
+            "sets": [
+              {
+                "id": 10,
+                "weight": 70.0,
+                "reps": 6,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 1,
+                "status": "done",
+                "completed_at": "2025-07-29T18:45:00"
+              },
+              {
+                "id": 11,
+                "weight": 70.0,
+                "reps": 6,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 2,
+                "status": "done",
+                "completed_at": "2025-07-29T18:48:00"
+              },
+              {
+                "id": 12,
+                "weight": 70.0,
+                "reps": 5,
+                "duration": null,
+                "distance": null,
+                "rest_time": 120,
+                "position": 3,
+                "status": "done",
+                "completed_at": "2025-07-29T18:51:00"
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "name": "Tricep Dips",
+            "description": "Trizeps-Dips am Barren",
+            "position": 5,
+            "sets": [
+              {
+                "id": 13,
+                "weight": null,
+                "reps": 15,
+                "duration": null,
+                "distance": null,
+                "rest_time": 60,
+                "position": 1,
+                "status": "done",
+                "completed_at": "2025-07-29T18:55:00"
+              },
+              {
+                "id": 14,
+                "weight": null,
+                "reps": 13,
+                "duration": null,
+                "distance": null,
+                "rest_time": 60,
+                "position": 2,
+                "status": "done",
+                "completed_at": "2025-07-29T18:57:00"
+              },
+              {
+                "id": 15,
+                "weight": null,
+                "reps": 12,
+                "duration": null,
+                "distance": null,
+                "rest_time": 60,
+                "position": 3,
+                "status": "done",
+                "completed_at": "2025-07-29T18:59:00"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

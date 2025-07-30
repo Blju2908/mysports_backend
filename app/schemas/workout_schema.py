@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, computed_field, field_validator
-from typing import Optional, List, Union
+from typing import Optional, List, Union, Any, Dict
 from datetime import datetime
 from enum import Enum
 from app.models.set_model import SetStatus
@@ -173,6 +173,74 @@ class SetUpdate(BaseModel):
     reps: Optional[int] = None
     duration: Optional[int] = None
     distance: Optional[float] = None
+
+
+# ==========================================
+# MULTI-PHASE WORKOUT GENERATION SCHEMAS
+# ==========================================
+
+class Phase1SetRead(BaseModel):
+    """Schema for Sets in Multi-Phase Workout Generation - optimized for local JSON data"""
+    model_config = {"from_attributes": True}
+    
+    id: int
+    exercise_id: Optional[int] = None  # Will be set programmatically
+    weight: Optional[float] = None
+    reps: Optional[int] = None
+    duration: Optional[int] = None  # in seconds
+    distance: Optional[float] = None
+    rest_time: Optional[int] = None  # in seconds
+    position: Optional[int] = None
+    status: str = "open"  # Using string for JSON compatibility
+    completed_at: Optional[datetime] = None
+
+class Phase1ExerciseRead(BaseModel):
+    """Schema for Exercises in Multi-Phase Workout Generation - flattened for muscle fatigue analysis"""
+    model_config = {"from_attributes": True}
+    
+    id: int
+    name: str
+    description: Optional[str] = None
+    notes: Optional[str] = None
+    superset_id: Optional[str] = None
+    position: Optional[int] = None
+    
+    # Context information from parent structures
+    block_id: int
+    workout_id: int
+    workout_name: str
+    workout_date: str
+    workout_focus: Optional[str] = None
+    
+    # Sets data
+    sets: List[Phase1SetRead] = []
+    
+    # Optional: Exercise description will be added later
+    exercise_description: Optional[Any] = None
+
+class Phase1BlockRead(BaseModel):
+    """Schema for Blocks in Multi-Phase Workout Generation"""
+    model_config = {"from_attributes": True}
+    
+    id: int
+    name: str
+    description: Optional[str] = None
+    position: Optional[int] = None
+    exercises: List[Phase1ExerciseRead] = []  # Raw exercise data from JSON
+
+class Phase1WorkoutRead(BaseModel):
+    """Schema for complete Workouts in Multi-Phase Workout Generation"""
+    model_config = {"from_attributes": True}
+    
+    id: int
+    user_id: str  # UUID as string from JSON
+    name: str
+    date_created: str  # ISO string from JSON
+    description: Optional[str] = None
+    duration: Optional[int] = None
+    focus: Optional[str] = None
+    notes: Optional[str] = None
+    blocks: List[Phase1BlockRead] = []
 
 
 
