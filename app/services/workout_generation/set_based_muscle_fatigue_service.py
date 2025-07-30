@@ -14,8 +14,8 @@ import json
 import os
 from enum import Enum
 
-# Import MuscleGroup from existing service
-from .phase_1_muscle_fatigue_service import MuscleGroup
+# Import MuscleGroup from archived service
+from .archived.volume_based_muscle_fatigue_service import MuscleGroup
 
 
 class SetBasedMuscleFatigueService:
