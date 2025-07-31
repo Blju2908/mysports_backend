@@ -1,0 +1,420 @@
+{
+  "metadata": {
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "profile_id": 33956,
+    "user_prompt": "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettlebell und einem Türreck für heute Abend.",
+    "generation_time": 211.53806400299072,
+    "exercise_count": 21,
+    "prompt_version": "compressed",
+    "timestamp": "2025-07-31T13:26:06.973132",
+    "token_reduction": "~90%"
+  },
+  "workout": {
+    "muscle_group_load": [
+      "Beine: Moderat beansprucht durch funktionelle Kniebeugen und Swings, um eine Überlastung nach den letzten Workouts zu vermeiden.",
+      "Brust/Schultern/Trizeps (Push): Moderat beansprucht durch Push-ups und Kettlebell Overhead Press, um die Erholung zu unterstützen, aber dennoch einen Reiz zu setzen.",
+      "Rücken/Bizeps (Pull): Intensiv beansprucht durch Pull-ups und Single-Arm Kettlebell Rows, um die Muskulatur gezielt zu stärken und aufzuholen.",
+      "Core: Intensiv beansprucht durch Plank Holds, Mountain Climbers und Kettlebell Russian Twists, um die Rumpfstabilität umfassend zu verbessern."
+    ],
+    "focus_derivation": "Nach den Ganzkörper-Workouts der letzten Tage sind alle Muskelgruppen gut erholt. Dieses Workout nutzt die verfügbaren Geräte (Kettlebell, Türreck) optimal aus, um einen ausgewogenen Ganzkörperreiz zu setzen. Es wird ein besonderes Augenmerk auf Zugbewegungen (Pull-ups, Rows) gelegt, um die Rückenmuskulatur zu stärken, die in den letzten Tagen nur unterstützend beansprucht wurde. Gleichzeitig werden Beine, Schultern und Rumpf durch funktionelle Kettlebell-Übungen und Bodyweight-Elemente effektiv trainiert, was eine umfassende Entwicklung der Ganzkörperkraft und Stabilität fördert.",
+    "name": "Kettlebell & Türreck Ganzkörper-Workout",
+    "duration_min": 60,
+    "focus": "Ganzkörperkraft, Muskelaufbau, Rumpfstabilität",
+    "description": "Ein anspruchsvolles Ganzkörper-Home-Workout, das speziell für deine verfügbare 24kg Kettlebell und dein Türreck konzipiert wurde. Der Fokus liegt auf der Entwicklung von funktioneller Kraft, Muskelaufbau und allgemeiner Fitness durch eine Kombination aus grundlegenden Bewegungen und unilateralen Übungen. Das Workout berücksichtigt die Erholung deiner Brust- und Beinmuskulatur der letzten Tage und legt einen besonderen Fokus auf Zugbewegungen und Rumpfstabilität.",
+    "blocks": [
+      {
+        "name": "Warm-Up",
+        "duration_min": 10,
+        "description": "Aktivierung des Körpers und Vorbereitung auf die Hauptübungen mit Fokus auf Mobilität und leichte Aktivierung der beanspruchten Muskelgruppen.",
+        "exercises": [
+          {
+            "name": "Arm Circles",
+            "reps": [
+              15,
+              15
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Dynamic Walking Lunges",
+            "reps": [
+              10,
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Cat-Cow Flow",
+            "reps": [
+              10,
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Inchworm Walkout",
+            "reps": [
+              5,
+              5
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kettlebell Russian Swing",
+            "reps": [
+              10,
+              10
+            ],
+            "weight": [
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": "Leichte Aktivierung",
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Hauptteil: Kraft & Ganzkörper",
+        "duration_min": 25,
+        "description": "Kraft- und Ausdauerzirkel, der die Kettlebell und das Türreck optimal nutzt, um den gesamten Körper zu fordern.",
+        "exercises": [
+          {
+            "name": "Kettlebell Goblet Squat",
+            "reps": [
+              10,
+              10,
+              10
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              90,
+              90,
+              90
+            ],
+            "superset": "A",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Pull-up",
+            "reps": [
+              6,
+              6,
+              6
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              90,
+              90,
+              90
+            ],
+            "superset": "A",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Push-up",
+            "reps": [
+              10,
+              10,
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "superset": "B",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Single-Arm Kettlebell Row (rechts)",
+            "reps": [
+              8,
+              8,
+              8
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "superset": "B",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Single-Arm Kettlebell Row (links)",
+            "reps": [
+              8,
+              8,
+              8
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "superset": "B",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kettlebell Overhead Press (rechts)",
+            "reps": [
+              8,
+              8,
+              8
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "superset": "C",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kettlebell Overhead Press (links)",
+            "reps": [
+              8,
+              8,
+              8
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "superset": "C",
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Core & Cardio Finisher",
+        "duration_min": 15,
+        "description": "Abschluss des Workouts mit Rumpf- und Ausdauerübungen, um die Herzfrequenz hochzuhalten und die Core-Muskulatur zu stärken.",
+        "exercises": [
+          {
+            "name": "Plank Hold",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              45,
+              45,
+              45
+            ],
+            "distance": null,
+            "rest": [
+              30,
+              30,
+              30
+            ],
+            "superset": "D",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Mountain Climber",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              45,
+              45,
+              45
+            ],
+            "distance": null,
+            "rest": [
+              30,
+              30,
+              30
+            ],
+            "superset": "D",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kettlebell Russian Twist",
+            "reps": [
+              20,
+              20,
+              20
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Cool-Down",
+        "duration_min": 10,
+        "description": "Dehnübungen zur Förderung der Flexibilität und zur Unterstützung der Regeneration nach dem Training.",
+        "exercises": [
+          {
+            "name": "Child's Pose",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Doorway Pec Stretch",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Hip Flexor Stretch (Kneeling) rechts",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Hip Flexor Stretch (Kneeling) links",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Hamstring Stretch (Standing) rechts",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Hamstring Stretch (Standing) links",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      }
+    ]
+  }
+}

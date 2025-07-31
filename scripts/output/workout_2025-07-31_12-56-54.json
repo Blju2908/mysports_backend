@@ -1,0 +1,314 @@
+{
+  "metadata": {
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "profile_id": 33956,
+    "user_prompt": "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettlebell und einem Türreck für heute Abend.",
+    "generation_time": 10.028130054473877,
+    "exercise_count": 18,
+    "prompt_version": "compressed",
+    "timestamp": "2025-07-31T12:56:54.701196",
+    "token_reduction": "~90%"
+  },
+  "workout": {
+    "muscle_group_load": [
+      "Beine: Moderat erholt, wurden vor 1-2 Tagen in Ganzkörper-Workouts beansprucht. Heute Fokus auf Kettlebell-Übungen, die sie herausfordern, aber nicht überlasten.",
+      "Brust/Schultern/Trizeps (Push): Moderat erholt, wurden in den letzten beiden Ganzkörper-Workouts intensiv beansprucht. Heute nur unterstützend oder mit geringerer Intensität, um die Regeneration zu fördern.",
+      "Rücken/Bizeps (Pull): Gut erholt, die letzte intensive Pull-Session war vor 13 Tagen. Bereit für eine gezielte Belastung mit dem Türreck.",
+      "Core: Vollständig erholt und wird durch funktionelle Kettlebell-Übungen und gezielte Core-Arbeit beansprucht."
+    ],
+    "focus_derivation": "Heutiger Fokus: Funktionale Kraft, Ausdauer und Muskelaufbau mit Schwerpunkt auf Ganzkörper-Kettlebell-Bewegungen und einer gezielten Pull-Komponente am Türreck. Begründung: Nach zwei intensiven Ganzkörper-Workouts in Folge (28. und 29. Juli) ist es sinnvoll, das Training anzupassen, um Überlastung zu vermeiden. Die Beine und die Push-Muskulatur sind moderat beansprucht. Ein Workout, das die gut erholte Rückenmuskulatur über Pull-ups adressiert und gleichzeitig die Beine und den Core durch dynamische Kettlebell-Übungen fordert, passt ideal zum 'Performance-orientierten' Profil und den verfügbaren Geräten. Dies fördert funktionelle Kraft, Explosivität und Ausdauer, was direkt auf Marathon- und Muscle-Up-Ziele einzahlt, ohne die bereits beanspruchten Muskelgruppen zu überfordern.",
+    "name": "Kettlebell & Türreck Ganzkörper-Workout für funktionale Stärke",
+    "duration_min": 45,
+    "focus": "Funktionale Kraft, Ausdauer, Ganzkörper-Konditionierung",
+    "description": "Ein dynamisches Ganzkörper-Workout, das die 24kg Kettlebell und das Türreck nutzt, um Kraft, Explosivität und Ausdauer zu verbessern.",
+    "blocks": [
+      {
+        "name": "Warm-Up",
+        "duration_min": 7,
+        "description": "Vorbereitung des Körpers auf die Belastung und Aktivierung der Muskulatur.",
+        "exercises": [
+          {
+            "name": "Jumping Jacks",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Arm Circles",
+            "reps": [
+              15,
+              15
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Dynamic Walking Lunges",
+            "reps": [
+              10,
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Cat-Cow Flow",
+            "reps": [
+              10,
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kettlebell Halo",
+            "reps": [
+              8,
+              8
+            ],
+            "weight": 24.0,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Hauptteil: Kraft & Konditionierung",
+        "duration_min": 30,
+        "description": "Zirkeltraining zur Steigerung von Kraft, Ausdauer und explosiver Kraft.",
+        "exercises": [
+          {
+            "superset": "A",
+            "exercises": [
+              {
+                "name": "Pull-up",
+                "reps": [
+                  6,
+                  6,
+                  5,
+                  5
+                ],
+                "weight": null,
+                "duration": null,
+                "distance": null,
+                "rest": 0,
+                "superset": null,
+                "note": null,
+                "equipment_note": null
+              },
+              {
+                "name": "Kettlebell Swing",
+                "reps": [
+                  12,
+                  12,
+                  12,
+                  12
+                ],
+                "weight": 24.0,
+                "duration": null,
+                "distance": null,
+                "rest": 0,
+                "superset": null,
+                "note": null,
+                "equipment_note": null
+              },
+              {
+                "name": "Push-up",
+                "reps": [
+                  10,
+                  10,
+                  10,
+                  10
+                ],
+                "weight": null,
+                "duration": null,
+                "distance": null,
+                "rest": 0,
+                "superset": null,
+                "note": null,
+                "equipment_note": null
+              },
+              {
+                "name": "Kettlebell Goblet Squat",
+                "reps": [
+                  10,
+                  10,
+                  10,
+                  10
+                ],
+                "weight": 24.0,
+                "duration": null,
+                "distance": null,
+                "rest": 90,
+                "superset": null,
+                "note": null,
+                "equipment_note": null
+              }
+            ]
+          },
+          {
+            "superset": "B",
+            "exercises": [
+              {
+                "name": "Kettlebell Single-Arm Row (rechts)",
+                "reps": [
+                  10,
+                  10,
+                  10
+                ],
+                "weight": 24.0,
+                "duration": null,
+                "distance": null,
+                "rest": 0,
+                "superset": null,
+                "note": null,
+                "equipment_note": null
+              },
+              {
+                "name": "Kettlebell Single-Arm Row (links)",
+                "reps": [
+                  10,
+                  10,
+                  10
+                ],
+                "weight": 24.0,
+                "duration": null,
+                "distance": null,
+                "rest": 60,
+                "superset": null,
+                "note": null,
+                "equipment_note": null
+              }
+            ]
+          },
+          {
+            "name": "Plank Hold",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60,
+              60,
+              60
+            ],
+            "distance": null,
+            "rest": 60,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Cool-Down",
+        "duration_min": 8,
+        "description": "Dehnung der beanspruchten Muskulatur und Entspannung.",
+        "exercises": [
+          {
+            "name": "Child's Pose",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Pigeon Pose rechts",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              45
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Pigeon Pose links",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              45
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Standing Quad Stretch rechts",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Standing Quad Stretch links",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Doorway Pec Stretch",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      }
+    ]
+  }
+}

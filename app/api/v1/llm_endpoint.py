@@ -3,11 +3,11 @@ from app.core.auth import get_current_user, User
 from app.db.session import get_session
 from app.db.session import create_session
 from app.models.llm_call_log_model import LlmOperationStatus
+from app.models.llm_call_log_model import LlmCallLog
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.models.workout_model import Workout
-from app.models.llm_call_log_model import LlmCallLog
 from app.llm.workout_revision.workout_revision_schemas import (
     WorkoutRevisionRequestSchema,
 )

@@ -81,6 +81,21 @@ async def get_background_session():
             # ✅ Ensure cleanup
             await session.close()
 
+# Create session context manager for backward compatibility
+@asynccontextmanager
+async def create_session():
+    """Create a new database session - context manager for background tasks"""
+    async with session_maker() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception as e:
+            logger.error(f"Session error: {e}", exc_info=True)
+            await session.rollback()
+            raise
+        finally:
+            await session.close()
+
 # Engine cleanup
 async def close_engine():
     """Close unified SQLAlchemy engine"""

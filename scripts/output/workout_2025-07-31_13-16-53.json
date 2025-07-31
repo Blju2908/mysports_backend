@@ -1,0 +1,51 @@
+{
+  "metadata": {
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "profile_id": 33956,
+    "user_prompt": "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettlebell und einem Türreck für heute Abend.",
+    "generation_time": 6.235997915267944,
+    "exercise_count": 0,
+    "prompt_version": "compressed",
+    "timestamp": "2025-07-31T13:16:53.926364",
+    "token_reduction": "~90%"
+  },
+  "workout": {
+    "muscle_group_load": [
+      "Rücken/Bizeps (Pull): Gut erholt und bereit für intensive Belastung durch Pull-ups und Ruderbewegungen.",
+      "Beine/Gluteus: Gut erholt und bereit für intensive Belastung durch Kettlebell Swings und Goblet Squats.",
+      "Brust/Schultern/Trizeps (Push): Moderat erholt, werden indirekt durch Burpees und Kettlebell Press beansprucht, um eine Überlastung zu vermeiden.",
+      "Core: Gut erholt und wird durch statische und dynamische Übungen gestärkt."
+    ],
+    "focus_derivation": "Nach den letzten beiden Ganzkörper-Workouts mit Fokus auf Push-Bewegungen und einer längeren Pause seit dem letzten gezielten Pull-Training ist es sinnvoll, heute ein ausgewogenes Ganzkörper-Workout zu planen, das die gut erholten Rückenmuskulatur (Pull-ups) sowie die Beine und den Core (Kettlebell-Übungen) in den Vordergrund stellt. Die Kombination aus Kettlebell-Schwüngen und Burpees fördert zudem die Explosivität und Ausdauer, die in deiner Historie eine wichtige Rolle spielen. Die Verfügbarkeit der 24kg Kettlebell und des Türrecks ermöglicht ein effektives Training dieser Bereiche zu Hause.",
+    "name": "Kettlebell & Bodyweight Power Home Workout",
+    "duration_min": 60,
+    "focus": "Ganzkörper-Kraft, Ausdauer & Explosivität",
+    "description": "Ein anspruchsvolles Ganzkörper-Home-Workout, das die 24kg Kettlebell und das Türreck optimal nutzt, um Kraft, Ausdauer und Explosivität zu fördern. Der Fokus liegt auf einer ausgewogenen Belastung aller großen Muskelgruppen, insbesondere des Rückens (Pull-ups) und der Hüfte/Beine (Kettlebell Swings, Goblet Squats).",
+    "blocks": [
+      {
+        "name": "Warm-Up",
+        "duration_min": 10,
+        "description": "Vorbereitung des Körpers auf die Belastung, Mobilisierung der Gelenke und Aktivierung der Hauptmuskelgruppen.",
+        "exercises": []
+      },
+      {
+        "name": "Hauptteil: Kettlebell & Bodyweight Zirkel",
+        "duration_min": 30,
+        "description": "Ganzkörper-Kraft- und Ausdauerzirkel mit Fokus auf die Kettlebell und das Türreck.",
+        "exercises": []
+      },
+      {
+        "name": "Core & Explosivität",
+        "duration_min": 15,
+        "description": "Fokus auf Rumpfstabilität und Explosivität mit der Kettlebell.",
+        "exercises": []
+      },
+      {
+        "name": "Cool-Down",
+        "duration_min": 5,
+        "description": "Dehnung der beanspruchten Muskulatur zur Förderung der Regeneration und Flexibilität.",
+        "exercises": []
+      }
+    ]
+  }
+}

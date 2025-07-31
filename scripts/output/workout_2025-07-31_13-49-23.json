@@ -1,0 +1,325 @@
+{
+  "metadata": {
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "profile_id": 33956,
+    "user_prompt": "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettlebell und einem Türreck für heute Abend.",
+    "generation_time": 8.67524790763855,
+    "exercise_count": 15,
+    "prompt_version": "compressed",
+    "timestamp": "2025-07-31T13:49:23.516747",
+    "token_reduction": "~90%"
+  },
+  "workout": {
+    "muscle_group_load": [
+      "Beine: Gut erholt und werden durch Goblet Squats und Romanian Deadlifts beansprucht.",
+      "Brust/Schultern/Trizeps (Push): Gut erholt und werden durch Push-ups trainiert.",
+      "Rücken/Bizeps (Pull): Gut erholt und werden durch Pull-ups und Kettlebell Rows intensiv gefordert.",
+      "Core: Gut erholt und wird durch Plank Holds gestärkt."
+    ],
+    "focus_derivation": "Der heutige Fokus liegt auf einem ausgewogenen Ganzkörpertraining, um die funktionelle Kraft und den Muskelaufbau zu fördern. Nach dem letzten Full-Body-Workout vor 2 Tagen ist der Körper gut erholt und bereit für eine erneute Belastung der Hauptmuskelgruppen. Die Auswahl der Übungen berücksichtigt die verfügbare Kettlebell und das Türreck, um ein effektives Training zu Hause zu gewährleisten und gleichzeitig die im letzten Workout weniger beanspruchten Rücken- und Beinmuskeln zu fordern.",
+    "name": "Kettlebell & Pull-up Ganzkörper-Workout",
+    "duration_min": 45,
+    "focus": "Ganzkörperkraft, Muskelaufbau, Funktionelle Bewegung",
+    "description": "Dieses Ganzkörper-Workout mit Kettlebell und Türreck konzentriert sich auf funktionelle Kraft und Muskelaufbau, um alle wichtigen Muskelgruppen ausgewogen zu trainieren. Es beinhaltet Zug-, Druck- und Beinübungen, ergänzt durch Rumpfstabilisation.",
+    "blocks": [
+      {
+        "name": "Warm-Up",
+        "duration_min": 10,
+        "description": "Aktivierung des gesamten Körpers und Vorbereitung auf die Hauptübung.",
+        "exercises": [
+          {
+            "name": "Arm Circles",
+            "reps": [
+              15,
+              15
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              30,
+              30
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Dynamic Walking Lunges",
+            "reps": [
+              10,
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              30,
+              30
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Cat-Cow Flow",
+            "reps": [
+              10,
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              30,
+              30
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kettlebell Russian Swing",
+            "reps": [
+              10,
+              10
+            ],
+            "weight": [
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              45,
+              45
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Main Strength",
+        "duration_min": 30,
+        "description": "Hauptteil des Workouts zur Steigerung von Kraft und Ausdauer mit Kettlebell und Türreck.",
+        "exercises": [
+          {
+            "name": "Pull-up",
+            "reps": [
+              6,
+              6,
+              5,
+              5
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              90,
+              90,
+              90,
+              90
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kettlebell Goblet Squat",
+            "reps": [
+              10,
+              10,
+              10,
+              10
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60,
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Push-up",
+            "reps": [
+              10,
+              10,
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Single-Arm Kettlebell Row (rechts)",
+            "reps": [
+              8,
+              8,
+              8
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              30,
+              30,
+              30
+            ],
+            "superset": "A",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Single-Arm Kettlebell Row (links)",
+            "reps": [
+              8,
+              8,
+              8
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "superset": "A",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kettlebell Romanian Deadlift",
+            "reps": [
+              10,
+              10,
+              10
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Plank Hold",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60,
+              60,
+              60
+            ],
+            "distance": null,
+            "rest": [
+              45,
+              45,
+              45
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Cool-Down",
+        "duration_min": 5,
+        "description": "Beruhigung des Körpers und Förderung der Flexibilität.",
+        "exercises": [
+          {
+            "name": "Child's Pose",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Doorway Pec Stretch",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Triceps Overhead Stretch links",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Triceps Overhead Stretch rechts",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      }
+    ]
+  }
+}
