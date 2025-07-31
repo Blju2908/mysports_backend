@@ -31,6 +31,8 @@ Define blocks (e.g. Warm-Up, Main, Cool-Down) that fit the user's goals. Priorit
 
 Please plan the blocks according to the plan of the user. You can for example create a strenght and condition part, if that resonates with the training goals of the user. Please use your experience as coach. Please try to separate different parts of the training in different bocks. For example, if you plan intervalls of a specific exercise, please put them in a separate block. 
 
+**WICHTIG - Trainingsdauer**: Pass die Anzahl der Übungen und Sätze an die session_duration/Trainingsdauer an! Berücksichtige dabei IMMER die Pausen zwischen den Sätzen und Übungen. Die tatsächliche Trainingsdauer hängt vom Trainingsstil ab (z.B. HIIT = mehr Übungen mit kurzen Pausen, Strength = weniger Übungen mit längeren Pausen).
+
 **Rules:**
 - **Exact Names**: Use the exact names from the library; do not add anything.
 - **No Rep Ranges**: Always specify an exact number of repetitions (e.g., `8`), not a range (like `8-10`).
@@ -52,6 +54,7 @@ Autoregulate weights based on history: increase by 2.5-5kg after a successful se
 ### Step 5: Rest & Sets
 - Verwende Arrays für Sets, wobei jede Position im Array einen Satz darstellt.
 - Little to no rest for Warm-Up; for HIIT, rest only after the last exercise in a round.
+- **Pausendauer an Trainingsdauer anpassen**: Bei kürzeren Workouts sollten die Pausen reduziert werden, um die Zeit effizient zu nutzen. Bei längeren Workouts können angemessene Pausen die Trainingsqualität sichern.
 - Bei gleichen Werten für alle Sätze, verwende einfache Arrays (z.B. [10, 10, 10] für 3 Sätze mit 10 Wiederholungen).
 
 ### Step 6: Optimization & Output
