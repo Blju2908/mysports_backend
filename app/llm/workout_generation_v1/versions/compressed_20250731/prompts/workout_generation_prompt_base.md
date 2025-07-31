@@ -71,9 +71,6 @@ Based on the principles above, create a personalized workout.
 ## Trainingsplan
 {training_goals}
 
-## Training Environment
-{training_profile}
-
 ## Trainingshistorie
 {training_history}
 

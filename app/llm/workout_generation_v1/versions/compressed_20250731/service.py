@@ -25,6 +25,7 @@ class CompressedWorkoutInput(BaseModel):
     user_prompt: str
     profile_id: Optional[int] = None
     google_api_key: Optional[str] = None
+    session_duration: Optional[int] = None
 
 
 class CompressedWorkoutOutput(BaseModel):
@@ -215,8 +216,7 @@ def format_sets_string(values: List[int], unit: str) -> str:
 
 
 async def generate_compressed_workout(
-    input_data: CompressedWorkoutInput,
-    db_session_factory: Optional[callable] = None
+    input_data: CompressedWorkoutInput
 ) -> Tuple[str, CompressedWorkoutOutput]:
     """
     Generate a workout using the compressed array-based format.
@@ -233,14 +233,14 @@ async def generate_compressed_workout(
     templates = await load_prompt_templates()
     
     # Import here to avoid circular imports
-    from utils.script_setup import get_standalone_session
+    from app.db.session import create_session
     from sqlalchemy import select, desc
     from sqlalchemy.orm import selectinload
     from app.models.workout_model import Workout
     from app.models.block_model import Block
     
     # Create session only for database operations
-    async with get_standalone_session() as db:
+    async with create_session() as db:
         # Get user training history workouts
         workout_query = (
             select(Workout)
@@ -262,7 +262,13 @@ async def generate_compressed_workout(
         if input_data.profile_id:
             training_profile = await db.get(TrainingProfile, input_data.profile_id)
             if training_profile and training_profile.id:
-                training_plan = await db.get(TrainingPlan, training_profile.id)
+                training_plan_query = select(TrainingPlan).where(TrainingPlan.user_id == input_data.user_id)
+                training_plan_result = await db.execute(training_plan_query)
+                training_plan = training_plan_result.scalar_one_or_none()
+
+                if input_data.session_duration:
+                    training_plan.session_duration = input_data.session_duration
+
                 if training_plan:
                     training_plan_context = format_training_plan_for_llm_v2(
                         training_plan, training_profile
@@ -274,18 +280,6 @@ async def generate_compressed_workout(
         # Format training history while session is still open
         training_history = format_training_history_for_llm(workouts) or "Keine Trainingshistorie vorhanden."
     
-    # Session closed here - continue with non-DB operations
-    
-    # Extract equipment from user prompt (simplified - in production, use NLP)
-    available_equipment = []
-    user_prompt_lower = input_data.user_prompt.lower()
-    if "24kg" in user_prompt_lower and "kettlebell" in user_prompt_lower:
-        available_equipment.append({"name": "Kettlebell", "weight": 24})
-    if "türreck" in user_prompt_lower or "pull-up" in user_prompt_lower:
-        available_equipment.append({"name": "Pull-up Bar"})
-    
-    equipment_context = await format_equipment_constraints(available_equipment)
-    
     # Build the full prompt
     base_prompt_template = templates.get("workout_generation_prompt_base", "")
     output_format = templates.get("output_format_structured", "")
@@ -294,8 +288,7 @@ async def generate_compressed_workout(
     base_prompt_formatted = base_prompt_template.format(
         current_date=datetime.now().strftime("%Y-%m-%d"),
         user_prompt=input_data.user_prompt,
-        training_goals=training_plan_context or "Keine spezifischen Trainingsziele angegeben.",
-        training_profile=f"Equipment: {equipment_context}",
+        training_goals=training_plan_context,
         training_history=training_history,
         exercise_library=exercise_library
     )

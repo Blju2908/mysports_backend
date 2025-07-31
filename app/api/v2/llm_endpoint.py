@@ -552,10 +552,15 @@ async def generate_workout_background(
 
     try:
         # --- STEP 1: Generate compressed workout ---
+        from app.core.config import get_config
+        config = get_config()
+        
         input_data = CompressedWorkoutInput(
             user_id=user_id_uuid,
             user_prompt=request_data.prompt or "",
-            profile_id=profile_id
+            profile_id=profile_id,
+            google_api_key=config.GOOGLE_API_KEY,
+            session_duration=session_duration,
         )
         
         logger.info("[generate_workout_background_v2] Starting compressed workout generation...")
