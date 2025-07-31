@@ -1,6 +1,6 @@
 from typing import List, Optional
 from uuid import UUID
-from app.llm.workout_generation.create_workout_schemas import CompactWorkoutSchema
+from ...versions.standard.schemas import CompactWorkoutSchema
 from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise

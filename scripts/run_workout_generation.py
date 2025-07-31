@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
-import os
+"""
+Einfaches Skript zur Workout-Generation mit der minimalen Version.
+Generiert ein Workout als Markdown ohne Parsing.
+"""
 from pathlib import Path
 import asyncio
 import time
 from datetime import datetime
 from uuid import UUID
-from sqlalchemy import select
 
 from utils.script_setup import setup_environment, get_standalone_session
+
 setup_environment()
 
-from app.llm.workout_generation.workout_generation_service import (
-    WorkoutGenerationInput,
-    generate_workout_complete
+from app.llm.workout_generation_v1.versions.minimal.service import (
+    generate_minimal_workout,
+    MinimalWorkoutInput,
 )
 
 # ===== KONFIGURATION =====
@@ -22,72 +25,56 @@ USER_PROMPT = "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettl
 SAVE_TO_FILE = True
 OUTPUT_DIR = Path(__file__).parent / "output"
 
+
 # ===== MAIN =====
 async def main():
-    # === ZEIT MESSUNG START ===
     start_time = time.time()
-    
+
     print("🚀 S3SSIONS Workout Generation mit DB-Kontext")
     print("=" * 50)
-    
+
     if USER_ID == "your-user-uuid-here":
         print("❌ Bitte USER_ID im Skript konfigurieren!")
         return
-    
+
     user_id_uuid = UUID(USER_ID)
-    
+
     # Erstelle Input-Daten für den Service
-    input_data = WorkoutGenerationInput(
-        user_id=user_id_uuid,
-        user_prompt=USER_PROMPT,
-        profile_id=PROFILE_ID
+    input_data = MinimalWorkoutInput(
+        user_id=user_id_uuid, user_prompt=USER_PROMPT, profile_id=PROFILE_ID
     )
-    
-    # Timing-Variablen
-    generation_start = time.time()
-    
+
     try:
-        print("📊 Starte Workout-Generation mit Service...")
-        
-        # Nutze den gemeinsamen Service
+        print("📊 Starte Workout-Generation (Minimal Version)...")
+
+        # Nutze die minimale Version für schnelle Markdown-Generation
         async with get_standalone_session() as db:
-            full_prompt, compact_workout_schema, generation_data = await generate_workout_complete(
-                db=db,
-                input_data=input_data
+            full_prompt, markdown_workout, generation_time = (
+                await generate_minimal_workout(db=db, input_data=input_data)
             )
-        
-        generation_end = time.time()
-        generation_duration = generation_end - generation_start
-        
+
         print("✅ Workout erfolgreich generiert!")
-        print(f"✅ Training Plan ID: {generation_data.training_plan_id}")
-        if generation_data.environment_profile:
-            print(f"✅ Training Profile geladen (ID: {PROFILE_ID})")
-        
-        exercise_count = len(generation_data.exercise_library.splitlines()) if generation_data.exercise_library else 0
-        print(f"✅ Exercise Library: {exercise_count} Übungen")
-        
+        print(f"✅ Generation Zeit: {generation_time:.2f}s")
+
         # === ZEIT MESSUNG ENDE ===
         end_time = time.time()
         total_duration = end_time - start_time
-        
+
         # Timing-Zusammenfassung
         timing_summary = f"""
 ⏱️  **PERFORMANCE ANALYSE:**
-- **Workout-Generation (komplett):** {generation_duration:.2f}s
+- **Workout-Generation:** {generation_time:.2f}s
 - **Gesamtzeit:** {total_duration:.2f}s
 """
-        
+
         print(timing_summary)
-        
-        # --- STEP 4: Speichere alle Dateien ---
-        import json
-        
+
+        # --- Speichere die Dateien ---
         if SAVE_TO_FILE:
             OUTPUT_DIR.mkdir(exist_ok=True)
             timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            
-            # 1. Speichere den vollständigen Prompt mit Timing
+
+            # 1. Speichere den vollständigen Prompt
             prompt_file = OUTPUT_DIR / f"prompt_{timestamp}.md"
             prompt_content = f"""# Vollständiger LLM Prompt
 
@@ -102,14 +89,14 @@ async def main():
 
 {full_prompt}
 """
-            
+
             with open(prompt_file, "w") as f:
                 f.write(prompt_content)
-            
+
             print(f"💾 Prompt gespeichert: {prompt_file}")
-            
-            # 2. Speichere das komplette Workout Schema mit Timing
-            schema_content = f"""# Komplettes Workout Schema
+
+            # 2. Speichere das Workout als Markdown
+            workout_content = f"""# Generiertes Workout
 
 **User ID:** {USER_ID}
 **Profile ID:** {PROFILE_ID}
@@ -118,19 +105,17 @@ async def main():
 
 {timing_summary}
 
-## Workout Schema (JSON)
+---
 
-```json
-{json.dumps(compact_workout_schema.model_dump(), indent=2, ensure_ascii=False)}
-```
+{markdown_workout}
 """
-            
-            schema_file = OUTPUT_DIR / f"workout_schema_{timestamp}.md"
-            with open(schema_file, "w") as f:
-                f.write(schema_content)
-            
-            print(f"💾 Workout Schema gespeichert: {schema_file}")
-                        
+
+            workout_file = OUTPUT_DIR / f"workout_{timestamp}.md"
+            with open(workout_file, "w") as f:
+                f.write(workout_content)
+
+            print(f"💾 Workout gespeichert: {workout_file}")
+
     except Exception as e:
         print(f"❌ Fehler bei der Workout Generation: {e}")
         raise

@@ -3,6 +3,12 @@ from app.models.training_plan_model import TrainingProfile, TrainingPlan
 from langchain_core.prompts import PromptTemplate
 from pathlib import Path
 from datetime import datetime
+from enum import Enum
+import os
+
+class PromptVersion(Enum):
+    FULL = "workout_generation_prompt_base.md"
+    MINIMAL = "workout_generation_prompt_minimal.md"
 
 def prepare_prompt(
     user_prompt,
@@ -14,8 +20,16 @@ def prepare_prompt(
     """
     Prepare the prompt for the LLM.
     """
+    
+    # Check for prompt version from environment variable
+    prompt_version = os.environ.get("WORKOUT_PROMPT_VERSION", "FULL")
+    try:
+        version = PromptVersion[prompt_version.upper()]
+    except KeyError:
+        version = PromptVersion.FULL
+        print(f"⚠️  Unknown prompt version '{prompt_version}', using FULL")
 
-    base_dir_prompt = Path(__file__).parent.parent / "prompts" / "workout_generation_prompt_base.md"
+    base_dir_prompt = Path(__file__).parent.parent / "prompts" / version.value
     base_dir_output = Path(__file__).parent.parent / "local_test_files" / "system_prompts"
 
     # Load the prompt template
@@ -45,8 +59,11 @@ def prepare_prompt(
         # get the current timestamp
         current_timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
+        # Add version suffix to filename
+        version_suffix = "_minimal" if version == PromptVersion.MINIMAL else "_full"
+        
         # output the prompt to a markdown file
-        with open(base_dir_output / f"prompt_{current_timestamp}.md", "w") as f:
+        with open(base_dir_output / f"prompt_{current_timestamp}{version_suffix}.md", "w") as f:
             f.write(prompt)
 
     return prompt

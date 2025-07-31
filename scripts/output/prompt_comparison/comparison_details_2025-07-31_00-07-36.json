@@ -1,0 +1,709 @@
+{
+  "config": {
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "profile_id": 33956,
+    "user_prompt": "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettlebell und einem Türreck für heute Abend.",
+    "n_runs": 3
+  },
+  "results": {
+    "FULL": [
+      {
+        "version": "FULL",
+        "duration": 18.904649019241333,
+        "output_chars": 3775,
+        "output_tokens": 493,
+        "exercise_count": 10,
+        "prompt_length": 27829,
+        "schema": {
+          "muscle_group_load": [
+            "Beine: Moderat beansprucht durch Kettlebell Goblet Squats und Russian Kettlebell Swings. Genug Erholung nach den letzten intensiven Bein-Workouts.",
+            "Brust/Schultern/Trizeps (Push): Beansprucht durch Push-ups. Trotz gestriger Belastung (Barbell Bench Press), ist ein Bodyweight Push-Workout möglich und unterstützt die allgemeine Kraft.",
+            "Rücken/Bizeps (Pull): Gut beansprucht durch Pull-ups, was wichtig für das Muscle-Up-Ziel ist.",
+            "Core: Intensiv beansprucht durch Plank Hold, Kettlebell Swings (Core Stability) und Push-ups."
+          ],
+          "focus_derivation": "Heutiger Fokus: Ganzkörper-Funktionalität, insbesondere Zugkraft und explosive Hüftstreckung, gepaart mit Rumpfstabilität. Begründung: Nach den intensiven Ganzkörper-Workouts der letzten Tage (insbesondere mit Fokus auf Push-Bewegungen und Beine), ist heute ein ausgewogenes Ganzkörper-Home-Workout mit dem verfügbaren Equipment (Kettlebell, Klimmzugstange) ideal. Es fördert die funktionelle Kraft, die für Muscle-Ups und den Marathonlauf entscheidend ist, ohne die bereits beanspruchten Muskelgruppen zu überlasten. Die kurze, intensive Natur des Workouts passt perfekt zum Zeitrahmen und den Zielen, während die Pull-Übungen direkt auf das Muscle-Up-Ziel einzahlen und die Kettlebell-Schwünge die Explosivität und Ausdauer verbessern.",
+          "name": "Funktionelles Home-Workout mit Kettlebell & Klimmzugstange",
+          "duration_min": 20,
+          "focus": "Funktionelle Kraft, Ausdauer, Muskelaufbau",
+          "description": "Ein kurzes, aber intensives Ganzkörper-Workout für zu Hause, das funktionelle Kraft, Explosivität und Rumpfstabilität durch den Einsatz einer Kettlebell und Klimmzugstange fördert. Ideal zur Unterstützung deiner Ziele wie Muscle-Ups und Marathonlauf.",
+          "blocks": [
+            {
+              "name": "Warm-Up",
+              "duration_min": 3,
+              "description": "Allgemeine Erwärmung und Aktivierung",
+              "exercises": [
+                {
+                  "name": "Jumping Jacks",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 60,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                },
+                {
+                  "name": "Arm Circles",
+                  "sets": [
+                    {
+                      "r": 15,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                },
+                {
+                  "name": "Cat-Cow Flow",
+                  "sets": [
+                    {
+                      "r": 10,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                }
+              ]
+            },
+            {
+              "name": "Main Circuit",
+              "duration_min": 15,
+              "description": "Funktioneller Kraftzirkel mit Kettlebell und Klimmzugstange",
+              "exercises": [
+                {
+                  "name": "Pull-up",
+                  "sets": [
+                    {
+                      "r": 6,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 6,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 6,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 60
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Kettlebell Goblet Squat",
+                  "sets": [
+                    {
+                      "r": 10,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 10,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 10,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 60
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Push-up",
+                  "sets": [
+                    {
+                      "r": 12,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 12,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 12,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 60
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Russian Kettlebell Swing",
+                  "sets": [
+                    {
+                      "r": 15,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 15,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 15,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 60
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Plank Hold",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 45,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 45,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 45,
+                      "d": null,
+                      "p": 60
+                    }
+                  ],
+                  "superset_group": "A"
+                }
+              ]
+            },
+            {
+              "name": "Cool-Down",
+              "duration_min": 2,
+              "description": "Dehnung der beanspruchten Muskulatur",
+              "exercises": [
+                {
+                  "name": "Child's Pose",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 60,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                },
+                {
+                  "name": "Doorway Pec Stretch",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 30,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                }
+              ]
+            }
+          ]
+        },
+        "success": true
+      },
+      {
+        "version": "FULL",
+        "duration": 20.4823899269104,
+        "output_chars": 3223,
+        "output_tokens": 399,
+        "exercise_count": 10,
+        "prompt_length": 27829,
+        "schema": {
+          "muscle_group_load": [
+            "Beine: Moderat ermüdet von den letzten Ganzkörper-Workouts und dem Joggen. Werden in diesem Workout indirekt durch Kettlebell-Übungen beansprucht, aber nicht als Hauptfokus.",
+            "Brust/Schultern/Trizeps (Push): Leicht ermüdet von den letzten Ganzkörper-Workouts. Werden in diesem Workout moderat durch Push-ups beansprucht.",
+            "Rücken/Bizeps (Pull): Moderat ermüdet von den Pull-ups im letzten Workout. Werden heute durch Pull-ups wieder beansprucht, um die Entwicklung für Muscle-Ups zu fördern.",
+            "Core: Gut erholt und wird durch statische und dynamische Übungen gestärkt."
+          ],
+          "focus_derivation": "Heutiger Fokus: Funktionale Ganzkörperkraft und Ausdauer. Begründung: Nach den letzten beiden intensiven Ganzkörper-Workouts sind die Muskelgruppen zwar leicht ermüdet, aber bereit für eine weitere funktionelle Belastung. Dieses 20-minütige Home-Workout nutzt die verfügbare Kettlebell und Klimmzugstange, um durch eine Kombination aus Zug-, Drück- und Ganzkörperübungen die funktionelle Kraft und Ausdauer zu fördern, was direkt auf deine Ziele wie Muscle-Ups und Marathonlauf einzahlt und gleichzeitig eine effiziente Nutzung der kurzen Trainingszeit ermöglicht.",
+          "name": "Effizientes Home-Workout: Funktionale Kraft & Ausdauer",
+          "duration_min": 20,
+          "focus": "Funktionale Kraft, Muskelaufbau, Ausdauer",
+          "description": "Ein 20-minütiges, intensives Ganzkörper-Workout für zu Hause, das funktionelle Kraft, Muskelaufbau und Ausdauer durch eine Kombination aus Körpergewichts- und Kettlebell-Übungen fördert. Ideal zur Optimierung der Grundfitness und zur Unterstützung spezifischer Ziele wie Muscle-Ups und Marathonlauf.",
+          "blocks": [
+            {
+              "name": "Warm-Up",
+              "duration_min": 3,
+              "description": "Allgemeine Erwärmung und Aktivierung",
+              "exercises": [
+                {
+                  "name": "Jumping Jacks",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 60,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                },
+                {
+                  "name": "Arm Circles",
+                  "sets": [
+                    {
+                      "r": 15,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                },
+                {
+                  "name": "Dynamic Walking Lunges",
+                  "sets": [
+                    {
+                      "r": 10,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                }
+              ]
+            },
+            {
+              "name": "Main Circuit (3 Runden)",
+              "duration_min": 16,
+              "description": "Hauptteil mit Fokus auf funktionelle Kraft, Muskelaufbau und Ausdauer in einem Zirkelformat.",
+              "exercises": [
+                {
+                  "name": "Pull-up",
+                  "sets": [
+                    {
+                      "r": 6,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "American Kettlebell Swing",
+                  "sets": [
+                    {
+                      "r": 15,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Push-up",
+                  "sets": [
+                    {
+                      "r": 12,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Kettlebell Goblet Squat",
+                  "sets": [
+                    {
+                      "r": 10,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Plank Hold",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 45,
+                      "d": null,
+                      "p": 90
+                    }
+                  ],
+                  "superset_group": "A"
+                }
+              ]
+            },
+            {
+              "name": "Cool-Down",
+              "duration_min": 1,
+              "description": "Dehnung zur Förderung der Regeneration.",
+              "exercises": [
+                {
+                  "name": "Child's Pose",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 60,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                },
+                {
+                  "name": "Doorway Pec Stretch",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 30,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                }
+              ]
+            }
+          ]
+        },
+        "success": true
+      },
+      {
+        "version": "FULL",
+        "duration": 39.86782383918762,
+        "output_chars": 3650,
+        "output_tokens": 488,
+        "exercise_count": 10,
+        "prompt_length": 27829,
+        "schema": {
+          "muscle_group_load": [
+            "Beine: Moderat beansprucht durch Kettlebell-Übungen, was eine aktive Erholung ermöglicht und gleichzeitig die Marathon-Vorbereitung unterstützt.",
+            "Brust/Schultern/Trizeps (Push): Moderat beansprucht durch Push-ups, was eine gute Belastung nach den letzten Workouts darstellt.",
+            "Rücken/Bizeps (Pull): Moderat beansprucht durch Pull-ups, was die Muscle-Up-Progression fördert und die Regeneration nach den letzten Belastungen berücksichtigt.",
+            "Core: Wird durch Plank und Kettlebell-Übungen effektiv trainiert und ist gut erholt."
+          ],
+          "focus_derivation": "Heutiger Fokus: Funktionale Ganzkörperkraft und Muskelaufbau, mit besonderem Augenmerk auf die Vorbereitung für Muscle-Ups und die allgemeine Ausdauer. Begründung: Nach den intensiven Ganzkörper-Workouts der letzten Tage sind die Muskeln gut erholt, um einen weiteren, kurzen und effektiven Ganzkörperreiz zu setzen. Die Auswahl der Übungen mit Kettlebell und Klimmzugstange zielt auf die Verbesserung der funktionellen Kraft ab, die für Ziele wie Muscle-Ups und Marathon essentiell ist, während die kurze Dauer die Regeneration nicht beeinträchtigt und zum Zeitplan passt.",
+          "name": "Funktionales Ganzkörper Home Workout",
+          "duration_min": 20,
+          "focus": "Funktionale Kraft, Muskelaufbau, Ausdauer",
+          "description": "Ein kurzes, aber intensives Ganzkörper-Workout für zu Hause, das funktionelle Kraft, Muskelaufbau und Ausdauer mit Kettlebell und Klimmzugstange fördert, ideal zur Unterstützung deiner Muscle-Up- und Marathon-Ziele.",
+          "blocks": [
+            {
+              "name": "Warm-Up",
+              "duration_min": 3,
+              "description": "Vorbereitung des Körpers auf die Belastung und Aktivierung der Muskulatur.",
+              "exercises": [
+                {
+                  "name": "Jumping Jacks",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 60,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                },
+                {
+                  "name": "Arm Circles",
+                  "sets": [
+                    {
+                      "r": 15,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                },
+                {
+                  "name": "Dynamic Walking Lunges",
+                  "sets": [
+                    {
+                      "r": 10,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                }
+              ]
+            },
+            {
+              "name": "Main Functional Strength Circuit",
+              "duration_min": 15,
+              "description": "Ein intensiver Zirkel zur Steigerung der funktionellen Kraft und Ausdauer.",
+              "exercises": [
+                {
+                  "name": "Pull-up",
+                  "sets": [
+                    {
+                      "r": 6,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 6,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 6,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Push-up",
+                  "sets": [
+                    {
+                      "r": 10,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 10,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 10,
+                      "w": null,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Russian Kettlebell Swing",
+                  "sets": [
+                    {
+                      "r": 12,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 12,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 12,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Kettlebell Goblet Squat",
+                  "sets": [
+                    {
+                      "r": 10,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 10,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    },
+                    {
+                      "r": 10,
+                      "w": 24.0,
+                      "s": null,
+                      "d": null,
+                      "p": 0
+                    }
+                  ],
+                  "superset_group": "A"
+                },
+                {
+                  "name": "Plank Hold",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 45,
+                      "d": null,
+                      "p": 90
+                    },
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 45,
+                      "d": null,
+                      "p": 90
+                    },
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 45,
+                      "d": null,
+                      "p": 90
+                    }
+                  ],
+                  "superset_group": "A"
+                }
+              ]
+            },
+            {
+              "name": "Cool-Down",
+              "duration_min": 2,
+              "description": "Dehnung und Entspannung der beanspruchten Muskulatur.",
+              "exercises": [
+                {
+                  "name": "Child's Pose",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 60,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                },
+                {
+                  "name": "Doorway Pec Stretch",
+                  "sets": [
+                    {
+                      "r": null,
+                      "w": null,
+                      "s": 30,
+                      "d": null,
+                      "p": null
+                    }
+                  ],
+                  "superset_group": null
+                }
+              ]
+            }
+          ]
+        },
+        "success": true
+      }
+    ],
+    "MINIMAL": [
+      {
+        "version": "MINIMAL",
+        "duration": null,
+        "error": "'\\n  \"focus\"'",
+        "success": false
+      },
+      {
+        "version": "MINIMAL",
+        "duration": null,
+        "error": "'\\n  \"focus\"'",
+        "success": false
+      },
+      {
+        "version": "MINIMAL",
+        "duration": null,
+        "error": "'\\n  \"focus\"'",
+        "success": false
+      }
+    ]
+  },
+  "stats": {
+    "FULL": {
+      "runs": 3,
+      "avg_duration": 26.418287595113117,
+      "std_duration": 11.674323769642436,
+      "min_duration": 18.904649019241333,
+      "max_duration": 39.86782383918762,
+      "avg_tokens": 460,
+      "avg_exercises": 10
+    }
+  },
+  "timestamp": "2025-07-31_00-07-36"
+}
