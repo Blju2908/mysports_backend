@@ -20,5 +20,6 @@ class MinimalBlockSchema(BaseModel):
 
 class MinimalWorkoutSchema(BaseModel):
     """Minimales Workout Schema für Performance-Tests."""
+    name: str = Field(..., description="Name des Workouts")
     focus: str = Field(..., description="Kurzer Fokus (max 10 Wörter)")
     blocks: List[MinimalBlockSchema] = Field(..., description="Workout Blöcke")

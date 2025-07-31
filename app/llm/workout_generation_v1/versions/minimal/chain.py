@@ -1,6 +1,6 @@
 """
 Minimale Workout Generation Chain für v1.
-Generiert Markdown-Output statt JSON für Performance-Tests.
+Generiert strukturierten JSON-Output mit minimalem Schema.
 """
 
 from datetime import datetime
@@ -8,6 +8,7 @@ from typing import Optional, Tuple
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from .prompt import prepare_minimal_prompt
+from .schemas import MinimalWorkoutSchema
 
 
 def execute_workout_generation_minimal(
@@ -16,16 +17,16 @@ def execute_workout_generation_minimal(
     training_history_str: Optional[str] = None,
     user_prompt: Optional[str] = None,
     exercise_library_str: str = "",
-) -> Tuple[str, str]:
+) -> Tuple[str, MinimalWorkoutSchema]:
     """
     Führt die minimale Workout-Generation aus.
     
     Returns:
-        Tuple[prompt, workout]: Prompt und Markdown-formatiertes Workout
+        Tuple[prompt, workout]: Prompt und strukturiertes Workout-Objekt
     """
     _start_total = datetime.now()
     
-    print("🏋️ Minimal Workout Generation V1 (Markdown Output)")
+    print("🏋️ Minimal Workout Generation V1 (JSON Output)")
     print("🔧 Prompt Version:", os.environ.get("WORKOUT_PROMPT_VERSION", "FULL"))
     print("=" * 60)
     
@@ -45,24 +46,21 @@ def execute_workout_generation_minimal(
     if not api_key:
         raise ValueError("No API key found. Please set GEMINI_API_KEY or GOOGLE_API_KEY")
     
-    # LLM aufrufen
+    # LLM mit strukturiertem Output aufrufen
     try:
-        
         base_llm = ChatGoogleGenerativeAI(
             model="gemini-2.5-flash",
             google_api_key=api_key,
             thinking_budget=1024
         )
         
-        llm_output = base_llm.invoke(full_prompt)
+        # Use structured output for JSON parsing
+        llm_with_structure = base_llm.with_structured_output(MinimalWorkoutSchema)
         
-        # Output extrahieren
-        if hasattr(llm_output, 'content'):
-            workout_markdown = llm_output.content
-            print("✅ Workout generated successfully!")
-        else:
-            workout_markdown = str(llm_output)
-            print("❌ Workout generation failed!")
+        # Call LLM and get structured response
+        workout_structured = llm_with_structure.invoke(full_prompt)
+        
+        print("✅ Workout generated successfully!")
         
     except Exception as e:
         print(f"❌ Error during LLM call: {e}")
@@ -73,4 +71,4 @@ def execute_workout_generation_minimal(
     print(f"⏱️  Total generation time: {_total_duration:.1f}s")
     print("=" * 60)
     
-    return full_prompt, workout_markdown
+    return full_prompt, workout_structured

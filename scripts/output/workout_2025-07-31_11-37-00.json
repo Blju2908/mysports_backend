@@ -1,0 +1,72 @@
+{
+  "metadata": {
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "profile_id": 33956,
+    "user_prompt": "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettlebell und einem Türreck für heute Abend.",
+    "generation_time": 5.482682943344116,
+    "exercise_count": 10,
+    "prompt_version": "minimal",
+    "timestamp": "2025-07-31T11:37:00.163860"
+  },
+  "workout": {
+    "name": "Home Kettlebell & Pull-Up Bar HIIT",
+    "focus": "Funktionale Kraft, Ausdauer & Explosivität",
+    "blocks": [
+      {
+        "name": "Warm-Up",
+        "exercises": [
+          {
+            "name": "Jumping Jacks",
+            "sets": 2
+          },
+          {
+            "name": "Arm Circles",
+            "sets": 2
+          },
+          {
+            "name": "Dynamic Walking Lunges",
+            "sets": 2
+          }
+        ]
+      },
+      {
+        "name": "Main",
+        "exercises": [
+          {
+            "name": "Pull-up",
+            "sets": 4
+          },
+          {
+            "name": "Russian Kettlebell Swing",
+            "sets": 4
+          },
+          {
+            "name": "Push-up",
+            "sets": 3
+          },
+          {
+            "name": "Single-Arm Kettlebell Clean",
+            "sets": 3
+          },
+          {
+            "name": "Plank Hold",
+            "sets": 3
+          }
+        ]
+      },
+      {
+        "name": "Cool-Down",
+        "exercises": [
+          {
+            "name": "Child's Pose",
+            "sets": 1
+          },
+          {
+            "name": "Doorway Pec Stretch",
+            "sets": 1
+          }
+        ]
+      }
+    ]
+  }
+}
