@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, computed_field, field_validator
 from typing import Optional, List, Union, Any, Dict
 from datetime import datetime
 from enum import Enum
-from app.models.set_model import SetStatus
+from app.models.set_model import SetStatus, SetTag
 
 # ==========================================
 # SIMPLE SCHEMAS - Nutzt SQLModel's automatische Serialisierung
@@ -29,6 +29,7 @@ class SetInput(BaseModel):
     position: Optional[int] = Field(default=None, description="Position for stable sorting - auto-assigned if None")
     status: SetStatus = SetStatus.open
     completed_at: Optional[datetime] = None
+    tag: Optional[SetTag] = None
     
     @field_validator('completed_at')
     @classmethod
@@ -77,6 +78,7 @@ class SetRead(BaseModel):
     position: Optional[int] = None
     status: SetStatus = SetStatus.open
     completed_at: Optional[datetime] = None
+    tag: Optional[SetTag] = None
 
 # Exercise Schema - ohne komplexe Unions
 class ExerciseRead(BaseModel):
@@ -173,6 +175,7 @@ class SetUpdate(BaseModel):
     reps: Optional[int] = None
     duration: Optional[int] = None
     distance: Optional[float] = None
+    tag: Optional[SetTag] = None
 
 
 # ==========================================
@@ -193,6 +196,7 @@ class Phase1SetRead(BaseModel):
     position: Optional[int] = None
     status: str = "open"  # Using string for JSON compatibility
     completed_at: Optional[datetime] = None
+    tag: Optional[str] = None  # Using string for JSON compatibility
 
 class Phase1ExerciseRead(BaseModel):
     """Schema for Exercises in Multi-Phase Workout Generation - flattened for muscle fatigue analysis"""

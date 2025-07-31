@@ -1,0 +1,258 @@
+{
+  "metadata": {
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "profile_id": 33956,
+    "user_prompt": "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettlebell und einem Türreck für heute Abend.",
+    "generation_time": 6.17608904838562,
+    "exercise_count": 12,
+    "prompt_version": "compressed",
+    "timestamp": "2025-07-31T17:12:27.282763",
+    "token_reduction": "~90%"
+  },
+  "workout": {
+    "focus_derivation": "Dieses Workout konzentriert sich auf die Verbesserung deiner funktionellen Kraft, Explosivität und Kondition, um deine Ziele wie Muscle-Ups und eine schnelle Marathon-Pace zu unterstützen. Der Fokus liegt auf Ganzkörperbewegungen mit der Kettlebell und dem Türreck.",
+    "name": "Kettlebell & Türreck Performance-Workout",
+    "duration_min": 30,
+    "focus": "Funktionelle Kraft, Explosivität & Kondition",
+    "description": "Ein performance-orientiertes Ganzkörper-Workout für zu Hause, das funktionelle Kraft, Explosivität und Kondition mit deiner 24kg Kettlebell und dem Türreck trainiert.",
+    "blocks": [
+      {
+        "name": "Warm-Up",
+        "duration_min": 5,
+        "exercises": [
+          {
+            "name": "Jumping Jacks",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "tags": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Arm Circles",
+            "reps": [
+              15
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "tags": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Dynamic Walking Lunges",
+            "reps": [
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "tags": null,
+            "superset": "A",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Cat-Cow Flow",
+            "reps": [
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "tags": null,
+            "superset": "A",
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Hauptteil: Kraft & Explosivität",
+        "duration_min": 15,
+        "exercises": [
+          {
+            "name": "Russian Kettlebell Swing",
+            "reps": [
+              15,
+              15,
+              15,
+              15
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "tags": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Pull-up",
+            "reps": [
+              6,
+              6,
+              6,
+              6
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              90,
+              90,
+              90
+            ],
+            "tags": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Push-up",
+            "reps": [
+              15,
+              15,
+              15,
+              15
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "tags": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Burpee Broad Jump",
+            "reps": [
+              5,
+              5,
+              5,
+              5
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60
+            ],
+            "tags": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Core Finisher",
+        "duration_min": 7,
+        "exercises": [
+          {
+            "name": "Plank Hold",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60,
+              60,
+              60
+            ],
+            "distance": null,
+            "rest": [
+              30,
+              30,
+              30
+            ],
+            "tags": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Russian Twist",
+            "reps": [
+              20,
+              20,
+              20
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              30,
+              30,
+              30
+            ],
+            "tags": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Cool-Down",
+        "duration_min": 3,
+        "exercises": [
+          {
+            "name": "Child's Pose",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "tags": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Doorway Pec Stretch",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "tags": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      }
+    ]
+  }
+}

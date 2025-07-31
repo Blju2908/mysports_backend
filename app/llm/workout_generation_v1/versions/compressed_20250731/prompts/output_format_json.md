@@ -6,6 +6,10 @@
 
 Use arrays where the **position index = set number**. This drastically reduces tokens while maintaining full flexibility.
 
+**CRITICAL**: All arrays for an exercise MUST have the same length!
+- If an exercise has 4 sets, then `reps`, `weight`, `tags`, and `rest` (if arrays) must ALL have 4 elements
+- Use `null` for non-applicable values (e.g., `tags = [null, null, null, null]` if no tags needed)
+
 ### Basic Exercise Structure
 ```json
 {
@@ -22,6 +26,17 @@ Use arrays where the **position index = set number**. This drastically reduces t
   "reps": [12, 10, 8, 8],    // Warmup + 3 working sets
   "weight": [40, 72.5, 72.5, 72.5],  // Different weight for warmup
   "rest": [60, 90, 90, 90]   // Different rest after warmup
+}
+```
+
+### Exercise with Warm-up Tag
+```json
+{
+  "name": "Deadlift",
+  "reps": [8, 5, 5, 5, 3],
+  "weight": [60, 100, 120, 120, 140],
+  "tags": ["warm_up", "warm_up", null, null, null],  // First 2 sets are warm-up
+  "rest": [60, 90, 120, 120, 180]
 }
 ```
 
@@ -149,8 +164,10 @@ Use arrays where the **position index = set number**. This drastically reduces t
 ```
 
 ## Important Rules:
-1. **Omit null/empty fields** - Don't include fields that aren't applicable
-2. **Use arrays for varying parameters** - Position in array = set number
-3. **Single values when uniform** - Use single value for weight/rest if same for all sets
-4. **Equipment constraints** - Respect available equipment weights (e.g., only 24kg KB)
-5. **German content** - All descriptions in German, exercise names can be English
+1. **Array Length Consistency** - ALL arrays for an exercise MUST have the same length (number of sets)
+2. **Omit null/empty fields** - Don't include fields that aren't applicable (but within arrays, use null)
+3. **Use arrays for varying parameters** - Position in array = set number
+4. **Single values when uniform** - Use single value for weight/rest if same for all sets
+5. **Equipment constraints** - Respect available equipment weights (e.g., only 24kg KB)
+6. **German content** - All descriptions in German, exercise names can be English
+7. **Warm-up sets** - Use `tags: ["warm_up", ...]` for warm-up sets with lower weight/higher reps

@@ -11,6 +11,7 @@ class ArrayExerciseSchema(BaseModel):
     duration: Optional[List[int]] = Field(None, description="Dauer in Sekunden pro Satz")
     distance: Optional[List[int]] = Field(None, description="Distanz in Metern pro Satz")
     rest: Optional[Union[int, List[int]]] = Field(None, description="Pause in Sekunden (einzelner Wert oder Array)")
+    tags: Optional[List[str]] = Field(None, description="Tags pro Satz (z.B. 'warm_up')")
     
     # Optional fields
     superset: Optional[str] = Field(None, description="Superset-Gruppe (z.B. 'A', 'B')")

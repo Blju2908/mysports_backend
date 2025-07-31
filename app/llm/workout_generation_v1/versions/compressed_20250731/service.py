@@ -107,6 +107,14 @@ async def expand_compressed_exercise(exercise: Union[ArrayExerciseSchema, Dict])
         # If rest array is shorter than number of sets, extend with the last value
         rest_array = rest_array + [rest_array[-1]] * (num_sets - len(rest_array))
     
+    # Process tags array
+    tags_array = exercise.tags
+    if tags_array is None:
+        tags_array = [None] * num_sets
+    elif isinstance(tags_array, list) and len(tags_array) < num_sets:
+        # Pad with None if tags array is shorter
+        tags_array = tags_array + [None] * (num_sets - len(tags_array))
+    
     # Create expanded sets
     sets = []
     for i in range(num_sets):
@@ -116,7 +124,8 @@ async def expand_compressed_exercise(exercise: Union[ArrayExerciseSchema, Dict])
             "weight": weight_array[i] if weight_array else None,
             "duration": exercise.duration[i] if exercise.duration else None,
             "distance": exercise.distance[i] if exercise.distance else None,
-            "rest_time": rest_array[i] if rest_array else 60
+            "rest_time": rest_array[i] if rest_array else 60,
+            "tag": tags_array[i] if tags_array else None
         }
         sets.append(set_data)
     
@@ -409,13 +418,26 @@ async def parse_compressed_workout_to_db_models(
                 
                 # Create Set objects
                 for set_idx, set_data in enumerate(sets_data):
+                    # Import SetTag enum for tag conversion
+                    from app.models.set_model import SetTag
+                    
+                    # Convert tag string to enum if present
+                    tag = None
+                    if set_data.get("tag"):
+                        try:
+                            tag = SetTag(set_data["tag"])
+                        except ValueError:
+                            print(f"Warning: Invalid tag value: {set_data['tag']}")
+                            tag = None
+                    
                     set_obj = Set(
                         weight=set_data.get("weight"),
                         reps=set_data.get("reps"),
                         duration=set_data.get("duration"),
                         distance=set_data.get("distance"),
                         rest_time=set_data.get("rest_time", 60),
-                        position=set_idx
+                        position=set_idx,
+                        tag=tag
                     )
                     exercise.sets.append(set_obj)
                 
