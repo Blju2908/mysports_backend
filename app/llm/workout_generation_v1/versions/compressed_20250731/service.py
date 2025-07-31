@@ -14,6 +14,7 @@ from app.models.set_model import Set
 from app.models.block_model import Block
 from ...shared.formatting.training_plan import format_training_plan_for_llm_v2
 from ...shared.formatting.training_history import format_training_history_for_llm
+from ...shared.formatting.training_history_compressed import format_training_history_compressed
 from ...shared.exercise_library import get_all_exercises_for_prompt
 from .chain import create_compressed_workout_chain, invoke_compressed_workout_chain
 from .schemas import CompactWorkoutSchema, ArrayExerciseSchema, CompactBlockSchema
@@ -130,18 +131,12 @@ def format_compressed_workout_as_markdown(workout: CompactWorkoutSchema) -> str:
 **Dauer:** {workout.duration_min} Minuten  
 **Beschreibung:** {workout.description}
 
-## Muskelgruppen-Analyse
+**Fokus-Begründung:** {workout.focus_derivation}
 """
-    
-    for load in workout.muscle_group_load:
-        markdown += f"- {load}\n"
-    
-    markdown += f"\n**Fokus-Begründung:** {workout.focus_derivation}\n\n"
     
     # Format blocks
     for block in workout.blocks:
-        markdown += f"## {block.name} ({block.duration_min} Min)\n"
-        markdown += f"*{block.description}*\n\n"
+        markdown += f"## {block.name} ({block.duration_min} Min)\n\n"
         
         exercise_num = 1
         current_superset = None
@@ -234,17 +229,29 @@ async def generate_compressed_workout(
     
     # Import here to avoid circular imports
     from app.db.session import create_session
-    from sqlalchemy import select, desc
+    from sqlalchemy import select, desc, exists
     from sqlalchemy.orm import selectinload
     from app.models.workout_model import Workout
     from app.models.block_model import Block
+    from app.models.set_model import Set, SetStatus
     
     # Create session only for database operations
     async with create_session() as db:
         # Get user training history workouts
         workout_query = (
             select(Workout)
-            .where(Workout.user_id == input_data.user_id)
+            .where(
+                Workout.user_id == input_data.user_id,
+                exists(
+                    select(Set.id)
+                    .join(Exercise, Set.exercise_id == Exercise.id)
+                    .join(Block, Exercise.block_id == Block.id)
+                    .where(
+                        Block.workout_id == Workout.id,
+                        Set.status == SetStatus.done
+                    )
+                )
+            )
             .options(
                 selectinload(Workout.blocks)
                 .selectinload(Block.exercises)
@@ -278,7 +285,7 @@ async def generate_compressed_workout(
         exercise_library = await get_all_exercises_for_prompt(db)
     
         # Format training history while session is still open
-        training_history = format_training_history_for_llm(workouts) or "Keine Trainingshistorie vorhanden."
+        training_history = format_training_history_compressed(workouts) or "Keine Trainingshistorie vorhanden."
     
     # Build the full prompt
     base_prompt_template = templates.get("workout_generation_prompt_base", "")
@@ -357,7 +364,7 @@ async def parse_compressed_workout_to_db_models(
         description=workout_schema.description,
         duration=workout_schema.duration_min,
         focus=workout_schema.focus,
-        muscle_group_load=workout_schema.muscle_group_load,
+        muscle_group_load=[],
         focus_derivation=workout_schema.focus_derivation,
         date_created=datetime.utcnow()
     )
@@ -366,7 +373,7 @@ async def parse_compressed_workout_to_db_models(
     for block_idx, block_schema in enumerate(workout_schema.blocks):
         block = Block(
             name=block_schema.name,
-            description=block_schema.description,
+            description="",
             position=block_idx
         )
         

@@ -20,23 +20,19 @@ class ArrayExerciseSchema(BaseModel):
 class CompactBlockSchema(BaseModel):
     name: str = Field(..., description="Name des Blocks (z.B. 'Warm-Up', 'Main').")
     duration_min: int = Field(..., description="Geschätzte Dauer des Blocks in Minuten.")
-    description: str = Field(..., description="Kurze Beschreibung des Block-Fokus.")
     exercises: List[ArrayExerciseSchema] = Field(
         ..., description="Liste der Übungen in diesem Block."
     )
 
 class CompactWorkoutSchema(BaseModel):
-    muscle_group_load: List[str] = Field(
-        ..., description="Analyse der Muskelgruppenbelastung basierend auf der Historie des Users."
-    )
     focus_derivation: str = Field(
-        ..., description="Herleitung des Workout-Fokus basierend auf der Analyse."
+        ..., description="1-2 Sätze zur Begründung des Workout-Fokus."
     )
     name: str = Field(..., description="Name des gesamten Workouts.")
     duration_min: int = Field(..., description="Geschätzte Gesamtdauer in Minuten.")
     focus: str = Field(..., description="Hauptfokus des Workouts (z.B. 'Kraft, Muskelaufbau').")
     description: str = Field(
-        ..., description="Detailliertere Beschreibung des Workout-Ziels."
+        ..., description="Kurze Beschreibung des Workouts."
     )
     blocks: List[CompactBlockSchema] = Field(
         ..., description="Die Blöcke des Workouts."

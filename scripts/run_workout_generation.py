@@ -268,7 +268,8 @@ async def generate_compressed_workout_array(
     input_data = CompressedWorkoutInput(
         user_id=user_id,
         user_prompt=user_prompt,
-        profile_id=profile_id
+        profile_id=profile_id,
+        session_duration=30
     )
     
     # Generate workout (this will use its own session internally)

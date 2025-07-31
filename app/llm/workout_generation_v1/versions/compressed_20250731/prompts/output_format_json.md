@@ -59,22 +59,15 @@ Use arrays where the **position index = set number**. This drastically reduces t
 
 ```json
 {
-  "muscle_group_load": [
-    "Beine: Stark ermüdet nach gestrigem Lauf. Benötigen Regeneration.",
-    "Rücken/Bizeps (Pull): Vollständig erholt und bereit für intensive Belastung.",
-    "Brust/Schultern/Trizeps (Push): Leicht ermüdet. Vordere Schulter schonen.",
-    "Core: Vollständig erholt."
-  ],
-  "focus_derivation": "Heutiger Fokus: Rücken, Bizeps und Rumpf. Begründung: Um den Beinen ausreichend Erholungszeit zu geben, konzentriert sich das Training auf die erholten Zugmuskeln.",
+  "focus_derivation": "Fokus auf Rücken und Bizeps, da Beine nach gestrigem Lauf Regeneration benötigen.",
   "name": "Kraftaufbau Pull-Workout für funktionelle Stärke",
   "duration_min": 60,
   "focus": "Kraft, Muskelaufbau, Funktionelle Stärke",
-  "description": "Ein fokussiertes Pull-Workout zur Steigerung der Kraft im Rücken und Bizeps.",
+  "description": "Pull-Workout für Kraft und Muskelaufbau.",
   "blocks": [
     {
       "name": "Warm-Up",
       "duration_min": 5,
-      "description": "Allgemeine Erwärmung und Aktivierung",
       "exercises": [
         {
           "name": "Arm Circles",
@@ -89,7 +82,6 @@ Use arrays where the **position index = set number**. This drastically reduces t
     {
       "name": "Main",
       "duration_min": 50,
-      "description": "Hauptteil mit Fokus auf Kraft und Muskelaufbau",
       "exercises": [
         {
           "name": "Pull-up",
@@ -141,7 +133,6 @@ Use arrays where the **position index = set number**. This drastically reduces t
     {
       "name": "Cool-Down",
       "duration_min": 5,
-      "description": "Dehnung der beanspruchten Muskulatur",
       "exercises": [
         {
           "name": "Child's Pose",

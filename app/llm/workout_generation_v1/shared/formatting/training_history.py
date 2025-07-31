@@ -1,5 +1,6 @@
 from typing import List
 from app.models.workout_model import Workout
+from app.models.set_model import SetStatus
 import json
 
 def format_training_history_for_llm(
@@ -27,7 +28,8 @@ def format_training_history_for_llm(
         for block in workout.blocks:
             for exercise in block.exercises:
                 for s_set in exercise.sets:
-                    if s_set.completed_at:
+                    # Only consider completed sets
+                    if s_set.status == SetStatus.done and s_set.completed_at:
                         if earliest_completed_at is None or s_set.completed_at < earliest_completed_at:
                             earliest_completed_at = s_set.completed_at
                             
@@ -73,6 +75,10 @@ def format_training_history_for_llm(
                 # Collect and compress sets
                 raw_sets = []
                 for s in exercise.sets:
+                    # Only include sets that are done
+                    if s.status != SetStatus.done:
+                        continue
+                    
                     set_obj = {}
                     if s.weight is not None and s.weight != 0.0:
                         set_obj["weight"] = s.weight

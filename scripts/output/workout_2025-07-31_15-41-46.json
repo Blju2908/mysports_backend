@@ -1,0 +1,258 @@
+{
+  "metadata": {
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "profile_id": 33956,
+    "user_prompt": "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettlebell und einem Türreck für heute Abend.",
+    "generation_time": 6.474843978881836,
+    "exercise_count": 13,
+    "prompt_version": "compressed",
+    "timestamp": "2025-07-31T15:41:46.306819",
+    "token_reduction": "~90%"
+  },
+  "workout": {
+    "focus_derivation": "Heutiger Fokus: Funktionelle Kraft und Ausdauer mit einem Ganzkörperansatz. Begründung: Nach dem letzten Ganzkörper-Workout vor zwei Tagen sind die Muskeln gut erholt, um eine weitere intensive Session zu absolvieren. Dieses Workout nutzt die vorhandene Kettlebell und das Türreck, um Übungen zu integrieren, die sowohl die funktionelle Kraft als auch die Ausdauer verbessern, was direkt auf deine Ziele wie Muscle-Ups und Marathonlauf einzahlt. Die hohe Intensität und kurze Dauer passen zu deinem 'Performance-orientierten' Stil.",
+    "name": "Performance-orientiertes Kettlebell & Türreck Home Workout",
+    "duration_min": 30,
+    "focus": "Funktionelle Kraft, Explosivität, Ausdauer",
+    "description": "Ein performance-orientiertes Ganzkörper-Home-Workout, das funktionelle Kraft, Explosivität und Ausdauer mit Kettlebell und Türreck fördert. Ideal für deine Ziele, wie Muscle-Ups und Marathon.",
+    "blocks": [
+      {
+        "name": "Warm-Up",
+        "duration_min": 5,
+        "exercises": [
+          {
+            "name": "Jumping Jacks",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Arm Circles",
+            "reps": [
+              15
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Dynamic Walking Lunges",
+            "reps": [
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Cat-Cow Flow",
+            "reps": [
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Main Performance Circuit",
+        "duration_min": 20,
+        "exercises": [
+          {
+            "name": "Kettlebell Swing 24kg",
+            "reps": [
+              15,
+              15,
+              15,
+              15
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60,
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Pull-up",
+            "reps": [
+              5,
+              5,
+              5,
+              5
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60,
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kettlebell Goblet Squat",
+            "reps": [
+              12,
+              12,
+              12,
+              12
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60,
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Push-up",
+            "reps": [
+              15,
+              15,
+              15,
+              15
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60,
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Plank Hold",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              45,
+              45,
+              45,
+              45
+            ],
+            "distance": null,
+            "rest": [
+              60,
+              60,
+              60,
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Cool-Down",
+        "duration_min": 5,
+        "exercises": [
+          {
+            "name": "Child's Pose",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Doorway Pec Stretch",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kneeling Quad Stretch links",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Kneeling Quad Stretch rechts",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      }
+    ]
+  }
+}

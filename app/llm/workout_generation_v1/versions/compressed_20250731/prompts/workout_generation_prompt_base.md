@@ -24,7 +24,7 @@ Follow this logic sequentially:
 
 ### Step 1: Internal Analysis
 - Analyze the entire training history, focusing on volume/intensity per muscle group, recovery status, progression trends, and weaknesses and summarize concisely.
-- Based on the analysis, select a focus for the next workout and formulate a to the point explanation of the *why* behind today's workout focus. This statement is important so that the user understands the proficiency with which his workout ist crafted.
+- Based on the analysis, select a focus for the next workout and formulate a concise 1-2 sentence explanation of the *why* behind today's workout focus.
 
 ### Step 2: Exercise Selection & Structure
 Define blocks (e.g. Warm-Up, Main, Cool-Down) that fit the user's goals. Prioritize weak points. Adapt to style, time, and equipment.

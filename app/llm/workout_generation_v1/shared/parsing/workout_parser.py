@@ -25,16 +25,16 @@ def parse_compact_workout_to_db_models(
         description=compact_workout.description,
         duration=compact_workout.duration_min,
         focus=compact_workout.focus,
-        muscle_group_load=compact_workout.muscle_group_load,
+        muscle_group_load=[],
         focus_derivation=compact_workout.focus_derivation,
-        notes=f"Focus derivation: {compact_workout.focus_derivation}\n\nMuscle group load: {'; '.join(compact_workout.muscle_group_load)}",
+        notes=f"Focus derivation: {compact_workout.focus_derivation}",
         blocks=[],
     )
 
     for block_pos, compact_block in enumerate(compact_workout.blocks):
         block_obj = Block(
             name=compact_block.name,
-            description=compact_block.description,
+            description="",
             position=block_pos,
             exercises=[],
         )
@@ -101,9 +101,9 @@ def update_existing_workout_with_compact_data(
     existing_workout.description = compact_workout.description
     existing_workout.duration = compact_workout.duration_min
     existing_workout.focus = compact_workout.focus
-    existing_workout.muscle_group_load = compact_workout.muscle_group_load
+    existing_workout.muscle_group_load = []
     existing_workout.focus_derivation = compact_workout.focus_derivation
-    existing_workout.notes = f"Focus derivation: {compact_workout.focus_derivation}\n\nMuscle group load: {'; '.join(compact_workout.muscle_group_load)}"
+    existing_workout.notes = f"Focus derivation: {compact_workout.focus_derivation}"
     
     if training_plan_id is not None:
         existing_workout.training_plan_id = training_plan_id
@@ -116,7 +116,7 @@ def update_existing_workout_with_compact_data(
     for block_pos, compact_block in enumerate(compact_workout.blocks):
         block_obj = Block(
             name=compact_block.name,
-            description=compact_block.description,
+            description="",
             position=block_pos,
             exercises=[],
         )

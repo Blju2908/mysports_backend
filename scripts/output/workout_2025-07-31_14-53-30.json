@@ -1,0 +1,184 @@
+{
+    "metadata": {
+        "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+        "profile_id": 33956,
+        "user_prompt": "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettlebell und einem Türreck für heute Abend.",
+        "generation_time": 7.328482151031494,
+        "exercise_count": 12,
+        "prompt_version": "compressed",
+        "timestamp": "2025-07-31T14:53:30.572325",
+        "token_reduction": "~90%"
+    },
+    "workout": {
+        "muscle_group_load": [
+            "Beine",
+            "Gesäß",
+            "Rumpf",
+            "Schultern",
+            "Rücken",
+            "Brust",
+            "Trizeps",
+            "Bizeps"
+        ],
+        "focus_derivation": "Basierend auf Ihrer Trainingshistorie, die bereits einen starken Fokus auf funktionelle Kraft und Explosivität zeigt, und Ihren Zielen, einen Marathon zu laufen und Muscle Ups zu lernen, wird das Workout auf die Verbesserung dieser spezifischen Leistungsbereiche ausgerichtet. Die Integration der Kettlebell und des Türrecks ermöglicht es, die Intensität und Variabilität der Übungen zu erhöhen und somit die notwendigen Anpassungen für Ihre Ziele zu fördern.",
+        "name": "Explosive Funktionelle Kraft & Ausdauer (Kettlebell & Türreck – Marathon & Muscle-Up Fokus) ",
+        "duration_min": 30,
+        "focus": "Funktionelle Kraft, Explosivität & Ausdauer",
+        "description": "Dieses Workout kombiniert explosive Kettlebell-Übungen mit Körpergewichtsübungen und Klimmzügen, um Ihre funktionelle Kraft und Ausdauer zu steigern. Es ist darauf ausgelegt, Ihre Leistung für den Marathon und das Erlernen von Muscle Ups zu optimieren.",
+        "blocks": [
+            {
+                "name": "Warm-Up",
+                "duration_min": 5,
+                "description": "Bereitet den Körper auf intensive, explosive Bewegungen vor und erhöht die Herzfrequenz.",
+                "exercises": [
+                    {
+                        "name": "Jumping Jacks",
+                        "reps": null,
+                        "weight": null,
+                        "duration": [45, 45],
+                        "distance": null,
+                        "rest": [15, 15],
+                        "superset": null,
+                        "note": null,
+                        "equipment_note": null
+                    },
+                    {
+                        "name": "Dynamic Walking Lunges",
+                        "reps": [8, 8],
+                        "weight": null,
+                        "duration": null,
+                        "distance": null,
+                        "rest": [15, 15],
+                        "superset": "A",
+                        "note": null,
+                        "equipment_note": null
+                    },
+                    {
+                        "name": "Arm Circles",
+                        "reps": [15, 15],
+                        "weight": null,
+                        "duration": null,
+                        "distance": null,
+                        "rest": [15, 15],
+                        "superset": "A",
+                        "note": null,
+                        "equipment_note": null
+                    }
+                ]
+            },
+            {
+                "name": "Explosive Kraft & Ausdauer Zirkel",
+                "duration_min": 20,
+                "description": "Zirkeltraining zur Steigerung von funktioneller Kraft, Explosivität und Herz-Kreislauf-Ausdauer mit Kettlebell und Körpergewicht.",
+                "exercises": [
+                    {
+                        "name": "Double-Arm Kettlebell Clean",
+                        "reps": [8, 8, 8],
+                        "weight": [24.0, 24.0, 24.0],
+                        "duration": null,
+                        "distance": null,
+                        "rest": [30, 30, 30],
+                        "superset": "B",
+                        "note": null,
+                        "equipment_note": null
+                    },
+                    {
+                        "name": "Kettlebell Swing",
+                        "reps": [12, 12, 12],
+                        "weight": [24.0, 24.0, 24.0],
+                        "duration": null,
+                        "distance": null,
+                        "rest": [30, 30, 30],
+                        "superset": "B",
+                        "note": null,
+                        "equipment_note": null
+                    },
+                    {
+                        "name": "Pull-up",
+                        "reps": [5, 5, 5],
+                        "weight": null,
+                        "duration": null,
+                        "distance": null,
+                        "rest": [45, 45, 45],
+                        "superset": null,
+                        "note": null,
+                        "equipment_note": null
+                    },
+                    {
+                        "name": "Push-up",
+                        "reps": [15, 15, 15],
+                        "weight": null,
+                        "duration": null,
+                        "distance": null,
+                        "rest": [45, 45, 45],
+                        "superset": null,
+                        "note": null,
+                        "equipment_note": null
+                    },
+                    {
+                        "name": "Kettlebell Goblet Squat",
+                        "reps": [10, 10, 10],
+                        "weight": [24.0, 24.0, 24.0],
+                        "duration": null,
+                        "distance": null,
+                        "rest": [45, 45, 45],
+                        "superset": null,
+                        "note": null,
+                        "equipment_note": null
+                    }
+                ]
+            },
+            {
+                "name": "Core & Agilität",
+                "duration_min": 5,
+                "description": "Fokus auf die Rumpfstabilität und Agilität, um die sportliche Leistung zu unterstützen.",
+                "exercises": [
+                    {
+                        "name": "Plank Up-Down",
+                        "reps": [10, 10],
+                        "weight": null,
+                        "duration": null,
+                        "distance": null,
+                        "rest": [30, 30],
+                        "superset": "C",
+                        "note": null,
+                        "equipment_note": null
+                    },
+                    {
+                        "name": "Hollow Rock",
+                        "reps": null,
+                        "weight": null,
+                        "duration": [30, 30],
+                        "distance": null,
+                        "rest": [30, 30],
+                        "superset": "C",
+                        "note": null,
+                        "equipment_note": null
+                    },
+                    {
+                        "name": "Side Plank (rechts)",
+                        "reps": null,
+                        "weight": null,
+                        "duration": [30, 30],
+                        "distance": null,
+                        "rest": [15, 15],
+                        "superset": "C",
+                        "note": null,
+                        "equipment_note": null
+                    },
+                    {
+                        "name": "Side Plank (links)",
+                        "reps": null,
+                        "weight": null,
+                        "duration": [30, 30],
+                        "distance": null,
+                        "rest": [15, 15],
+                        "superset": "C",
+                        "note": null,
+                        "equipment_note": null
+                    }
+                ]
+            }
+        ]
+    }
+}

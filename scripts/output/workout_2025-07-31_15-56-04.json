@@ -1,0 +1,235 @@
+{
+  "metadata": {
+    "user_id": "df668bed-9092-4035-82fa-c68e6fa2a8ff",
+    "profile_id": 33956,
+    "user_prompt": "Bitte plane für mich ein gutes Home Workout mit einer 24kg Kettlebell und einem Türreck für heute Abend.",
+    "generation_time": 5.833509922027588,
+    "exercise_count": 12,
+    "prompt_version": "compressed",
+    "timestamp": "2025-07-31T15:56:04.978960",
+    "token_reduction": "~90%"
+  },
+  "workout": {
+    "focus_derivation": "Basierend auf den Zielen des Nutzers, Muscle Ups zu lernen und die Marathonleistung zu verbessern, liegt der Fokus auf Kettlebell-Übungen für explosive Kraft und Kondition sowie Pull-ups für die Oberkörperzugkraft.",
+    "name": "Kettlebell & Türreck Performance-Workout",
+    "duration_min": 30,
+    "focus": "Funktionelle Kraft & Ausdauer",
+    "description": "Ein performance-orientiertes Ganzkörper-Workout mit Kettlebell und Türreck, das funktionelle Kraft, Explosivität und Ausdauer fördert.",
+    "blocks": [
+      {
+        "name": "Warm-Up",
+        "duration_min": 5,
+        "exercises": [
+          {
+            "name": "Jumping Jacks",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Arm Circles",
+            "reps": [
+              15
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Dynamic Walking Lunges",
+            "reps": [
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Cat-Cow Flow",
+            "reps": [
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Main Strength & Power",
+        "duration_min": 20,
+        "exercises": [
+          {
+            "name": "Russian Kettlebell Swing",
+            "reps": [
+              15,
+              15,
+              15,
+              15
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Pull-up",
+            "reps": [
+              6,
+              6,
+              5,
+              5
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              90
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Single-Arm Kettlebell Clean",
+            "reps": [
+              8,
+              8,
+              8,
+              8
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60
+            ],
+            "superset": "A",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Single-Arm Kettlebell Clean",
+            "reps": [
+              8,
+              8,
+              8,
+              8
+            ],
+            "weight": [
+              24.0,
+              24.0,
+              24.0,
+              24.0
+            ],
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60
+            ],
+            "superset": "A",
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Push-up",
+            "reps": [
+              12,
+              12,
+              10,
+              10
+            ],
+            "weight": null,
+            "duration": null,
+            "distance": null,
+            "rest": [
+              60
+            ],
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      },
+      {
+        "name": "Cool-Down",
+        "duration_min": 5,
+        "exercises": [
+          {
+            "name": "Child's Pose",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              60
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Doorway Pec Stretch",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          },
+          {
+            "name": "Knees-to-Chest Stretch",
+            "reps": null,
+            "weight": null,
+            "duration": [
+              30
+            ],
+            "distance": null,
+            "rest": null,
+            "superset": null,
+            "note": null,
+            "equipment_note": null
+          }
+        ]
+      }
+    ]
+  }
+}
