@@ -43,6 +43,7 @@ class SetInput(BaseModel):
 class ExerciseInput(BaseModel):
     """Schema für Exercise Input - flexible IDs für Frontend"""
     id: Optional[Union[int, str]] = None  # Frontend kann temp IDs senden
+    uid: Optional[str] = None  # Frontend-generierte UID für eindeutige Identifikation
     block_id: Optional[Union[int, str]] = None  # Wird zur Laufzeit gesetzt
     name: str
     description: Optional[str] = None
@@ -87,6 +88,7 @@ class ExerciseRead(BaseModel):
     model_config = {"from_attributes": True}  # ✅ SQLModel Best Practice!
     
     id: int
+    uid: Optional[str] = None  # UUID für optimistic updates
     block_id: int
     name: str
     description: Optional[str] = None
@@ -212,6 +214,7 @@ class Phase1ExerciseRead(BaseModel):
     model_config = {"from_attributes": True}
     
     id: int
+    uid: Optional[str] = None  # UUID für eindeutige Identifikation
     name: str
     description: Optional[str] = None
     notes: Optional[str] = None

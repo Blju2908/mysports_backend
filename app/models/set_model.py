@@ -17,7 +17,7 @@ class SetTag(str, Enum):
 class Set(SQLModel, table=True):
     __tablename__ = "sets"
     id: Optional[int] = Field(default=None, primary_key=True)
-    uid: Optional[str] = Field(default=None, unique=True, index=True)
+    uid: Optional[str] = Field(default_factory=lambda: str(uuid4()), unique=True, index=True)
     exercise_id: int = Field(foreign_key="exercises.id", ondelete="CASCADE")
     
     # Planned values

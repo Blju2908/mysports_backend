@@ -268,22 +268,35 @@ async def save_block(
         existing_block.description = block.description
         existing_block.notes = block.notes
         
-        # ✅ SMART ID-PRESERVING APPROACH: Update/Create/Delete based on comparison
-        existing_exercises = {str(ex.id): ex for ex in existing_block.exercises}
-        incoming_exercise_ids = set()
+        # ✅ SMART UID-BASED APPROACH: Update/Create/Delete based on UIDs
+        existing_exercises_by_uid = {ex.uid: ex for ex in existing_block.exercises if ex.uid}
+        # Fallback for legacy exercises without UIDs (will be removed after migration)
+        existing_exercises_by_id = {str(ex.id): ex for ex in existing_block.exercises}
+        incoming_exercise_uids = set()
         
         # Process each incoming exercise
         for ex_data in block.exercises:
-            if hasattr(ex_data, 'id') and ex_data.id and str(ex_data.id) in existing_exercises:
-                # ✅ UPDATE existing exercise (preserves ID!)
-                existing_exercise = existing_exercises[str(ex_data.id)]
+            existing_exercise = None
+            
+            # First try to find by UID
+            if hasattr(ex_data, 'uid') and ex_data.uid and ex_data.uid in existing_exercises_by_uid:
+                existing_exercise = existing_exercises_by_uid[ex_data.uid]
+                incoming_exercise_uids.add(ex_data.uid)
+            # Fallback to ID-based lookup for backward compatibility
+            elif hasattr(ex_data, 'id') and ex_data.id and str(ex_data.id) in existing_exercises_by_id:
+                existing_exercise = existing_exercises_by_id[str(ex_data.id)]
+                # Assign UID to legacy exercise if it doesn't have one
+                if not existing_exercise.uid:
+                    existing_exercise.uid = str(uuid4())
+                    print(f"[Backend] Assigned UID {existing_exercise.uid} to legacy exercise {existing_exercise.id}")
+            
+            if existing_exercise:
+                # ✅ UPDATE existing exercise
                 existing_exercise.name = ex_data.name
                 existing_exercise.description = ex_data.description
                 existing_exercise.notes = ex_data.notes
                 existing_exercise.superset_id = ex_data.superset_id
                 existing_exercise.position = getattr(ex_data, "position", existing_exercise.position or 0)  # ✅ Position support
-                
-                incoming_exercise_ids.add(str(ex_data.id))
                 
                 # ✅ SMART SET HANDLING: Update/Create/Delete sets based on UIDs
                 existing_sets_by_uid = {s.uid: s for s in existing_exercise.sets if s.uid}
@@ -346,7 +359,13 @@ async def save_block(
                 max_exercise_position = max(existing_exercise_positions) if existing_exercise_positions else -1
                 new_exercise_position = getattr(ex_data, "position", max_exercise_position + 1)
                 
+                # Generate or use frontend-provided UID
+                frontend_uid = getattr(ex_data, 'uid', None)
+                exercise_uid = frontend_uid if frontend_uid else str(uuid4())
+                print(f"[Backend] Creating new exercise - Frontend UID: {frontend_uid}, Using UID: {exercise_uid}")
+                
                 new_exercise = Exercise(
+                    uid=exercise_uid,  # Use frontend UID or generate new
                     block_id=existing_block.id,
                     name=ex_data.name,
                     description=ex_data.description,
@@ -376,9 +395,10 @@ async def save_block(
                     # No need for temp ID mapping anymore - we use UIDs
                     await db.flush()  # Ensure the set gets an ID
         
-        # ✅ DELETE exercises that are no longer present
-        for ex_id, existing_exercise in existing_exercises.items():
-            if ex_id not in incoming_exercise_ids:
+        # ✅ DELETE exercises that are no longer present (based on UIDs)
+        for existing_exercise in existing_block.exercises:
+            if existing_exercise.uid and existing_exercise.uid not in incoming_exercise_uids:
+                print(f"[Backend] Deleting exercise with UID: {existing_exercise.uid} (not in incoming UIDs)")
                 await db.delete(existing_exercise)
         
         await db.commit()

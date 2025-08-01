@@ -1,5 +1,6 @@
 from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, TYPE_CHECKING, List
+from uuid import uuid4
 
 if TYPE_CHECKING:
     from .set_model import Set
@@ -8,6 +9,7 @@ if TYPE_CHECKING:
 class Exercise(SQLModel, table=True):
     __tablename__ = "exercises"
     id: Optional[int] = Field(default=None, primary_key=True)
+    uid: Optional[str] = Field(default_factory=lambda: str(uuid4()), unique=True, index=True)
     name: str
     description: Optional[str] = Field(default=None)
     notes: Optional[str] = Field(default=None)
