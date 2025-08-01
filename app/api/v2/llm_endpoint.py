@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from uuid import UUID
+from typing import List
 import logging
 
 from app.core.auth import get_current_user, User
@@ -17,6 +18,7 @@ from app.services.llm_logging_service import (
 )
 from app.models.llm_call_log_model import LlmOperationStatus
 from app.models.workout_model import Workout
+from app.models.block_model import Block
 from app.models.llm_call_log_model import LlmCallLog
 
 from app.llm.workout_revision.workout_revision_schemas import (
@@ -32,7 +34,6 @@ from app.llm.workout_generation.workout_parser import (
 from app.llm.workout_generation_v1.versions.compressed_20250731.service import (
     generate_compressed_workout,
     CompressedWorkoutInput,
-    parse_compressed_workout_to_db_models,
 )
 
 
@@ -399,7 +400,8 @@ async def get_workout_revision_status(
 async def update_workout_in_database(
     db: AsyncSession,
     workout_id: int,
-    new_workout_data: Workout,
+    new_blocks: List[Block],
+    workout_updates: dict,
     preserve_user_data: bool = True
 ) -> Workout:
     """
@@ -408,7 +410,8 @@ async def update_workout_in_database(
     Args:
         db: Database session
         workout_id: ID of the workout to update
-        new_workout_data: New workout data (DB model)
+        new_blocks: List of new blocks to add to the workout
+        workout_updates: Dictionary of workout fields to update
         preserve_user_data: Whether to preserve user_id and other user-specific fields
         
     Returns:
@@ -426,32 +429,33 @@ async def update_workout_in_database(
     if not existing_workout:
         raise ValueError(f"Workout with ID {workout_id} not found")
     
-    # Preserve important fields
-    preserved_user_id = existing_workout.user_id if preserve_user_data else new_workout_data.user_id
-    
     # Delete existing blocks
     for block in existing_workout.blocks:
         await db.delete(block)
     await db.flush()
     
-    # Update workout fields
-    existing_workout.name = new_workout_data.name
-    existing_workout.description = new_workout_data.description
-    existing_workout.duration = new_workout_data.duration
-    existing_workout.focus = new_workout_data.focus
-    existing_workout.muscle_group_load = new_workout_data.muscle_group_load
-    existing_workout.focus_derivation = new_workout_data.focus_derivation
-    existing_workout.notes = new_workout_data.notes
-    existing_workout.training_plan_id = new_workout_data.training_plan_id
+    # Update workout fields from the updates dictionary
+    if "name" in workout_updates:
+        existing_workout.name = workout_updates["name"]
+    if "description" in workout_updates:
+        existing_workout.description = workout_updates["description"]
+    if "duration" in workout_updates:
+        existing_workout.duration = workout_updates["duration"]
+    if "focus" in workout_updates:
+        existing_workout.focus = workout_updates["focus"]
+    if "muscle_group_load" in workout_updates:
+        existing_workout.muscle_group_load = workout_updates["muscle_group_load"]
+    if "focus_derivation" in workout_updates:
+        existing_workout.focus_derivation = workout_updates["focus_derivation"]
+    if "notes" in workout_updates:
+        existing_workout.notes = workout_updates["notes"]
+    if "training_plan_id" in workout_updates and not preserve_user_data:
+        existing_workout.training_plan_id = workout_updates["training_plan_id"]
     
-    # Preserve user_id
-    existing_workout.user_id = preserved_user_id
+    # Add new blocks
+    existing_workout.blocks = new_blocks
     
-    # Add new blocks from new_workout_data
-    existing_workout.blocks = new_workout_data.blocks
-    
-    # Don't add existing_workout - it's already tracked by the session!
-    # db.add(existing_workout) would cause duplicate creation
+    # The existing_workout is already tracked by the session, so we just commit
     await db.commit()
     await db.refresh(existing_workout)
     
@@ -580,29 +584,29 @@ async def generate_workout_background(
             f"Exercise count: {workout_output.exercise_count}"
         )
 
-        # --- STEP 2: Parse to database models ---
-        logger.info("[generate_workout_background_v2] Parsing compressed workout to DB models...")
+        # --- STEP 2: Parse to blocks for existing workout ---
+        logger.info("[generate_workout_background_v2] Parsing compressed workout to blocks...")
         
-        # Determine training_plan_id
-        training_plan_id = None
+        # Import the new parsing function
+        from app.llm.workout_generation_v1.versions.compressed_20250731.service import (
+            parse_compressed_blocks_for_workout
+        )
+        
+        # Parse compressed format to blocks and updates
+        new_blocks, workout_updates = await parse_compressed_blocks_for_workout(
+            workout_schema=workout_output.workout,
+            workout_id=workout_id
+        )
+        
+        # Add training_plan_id if we have a profile
         if profile_id:
-            # The compressed service handles training plan lookup internally
-            # We need to extract it from the generation context
-            # For now, we'll need to do a quick DB lookup
             async with create_session() as db:
                 from app.models.training_plan_model import TrainingPlan
                 training_plan = await db.scalar(
                     select(TrainingPlan).where(TrainingPlan.user_id == user_id_uuid)
                 )
                 if training_plan:
-                    training_plan_id = training_plan.id
-        
-        # Parse compressed format to DB models
-        workout_db_model = await parse_compressed_workout_to_db_models(
-            workout_schema=workout_output.workout,
-            user_id=user_id_uuid,
-            training_plan_id=training_plan_id
-        )
+                    workout_updates["training_plan_id"] = training_plan.id
 
         # --- STEP 3: Update workout in database ---
         logger.info("[generate_workout_background_v2] Updating workout in database...")
@@ -611,7 +615,8 @@ async def generate_workout_background(
             await update_workout_in_database(
                 db=save_db,
                 workout_id=workout_id,
-                new_workout_data=workout_db_model,
+                new_blocks=new_blocks,
+                workout_updates=workout_updates,
                 preserve_user_data=True
             )
 

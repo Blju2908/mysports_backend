@@ -5,7 +5,7 @@ from typing import List, Optional
 from sqlalchemy.orm import selectinload
 from datetime import datetime, timezone
 from pydantic import BaseModel, Field, field_validator
-from uuid import UUID
+from uuid import UUID, uuid4
 import os
 import json
 
@@ -246,8 +246,7 @@ async def save_block(
     ✅ OPTIMIZED: ID-preserving save_block to maintain frontend references
     Returns ID mapping for temporary IDs
     """
-    # Track temporary ID mappings for sets
-    temp_id_mappings = {}
+    # No longer need temp_id_mappings - we use UIDs now
     # ✅ SQLModel One-Liner: Direct block query with security check
     existing_block = await db.scalar(
         select(Block)
@@ -286,14 +285,15 @@ async def save_block(
                 
                 incoming_exercise_ids.add(str(ex_data.id))
                 
-                # ✅ SMART SET HANDLING: Update/Create/Delete sets
-                existing_sets = {str(s.id): s for s in existing_exercise.sets}
-                incoming_set_ids = set()
+                # ✅ SMART SET HANDLING: Update/Create/Delete sets based on UIDs
+                existing_sets_by_uid = {s.uid: s for s in existing_exercise.sets if s.uid}
+                incoming_set_uids = set()
                 
                 for set_data in ex_data.sets:
-                    if hasattr(set_data, 'id') and set_data.id and str(set_data.id) in existing_sets:
-                        # ✅ UPDATE existing set (preserves ID!)
-                        existing_set = existing_sets[str(set_data.id)]
+                    if hasattr(set_data, 'uid') and set_data.uid and set_data.uid in existing_sets_by_uid:
+                        # ✅ UPDATE existing set based on UID
+                        existing_set = existing_sets_by_uid[set_data.uid]
+                        print(f"[Backend] Updating existing set with UID: {set_data.uid}")
                         existing_set.weight = set_data.weight
                         existing_set.reps = set_data.reps
                         existing_set.duration = set_data.duration
@@ -303,15 +303,21 @@ async def save_block(
                         existing_set.completed_at = set_data.completed_at
                         existing_set.position = getattr(set_data, "position", existing_set.position or 0)  # ✅ Position support
                         
-                        incoming_set_ids.add(str(set_data.id))
+                        incoming_set_uids.add(set_data.uid)
                     else:
-                        # ✅ CREATE new set (only if no valid ID or ID not found)
+                        # ✅ CREATE new set (only if UID not found or not provided)
                         # Find max position and increment for new sets
                         existing_positions = [s.position or 0 for s in existing_exercise.sets if s.position is not None]
                         max_position = max(existing_positions) if existing_positions else -1
                         new_position = getattr(set_data, "position", max_position + 1)
                         
+                        # Debug logging for UID handling
+                        frontend_uid = getattr(set_data, 'uid', None)
+                        generated_uid = frontend_uid if frontend_uid else str(uuid4())
+                        print(f"[Backend] Creating new set - Frontend UID: {frontend_uid}, Using UID: {generated_uid}")
+                        
                         new_set = Set(
+                            uid=generated_uid,  # Use frontend UID or generate new
                             exercise_id=existing_exercise.id,
                             weight=set_data.weight,
                             reps=set_data.reps,
@@ -324,15 +330,13 @@ async def save_block(
                         )
                         db.add(new_set)
                         
-                        # Track temporary ID mapping if it's a temp ID
-                        if hasattr(set_data, 'id') and set_data.id and isinstance(set_data.id, str) and set_data.id.startswith('temp_'):
-                            await db.flush()  # Get the new ID
-                            temp_id_mappings[set_data.id] = new_set.id
-                            print(f"[Backend] Mapped temp ID {set_data.id} to real ID {new_set.id}")
+                        # No need for temp ID mapping anymore - we use UIDs
+                        await db.flush()  # Ensure the set gets an ID
                 
-                # ✅ DELETE sets that are no longer present
-                for set_id, existing_set in existing_sets.items():
-                    if set_id not in incoming_set_ids:
+                # ✅ DELETE sets that are no longer present (based on UIDs)
+                for existing_set in existing_exercise.sets:
+                    if existing_set.uid and existing_set.uid not in incoming_set_uids:
+                        print(f"[Backend] Deleting set with UID: {existing_set.uid} (not in incoming UIDs)")
                         await db.delete(existing_set)
                         
             else:
@@ -356,6 +360,7 @@ async def save_block(
                 # Create all sets for new exercise
                 for set_data in ex_data.sets:
                     new_set = Set(
+                        uid=set_data.uid if hasattr(set_data, 'uid') and set_data.uid else str(uuid4()),  # Use frontend UID or generate new
                         exercise_id=new_exercise.id,
                         weight=set_data.weight,
                         reps=set_data.reps,
@@ -368,10 +373,8 @@ async def save_block(
                     )
                     db.add(new_set)
                     
-                    # Track temporary ID mapping if it's a temp ID
-                    if hasattr(set_data, 'id') and set_data.id and isinstance(set_data.id, str) and set_data.id.startswith('temp_'):
-                        await db.flush()  # Get the new ID
-                        temp_id_mappings[set_data.id] = new_set.id
+                    # No need for temp ID mapping anymore - we use UIDs
+                    await db.flush()  # Ensure the set gets an ID
         
         # ✅ DELETE exercises that are no longer present
         for ex_id, existing_exercise in existing_exercises.items():
@@ -393,11 +396,11 @@ async def save_block(
         for ex in saved_block.exercises:
             print(f"[Backend] Exercise {ex.name} has {len(ex.sets)} sets")
             for s in ex.sets:
-                print(f"[Backend]   - Set ID: {s.id}, Position: {s.position}")
+                print(f"[Backend]   - Set ID: {s.id}, UID: {s.uid}, Position: {s.position}")
         
         return BlockSaveResponse(
             block=BlockRead.model_validate(saved_block),
-            temp_id_mappings=temp_id_mappings
+            temp_id_mappings={}  # Keep empty for backwards compatibility
         )
         
     except Exception as e:
@@ -572,6 +575,7 @@ async def create_manual_activity(
         
         # ✅ CREATE SET: Exercise needs at least one set (mark as completed)
         workout_set = Set(
+            uid=str(uuid4()),  # Generate UID for manual activity set
             exercise_id=exercise.id,
             weight=None,  # No specific weight recorded
             reps=None,    # No specific reps recorded

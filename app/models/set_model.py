@@ -2,6 +2,7 @@ from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, TYPE_CHECKING, List, Union
 from enum import Enum
 from datetime import datetime
+from uuid import uuid4
 
 if TYPE_CHECKING:
     from .exercise_model import Exercise
@@ -16,6 +17,7 @@ class SetTag(str, Enum):
 class Set(SQLModel, table=True):
     __tablename__ = "sets"
     id: Optional[int] = Field(default=None, primary_key=True)
+    uid: Optional[str] = Field(default=None, unique=True, index=True)
     exercise_id: int = Field(foreign_key="exercises.id", ondelete="CASCADE")
     
     # Planned values

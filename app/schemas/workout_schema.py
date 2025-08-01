@@ -20,6 +20,7 @@ class WorkoutStatusEnum(str, Enum):
 class SetInput(BaseModel):
     """Schema für Set Input - flexible IDs für Frontend"""
     id: Optional[Union[int, str]] = None  # Frontend kann temp IDs senden
+    uid: Optional[str] = None  # Frontend kann eigene UIDs senden
     exercise_id: Optional[Union[int, str]] = None  # Wird zur Laufzeit gesetzt
     weight: Optional[float] = None
     reps: Optional[int] = None
@@ -69,6 +70,7 @@ class SetRead(BaseModel):
     model_config = {"from_attributes": True}  # ✅ SQLModel Best Practice!
     
     id: int
+    uid: Optional[str] = None  # UUID für optimistic updates
     exercise_id: int
     weight: Optional[float] = None
     reps: Optional[int] = None

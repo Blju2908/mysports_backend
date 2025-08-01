@@ -447,3 +447,101 @@ async def parse_compressed_workout_to_db_models(
         workout.blocks.append(block)
     
     return workout
+
+
+async def parse_compressed_blocks_for_workout(
+    workout_schema: CompactWorkoutSchema,
+    workout_id: int
+) -> tuple[List[Block], dict]:
+    """
+    Parse compressed workout schema to database blocks for an existing workout.
+    
+    Args:
+        workout_schema: The compressed workout schema from LLM
+        workout_id: ID of the existing workout to update
+        
+    Returns:
+        Tuple of (blocks list, workout updates dict)
+    """
+    blocks = []
+    
+    # Process each block
+    for block_idx, block_schema in enumerate(workout_schema.blocks):
+        block = Block(
+            workout_id=workout_id,  # Set the correct workout_id from the start
+            name=block_schema.name,
+            description="",
+            position=block_idx
+        )
+        
+        # Process exercises in the block
+        exercise_position = 0
+        for exercise_schema in block_schema.exercises:
+            # Handle unilateral exercises
+            if "[unilateral]" in exercise_schema.name or "(rechts)" in exercise_schema.name or "(links)" in exercise_schema.name:
+                # Exercise already split by LLM
+                exercises_to_add = [(exercise_schema, exercise_schema.name)]
+            elif any(unilateral_marker in exercise_schema.name.lower() for unilateral_marker in ["single", "einarmig", "einbeinig", "unilateral"]):
+                # Need to split into left/right
+                base_name = exercise_schema.name
+                exercises_to_add = [
+                    (exercise_schema, f"{base_name} (rechts)"),
+                    (exercise_schema, f"{base_name} (links)")
+                ]
+            else:
+                # Regular exercise
+                exercises_to_add = [(exercise_schema, exercise_schema.name)]
+            
+            # Create exercise(s)
+            for ex_schema, ex_name in exercises_to_add:
+                exercise = Exercise(
+                    name=ex_name,
+                    position=exercise_position,
+                    superset_id=ex_schema.superset if ex_schema.superset else None,
+                    notes=ex_schema.note if hasattr(ex_schema, 'note') and ex_schema.note else None
+                )
+                
+                # Expand compressed sets
+                sets_data = await expand_compressed_exercise(ex_schema)
+                
+                # Create Set objects
+                for set_idx, set_data in enumerate(sets_data):
+                    # Import SetTag enum for tag conversion
+                    from app.models.set_model import SetTag
+                    
+                    # Convert tag string to enum if present
+                    tag = None
+                    if set_data.get("tag"):
+                        try:
+                            tag = SetTag(set_data["tag"])
+                        except ValueError:
+                            print(f"Warning: Invalid tag value: {set_data['tag']}")
+                            tag = None
+                    
+                    set_obj = Set(
+                        weight=set_data.get("weight"),
+                        reps=set_data.get("reps"),
+                        duration=set_data.get("duration"),
+                        distance=set_data.get("distance"),
+                        rest_time=set_data.get("rest_time", 60),
+                        position=set_idx,
+                        tag=tag
+                    )
+                    exercise.sets.append(set_obj)
+                
+                block.exercises.append(exercise)
+                exercise_position += 1
+        
+        blocks.append(block)
+    
+    # Prepare workout field updates
+    workout_updates = {
+        "name": workout_schema.name,
+        "description": workout_schema.description,
+        "duration": workout_schema.duration_min,
+        "focus": workout_schema.focus,
+        "muscle_group_load": [],
+        "focus_derivation": workout_schema.focus_derivation
+    }
+    
+    return blocks, workout_updates
