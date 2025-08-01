@@ -450,7 +450,8 @@ async def update_workout_in_database(
     # Add new blocks from new_workout_data
     existing_workout.blocks = new_workout_data.blocks
     
-    db.add(existing_workout)
+    # Don't add existing_workout - it's already tracked by the session!
+    # db.add(existing_workout) would cause duplicate creation
     await db.commit()
     await db.refresh(existing_workout)
     

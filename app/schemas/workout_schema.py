@@ -105,6 +105,13 @@ class BlockRead(BaseModel):
     position: Optional[int] = None
     exercises: List[ExerciseRead] = []
 
+class BlockSaveResponse(BaseModel):
+    """Response schema for save_block including temp ID mappings"""
+    model_config = {"from_attributes": True}
+    
+    block: BlockRead
+    temp_id_mappings: Dict[str, int] = {}  # Maps temp IDs to real IDs
+
 # ==========================================
 # WORKOUT SCHEMAS - Optimiert für verschiedene Use Cases
 # ==========================================

@@ -19,6 +19,7 @@ from app.schemas.workout_schema import (
     WorkoutListRead,
     WorkoutWithBlocksRead,
     BlockRead,
+    BlockSaveResponse,
     BlockInput,
     SetRead,
     SetUpdate,
@@ -232,7 +233,7 @@ async def get_block_detail(
 
 @router.post(
     "/{workout_id}/blocks/{block_id}",
-    response_model=BlockRead
+    response_model=BlockSaveResponse
 )
 async def save_block(
     workout_id: int,
@@ -243,7 +244,10 @@ async def save_block(
 ):
     """
     ✅ OPTIMIZED: ID-preserving save_block to maintain frontend references
+    Returns ID mapping for temporary IDs
     """
+    # Track temporary ID mappings for sets
+    temp_id_mappings = {}
     # ✅ SQLModel One-Liner: Direct block query with security check
     existing_block = await db.scalar(
         select(Block)
@@ -319,6 +323,12 @@ async def save_block(
                             position=new_position  # ✅ Position support
                         )
                         db.add(new_set)
+                        
+                        # Track temporary ID mapping if it's a temp ID
+                        if hasattr(set_data, 'id') and set_data.id and isinstance(set_data.id, str) and set_data.id.startswith('temp_'):
+                            await db.flush()  # Get the new ID
+                            temp_id_mappings[set_data.id] = new_set.id
+                            print(f"[Backend] Mapped temp ID {set_data.id} to real ID {new_set.id}")
                 
                 # ✅ DELETE sets that are no longer present
                 for set_id, existing_set in existing_sets.items():
@@ -357,6 +367,11 @@ async def save_block(
                         position=getattr(set_data, "position", 0)  # ✅ Position support
                     )
                     db.add(new_set)
+                    
+                    # Track temporary ID mapping if it's a temp ID
+                    if hasattr(set_data, 'id') and set_data.id and isinstance(set_data.id, str) and set_data.id.startswith('temp_'):
+                        await db.flush()  # Get the new ID
+                        temp_id_mappings[set_data.id] = new_set.id
         
         # ✅ DELETE exercises that are no longer present
         for ex_id, existing_exercise in existing_exercises.items():
@@ -374,7 +389,16 @@ async def save_block(
         result = await db.execute(result_query)
         saved_block = result.scalar_one()
         
-        return BlockRead.model_validate(saved_block)
+        # Debug logging
+        for ex in saved_block.exercises:
+            print(f"[Backend] Exercise {ex.name} has {len(ex.sets)} sets")
+            for s in ex.sets:
+                print(f"[Backend]   - Set ID: {s.id}, Position: {s.position}")
+        
+        return BlockSaveResponse(
+            block=BlockRead.model_validate(saved_block),
+            temp_id_mappings=temp_id_mappings
+        )
         
     except Exception as e:
         await db.rollback()
