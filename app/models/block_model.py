@@ -13,6 +13,7 @@ class Block(SQLModel, table=True):
     name: str
     description: Optional[str] = None
     notes: Optional[str] = Field(default=None)
+    duration_min: Optional[int] = Field(default=None, description="Estimated duration of the block in minutes")
     
     # Ordering
     position: Optional[int] = Field(default=0, description="Position for stable sorting of blocks within a workout")

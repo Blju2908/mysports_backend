@@ -118,12 +118,12 @@ class ExerciseRead(BaseModel):
 
 # Block Schema - sauber und einfach
 class BlockRead(BaseModel):
-    model_config = {"from_attributes": True}  # ✅ SQLModel Best Practice!
-    
+    model_config = {"from_attributes": True}  # ✅ SQLModel Best Practice!    
     id: int
     workout_id: int
     name: str
     description: Optional[str] = None
+    duration_min: Optional[int] = None
     notes: Optional[str] = None
     position: Optional[int] = None
     exercises: List[ExerciseRead] = []

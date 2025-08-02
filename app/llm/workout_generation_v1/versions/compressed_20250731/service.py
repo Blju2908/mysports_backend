@@ -471,7 +471,8 @@ async def parse_compressed_blocks_for_workout(
             workout_id=workout_id,  # Set the correct workout_id from the start
             name=block_schema.name,
             description="",
-            position=block_idx
+            position=block_idx,
+            duration_min=block_schema.duration_min  # Add duration from schema
         )
         
         # Process exercises in the block
