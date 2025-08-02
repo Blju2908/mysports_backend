@@ -63,6 +63,24 @@ class BlockInput(BaseModel):
     exercises: List[ExerciseInput] = []
 
 # ==========================================
+# EXERCISE HISTORY SCHEMAS - Defined early for use in other schemas
+# ==========================================
+
+class ExerciseHistoryItem(BaseModel):
+    """Schema for a single exercise history entry"""
+    model_config = {"from_attributes": True}
+    
+    exercise_name: str
+    workout_name: str
+    workout_date: datetime
+    completed_at: datetime
+    weight: Optional[float] = None
+    reps: Optional[int] = None
+    duration: Optional[int] = None  # in seconds
+    distance: Optional[float] = None
+    set_id: int
+
+# ==========================================
 # OUTPUT SCHEMAS - Strikte Integer IDs für Response
 # ==========================================
 
@@ -260,24 +278,6 @@ class Phase1WorkoutRead(BaseModel):
     blocks: List[Phase1BlockRead] = []
 
 
-# ==========================================
-# EXERCISE HISTORY SCHEMAS
-# ==========================================
-
-class ExerciseHistoryItem(BaseModel):
-    """Schema for a single exercise history entry"""
-    model_config = {"from_attributes": True}
-    
-    exercise_name: str
-    workout_name: str
-    workout_date: datetime
-    completed_at: datetime
-    weight: Optional[float] = None
-    reps: Optional[int] = None
-    duration: Optional[int] = None  # in seconds
-    distance: Optional[float] = None
-    set_id: int
-    
 class ExerciseHistoryResponse(BaseModel):
     """Schema for exercise history grouped by exercise name"""
     model_config = {"from_attributes": True}

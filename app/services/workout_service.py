@@ -207,3 +207,90 @@ async def get_exercise_history_for_workout(
     return dict(history_by_exercise)
 
 
+async def get_workout_history_map(
+    workout: Workout,
+    db: AsyncSession,
+    limit_per_exercise: int = 5
+) -> Dict[str, List[ExerciseHistoryItem]]:
+    """
+    Gets exercise history for all exercises in a workout as a map.
+    
+    Args:
+        workout: The workout object to get history for
+        db: The asynchronous database session
+        limit_per_exercise: Maximum number of history entries per exercise
+    
+    Returns:
+        Dictionary mapping exercise names to their history
+    """
+    # Get all unique exercise names from the workout
+    exercise_names = set()
+    for block in workout.blocks:
+        for exercise in block.exercises:
+            exercise_names.add(exercise.name)
+    
+    if not exercise_names:
+        return {}
+    
+    # Get history for all exercises in one query
+    history_query = (
+        select(
+            Exercise.name,
+            Workout.name.label('workout_name'),
+            Workout.date_created.label('workout_date'),
+            Set.completed_at,
+            Set.weight,
+            Set.reps,
+            Set.duration,
+            Set.distance,
+            Set.id.label('set_id')
+        )
+        .select_from(Set)
+        .join(Exercise, Set.exercise_id == Exercise.id)
+        .join(Block, Exercise.block_id == Block.id)
+        .join(Workout, Block.workout_id == Workout.id)
+        .where(
+            and_(
+                Exercise.name.in_(exercise_names),
+                Workout.user_id == workout.user_id,
+                Set.status == SetStatus.done,
+                Set.completed_at.isnot(None),
+                Workout.id != workout.id  # Exclude current workout
+            )
+        )
+        .order_by(
+            Exercise.name,
+            desc(Set.completed_at)
+        )
+    )
+    
+    result = await db.execute(history_query)
+    rows = result.all()
+    
+    # Group by exercise name
+    history_by_exercise: Dict[str, List[ExerciseHistoryItem]] = defaultdict(list)
+    
+    for row in rows:
+        exercise_name = row.name
+        
+        # Skip if we already have enough entries for this exercise
+        if len(history_by_exercise[exercise_name]) >= limit_per_exercise:
+            continue
+            
+        history_item = ExerciseHistoryItem(
+            exercise_name=exercise_name,
+            workout_name=row.workout_name,
+            workout_date=row.workout_date,
+            completed_at=row.completed_at,
+            weight=row.weight,
+            reps=row.reps,
+            duration=row.duration,
+            distance=row.distance,
+            set_id=row.set_id
+        )
+        
+        history_by_exercise[exercise_name].append(history_item)
+    
+    return dict(history_by_exercise)
+
+

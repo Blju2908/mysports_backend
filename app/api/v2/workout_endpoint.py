@@ -30,7 +30,7 @@ from app.schemas.workout_schema import (
 
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
-from app.services.workout_service import get_latest_workouts_with_details, get_exercises_with_done_sets_only, get_exercise_history_for_workout
+from app.services.workout_service import get_latest_workouts_with_details, get_exercises_with_done_sets_only, get_exercise_history_for_workout, get_workout_history_map
 
 # --- API Specific Request Payloads ---
 
@@ -215,11 +215,13 @@ async def get_workout_exercise_history(
 @router.get("/{workout_id}", response_model=WorkoutWithBlocksRead)
 async def get_workout_detail(
     workout_id: int,
+    include_history: bool = True,
     db: AsyncSession = Depends(get_session),
     current_user: User = Depends(get_current_user),
 ):
     """
     ✅ SQLModel Best Practice: Direct user-workout relationship with security check in query
+    Now includes exercise history by default for better performance
     """
     # ✅ SQLModel One-Liner: Direct workout query with security check
     workout = await db.scalar(
@@ -242,7 +244,18 @@ async def get_workout_detail(
     if hasattr(workout, 'get_sorted_blocks'):
         workout.blocks = workout.get_sorted_blocks()
     
-    return WorkoutWithBlocksRead.model_validate(workout)
+    # Convert to response model first
+    workout_response = WorkoutWithBlocksRead.model_validate(workout)
+    
+    # ✅ Enrich with exercise history if requested
+    if include_history:
+        history_map = await get_workout_history_map(workout, db)
+        # Add history to each exercise in the response
+        for block in workout_response.blocks:
+            for exercise in block.exercises:
+                exercise.history = history_map.get(exercise.name, [])
+    
+    return workout_response
 
 
 @router.get("/{workout_id}/blocks/{block_id}", response_model=BlockRead)
