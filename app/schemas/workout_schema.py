@@ -96,6 +96,7 @@ class ExerciseRead(BaseModel):
     superset_id: Optional[str] = None
     position: Optional[int] = None
     sets: List[SetRead] = []
+    history: Optional[List[ExerciseHistoryItem]] = None  # Optional exercise history
 
 # Block Schema - sauber und einfach
 class BlockRead(BaseModel):
@@ -257,6 +258,31 @@ class Phase1WorkoutRead(BaseModel):
     focus: Optional[str] = None
     notes: Optional[str] = None
     blocks: List[Phase1BlockRead] = []
+
+
+# ==========================================
+# EXERCISE HISTORY SCHEMAS
+# ==========================================
+
+class ExerciseHistoryItem(BaseModel):
+    """Schema for a single exercise history entry"""
+    model_config = {"from_attributes": True}
+    
+    exercise_name: str
+    workout_name: str
+    workout_date: datetime
+    completed_at: datetime
+    weight: Optional[float] = None
+    reps: Optional[int] = None
+    duration: Optional[int] = None  # in seconds
+    distance: Optional[float] = None
+    set_id: int
+    
+class ExerciseHistoryResponse(BaseModel):
+    """Schema for exercise history grouped by exercise name"""
+    model_config = {"from_attributes": True}
+    
+    exercise_histories: Dict[str, List[ExerciseHistoryItem]]  # Grouped by exercise name
 
 
 

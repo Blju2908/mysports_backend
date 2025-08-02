@@ -1,13 +1,15 @@
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, and_, desc
 from sqlalchemy.orm import selectinload, contains_eager, aliased
-from typing import List
+from typing import List, Dict
+from collections import defaultdict
 
 from app.models.workout_model import Workout
 from app.models.block_model import Block
 from app.models.exercise_model import Exercise
 from app.models.set_model import Set, SetStatus
+from app.schemas.workout_schema import ExerciseHistoryItem
 from uuid import UUID
 
 
@@ -105,5 +107,103 @@ async def get_exercises_with_done_sets_only(
     result = await db.execute(query)
     exercises: List[Exercise] = result.scalars().unique().all()
     return exercises
+
+
+async def get_exercise_history_for_workout(
+    db: AsyncSession,
+    workout_id: int,
+    user_id: UUID,
+    limit_per_exercise: int = 10
+) -> Dict[str, List[ExerciseHistoryItem]]:
+    """
+    Retrieves exercise history for all exercises in a workout.
+    Groups results by exercise name and returns the last N entries for each exercise.
+    
+    Args:
+        db: The asynchronous database session.
+        workout_id: The ID of the workout to get exercise history for.
+        user_id: The UUID of the user.
+        limit_per_exercise: Maximum number of history entries per exercise.
+    
+    Returns:
+        Dictionary mapping exercise names to their history items.
+    """
+    # First, get all exercises in the current workout to get their names
+    current_workout_query = (
+        select(Exercise.name)
+        .distinct()
+        .join(Block, Exercise.block_id == Block.id)
+        .join(Workout, Block.workout_id == Workout.id)
+        .where(
+            Workout.id == workout_id,
+            Workout.user_id == user_id
+        )
+    )
+    
+    result = await db.execute(current_workout_query)
+    exercise_names = result.scalars().all()
+    
+    if not exercise_names:
+        return {}
+    
+    # Get history for these exercise names across all user's workouts
+    history_query = (
+        select(
+            Exercise.name,
+            Workout.name.label('workout_name'),
+            Workout.date_created.label('workout_date'),
+            Set.completed_at,
+            Set.weight,
+            Set.reps,
+            Set.duration,
+            Set.distance,
+            Set.id.label('set_id')
+        )
+        .select_from(Set)
+        .join(Exercise, Set.exercise_id == Exercise.id)
+        .join(Block, Exercise.block_id == Block.id)
+        .join(Workout, Block.workout_id == Workout.id)
+        .where(
+            and_(
+                Exercise.name.in_(exercise_names),
+                Workout.user_id == user_id,
+                Set.status == SetStatus.done,
+                Set.completed_at.isnot(None)
+            )
+        )
+        .order_by(
+            Exercise.name,
+            desc(Set.completed_at)
+        )
+    )
+    
+    result = await db.execute(history_query)
+    rows = result.all()
+    
+    # Group by exercise name and limit results
+    history_by_exercise: Dict[str, List[ExerciseHistoryItem]] = defaultdict(list)
+    
+    for row in rows:
+        exercise_name = row.name
+        
+        # Skip if we already have enough entries for this exercise
+        if len(history_by_exercise[exercise_name]) >= limit_per_exercise:
+            continue
+            
+        history_item = ExerciseHistoryItem(
+            exercise_name=exercise_name,
+            workout_name=row.workout_name,
+            workout_date=row.workout_date,
+            completed_at=row.completed_at,
+            weight=row.weight,
+            reps=row.reps,
+            duration=row.duration,
+            distance=row.distance,
+            set_id=row.set_id
+        )
+        
+        history_by_exercise[exercise_name].append(history_item)
+    
+    return dict(history_by_exercise)
 
 

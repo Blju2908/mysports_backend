@@ -24,12 +24,13 @@ from app.schemas.workout_schema import (
     SetRead,
     SetUpdate,
     WorkoutStatusEnum,
-    ExerciseRead
+    ExerciseRead,
+    ExerciseHistoryResponse
 )
 
 from app.core.auth import get_current_user, User
 from app.db.session import get_session
-from app.services.workout_service import get_latest_workouts_with_details, get_exercises_with_done_sets_only
+from app.services.workout_service import get_latest_workouts_with_details, get_exercises_with_done_sets_only, get_exercise_history_for_workout
 
 # --- API Specific Request Payloads ---
 
@@ -166,6 +167,47 @@ async def get_user_exercises_with_done_sets(
     with open(f"outputs/exercises_with_done_sets_{timestamp}.json", "w", encoding='utf-8') as f:
         json.dump([ExerciseRead.model_validate(e).model_dump(mode='json') for e in exercises], f, default=str, ensure_ascii=False)
     return exercises
+
+
+@router.get("/{workout_id}/exercise-history", response_model=ExerciseHistoryResponse)
+async def get_workout_exercise_history(
+    workout_id: int,
+    limit_per_exercise: int = 10,
+    db: AsyncSession = Depends(get_session),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Retrieves exercise history for all exercises in a specific workout.
+    Returns the last N completed sets for each exercise across all user's workouts.
+    
+    Args:
+        workout_id: The ID of the workout to get exercise history for
+        limit_per_exercise: Maximum number of history entries per exercise (default: 10)
+    
+    Returns:
+        Exercise history grouped by exercise name
+    """
+    # First verify the user has access to this workout
+    workout = await db.scalar(
+        select(Workout)
+        .where(
+            Workout.id == workout_id,
+            Workout.user_id == UUID(current_user.id)
+        )
+    )
+    
+    if not workout:
+        raise HTTPException(status_code=404, detail="Workout not found or access denied")
+    
+    # Get exercise history
+    exercise_histories = await get_exercise_history_for_workout(
+        db=db,
+        workout_id=workout_id,
+        user_id=UUID(current_user.id),
+        limit_per_exercise=limit_per_exercise
+    )
+    
+    return ExerciseHistoryResponse(exercise_histories=exercise_histories)
 
 
 

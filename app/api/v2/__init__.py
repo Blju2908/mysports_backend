@@ -8,6 +8,7 @@ from .feedback_endpoint import router as feedback_router
 from .showcase_endpoint import router as showcase_router
 from .llm_log_endpoint import router as llm_log_router
 from .training_profile_endpoint import router as training_profile_router
+from .exercise_description_endpoint import router as exercise_description_router
 
 def create_api_v2_router() -> APIRouter:
     """
@@ -25,5 +26,6 @@ def create_api_v2_router() -> APIRouter:
     api_router.include_router(showcase_router, tags=["Showcase"])
     api_router.include_router(llm_log_router, tags=["LLM Logs"])
     api_router.include_router(training_profile_router, prefix="/training-profiles", tags=["Training Profiles"])
+    api_router.include_router(exercise_description_router, prefix="/exercise-descriptions", tags=["Exercise Descriptions"])
     
     return api_router 
